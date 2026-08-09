@@ -31,6 +31,7 @@ import { Route as PassageiroLocalizarRouteImport } from './routes/passageiro/loc
 import { Route as PassageiroNotificacoesRouteImport } from './routes/passageiro/notificacoes'
 import { Route as PassageiroPerfilRouteImport } from './routes/passageiro/perfil'
 import { Route as PassageiroPermissoesRouteImport } from './routes/passageiro/permissoes'
+import { Route as PassageiroPrivacidadeRouteImport } from './routes/passageiro/privacidade'
 import { Route as PassageiroSaudeDaContaRouteImport } from './routes/passageiro/saude-da-conta'
 import { Route as PassageiroSegurancaRouteImport } from './routes/passageiro/seguranca'
 import { Route as PassageiroSuporteRouteImport } from './routes/passageiro/suporte'
@@ -166,6 +167,11 @@ const PassageiroPerfilRoute = PassageiroPerfilRouteImport.update({
 const PassageiroPermissoesRoute = PassageiroPermissoesRouteImport.update({
   id: '/permissoes',
   path: '/permissoes',
+  getParentRoute: () => PassageiroRoute,
+} as any)
+const PassageiroPrivacidadeRoute = PassageiroPrivacidadeRouteImport.update({
+  id: '/privacidade',
+  path: '/privacidade',
   getParentRoute: () => PassageiroRoute,
 } as any)
 const PassageiroSaudeDaContaRoute = PassageiroSaudeDaContaRouteImport.update({
@@ -322,6 +328,7 @@ export interface FileRoutesByFullPath {
   '/passageiro/notificacoes': typeof PassageiroNotificacoesRoute
   '/passageiro/perfil': typeof PassageiroPerfilRoute
   '/passageiro/permissoes': typeof PassageiroPermissoesRoute
+  '/passageiro/privacidade': typeof PassageiroPrivacidadeRoute
   '/passageiro/saude-da-conta': typeof PassageiroSaudeDaContaRoute
   '/passageiro/seguranca': typeof PassageiroSegurancaRoute
   '/passageiro/suporte': typeof PassageiroSuporteRoute
@@ -367,6 +374,7 @@ export interface FileRoutesByTo {
   '/passageiro/notificacoes': typeof PassageiroNotificacoesRoute
   '/passageiro/perfil': typeof PassageiroPerfilRoute
   '/passageiro/permissoes': typeof PassageiroPermissoesRoute
+  '/passageiro/privacidade': typeof PassageiroPrivacidadeRoute
   '/passageiro/saude-da-conta': typeof PassageiroSaudeDaContaRoute
   '/passageiro/seguranca': typeof PassageiroSegurancaRoute
   '/passageiro/suporte': typeof PassageiroSuporteRoute
@@ -417,6 +425,7 @@ export interface FileRoutesById {
   '/passageiro/notificacoes': typeof PassageiroNotificacoesRoute
   '/passageiro/perfil': typeof PassageiroPerfilRoute
   '/passageiro/permissoes': typeof PassageiroPermissoesRoute
+  '/passageiro/privacidade': typeof PassageiroPrivacidadeRoute
   '/passageiro/saude-da-conta': typeof PassageiroSaudeDaContaRoute
   '/passageiro/seguranca': typeof PassageiroSegurancaRoute
   '/passageiro/suporte': typeof PassageiroSuporteRoute
@@ -468,6 +477,7 @@ export interface FileRouteTypes {
     | '/passageiro/notificacoes'
     | '/passageiro/perfil'
     | '/passageiro/permissoes'
+    | '/passageiro/privacidade'
     | '/passageiro/saude-da-conta'
     | '/passageiro/seguranca'
     | '/passageiro/suporte'
@@ -513,6 +523,7 @@ export interface FileRouteTypes {
     | '/passageiro/notificacoes'
     | '/passageiro/perfil'
     | '/passageiro/permissoes'
+    | '/passageiro/privacidade'
     | '/passageiro/saude-da-conta'
     | '/passageiro/seguranca'
     | '/passageiro/suporte'
@@ -562,6 +573,7 @@ export interface FileRouteTypes {
     | '/passageiro/notificacoes'
     | '/passageiro/perfil'
     | '/passageiro/permissoes'
+    | '/passageiro/privacidade'
     | '/passageiro/saude-da-conta'
     | '/passageiro/seguranca'
     | '/passageiro/suporte'
@@ -754,6 +766,13 @@ declare module '@tanstack/react-router' {
       path: '/permissoes'
       fullPath: '/passageiro/permissoes'
       preLoaderRoute: typeof PassageiroPermissoesRouteImport
+      parentRoute: typeof PassageiroRoute
+    }
+    '/passageiro/privacidade': {
+      id: '/passageiro/privacidade'
+      path: '/privacidade'
+      fullPath: '/passageiro/privacidade'
+      preLoaderRoute: typeof PassageiroPrivacidadeRouteImport
       parentRoute: typeof PassageiroRoute
     }
     '/passageiro/saude-da-conta': {
@@ -988,6 +1007,7 @@ interface PassageiroRouteChildren {
   PassageiroNotificacoesRoute: typeof PassageiroNotificacoesRoute
   PassageiroPerfilRoute: typeof PassageiroPerfilRoute
   PassageiroPermissoesRoute: typeof PassageiroPermissoesRoute
+  PassageiroPrivacidadeRoute: typeof PassageiroPrivacidadeRoute
   PassageiroSaudeDaContaRoute: typeof PassageiroSaudeDaContaRoute
   PassageiroSegurancaRoute: typeof PassageiroSegurancaRoute
   PassageiroSuporteRoute: typeof PassageiroSuporteRoute
@@ -1016,6 +1036,7 @@ const PassageiroRouteChildren: PassageiroRouteChildren = {
   PassageiroNotificacoesRoute: PassageiroNotificacoesRoute,
   PassageiroPerfilRoute: PassageiroPerfilRoute,
   PassageiroPermissoesRoute: PassageiroPermissoesRoute,
+  PassageiroPrivacidadeRoute: PassageiroPrivacidadeRoute,
   PassageiroSaudeDaContaRoute: PassageiroSaudeDaContaRoute,
   PassageiroSegurancaRoute: PassageiroSegurancaRoute,
   PassageiroSuporteRoute: PassageiroSuporteRoute,
@@ -1088,13 +1109,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
