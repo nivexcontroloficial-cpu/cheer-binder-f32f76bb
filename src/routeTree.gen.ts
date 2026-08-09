@@ -45,8 +45,11 @@ import { Route as PassageiroCorridaRideIdRouteImport } from './routes/passageiro
 import { Route as PassageiroDenunciarRideIdRouteImport } from './routes/passageiro/denunciar.$rideId'
 import { Route as PassageiroProtocolosCaseIdRouteImport } from './routes/passageiro/protocolos.$caseId'
 import { Route as PassageiroRecursosCaseIdRouteImport } from './routes/passageiro/recursos.$caseId'
+import { Route as PilotoCadastroDocumentosRouteImport } from './routes/piloto/cadastro/documentos'
 import { Route as PilotoCadastroFotoRouteImport } from './routes/piloto/cadastro/foto'
+import { Route as PilotoCadastroOperacaoRouteImport } from './routes/piloto/cadastro/operacao'
 import { Route as PilotoCadastroPessoalRouteImport } from './routes/piloto/cadastro/pessoal'
+import { Route as PilotoCadastroVeiculoRouteImport } from './routes/piloto/cadastro/veiculo'
 import { Route as PassageiroCorridaRideIdConcluidaRouteImport } from './routes/passageiro/corrida.$rideId.concluida'
 import { Route as PassageiroCorridaRideIdEmAndamentoRouteImport } from './routes/passageiro/corrida/$rideId/em-andamento'
 
@@ -235,14 +238,30 @@ const PassageiroRecursosCaseIdRoute =
     path: '/recursos/$caseId',
     getParentRoute: () => PassageiroRoute,
   } as any)
+const PilotoCadastroDocumentosRoute =
+  PilotoCadastroDocumentosRouteImport.update({
+    id: '/cadastro/documentos',
+    path: '/cadastro/documentos',
+    getParentRoute: () => PilotoRoute,
+  } as any)
 const PilotoCadastroFotoRoute = PilotoCadastroFotoRouteImport.update({
   id: '/cadastro/foto',
   path: '/cadastro/foto',
   getParentRoute: () => PilotoRoute,
 } as any)
+const PilotoCadastroOperacaoRoute = PilotoCadastroOperacaoRouteImport.update({
+  id: '/cadastro/operacao',
+  path: '/cadastro/operacao',
+  getParentRoute: () => PilotoRoute,
+} as any)
 const PilotoCadastroPessoalRoute = PilotoCadastroPessoalRouteImport.update({
   id: '/cadastro/pessoal',
   path: '/cadastro/pessoal',
+  getParentRoute: () => PilotoRoute,
+} as any)
+const PilotoCadastroVeiculoRoute = PilotoCadastroVeiculoRouteImport.update({
+  id: '/cadastro/veiculo',
+  path: '/cadastro/veiculo',
   getParentRoute: () => PilotoRoute,
 } as any)
 const PassageiroCorridaRideIdConcluidaRoute =
@@ -295,8 +314,11 @@ export interface FileRoutesByFullPath {
   '/passageiro/denunciar/$rideId': typeof PassageiroDenunciarRideIdRoute
   '/passageiro/protocolos/$caseId': typeof PassageiroProtocolosCaseIdRoute
   '/passageiro/recursos/$caseId': typeof PassageiroRecursosCaseIdRoute
+  '/piloto/cadastro/documentos': typeof PilotoCadastroDocumentosRoute
   '/piloto/cadastro/foto': typeof PilotoCadastroFotoRoute
+  '/piloto/cadastro/operacao': typeof PilotoCadastroOperacaoRoute
   '/piloto/cadastro/pessoal': typeof PilotoCadastroPessoalRoute
+  '/piloto/cadastro/veiculo': typeof PilotoCadastroVeiculoRoute
   '/passageiro/corrida/$rideId/concluida': typeof PassageiroCorridaRideIdConcluidaRoute
   '/passageiro/corrida/$rideId/em-andamento': typeof PassageiroCorridaRideIdEmAndamentoRoute
 }
@@ -333,8 +355,11 @@ export interface FileRoutesByTo {
   '/passageiro/denunciar/$rideId': typeof PassageiroDenunciarRideIdRoute
   '/passageiro/protocolos/$caseId': typeof PassageiroProtocolosCaseIdRoute
   '/passageiro/recursos/$caseId': typeof PassageiroRecursosCaseIdRoute
+  '/piloto/cadastro/documentos': typeof PilotoCadastroDocumentosRoute
   '/piloto/cadastro/foto': typeof PilotoCadastroFotoRoute
+  '/piloto/cadastro/operacao': typeof PilotoCadastroOperacaoRoute
   '/piloto/cadastro/pessoal': typeof PilotoCadastroPessoalRoute
+  '/piloto/cadastro/veiculo': typeof PilotoCadastroVeiculoRoute
   '/passageiro/corrida/$rideId/concluida': typeof PassageiroCorridaRideIdConcluidaRoute
   '/passageiro/corrida/$rideId/em-andamento': typeof PassageiroCorridaRideIdEmAndamentoRoute
 }
@@ -376,8 +401,11 @@ export interface FileRoutesById {
   '/passageiro/denunciar/$rideId': typeof PassageiroDenunciarRideIdRoute
   '/passageiro/protocolos/$caseId': typeof PassageiroProtocolosCaseIdRoute
   '/passageiro/recursos/$caseId': typeof PassageiroRecursosCaseIdRoute
+  '/piloto/cadastro/documentos': typeof PilotoCadastroDocumentosRoute
   '/piloto/cadastro/foto': typeof PilotoCadastroFotoRoute
+  '/piloto/cadastro/operacao': typeof PilotoCadastroOperacaoRoute
   '/piloto/cadastro/pessoal': typeof PilotoCadastroPessoalRoute
+  '/piloto/cadastro/veiculo': typeof PilotoCadastroVeiculoRoute
   '/passageiro/corrida/$rideId/concluida': typeof PassageiroCorridaRideIdConcluidaRoute
   '/passageiro/corrida/$rideId/em-andamento': typeof PassageiroCorridaRideIdEmAndamentoRoute
 }
@@ -420,8 +448,11 @@ export interface FileRouteTypes {
     | '/passageiro/denunciar/$rideId'
     | '/passageiro/protocolos/$caseId'
     | '/passageiro/recursos/$caseId'
+    | '/piloto/cadastro/documentos'
     | '/piloto/cadastro/foto'
+    | '/piloto/cadastro/operacao'
     | '/piloto/cadastro/pessoal'
+    | '/piloto/cadastro/veiculo'
     | '/passageiro/corrida/$rideId/concluida'
     | '/passageiro/corrida/$rideId/em-andamento'
   fileRoutesByTo: FileRoutesByTo
@@ -458,8 +489,11 @@ export interface FileRouteTypes {
     | '/passageiro/denunciar/$rideId'
     | '/passageiro/protocolos/$caseId'
     | '/passageiro/recursos/$caseId'
+    | '/piloto/cadastro/documentos'
     | '/piloto/cadastro/foto'
+    | '/piloto/cadastro/operacao'
     | '/piloto/cadastro/pessoal'
+    | '/piloto/cadastro/veiculo'
     | '/passageiro/corrida/$rideId/concluida'
     | '/passageiro/corrida/$rideId/em-andamento'
   id:
@@ -500,8 +534,11 @@ export interface FileRouteTypes {
     | '/passageiro/denunciar/$rideId'
     | '/passageiro/protocolos/$caseId'
     | '/passageiro/recursos/$caseId'
+    | '/piloto/cadastro/documentos'
     | '/piloto/cadastro/foto'
+    | '/piloto/cadastro/operacao'
     | '/piloto/cadastro/pessoal'
+    | '/piloto/cadastro/veiculo'
     | '/passageiro/corrida/$rideId/concluida'
     | '/passageiro/corrida/$rideId/em-andamento'
   fileRoutesById: FileRoutesById
@@ -769,6 +806,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PassageiroRecursosCaseIdRouteImport
       parentRoute: typeof PassageiroRoute
     }
+    '/piloto/cadastro/documentos': {
+      id: '/piloto/cadastro/documentos'
+      path: '/cadastro/documentos'
+      fullPath: '/piloto/cadastro/documentos'
+      preLoaderRoute: typeof PilotoCadastroDocumentosRouteImport
+      parentRoute: typeof PilotoRoute
+    }
     '/piloto/cadastro/foto': {
       id: '/piloto/cadastro/foto'
       path: '/cadastro/foto'
@@ -776,11 +820,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PilotoCadastroFotoRouteImport
       parentRoute: typeof PilotoRoute
     }
+    '/piloto/cadastro/operacao': {
+      id: '/piloto/cadastro/operacao'
+      path: '/cadastro/operacao'
+      fullPath: '/piloto/cadastro/operacao'
+      preLoaderRoute: typeof PilotoCadastroOperacaoRouteImport
+      parentRoute: typeof PilotoRoute
+    }
     '/piloto/cadastro/pessoal': {
       id: '/piloto/cadastro/pessoal'
       path: '/cadastro/pessoal'
       fullPath: '/piloto/cadastro/pessoal'
       preLoaderRoute: typeof PilotoCadastroPessoalRouteImport
+      parentRoute: typeof PilotoRoute
+    }
+    '/piloto/cadastro/veiculo': {
+      id: '/piloto/cadastro/veiculo'
+      path: '/cadastro/veiculo'
+      fullPath: '/piloto/cadastro/veiculo'
+      preLoaderRoute: typeof PilotoCadastroVeiculoRouteImport
       parentRoute: typeof PilotoRoute
     }
     '/passageiro/corrida/$rideId/concluida': {
@@ -902,16 +960,22 @@ interface PilotoRouteChildren {
   PilotoBoasVindasRoute: typeof PilotoBoasVindasRoute
   PilotoEntrarRoute: typeof PilotoEntrarRoute
   PilotoIndexRoute: typeof PilotoIndexRoute
+  PilotoCadastroDocumentosRoute: typeof PilotoCadastroDocumentosRoute
   PilotoCadastroFotoRoute: typeof PilotoCadastroFotoRoute
+  PilotoCadastroOperacaoRoute: typeof PilotoCadastroOperacaoRoute
   PilotoCadastroPessoalRoute: typeof PilotoCadastroPessoalRoute
+  PilotoCadastroVeiculoRoute: typeof PilotoCadastroVeiculoRoute
 }
 
 const PilotoRouteChildren: PilotoRouteChildren = {
   PilotoBoasVindasRoute: PilotoBoasVindasRoute,
   PilotoEntrarRoute: PilotoEntrarRoute,
   PilotoIndexRoute: PilotoIndexRoute,
+  PilotoCadastroDocumentosRoute: PilotoCadastroDocumentosRoute,
   PilotoCadastroFotoRoute: PilotoCadastroFotoRoute,
+  PilotoCadastroOperacaoRoute: PilotoCadastroOperacaoRoute,
   PilotoCadastroPessoalRoute: PilotoCadastroPessoalRoute,
+  PilotoCadastroVeiculoRoute: PilotoCadastroVeiculoRoute,
 }
 
 const PilotoRouteWithChildren =
@@ -940,3 +1004,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

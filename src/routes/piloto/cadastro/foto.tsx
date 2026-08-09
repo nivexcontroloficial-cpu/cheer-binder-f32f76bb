@@ -54,11 +54,7 @@ function PilotRegistrationPhoto() {
     setTimeout(() => {
       toast.success("Prova de vida concluída!");
       setTimeout(() => {
-         navigate({ to: "/piloto/entrar" });
-         toast("Cadastro enviado para análise!", {
-           description: "Acompanhe o status fazendo login com seu celular.",
-           icon: <ShieldCheck className="text-rovya-green" />
-         });
+         navigate({ to: "/piloto/cadastro/documentos" });
       }, 1500);
     }, 3000);
   };
