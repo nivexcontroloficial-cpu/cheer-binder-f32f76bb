@@ -216,7 +216,7 @@ function SavedPlacesPage() {
             <div className="flex gap-2 pt-2">
               <button
                 type="button"
-                onClick={() => setIsAdding(false)}
+                onClick={handleCancel}
                 className="flex-1 h-12 rounded-2xl border border-slate-100 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:bg-slate-50 transition-colors"
               >
                 Cancelar
