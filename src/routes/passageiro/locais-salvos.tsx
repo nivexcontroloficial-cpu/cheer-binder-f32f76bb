@@ -143,7 +143,7 @@ function SavedPlacesPage() {
               <h2 className="text-sm font-black text-navy uppercase italic">Novo Local</h2>
               <button
                 type="button"
-                onClick={() => setIsAdding(false)}
+                onClick={handleCancel}
                 className="p-2 text-slate-400 hover:text-rose-500 transition-colors"
                 aria-label="Cancelar adição"
               >
