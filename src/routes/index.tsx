@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { RovyaBrand } from "@/components/RovyaBrand";
-import { User, ShieldCheck, PlayCircle, Bike, Palette, RotateCcw, ArrowRight, MessageSquare, Navigation as NavigationIcon } from "lucide-react";
+import { User, ShieldCheck, PlayCircle, Bike, Palette, RotateCcw, ArrowRight, MessageSquare, Navigation as NavigationIcon, CheckCircle2 } from "lucide-react";
 import { useDemo } from "@/state/DemoContext";
 
 export const Route = createFileRoute("/")({
