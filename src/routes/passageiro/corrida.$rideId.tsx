@@ -483,13 +483,13 @@ function ActiveRideScreen() {
                  <ShieldCheck size={18} className="text-rovya-blue" />
                  <span className="text-[9px] font-black uppercase tracking-widest text-navy">Segurança</span>
                </button>
-               <button 
-                 onClick={() => setIsCancelDialogOpen(true)}
-                 className="flex-1 flex flex-col items-center gap-2 py-3 bg-white border border-slate-100 rounded-2xl hover:bg-red-50 transition-colors group"
-               >
-                 <AlertTriangle size={18} className="text-slate-300 group-hover:text-red-500" />
-                 <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 group-hover:text-red-500">Cancelar</span>
-               </button>
+                <button 
+                  onClick={handleReportDivergent}
+                  className="flex-1 flex flex-col items-center gap-2 py-3 bg-white border border-slate-100 rounded-2xl hover:bg-red-50 transition-colors group"
+                >
+                  <EyeOff size={18} className="text-slate-300 group-hover:text-red-500" />
+                  <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 group-hover:text-red-500">Veículo Dif.</span>
+                </button>
             </div>
 
             {/* Área Expansível (Mais Detalhes) */}
