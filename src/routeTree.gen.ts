@@ -36,6 +36,7 @@ import { Route as PassageiroSegurancaRouteImport } from './routes/passageiro/seg
 import { Route as PassageiroSuporteRouteImport } from './routes/passageiro/suporte'
 import { Route as PassageiroVerificacaoRouteImport } from './routes/passageiro/verificacao'
 import { Route as PilotoIndexRouteImport } from './routes/piloto/index'
+import { Route as PilotoAnaliseRouteImport } from './routes/piloto/analise'
 import { Route as PilotoBoasVindasRouteImport } from './routes/piloto/boas-vindas'
 import { Route as PilotoEntrarRouteImport } from './routes/piloto/entrar'
 import { Route as SimuladorIndexRouteImport } from './routes/simulador/index'
@@ -45,6 +46,7 @@ import { Route as PassageiroCorridaRideIdRouteImport } from './routes/passageiro
 import { Route as PassageiroDenunciarRideIdRouteImport } from './routes/passageiro/denunciar.$rideId'
 import { Route as PassageiroProtocolosCaseIdRouteImport } from './routes/passageiro/protocolos.$caseId'
 import { Route as PassageiroRecursosCaseIdRouteImport } from './routes/passageiro/recursos.$caseId'
+import { Route as PilotoCadastroCorrigirRouteImport } from './routes/piloto/cadastro/corrigir'
 import { Route as PilotoCadastroDocumentosRouteImport } from './routes/piloto/cadastro/documentos'
 import { Route as PilotoCadastroFotoRouteImport } from './routes/piloto/cadastro/foto'
 import { Route as PilotoCadastroOperacaoRouteImport } from './routes/piloto/cadastro/operacao'
@@ -189,6 +191,11 @@ const PilotoIndexRoute = PilotoIndexRouteImport.update({
   path: '/',
   getParentRoute: () => PilotoRoute,
 } as any)
+const PilotoAnaliseRoute = PilotoAnaliseRouteImport.update({
+  id: '/analise',
+  path: '/analise',
+  getParentRoute: () => PilotoRoute,
+} as any)
 const PilotoBoasVindasRoute = PilotoBoasVindasRouteImport.update({
   id: '/boas-vindas',
   path: '/boas-vindas',
@@ -238,6 +245,11 @@ const PassageiroRecursosCaseIdRoute =
     path: '/recursos/$caseId',
     getParentRoute: () => PassageiroRoute,
   } as any)
+const PilotoCadastroCorrigirRoute = PilotoCadastroCorrigirRouteImport.update({
+  id: '/cadastro/corrigir',
+  path: '/cadastro/corrigir',
+  getParentRoute: () => PilotoRoute,
+} as any)
 const PilotoCadastroDocumentosRoute =
   PilotoCadastroDocumentosRouteImport.update({
     id: '/cadastro/documentos',
@@ -302,6 +314,7 @@ export interface FileRoutesByFullPath {
   '/passageiro/seguranca': typeof PassageiroSegurancaRoute
   '/passageiro/suporte': typeof PassageiroSuporteRoute
   '/passageiro/verificacao': typeof PassageiroVerificacaoRoute
+  '/piloto/analise': typeof PilotoAnaliseRoute
   '/piloto/boas-vindas': typeof PilotoBoasVindasRoute
   '/piloto/entrar': typeof PilotoEntrarRoute
   '/admin/': typeof AdminIndexRoute
@@ -314,6 +327,7 @@ export interface FileRoutesByFullPath {
   '/passageiro/denunciar/$rideId': typeof PassageiroDenunciarRideIdRoute
   '/passageiro/protocolos/$caseId': typeof PassageiroProtocolosCaseIdRoute
   '/passageiro/recursos/$caseId': typeof PassageiroRecursosCaseIdRoute
+  '/piloto/cadastro/corrigir': typeof PilotoCadastroCorrigirRoute
   '/piloto/cadastro/documentos': typeof PilotoCadastroDocumentosRoute
   '/piloto/cadastro/foto': typeof PilotoCadastroFotoRoute
   '/piloto/cadastro/operacao': typeof PilotoCadastroOperacaoRoute
@@ -343,6 +357,7 @@ export interface FileRoutesByTo {
   '/passageiro/seguranca': typeof PassageiroSegurancaRoute
   '/passageiro/suporte': typeof PassageiroSuporteRoute
   '/passageiro/verificacao': typeof PassageiroVerificacaoRoute
+  '/piloto/analise': typeof PilotoAnaliseRoute
   '/piloto/boas-vindas': typeof PilotoBoasVindasRoute
   '/piloto/entrar': typeof PilotoEntrarRoute
   '/admin': typeof AdminIndexRoute
@@ -355,6 +370,7 @@ export interface FileRoutesByTo {
   '/passageiro/denunciar/$rideId': typeof PassageiroDenunciarRideIdRoute
   '/passageiro/protocolos/$caseId': typeof PassageiroProtocolosCaseIdRoute
   '/passageiro/recursos/$caseId': typeof PassageiroRecursosCaseIdRoute
+  '/piloto/cadastro/corrigir': typeof PilotoCadastroCorrigirRoute
   '/piloto/cadastro/documentos': typeof PilotoCadastroDocumentosRoute
   '/piloto/cadastro/foto': typeof PilotoCadastroFotoRoute
   '/piloto/cadastro/operacao': typeof PilotoCadastroOperacaoRoute
@@ -389,6 +405,7 @@ export interface FileRoutesById {
   '/passageiro/seguranca': typeof PassageiroSegurancaRoute
   '/passageiro/suporte': typeof PassageiroSuporteRoute
   '/passageiro/verificacao': typeof PassageiroVerificacaoRoute
+  '/piloto/analise': typeof PilotoAnaliseRoute
   '/piloto/boas-vindas': typeof PilotoBoasVindasRoute
   '/piloto/entrar': typeof PilotoEntrarRoute
   '/admin/': typeof AdminIndexRoute
@@ -401,6 +418,7 @@ export interface FileRoutesById {
   '/passageiro/denunciar/$rideId': typeof PassageiroDenunciarRideIdRoute
   '/passageiro/protocolos/$caseId': typeof PassageiroProtocolosCaseIdRoute
   '/passageiro/recursos/$caseId': typeof PassageiroRecursosCaseIdRoute
+  '/piloto/cadastro/corrigir': typeof PilotoCadastroCorrigirRoute
   '/piloto/cadastro/documentos': typeof PilotoCadastroDocumentosRoute
   '/piloto/cadastro/foto': typeof PilotoCadastroFotoRoute
   '/piloto/cadastro/operacao': typeof PilotoCadastroOperacaoRoute
@@ -436,6 +454,7 @@ export interface FileRouteTypes {
     | '/passageiro/seguranca'
     | '/passageiro/suporte'
     | '/passageiro/verificacao'
+    | '/piloto/analise'
     | '/piloto/boas-vindas'
     | '/piloto/entrar'
     | '/admin/'
@@ -448,6 +467,7 @@ export interface FileRouteTypes {
     | '/passageiro/denunciar/$rideId'
     | '/passageiro/protocolos/$caseId'
     | '/passageiro/recursos/$caseId'
+    | '/piloto/cadastro/corrigir'
     | '/piloto/cadastro/documentos'
     | '/piloto/cadastro/foto'
     | '/piloto/cadastro/operacao'
@@ -477,6 +497,7 @@ export interface FileRouteTypes {
     | '/passageiro/seguranca'
     | '/passageiro/suporte'
     | '/passageiro/verificacao'
+    | '/piloto/analise'
     | '/piloto/boas-vindas'
     | '/piloto/entrar'
     | '/admin'
@@ -489,6 +510,7 @@ export interface FileRouteTypes {
     | '/passageiro/denunciar/$rideId'
     | '/passageiro/protocolos/$caseId'
     | '/passageiro/recursos/$caseId'
+    | '/piloto/cadastro/corrigir'
     | '/piloto/cadastro/documentos'
     | '/piloto/cadastro/foto'
     | '/piloto/cadastro/operacao'
@@ -522,6 +544,7 @@ export interface FileRouteTypes {
     | '/passageiro/seguranca'
     | '/passageiro/suporte'
     | '/passageiro/verificacao'
+    | '/piloto/analise'
     | '/piloto/boas-vindas'
     | '/piloto/entrar'
     | '/admin/'
@@ -534,6 +557,7 @@ export interface FileRouteTypes {
     | '/passageiro/denunciar/$rideId'
     | '/passageiro/protocolos/$caseId'
     | '/passageiro/recursos/$caseId'
+    | '/piloto/cadastro/corrigir'
     | '/piloto/cadastro/documentos'
     | '/piloto/cadastro/foto'
     | '/piloto/cadastro/operacao'
@@ -743,6 +767,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PilotoIndexRouteImport
       parentRoute: typeof PilotoRoute
     }
+    '/piloto/analise': {
+      id: '/piloto/analise'
+      path: '/analise'
+      fullPath: '/piloto/analise'
+      preLoaderRoute: typeof PilotoAnaliseRouteImport
+      parentRoute: typeof PilotoRoute
+    }
     '/piloto/boas-vindas': {
       id: '/piloto/boas-vindas'
       path: '/boas-vindas'
@@ -805,6 +836,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/passageiro/recursos/$caseId'
       preLoaderRoute: typeof PassageiroRecursosCaseIdRouteImport
       parentRoute: typeof PassageiroRoute
+    }
+    '/piloto/cadastro/corrigir': {
+      id: '/piloto/cadastro/corrigir'
+      path: '/cadastro/corrigir'
+      fullPath: '/piloto/cadastro/corrigir'
+      preLoaderRoute: typeof PilotoCadastroCorrigirRouteImport
+      parentRoute: typeof PilotoRoute
     }
     '/piloto/cadastro/documentos': {
       id: '/piloto/cadastro/documentos'
@@ -957,9 +995,11 @@ const PassageiroRouteWithChildren = PassageiroRoute._addFileChildren(
 )
 
 interface PilotoRouteChildren {
+  PilotoAnaliseRoute: typeof PilotoAnaliseRoute
   PilotoBoasVindasRoute: typeof PilotoBoasVindasRoute
   PilotoEntrarRoute: typeof PilotoEntrarRoute
   PilotoIndexRoute: typeof PilotoIndexRoute
+  PilotoCadastroCorrigirRoute: typeof PilotoCadastroCorrigirRoute
   PilotoCadastroDocumentosRoute: typeof PilotoCadastroDocumentosRoute
   PilotoCadastroFotoRoute: typeof PilotoCadastroFotoRoute
   PilotoCadastroOperacaoRoute: typeof PilotoCadastroOperacaoRoute
@@ -968,9 +1008,11 @@ interface PilotoRouteChildren {
 }
 
 const PilotoRouteChildren: PilotoRouteChildren = {
+  PilotoAnaliseRoute: PilotoAnaliseRoute,
   PilotoBoasVindasRoute: PilotoBoasVindasRoute,
   PilotoEntrarRoute: PilotoEntrarRoute,
   PilotoIndexRoute: PilotoIndexRoute,
+  PilotoCadastroCorrigirRoute: PilotoCadastroCorrigirRoute,
   PilotoCadastroDocumentosRoute: PilotoCadastroDocumentosRoute,
   PilotoCadastroFotoRoute: PilotoCadastroFotoRoute,
   PilotoCadastroOperacaoRoute: PilotoCadastroOperacaoRoute,
@@ -1004,3 +1046,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

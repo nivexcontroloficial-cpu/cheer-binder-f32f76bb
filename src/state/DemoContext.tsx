@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { UserStatus } from '../types';
 import { 
   ALL_DRIVERS, 
   ALL_RIDES, 
