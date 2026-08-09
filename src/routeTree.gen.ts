@@ -22,11 +22,14 @@ import { Route as PassageiroBoasVindasRouteImport } from './routes/passageiro/bo
 import { Route as PassageiroBuscandoRouteImport } from './routes/passageiro/buscando'
 import { Route as PassageiroCadastroRouteImport } from './routes/passageiro/cadastro'
 import { Route as PassageiroConfirmarCorridaRouteImport } from './routes/passageiro/confirmar-corrida'
+import { Route as PassageiroCorridasRouteImport } from './routes/passageiro/corridas'
 import { Route as PassageiroDestinoRouteImport } from './routes/passageiro/destino'
 import { Route as PassageiroEntrarRouteImport } from './routes/passageiro/entrar'
 import { Route as PassageiroInicioRouteImport } from './routes/passageiro/inicio'
 import { Route as PassageiroLocaisSalvosRouteImport } from './routes/passageiro/locais-salvos'
 import { Route as PassageiroLocalizarRouteImport } from './routes/passageiro/localizar'
+import { Route as PassageiroNotificacoesRouteImport } from './routes/passageiro/notificacoes'
+import { Route as PassageiroPerfilRouteImport } from './routes/passageiro/perfil'
 import { Route as PassageiroPermissoesRouteImport } from './routes/passageiro/permissoes'
 import { Route as PassageiroSegurancaRouteImport } from './routes/passageiro/seguranca'
 import { Route as PassageiroVerificacaoRouteImport } from './routes/passageiro/verificacao'
@@ -103,6 +106,11 @@ const PassageiroConfirmarCorridaRoute =
     path: '/confirmar-corrida',
     getParentRoute: () => PassageiroRoute,
   } as any)
+const PassageiroCorridasRoute = PassageiroCorridasRouteImport.update({
+  id: '/corridas',
+  path: '/corridas',
+  getParentRoute: () => PassageiroRoute,
+} as any)
 const PassageiroDestinoRoute = PassageiroDestinoRouteImport.update({
   id: '/destino',
   path: '/destino',
@@ -126,6 +134,16 @@ const PassageiroLocaisSalvosRoute = PassageiroLocaisSalvosRouteImport.update({
 const PassageiroLocalizarRoute = PassageiroLocalizarRouteImport.update({
   id: '/localizar',
   path: '/localizar',
+  getParentRoute: () => PassageiroRoute,
+} as any)
+const PassageiroNotificacoesRoute = PassageiroNotificacoesRouteImport.update({
+  id: '/notificacoes',
+  path: '/notificacoes',
+  getParentRoute: () => PassageiroRoute,
+} as any)
+const PassageiroPerfilRoute = PassageiroPerfilRouteImport.update({
+  id: '/perfil',
+  path: '/perfil',
   getParentRoute: () => PassageiroRoute,
 } as any)
 const PassageiroPermissoesRoute = PassageiroPermissoesRouteImport.update({
@@ -188,11 +206,14 @@ export interface FileRoutesByFullPath {
   '/passageiro/buscando': typeof PassageiroBuscandoRoute
   '/passageiro/cadastro': typeof PassageiroCadastroRoute
   '/passageiro/confirmar-corrida': typeof PassageiroConfirmarCorridaRoute
+  '/passageiro/corridas': typeof PassageiroCorridasRoute
   '/passageiro/destino': typeof PassageiroDestinoRoute
   '/passageiro/entrar': typeof PassageiroEntrarRoute
   '/passageiro/inicio': typeof PassageiroInicioRoute
   '/passageiro/locais-salvos': typeof PassageiroLocaisSalvosRoute
   '/passageiro/localizar': typeof PassageiroLocalizarRoute
+  '/passageiro/notificacoes': typeof PassageiroNotificacoesRoute
+  '/passageiro/perfil': typeof PassageiroPerfilRoute
   '/passageiro/permissoes': typeof PassageiroPermissoesRoute
   '/passageiro/seguranca': typeof PassageiroSegurancaRoute
   '/passageiro/verificacao': typeof PassageiroVerificacaoRoute
@@ -213,11 +234,14 @@ export interface FileRoutesByTo {
   '/passageiro/buscando': typeof PassageiroBuscandoRoute
   '/passageiro/cadastro': typeof PassageiroCadastroRoute
   '/passageiro/confirmar-corrida': typeof PassageiroConfirmarCorridaRoute
+  '/passageiro/corridas': typeof PassageiroCorridasRoute
   '/passageiro/destino': typeof PassageiroDestinoRoute
   '/passageiro/entrar': typeof PassageiroEntrarRoute
   '/passageiro/inicio': typeof PassageiroInicioRoute
   '/passageiro/locais-salvos': typeof PassageiroLocaisSalvosRoute
   '/passageiro/localizar': typeof PassageiroLocalizarRoute
+  '/passageiro/notificacoes': typeof PassageiroNotificacoesRoute
+  '/passageiro/perfil': typeof PassageiroPerfilRoute
   '/passageiro/permissoes': typeof PassageiroPermissoesRoute
   '/passageiro/seguranca': typeof PassageiroSegurancaRoute
   '/passageiro/verificacao': typeof PassageiroVerificacaoRoute
@@ -243,11 +267,14 @@ export interface FileRoutesById {
   '/passageiro/buscando': typeof PassageiroBuscandoRoute
   '/passageiro/cadastro': typeof PassageiroCadastroRoute
   '/passageiro/confirmar-corrida': typeof PassageiroConfirmarCorridaRoute
+  '/passageiro/corridas': typeof PassageiroCorridasRoute
   '/passageiro/destino': typeof PassageiroDestinoRoute
   '/passageiro/entrar': typeof PassageiroEntrarRoute
   '/passageiro/inicio': typeof PassageiroInicioRoute
   '/passageiro/locais-salvos': typeof PassageiroLocaisSalvosRoute
   '/passageiro/localizar': typeof PassageiroLocalizarRoute
+  '/passageiro/notificacoes': typeof PassageiroNotificacoesRoute
+  '/passageiro/perfil': typeof PassageiroPerfilRoute
   '/passageiro/permissoes': typeof PassageiroPermissoesRoute
   '/passageiro/seguranca': typeof PassageiroSegurancaRoute
   '/passageiro/verificacao': typeof PassageiroVerificacaoRoute
@@ -274,11 +301,14 @@ export interface FileRouteTypes {
     | '/passageiro/buscando'
     | '/passageiro/cadastro'
     | '/passageiro/confirmar-corrida'
+    | '/passageiro/corridas'
     | '/passageiro/destino'
     | '/passageiro/entrar'
     | '/passageiro/inicio'
     | '/passageiro/locais-salvos'
     | '/passageiro/localizar'
+    | '/passageiro/notificacoes'
+    | '/passageiro/perfil'
     | '/passageiro/permissoes'
     | '/passageiro/seguranca'
     | '/passageiro/verificacao'
@@ -299,11 +329,14 @@ export interface FileRouteTypes {
     | '/passageiro/buscando'
     | '/passageiro/cadastro'
     | '/passageiro/confirmar-corrida'
+    | '/passageiro/corridas'
     | '/passageiro/destino'
     | '/passageiro/entrar'
     | '/passageiro/inicio'
     | '/passageiro/locais-salvos'
     | '/passageiro/localizar'
+    | '/passageiro/notificacoes'
+    | '/passageiro/perfil'
     | '/passageiro/permissoes'
     | '/passageiro/seguranca'
     | '/passageiro/verificacao'
@@ -328,11 +361,14 @@ export interface FileRouteTypes {
     | '/passageiro/buscando'
     | '/passageiro/cadastro'
     | '/passageiro/confirmar-corrida'
+    | '/passageiro/corridas'
     | '/passageiro/destino'
     | '/passageiro/entrar'
     | '/passageiro/inicio'
     | '/passageiro/locais-salvos'
     | '/passageiro/localizar'
+    | '/passageiro/notificacoes'
+    | '/passageiro/perfil'
     | '/passageiro/permissoes'
     | '/passageiro/seguranca'
     | '/passageiro/verificacao'
@@ -448,6 +484,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PassageiroConfirmarCorridaRouteImport
       parentRoute: typeof PassageiroRoute
     }
+    '/passageiro/corridas': {
+      id: '/passageiro/corridas'
+      path: '/corridas'
+      fullPath: '/passageiro/corridas'
+      preLoaderRoute: typeof PassageiroCorridasRouteImport
+      parentRoute: typeof PassageiroRoute
+    }
     '/passageiro/destino': {
       id: '/passageiro/destino'
       path: '/destino'
@@ -481,6 +524,20 @@ declare module '@tanstack/react-router' {
       path: '/localizar'
       fullPath: '/passageiro/localizar'
       preLoaderRoute: typeof PassageiroLocalizarRouteImport
+      parentRoute: typeof PassageiroRoute
+    }
+    '/passageiro/notificacoes': {
+      id: '/passageiro/notificacoes'
+      path: '/notificacoes'
+      fullPath: '/passageiro/notificacoes'
+      preLoaderRoute: typeof PassageiroNotificacoesRouteImport
+      parentRoute: typeof PassageiroRoute
+    }
+    '/passageiro/perfil': {
+      id: '/passageiro/perfil'
+      path: '/perfil'
+      fullPath: '/passageiro/perfil'
+      preLoaderRoute: typeof PassageiroPerfilRouteImport
       parentRoute: typeof PassageiroRoute
     }
     '/passageiro/permissoes': {
@@ -594,11 +651,14 @@ interface PassageiroRouteChildren {
   PassageiroBuscandoRoute: typeof PassageiroBuscandoRoute
   PassageiroCadastroRoute: typeof PassageiroCadastroRoute
   PassageiroConfirmarCorridaRoute: typeof PassageiroConfirmarCorridaRoute
+  PassageiroCorridasRoute: typeof PassageiroCorridasRoute
   PassageiroDestinoRoute: typeof PassageiroDestinoRoute
   PassageiroEntrarRoute: typeof PassageiroEntrarRoute
   PassageiroInicioRoute: typeof PassageiroInicioRoute
   PassageiroLocaisSalvosRoute: typeof PassageiroLocaisSalvosRoute
   PassageiroLocalizarRoute: typeof PassageiroLocalizarRoute
+  PassageiroNotificacoesRoute: typeof PassageiroNotificacoesRoute
+  PassageiroPerfilRoute: typeof PassageiroPerfilRoute
   PassageiroPermissoesRoute: typeof PassageiroPermissoesRoute
   PassageiroSegurancaRoute: typeof PassageiroSegurancaRoute
   PassageiroVerificacaoRoute: typeof PassageiroVerificacaoRoute
@@ -612,11 +672,14 @@ const PassageiroRouteChildren: PassageiroRouteChildren = {
   PassageiroBuscandoRoute: PassageiroBuscandoRoute,
   PassageiroCadastroRoute: PassageiroCadastroRoute,
   PassageiroConfirmarCorridaRoute: PassageiroConfirmarCorridaRoute,
+  PassageiroCorridasRoute: PassageiroCorridasRoute,
   PassageiroDestinoRoute: PassageiroDestinoRoute,
   PassageiroEntrarRoute: PassageiroEntrarRoute,
   PassageiroInicioRoute: PassageiroInicioRoute,
   PassageiroLocaisSalvosRoute: PassageiroLocaisSalvosRoute,
   PassageiroLocalizarRoute: PassageiroLocalizarRoute,
+  PassageiroNotificacoesRoute: PassageiroNotificacoesRoute,
+  PassageiroPerfilRoute: PassageiroPerfilRoute,
   PassageiroPermissoesRoute: PassageiroPermissoesRoute,
   PassageiroSegurancaRoute: PassageiroSegurancaRoute,
   PassageiroVerificacaoRoute: PassageiroVerificacaoRoute,
@@ -663,3 +726,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
