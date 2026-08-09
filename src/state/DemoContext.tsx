@@ -8,6 +8,16 @@ import {
 } from '../mocks/fixtures';
 import { Driver, Ride, DriverInvoice, Complaint, Cancellation } from '../types';
 
+interface PilotRegistration {
+  nome: string;
+  nascimento: string;
+  cpf: string;
+  email: string;
+  telefone: string;
+  endereco: string;
+  fotoUrl: string | null;
+}
+
 interface DemoContextType {
   drivers: Driver[];
   rides: Ride[];
@@ -17,6 +27,8 @@ interface DemoContextType {
   resetData: () => void;
   addRideToHistory: (ride: Ride) => void;
   loginPilot: () => void;
+  pilotRegistration: PilotRegistration;
+  updatePilotRegistration: (data: Partial<PilotRegistration>) => void;
   isLoading: boolean;
 }
 
@@ -28,6 +40,17 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [invoices, setInvoices] = useState<DriverInvoice[]>(ALL_INVOICES);
   const [complaints, setComplaints] = useState<Complaint[]>(ALL_COMPLAINTS);
   const [cancellations, setCancellations] = useState<Cancellation[]>(ALL_CANCELLATIONS);
+  
+  const [pilotRegistration, setPilotRegistration] = useState<PilotRegistration>({
+    nome: '',
+    nascimento: '',
+    cpf: '',
+    email: '',
+    telefone: '',
+    endereco: '',
+    fotoUrl: null
+  });
+
   const [isLoading, setIsLoading] = useState(false);
 
   // Persistência em localStorage (opcional conforme prompt)
@@ -38,16 +61,17 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setDrivers(data.drivers);
       setRides(data.rides);
       setInvoices(data.invoices);
-      complaints && setComplaints(data.complaints);
-      cancellations && setCancellations(data.cancellations);
+      data.complaints && setComplaints(data.complaints);
+      data.cancellations && setCancellations(data.cancellations);
+      data.pilotRegistration && setPilotRegistration(data.pilotRegistration);
     }
   }, []);
 
   useEffect(() => {
     localStorage.setItem('rovya_demo_data', JSON.stringify({
-      drivers, rides, invoices, complaints, cancellations
+      drivers, rides, invoices, complaints, cancellations, pilotRegistration
     }));
-  }, [drivers, rides, invoices, complaints, cancellations]);
+  }, [drivers, rides, invoices, complaints, cancellations, pilotRegistration]);
 
   const resetData = () => {
     setIsLoading(true);
@@ -57,6 +81,15 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setInvoices(ALL_INVOICES);
       setComplaints(ALL_COMPLAINTS);
       setCancellations(ALL_CANCELLATIONS);
+      setPilotRegistration({
+        nome: '',
+        nascimento: '',
+        cpf: '',
+        email: '',
+        telefone: '',
+        endereco: '',
+        fotoUrl: null
+      });
       setIsLoading(false);
     }, 500);
   };
@@ -70,6 +103,10 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
     console.log("Piloto logado na demo");
   };
 
+  const updatePilotRegistration = (data: Partial<PilotRegistration>) => {
+    setPilotRegistration(prev => ({ ...prev, ...data }));
+  };
+
 
   return (
     <DemoContext.Provider value={{
@@ -81,6 +118,8 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
       resetData,
       addRideToHistory,
       loginPilot,
+      pilotRegistration,
+      updatePilotRegistration,
       isLoading
     }}>
       {children}
