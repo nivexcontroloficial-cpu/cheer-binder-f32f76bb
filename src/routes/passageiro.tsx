@@ -1,4 +1,4 @@
-import { createFileRoute, Outlet, Link } from "@tanstack/react-router";
+import { createFileRoute, Outlet, Link, useLocation } from "@tanstack/react-router";
 import { RovyaBrand } from "@/components/RovyaBrand";
 import { User, ChevronLeft, MapPin, MessageSquare, Shield, Clock, Home } from "lucide-react";
 
@@ -9,6 +9,7 @@ export const Route = createFileRoute("/passageiro")({
 function PassengerLayout() {
   const ICON_SIZE = 22;
   const STROKE = 1.8;
+  const location = useLocation();
 
   return (
     <div className="flex flex-col min-h-screen bg-porcelain font-sans text-navy">
@@ -23,7 +24,7 @@ function PassengerLayout() {
           </div>
           <div className="flex items-center gap-3">
             <div className="text-right hidden sm:block">
-              <p className="text-sm font-black tracking-tight uppercase">Rafael</p>
+              <p className="text-sm font-black tracking-tight uppercase text-navy">Rafael</p>
               <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Nível 4</p>
             </div>
             <div className="h-10 w-10 rounded-2xl bg-slate-100 flex items-center justify-center border border-slate-200">
@@ -39,26 +40,57 @@ function PassengerLayout() {
       </main>
 
       {/* Bottom Navigation Passageiro */}
-      <nav className="fixed bottom-0 left-0 z-50 w-full h-24 bg-white border-t border-slate-100 px-4 md:px-0 rovya-shadow-lg">
-        <div className="container h-full mx-auto flex items-center justify-around max-w-lg">
-          <NavItem icon={<Home size={ICON_SIZE} strokeWidth={STROKE} />} label="Início" active />
-          <NavItem icon={<MapPin size={ICON_SIZE} strokeWidth={STROKE} />} label="Corridas" />
-          <NavItem icon={<MessageSquare size={ICON_SIZE} strokeWidth={STROKE} />} label="Mensagens" />
-          <NavItem icon={<Shield size={ICON_SIZE} strokeWidth={STROKE} />} label="Segurança" />
-          <NavItem icon={<User size={ICON_SIZE} strokeWidth={STROKE} />} label="Perfil" />
+      <nav className="fixed bottom-0 left-0 z-50 w-full pb-safe bg-white border-t border-slate-100 px-4 md:px-0 rovya-shadow-lg">
+        <div className="container h-20 mx-auto flex items-center justify-around max-w-lg">
+          <NavItem 
+            to="/passageiro" 
+            icon={<Home size={ICON_SIZE} strokeWidth={STROKE} />} 
+            label="Início" 
+            active={location.pathname === "/passageiro"} 
+          />
+          <NavItem 
+            to="/passageiro" 
+            icon={<Clock size={ICON_SIZE} strokeWidth={STROKE} />} 
+            label="Corridas" 
+            active={location.pathname.includes("/corridas")} 
+          />
+          <NavItem 
+            to="/passageiro" 
+            icon={<MessageSquare size={ICON_SIZE} strokeWidth={STROKE} />} 
+            label="Mensagens" 
+            active={location.pathname.includes("/mensagens")} 
+            badge={3}
+          />
+          <NavItem 
+            to="/passageiro" 
+            icon={<Shield size={ICON_SIZE} strokeWidth={STROKE} />} 
+            label="Segurança" 
+            active={location.pathname.includes("/seguranca")} 
+          />
+          <NavItem 
+            to="/passageiro" 
+            icon={<User size={ICON_SIZE} strokeWidth={STROKE} />} 
+            label="Perfil" 
+            active={location.pathname.includes("/perfil")} 
+          />
         </div>
       </nav>
     </div>
   );
 }
 
-function NavItem({ icon, label, active = false }: { icon: React.ReactNode; label: string; active?: boolean }) {
+function NavItem({ to, icon, label, active = false, badge }: { to: string; icon: React.ReactNode; label: string; active?: boolean; badge?: number }) {
   return (
-    <button className={`flex flex-col items-center gap-1.5 transition-all duration-300 ${active ? 'text-rovya-orange' : 'text-slate-300 hover:text-slate-500'}`}>
-      <div className={`p-2.5 rounded-2xl transition-all duration-300 ${active ? 'bg-rovya-orange/10 scale-110' : 'bg-transparent'}`}>
+    <Link to={to} className={`flex flex-col items-center gap-1 transition-all duration-300 ${active ? 'text-rovya-orange' : 'text-slate-300 hover:text-slate-500'}`}>
+      <div className={`p-2 rounded-2xl transition-all duration-300 relative ${active ? 'bg-rovya-orange/10' : 'bg-transparent'}`}>
         {icon}
+        {badge && (
+          <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rovya-red text-[8px] font-black text-white ring-2 ring-white">
+            {badge}
+          </span>
+        )}
       </div>
-      <span className={`text-[9px] font-black uppercase tracking-[0.15em] ${active ? 'opacity-100' : 'opacity-0'}`}>{label}</span>
-    </button>
+      <span className={`text-[8px] font-black uppercase tracking-[0.1em]`}>{label}</span>
+    </Link>
   );
 }
