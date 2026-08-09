@@ -12,8 +12,10 @@ import {
   Star,
   CheckCircle2,
   Lock,
-  Phone
+  Phone,
+  AlertCircle
 } from "lucide-react";
+
 import { useDemo } from "@/state/DemoContext";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";

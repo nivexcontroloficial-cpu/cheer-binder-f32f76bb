@@ -33,6 +33,7 @@ import { Route as PassageiroPerfilRouteImport } from './routes/passageiro/perfil
 import { Route as PassageiroPermissoesRouteImport } from './routes/passageiro/permissoes'
 import { Route as PassageiroSaudeDaContaRouteImport } from './routes/passageiro/saude-da-conta'
 import { Route as PassageiroSegurancaRouteImport } from './routes/passageiro/seguranca'
+import { Route as PassageiroSuporteRouteImport } from './routes/passageiro/suporte'
 import { Route as PassageiroVerificacaoRouteImport } from './routes/passageiro/verificacao'
 import { Route as PilotoIndexRouteImport } from './routes/piloto/index'
 import { Route as SimuladorIndexRouteImport } from './routes/simulador/index'
@@ -40,6 +41,7 @@ import { Route as PassageiroCancelarRideIdRouteImport } from './routes/passageir
 import { Route as PassageiroChatRideIdRouteImport } from './routes/passageiro/chat/$rideId'
 import { Route as PassageiroCorridaRideIdRouteImport } from './routes/passageiro/corrida.$rideId'
 import { Route as PassageiroDenunciarRideIdRouteImport } from './routes/passageiro/denunciar.$rideId'
+import { Route as PassageiroProtocolosCaseIdRouteImport } from './routes/passageiro/protocolos.$caseId'
 import { Route as PassageiroRecursosCaseIdRouteImport } from './routes/passageiro/recursos.$caseId'
 import { Route as PassageiroCorridaRideIdConcluidaRouteImport } from './routes/passageiro/corrida.$rideId.concluida'
 import { Route as PassageiroCorridaRideIdEmAndamentoRouteImport } from './routes/passageiro/corrida/$rideId/em-andamento'
@@ -165,6 +167,11 @@ const PassageiroSegurancaRoute = PassageiroSegurancaRouteImport.update({
   path: '/seguranca',
   getParentRoute: () => PassageiroRoute,
 } as any)
+const PassageiroSuporteRoute = PassageiroSuporteRouteImport.update({
+  id: '/suporte',
+  path: '/suporte',
+  getParentRoute: () => PassageiroRoute,
+} as any)
 const PassageiroVerificacaoRoute = PassageiroVerificacaoRouteImport.update({
   id: '/verificacao',
   path: '/verificacao',
@@ -200,6 +207,12 @@ const PassageiroDenunciarRideIdRoute =
   PassageiroDenunciarRideIdRouteImport.update({
     id: '/denunciar/$rideId',
     path: '/denunciar/$rideId',
+    getParentRoute: () => PassageiroRoute,
+  } as any)
+const PassageiroProtocolosCaseIdRoute =
+  PassageiroProtocolosCaseIdRouteImport.update({
+    id: '/protocolos/$caseId',
+    path: '/protocolos/$caseId',
     getParentRoute: () => PassageiroRoute,
   } as any)
 const PassageiroRecursosCaseIdRoute =
@@ -244,6 +257,7 @@ export interface FileRoutesByFullPath {
   '/passageiro/permissoes': typeof PassageiroPermissoesRoute
   '/passageiro/saude-da-conta': typeof PassageiroSaudeDaContaRoute
   '/passageiro/seguranca': typeof PassageiroSegurancaRoute
+  '/passageiro/suporte': typeof PassageiroSuporteRoute
   '/passageiro/verificacao': typeof PassageiroVerificacaoRoute
   '/admin/': typeof AdminIndexRoute
   '/passageiro/': typeof PassageiroIndexRoute
@@ -253,6 +267,7 @@ export interface FileRoutesByFullPath {
   '/passageiro/chat/$rideId': typeof PassageiroChatRideIdRoute
   '/passageiro/corrida/$rideId': typeof PassageiroCorridaRideIdRouteWithChildren
   '/passageiro/denunciar/$rideId': typeof PassageiroDenunciarRideIdRoute
+  '/passageiro/protocolos/$caseId': typeof PassageiroProtocolosCaseIdRoute
   '/passageiro/recursos/$caseId': typeof PassageiroRecursosCaseIdRoute
   '/passageiro/corrida/$rideId/concluida': typeof PassageiroCorridaRideIdConcluidaRoute
   '/passageiro/corrida/$rideId/em-andamento': typeof PassageiroCorridaRideIdEmAndamentoRoute
@@ -276,6 +291,7 @@ export interface FileRoutesByTo {
   '/passageiro/permissoes': typeof PassageiroPermissoesRoute
   '/passageiro/saude-da-conta': typeof PassageiroSaudeDaContaRoute
   '/passageiro/seguranca': typeof PassageiroSegurancaRoute
+  '/passageiro/suporte': typeof PassageiroSuporteRoute
   '/passageiro/verificacao': typeof PassageiroVerificacaoRoute
   '/admin': typeof AdminIndexRoute
   '/passageiro': typeof PassageiroIndexRoute
@@ -285,6 +301,7 @@ export interface FileRoutesByTo {
   '/passageiro/chat/$rideId': typeof PassageiroChatRideIdRoute
   '/passageiro/corrida/$rideId': typeof PassageiroCorridaRideIdRouteWithChildren
   '/passageiro/denunciar/$rideId': typeof PassageiroDenunciarRideIdRoute
+  '/passageiro/protocolos/$caseId': typeof PassageiroProtocolosCaseIdRoute
   '/passageiro/recursos/$caseId': typeof PassageiroRecursosCaseIdRoute
   '/passageiro/corrida/$rideId/concluida': typeof PassageiroCorridaRideIdConcluidaRoute
   '/passageiro/corrida/$rideId/em-andamento': typeof PassageiroCorridaRideIdEmAndamentoRoute
@@ -313,6 +330,7 @@ export interface FileRoutesById {
   '/passageiro/permissoes': typeof PassageiroPermissoesRoute
   '/passageiro/saude-da-conta': typeof PassageiroSaudeDaContaRoute
   '/passageiro/seguranca': typeof PassageiroSegurancaRoute
+  '/passageiro/suporte': typeof PassageiroSuporteRoute
   '/passageiro/verificacao': typeof PassageiroVerificacaoRoute
   '/admin/': typeof AdminIndexRoute
   '/passageiro/': typeof PassageiroIndexRoute
@@ -322,6 +340,7 @@ export interface FileRoutesById {
   '/passageiro/chat/$rideId': typeof PassageiroChatRideIdRoute
   '/passageiro/corrida/$rideId': typeof PassageiroCorridaRideIdRouteWithChildren
   '/passageiro/denunciar/$rideId': typeof PassageiroDenunciarRideIdRoute
+  '/passageiro/protocolos/$caseId': typeof PassageiroProtocolosCaseIdRoute
   '/passageiro/recursos/$caseId': typeof PassageiroRecursosCaseIdRoute
   '/passageiro/corrida/$rideId/concluida': typeof PassageiroCorridaRideIdConcluidaRoute
   '/passageiro/corrida/$rideId/em-andamento': typeof PassageiroCorridaRideIdEmAndamentoRoute
@@ -351,6 +370,7 @@ export interface FileRouteTypes {
     | '/passageiro/permissoes'
     | '/passageiro/saude-da-conta'
     | '/passageiro/seguranca'
+    | '/passageiro/suporte'
     | '/passageiro/verificacao'
     | '/admin/'
     | '/passageiro/'
@@ -360,6 +380,7 @@ export interface FileRouteTypes {
     | '/passageiro/chat/$rideId'
     | '/passageiro/corrida/$rideId'
     | '/passageiro/denunciar/$rideId'
+    | '/passageiro/protocolos/$caseId'
     | '/passageiro/recursos/$caseId'
     | '/passageiro/corrida/$rideId/concluida'
     | '/passageiro/corrida/$rideId/em-andamento'
@@ -383,6 +404,7 @@ export interface FileRouteTypes {
     | '/passageiro/permissoes'
     | '/passageiro/saude-da-conta'
     | '/passageiro/seguranca'
+    | '/passageiro/suporte'
     | '/passageiro/verificacao'
     | '/admin'
     | '/passageiro'
@@ -392,6 +414,7 @@ export interface FileRouteTypes {
     | '/passageiro/chat/$rideId'
     | '/passageiro/corrida/$rideId'
     | '/passageiro/denunciar/$rideId'
+    | '/passageiro/protocolos/$caseId'
     | '/passageiro/recursos/$caseId'
     | '/passageiro/corrida/$rideId/concluida'
     | '/passageiro/corrida/$rideId/em-andamento'
@@ -419,6 +442,7 @@ export interface FileRouteTypes {
     | '/passageiro/permissoes'
     | '/passageiro/saude-da-conta'
     | '/passageiro/seguranca'
+    | '/passageiro/suporte'
     | '/passageiro/verificacao'
     | '/admin/'
     | '/passageiro/'
@@ -428,6 +452,7 @@ export interface FileRouteTypes {
     | '/passageiro/chat/$rideId'
     | '/passageiro/corrida/$rideId'
     | '/passageiro/denunciar/$rideId'
+    | '/passageiro/protocolos/$caseId'
     | '/passageiro/recursos/$caseId'
     | '/passageiro/corrida/$rideId/concluida'
     | '/passageiro/corrida/$rideId/em-andamento'
@@ -612,6 +637,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PassageiroSegurancaRouteImport
       parentRoute: typeof PassageiroRoute
     }
+    '/passageiro/suporte': {
+      id: '/passageiro/suporte'
+      path: '/suporte'
+      fullPath: '/passageiro/suporte'
+      preLoaderRoute: typeof PassageiroSuporteRouteImport
+      parentRoute: typeof PassageiroRoute
+    }
     '/passageiro/verificacao': {
       id: '/passageiro/verificacao'
       path: '/verificacao'
@@ -659,6 +691,13 @@ declare module '@tanstack/react-router' {
       path: '/denunciar/$rideId'
       fullPath: '/passageiro/denunciar/$rideId'
       preLoaderRoute: typeof PassageiroDenunciarRideIdRouteImport
+      parentRoute: typeof PassageiroRoute
+    }
+    '/passageiro/protocolos/$caseId': {
+      id: '/passageiro/protocolos/$caseId'
+      path: '/protocolos/$caseId'
+      fullPath: '/passageiro/protocolos/$caseId'
+      preLoaderRoute: typeof PassageiroProtocolosCaseIdRouteImport
       parentRoute: typeof PassageiroRoute
     }
     '/passageiro/recursos/$caseId': {
@@ -741,12 +780,14 @@ interface PassageiroRouteChildren {
   PassageiroPermissoesRoute: typeof PassageiroPermissoesRoute
   PassageiroSaudeDaContaRoute: typeof PassageiroSaudeDaContaRoute
   PassageiroSegurancaRoute: typeof PassageiroSegurancaRoute
+  PassageiroSuporteRoute: typeof PassageiroSuporteRoute
   PassageiroVerificacaoRoute: typeof PassageiroVerificacaoRoute
   PassageiroIndexRoute: typeof PassageiroIndexRoute
   PassageiroCancelarRideIdRoute: typeof PassageiroCancelarRideIdRoute
   PassageiroChatRideIdRoute: typeof PassageiroChatRideIdRoute
   PassageiroCorridaRideIdRoute: typeof PassageiroCorridaRideIdRouteWithChildren
   PassageiroDenunciarRideIdRoute: typeof PassageiroDenunciarRideIdRoute
+  PassageiroProtocolosCaseIdRoute: typeof PassageiroProtocolosCaseIdRoute
   PassageiroRecursosCaseIdRoute: typeof PassageiroRecursosCaseIdRoute
 }
 
@@ -766,12 +807,14 @@ const PassageiroRouteChildren: PassageiroRouteChildren = {
   PassageiroPermissoesRoute: PassageiroPermissoesRoute,
   PassageiroSaudeDaContaRoute: PassageiroSaudeDaContaRoute,
   PassageiroSegurancaRoute: PassageiroSegurancaRoute,
+  PassageiroSuporteRoute: PassageiroSuporteRoute,
   PassageiroVerificacaoRoute: PassageiroVerificacaoRoute,
   PassageiroIndexRoute: PassageiroIndexRoute,
   PassageiroCancelarRideIdRoute: PassageiroCancelarRideIdRoute,
   PassageiroChatRideIdRoute: PassageiroChatRideIdRoute,
   PassageiroCorridaRideIdRoute: PassageiroCorridaRideIdRouteWithChildren,
   PassageiroDenunciarRideIdRoute: PassageiroDenunciarRideIdRoute,
+  PassageiroProtocolosCaseIdRoute: PassageiroProtocolosCaseIdRoute,
   PassageiroRecursosCaseIdRoute: PassageiroRecursosCaseIdRoute,
 }
 
