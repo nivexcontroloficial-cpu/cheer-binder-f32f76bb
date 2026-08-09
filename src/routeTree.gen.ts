@@ -45,6 +45,8 @@ import { Route as PassageiroCorridaRideIdRouteImport } from './routes/passageiro
 import { Route as PassageiroDenunciarRideIdRouteImport } from './routes/passageiro/denunciar.$rideId'
 import { Route as PassageiroProtocolosCaseIdRouteImport } from './routes/passageiro/protocolos.$caseId'
 import { Route as PassageiroRecursosCaseIdRouteImport } from './routes/passageiro/recursos.$caseId'
+import { Route as PilotoCadastroFotoRouteImport } from './routes/piloto/cadastro/foto'
+import { Route as PilotoCadastroPessoalRouteImport } from './routes/piloto/cadastro/pessoal'
 import { Route as PassageiroCorridaRideIdConcluidaRouteImport } from './routes/passageiro/corrida.$rideId.concluida'
 import { Route as PassageiroCorridaRideIdEmAndamentoRouteImport } from './routes/passageiro/corrida/$rideId/em-andamento'
 
@@ -233,6 +235,16 @@ const PassageiroRecursosCaseIdRoute =
     path: '/recursos/$caseId',
     getParentRoute: () => PassageiroRoute,
   } as any)
+const PilotoCadastroFotoRoute = PilotoCadastroFotoRouteImport.update({
+  id: '/cadastro/foto',
+  path: '/cadastro/foto',
+  getParentRoute: () => PilotoRoute,
+} as any)
+const PilotoCadastroPessoalRoute = PilotoCadastroPessoalRouteImport.update({
+  id: '/cadastro/pessoal',
+  path: '/cadastro/pessoal',
+  getParentRoute: () => PilotoRoute,
+} as any)
 const PassageiroCorridaRideIdConcluidaRoute =
   PassageiroCorridaRideIdConcluidaRouteImport.update({
     id: '/concluida',
@@ -283,6 +295,8 @@ export interface FileRoutesByFullPath {
   '/passageiro/denunciar/$rideId': typeof PassageiroDenunciarRideIdRoute
   '/passageiro/protocolos/$caseId': typeof PassageiroProtocolosCaseIdRoute
   '/passageiro/recursos/$caseId': typeof PassageiroRecursosCaseIdRoute
+  '/piloto/cadastro/foto': typeof PilotoCadastroFotoRoute
+  '/piloto/cadastro/pessoal': typeof PilotoCadastroPessoalRoute
   '/passageiro/corrida/$rideId/concluida': typeof PassageiroCorridaRideIdConcluidaRoute
   '/passageiro/corrida/$rideId/em-andamento': typeof PassageiroCorridaRideIdEmAndamentoRoute
 }
@@ -319,6 +333,8 @@ export interface FileRoutesByTo {
   '/passageiro/denunciar/$rideId': typeof PassageiroDenunciarRideIdRoute
   '/passageiro/protocolos/$caseId': typeof PassageiroProtocolosCaseIdRoute
   '/passageiro/recursos/$caseId': typeof PassageiroRecursosCaseIdRoute
+  '/piloto/cadastro/foto': typeof PilotoCadastroFotoRoute
+  '/piloto/cadastro/pessoal': typeof PilotoCadastroPessoalRoute
   '/passageiro/corrida/$rideId/concluida': typeof PassageiroCorridaRideIdConcluidaRoute
   '/passageiro/corrida/$rideId/em-andamento': typeof PassageiroCorridaRideIdEmAndamentoRoute
 }
@@ -360,6 +376,8 @@ export interface FileRoutesById {
   '/passageiro/denunciar/$rideId': typeof PassageiroDenunciarRideIdRoute
   '/passageiro/protocolos/$caseId': typeof PassageiroProtocolosCaseIdRoute
   '/passageiro/recursos/$caseId': typeof PassageiroRecursosCaseIdRoute
+  '/piloto/cadastro/foto': typeof PilotoCadastroFotoRoute
+  '/piloto/cadastro/pessoal': typeof PilotoCadastroPessoalRoute
   '/passageiro/corrida/$rideId/concluida': typeof PassageiroCorridaRideIdConcluidaRoute
   '/passageiro/corrida/$rideId/em-andamento': typeof PassageiroCorridaRideIdEmAndamentoRoute
 }
@@ -402,6 +420,8 @@ export interface FileRouteTypes {
     | '/passageiro/denunciar/$rideId'
     | '/passageiro/protocolos/$caseId'
     | '/passageiro/recursos/$caseId'
+    | '/piloto/cadastro/foto'
+    | '/piloto/cadastro/pessoal'
     | '/passageiro/corrida/$rideId/concluida'
     | '/passageiro/corrida/$rideId/em-andamento'
   fileRoutesByTo: FileRoutesByTo
@@ -438,6 +458,8 @@ export interface FileRouteTypes {
     | '/passageiro/denunciar/$rideId'
     | '/passageiro/protocolos/$caseId'
     | '/passageiro/recursos/$caseId'
+    | '/piloto/cadastro/foto'
+    | '/piloto/cadastro/pessoal'
     | '/passageiro/corrida/$rideId/concluida'
     | '/passageiro/corrida/$rideId/em-andamento'
   id:
@@ -478,6 +500,8 @@ export interface FileRouteTypes {
     | '/passageiro/denunciar/$rideId'
     | '/passageiro/protocolos/$caseId'
     | '/passageiro/recursos/$caseId'
+    | '/piloto/cadastro/foto'
+    | '/piloto/cadastro/pessoal'
     | '/passageiro/corrida/$rideId/concluida'
     | '/passageiro/corrida/$rideId/em-andamento'
   fileRoutesById: FileRoutesById
@@ -745,6 +769,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PassageiroRecursosCaseIdRouteImport
       parentRoute: typeof PassageiroRoute
     }
+    '/piloto/cadastro/foto': {
+      id: '/piloto/cadastro/foto'
+      path: '/cadastro/foto'
+      fullPath: '/piloto/cadastro/foto'
+      preLoaderRoute: typeof PilotoCadastroFotoRouteImport
+      parentRoute: typeof PilotoRoute
+    }
+    '/piloto/cadastro/pessoal': {
+      id: '/piloto/cadastro/pessoal'
+      path: '/cadastro/pessoal'
+      fullPath: '/piloto/cadastro/pessoal'
+      preLoaderRoute: typeof PilotoCadastroPessoalRouteImport
+      parentRoute: typeof PilotoRoute
+    }
     '/passageiro/corrida/$rideId/concluida': {
       id: '/passageiro/corrida/$rideId/concluida'
       path: '/concluida'
@@ -864,12 +902,16 @@ interface PilotoRouteChildren {
   PilotoBoasVindasRoute: typeof PilotoBoasVindasRoute
   PilotoEntrarRoute: typeof PilotoEntrarRoute
   PilotoIndexRoute: typeof PilotoIndexRoute
+  PilotoCadastroFotoRoute: typeof PilotoCadastroFotoRoute
+  PilotoCadastroPessoalRoute: typeof PilotoCadastroPessoalRoute
 }
 
 const PilotoRouteChildren: PilotoRouteChildren = {
   PilotoBoasVindasRoute: PilotoBoasVindasRoute,
   PilotoEntrarRoute: PilotoEntrarRoute,
   PilotoIndexRoute: PilotoIndexRoute,
+  PilotoCadastroFotoRoute: PilotoCadastroFotoRoute,
+  PilotoCadastroPessoalRoute: PilotoCadastroPessoalRoute,
 }
 
 const PilotoRouteWithChildren =
