@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { cn } from "@/lib/utils";
 import { 
   Button, 
   Input, 
@@ -10,7 +11,8 @@ import {
   Avatar,
   AvatarImage,
   AvatarFallback,
-  Skeleton
+  Skeleton,
+  Rating
 } from "@/components/ui/index";
 import { Chip } from "@/components/ui/chip";
 import { Banner } from "@/components/ui/banner";
@@ -238,8 +240,6 @@ function VehicleOption({ label, price, eta, active = false }: { label: string, p
     </div>
   );
 }
-
-import { Rating } from "@/components/ui/rating";
 
 
 function SectionHeader({ icon, title, description }: { icon: React.ReactNode, title: string, description: string }) {
