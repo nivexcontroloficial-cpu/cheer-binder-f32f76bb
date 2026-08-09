@@ -106,6 +106,13 @@ function DemoSelector() {
               Entrada Piloto (Boas-Vindas)
               <ArrowRight size={14} strokeWidth={2.5} />
             </button>
+            <button 
+              onClick={() => navigate({ to: '/piloto/cadastro/pessoal' })}
+              className="w-full py-3 bg-white border border-orange-200 text-orange-600 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-orange-50 transition-all active:scale-95 rovya-shadow"
+            >
+              Novo Cadastro Piloto
+              <ArrowRight size={14} strokeWidth={2.5} />
+            </button>
           </div>
  
           <DemoCard 
