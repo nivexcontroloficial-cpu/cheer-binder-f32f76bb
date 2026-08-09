@@ -1,64 +1,65 @@
-import { AccountHealth, AccountHealthStatus, AccountOccurrence, CancellationConsequence } from '../../types/account-health';
+import {
+  AccountHealth,
+  AccountHealthStatus,
+  AccountOccurrence,
+  CancellationConsequence,
+} from "../../types/account-health";
 
 export const MOCK_ACCOUNT_HEALTH: AccountHealth = {
-  status: 'excellent',
+  status: "excellent",
   score: 98,
   lastUpdated: new Date().toISOString(),
   occurrences: [
     {
-      id: 'occ-1',
-      type: 'cancellation',
+      id: "occ-1",
+      type: "cancellation",
       date: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000).toISOString(),
-      description: 'Cancelamento após 5 min de espera',
+      description: "Cancelamento após 5 min de espera",
       impactScore: -2,
-      rideId: 'RY-2026-00712'
+      rideId: "RY-2026-00712",
     },
     {
-      id: 'occ-2',
-      type: 'other',
+      id: "occ-2",
+      type: "other",
       date: new Date(Date.now() - 15 * 24 * 60 * 60 * 1000).toISOString(),
-      description: 'Pontualidade exemplar (Bonus)',
-      impactScore: 5
-    }
-  ]
+      description: "Pontualidade exemplar (Bonus)",
+      impactScore: 5,
+    },
+  ],
 };
 
 export const getHealthLabel = (status: AccountHealthStatus): string => {
   const labels: Record<AccountHealthStatus, string> = {
-    excellent: 'Excelente',
-    on_track: 'Em dia',
-    attention: 'Atenção',
-    risk: 'Risco',
-    suspended: 'Suspensa',
-    under_review: 'Em análise',
-    banned: 'Banida'
+    excellent: "Excelente",
+    on_track: "Em dia",
+    attention: "Atenção",
+    risk: "Risco",
+    suspended: "Suspensa",
+    under_review: "Em análise",
+    banned: "Banida",
   };
   return labels[status];
 };
 
 export const getHealthColor = (status: AccountHealthStatus): string => {
   const colors: Record<AccountHealthStatus, string> = {
-    excellent: 'text-emerald-500 bg-emerald-50 border-emerald-100',
-    on_track: 'text-blue-500 bg-blue-50 border-blue-100',
-    attention: 'text-amber-500 bg-amber-50 border-amber-100',
-    risk: 'text-orange-500 bg-orange-50 border-orange-100',
-    suspended: 'text-red-500 bg-red-50 border-red-100',
-    under_review: 'text-slate-500 bg-slate-50 border-slate-100',
-    banned: 'text-black bg-slate-100 border-slate-200'
+    excellent: "text-emerald-500 bg-emerald-50 border-emerald-100",
+    on_track: "text-blue-500 bg-blue-50 border-blue-100",
+    attention: "text-amber-500 bg-amber-50 border-amber-100",
+    risk: "text-orange-500 bg-orange-50 border-orange-100",
+    suspended: "text-red-500 bg-red-50 border-red-100",
+    under_review: "text-slate-500 bg-slate-50 border-slate-100",
+    banned: "text-black bg-slate-100 border-slate-200",
   };
   return colors[status];
 };
 
 export const calculateCancellationConsequence = (
   rideState: "before_accept" | "tolerance" | "driving" | "arrived",
-  reasonId: string
+  reasonId: string,
 ): CancellationConsequence => {
   // Motivos protegidos conforme requisitos Etapa 05
-  const protectedReasons = [
-    "pilot_asked",
-    "different_vehicle",
-    "safety_concern",
-  ];
+  const protectedReasons = ["pilot_asked", "different_vehicle", "safety_concern"];
 
   if (protectedReasons.includes(reasonId)) {
     return {
@@ -83,8 +84,7 @@ export const calculateCancellationConsequence = (
     return {
       fee: 0,
       impact: "low",
-      message:
-        "Cancelamento dentro do tempo de tolerância. Sem taxa, mas monitorado.",
+      message: "Cancelamento dentro do tempo de tolerância. Sem taxa, mas monitorado.",
       canCancelFree: true,
     };
   }
@@ -103,8 +103,7 @@ export const calculateCancellationConsequence = (
   return {
     fee: 8.0,
     impact: "high",
-    message:
-      "Estimativa de taxa (Piloto no local). Impacto na saúde da conta.",
+    message: "Estimativa de taxa (Piloto no local). Impacto na saúde da conta.",
     canCancelFree: false,
   };
 };

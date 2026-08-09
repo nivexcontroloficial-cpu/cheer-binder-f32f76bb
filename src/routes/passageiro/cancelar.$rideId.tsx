@@ -65,9 +65,7 @@ function CancelarCorrida() {
         >
           <ChevronLeft size={24} />
         </button>
-        <h1 className="text-xl font-black uppercase tracking-tighter">
-          Cancelar Corrida
-        </h1>
+        <h1 className="text-xl font-black uppercase tracking-tighter">Cancelar Corrida</h1>
       </header>
 
       <div className="mb-6 p-3 bg-rovya-navy/5 border border-rovya-navy/10 rounded-xl">
@@ -78,9 +76,7 @@ function CancelarCorrida() {
       </div>
 
       <div className="space-y-4 mb-8">
-        <p className="text-sm font-bold text-slate-600">
-          Por que você deseja cancelar?
-        </p>
+        <p className="text-sm font-bold text-slate-600">Por que você deseja cancelar?</p>
         <div className="grid grid-cols-1 gap-2">
           {reasons.map((r) => (
             <button
@@ -115,32 +111,26 @@ function CancelarCorrida() {
           <div className="flex gap-3">
             <Info
               className={`h-5 w-5 shrink-0 ${
-                consequence.impact === "high"
-                  ? "text-red-500"
-                  : "text-blue-500"
+                consequence.impact === "high" ? "text-red-500" : "text-blue-500"
               }`}
             />
             <div>
               <p
                 className={`font-black uppercase text-xs mb-1 ${
-                  consequence.impact === "high"
-                    ? "text-red-700"
-                    : "text-blue-700"
+                  consequence.impact === "high" ? "text-red-700" : "text-blue-700"
                 }`}
               >
                 Estimativa simulada
               </p>
-              <p className="text-sm text-slate-700 leading-tight">
-                {consequence.message}
-              </p>
+              <p className="text-sm text-slate-700 leading-tight">{consequence.message}</p>
               {!consequence.canCancelFree && (
                 <p className="mt-2 font-bold text-sm text-slate-900">
                   Taxa de cancelamento: {formatCurrency(consequence.fee)}
                 </p>
               )}
               <p className="mt-2 text-[10px] text-slate-500 leading-tight">
-                * Nenhuma taxa real será cobrada e nenhuma conta real será
-                afetada nesta demonstração.
+                * Nenhuma taxa real será cobrada e nenhuma conta real será afetada nesta
+                demonstração.
               </p>
             </div>
           </div>
@@ -164,15 +154,12 @@ function CancelarCorrida() {
                 Confirmar cancelamento simulado?
               </AlertDialogTitle>
               <AlertDialogDescription className="text-slate-600">
-                Nenhuma corrida real será cancelada e nenhuma cobrança será
-                realizada nesta demonstração local.
+                Nenhuma corrida real será cancelada e nenhuma cobrança será realizada nesta
+                demonstração local.
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter className="flex-col md:flex-row gap-2">
-              <AlertDialogCancel
-                type="button"
-                className="rounded-xl font-bold border-slate-200"
-              >
+              <AlertDialogCancel type="button" className="rounded-xl font-bold border-slate-200">
                 Voltar
               </AlertDialogCancel>
               <AlertDialogAction
