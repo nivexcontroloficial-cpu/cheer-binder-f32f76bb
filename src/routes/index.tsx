@@ -90,14 +90,23 @@ function DemoSelector() {
             </button>
           </div>
           
-          <DemoCard 
-            to="/piloto"
-            title="Piloto"
-            description="Interface Carlos H."
-            icon={<Bike className="h-6 w-6" strokeWidth={1.8} />}
-            color="border-orange-200 hover:border-[#F97316] text-[#F97316]"
-            bg="bg-orange-50"
-          />
+          <div className="flex flex-col gap-3">
+            <DemoCard 
+              to="/piloto"
+              title="Piloto"
+              description="Interface Carlos H."
+              icon={<Bike className="h-6 w-6" strokeWidth={1.8} />}
+              color="border-orange-200 hover:border-[#F97316] text-[#F97316]"
+              bg="bg-orange-50"
+            />
+            <button 
+              onClick={() => navigate({ to: '/piloto/boas-vindas' })}
+              className="w-full py-3 bg-orange-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-orange-700 transition-all active:scale-95 rovya-shadow"
+            >
+              Entrada Piloto (Boas-Vindas)
+              <ArrowRight size={14} strokeWidth={2.5} />
+            </button>
+          </div>
  
           <DemoCard 
             to="/admin"
