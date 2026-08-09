@@ -49,6 +49,13 @@ function DemoSelector() {
             >
               Tela de Busca (Direto)
             </Link>
+            <Link 
+              to="/passageiro/corrida/$rideId"
+              params={{ rideId: "ride-active-mock" }}
+              className="w-full py-2 bg-slate-100 text-slate-500 rounded-xl text-[9px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-slate-200 transition-all active:scale-95"
+            >
+              Tela de Corrida Ativa (Direto)
+            </Link>
             <button 
               onClick={() => navigate({ to: '/passageiro/boas-vindas' })}
               className="w-full py-3 bg-blue-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-blue-700 transition-all active:scale-95 rovya-shadow"

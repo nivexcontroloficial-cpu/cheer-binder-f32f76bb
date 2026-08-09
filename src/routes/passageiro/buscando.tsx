@@ -95,8 +95,10 @@ function SearchingRideScreen() {
     setStatus('accepted');
     toast.success("Piloto encontrou você!");
     setTimeout(() => {
-      // No futuro navegará para a corrida ativa, por enquanto volta para início para manter o fluxo
-      navigate({ to: "/passageiro/inicio" });
+      navigate({ 
+        to: "/passageiro/corrida/$rideId", 
+        params: { rideId: "ride-active-mock" } 
+      });
     }, 2000);
   };
 

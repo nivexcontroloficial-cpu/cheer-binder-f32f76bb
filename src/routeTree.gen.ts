@@ -31,6 +31,7 @@ import { Route as PassageiroPermissoesRouteImport } from './routes/passageiro/pe
 import { Route as PassageiroVerificacaoRouteImport } from './routes/passageiro/verificacao'
 import { Route as PilotoIndexRouteImport } from './routes/piloto/index'
 import { Route as SimuladorIndexRouteImport } from './routes/simulador/index'
+import { Route as PassageiroCorridaRideIdRouteImport } from './routes/passageiro/corrida.$rideId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -143,6 +144,11 @@ const SimuladorIndexRoute = SimuladorIndexRouteImport.update({
   path: '/',
   getParentRoute: () => SimuladorRoute,
 } as any)
+const PassageiroCorridaRideIdRoute = PassageiroCorridaRideIdRouteImport.update({
+  id: '/corrida/$rideId',
+  path: '/corrida/$rideId',
+  getParentRoute: () => PassageiroRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -167,6 +173,7 @@ export interface FileRoutesByFullPath {
   '/passageiro/': typeof PassageiroIndexRoute
   '/piloto/': typeof PilotoIndexRoute
   '/simulador/': typeof SimuladorIndexRoute
+  '/passageiro/corrida/$rideId': typeof PassageiroCorridaRideIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -187,6 +194,7 @@ export interface FileRoutesByTo {
   '/passageiro': typeof PassageiroIndexRoute
   '/piloto': typeof PilotoIndexRoute
   '/simulador': typeof SimuladorIndexRoute
+  '/passageiro/corrida/$rideId': typeof PassageiroCorridaRideIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -212,6 +220,7 @@ export interface FileRoutesById {
   '/passageiro/': typeof PassageiroIndexRoute
   '/piloto/': typeof PilotoIndexRoute
   '/simulador/': typeof SimuladorIndexRoute
+  '/passageiro/corrida/$rideId': typeof PassageiroCorridaRideIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -238,6 +247,7 @@ export interface FileRouteTypes {
     | '/passageiro/'
     | '/piloto/'
     | '/simulador/'
+    | '/passageiro/corrida/$rideId'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -258,6 +268,7 @@ export interface FileRouteTypes {
     | '/passageiro'
     | '/piloto'
     | '/simulador'
+    | '/passageiro/corrida/$rideId'
   id:
     | '__root__'
     | '/'
@@ -282,6 +293,7 @@ export interface FileRouteTypes {
     | '/passageiro/'
     | '/piloto/'
     | '/simulador/'
+    | '/passageiro/corrida/$rideId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -449,6 +461,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SimuladorIndexRouteImport
       parentRoute: typeof SimuladorRoute
     }
+    '/passageiro/corrida/$rideId': {
+      id: '/passageiro/corrida/$rideId'
+      path: '/corrida/$rideId'
+      fullPath: '/passageiro/corrida/$rideId'
+      preLoaderRoute: typeof PassageiroCorridaRideIdRouteImport
+      parentRoute: typeof PassageiroRoute
+    }
   }
 }
 
@@ -487,6 +506,7 @@ interface PassageiroRouteChildren {
   PassageiroPermissoesRoute: typeof PassageiroPermissoesRoute
   PassageiroVerificacaoRoute: typeof PassageiroVerificacaoRoute
   PassageiroIndexRoute: typeof PassageiroIndexRoute
+  PassageiroCorridaRideIdRoute: typeof PassageiroCorridaRideIdRoute
 }
 
 const PassageiroRouteChildren: PassageiroRouteChildren = {
@@ -502,6 +522,7 @@ const PassageiroRouteChildren: PassageiroRouteChildren = {
   PassageiroPermissoesRoute: PassageiroPermissoesRoute,
   PassageiroVerificacaoRoute: PassageiroVerificacaoRoute,
   PassageiroIndexRoute: PassageiroIndexRoute,
+  PassageiroCorridaRideIdRoute: PassageiroCorridaRideIdRoute,
 }
 
 const PassageiroRouteWithChildren = PassageiroRoute._addFileChildren(
