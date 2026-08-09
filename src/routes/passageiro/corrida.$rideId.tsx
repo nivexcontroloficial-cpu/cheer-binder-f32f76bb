@@ -150,7 +150,7 @@ function ActiveRideScreen() {
 
   // Cronômetro de espera
   useEffect(() => {
-    let timer: any;
+    let timer: ReturnType<typeof setInterval> | undefined;
     if (isWaitTimerActive && waitTime > 0) {
       timer = setInterval(() => {
         setWaitTime((prev) => prev - 1);
