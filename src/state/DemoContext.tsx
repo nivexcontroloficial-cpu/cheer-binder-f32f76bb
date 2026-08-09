@@ -15,6 +15,7 @@ interface DemoContextType {
   complaints: Complaint[];
   cancellations: Cancellation[];
   resetData: () => void;
+  addRideToHistory: (ride: Ride) => void;
   isLoading: boolean;
 }
 
