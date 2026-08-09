@@ -21,6 +21,7 @@ import { Route as PassageiroIndexRouteImport } from './routes/passageiro/index'
 import { Route as PassageiroBoasVindasRouteImport } from './routes/passageiro/boas-vindas'
 import { Route as PassageiroCadastroRouteImport } from './routes/passageiro/cadastro'
 import { Route as PassageiroEntrarRouteImport } from './routes/passageiro/entrar'
+import { Route as PassageiroInicioRouteImport } from './routes/passageiro/inicio'
 import { Route as PassageiroPermissoesRouteImport } from './routes/passageiro/permissoes'
 import { Route as PassageiroVerificacaoRouteImport } from './routes/passageiro/verificacao'
 import { Route as PilotoIndexRouteImport } from './routes/piloto/index'
@@ -86,6 +87,11 @@ const PassageiroEntrarRoute = PassageiroEntrarRouteImport.update({
   path: '/entrar',
   getParentRoute: () => PassageiroRoute,
 } as any)
+const PassageiroInicioRoute = PassageiroInicioRouteImport.update({
+  id: '/inicio',
+  path: '/inicio',
+  getParentRoute: () => PassageiroRoute,
+} as any)
 const PassageiroPermissoesRoute = PassageiroPermissoesRouteImport.update({
   id: '/permissoes',
   path: '/permissoes',
@@ -118,6 +124,7 @@ export interface FileRoutesByFullPath {
   '/passageiro/boas-vindas': typeof PassageiroBoasVindasRoute
   '/passageiro/cadastro': typeof PassageiroCadastroRoute
   '/passageiro/entrar': typeof PassageiroEntrarRoute
+  '/passageiro/inicio': typeof PassageiroInicioRoute
   '/passageiro/permissoes': typeof PassageiroPermissoesRoute
   '/passageiro/verificacao': typeof PassageiroVerificacaoRoute
   '/admin/': typeof AdminIndexRoute
@@ -132,6 +139,7 @@ export interface FileRoutesByTo {
   '/passageiro/boas-vindas': typeof PassageiroBoasVindasRoute
   '/passageiro/cadastro': typeof PassageiroCadastroRoute
   '/passageiro/entrar': typeof PassageiroEntrarRoute
+  '/passageiro/inicio': typeof PassageiroInicioRoute
   '/passageiro/permissoes': typeof PassageiroPermissoesRoute
   '/passageiro/verificacao': typeof PassageiroVerificacaoRoute
   '/admin': typeof AdminIndexRoute
@@ -151,6 +159,7 @@ export interface FileRoutesById {
   '/passageiro/boas-vindas': typeof PassageiroBoasVindasRoute
   '/passageiro/cadastro': typeof PassageiroCadastroRoute
   '/passageiro/entrar': typeof PassageiroEntrarRoute
+  '/passageiro/inicio': typeof PassageiroInicioRoute
   '/passageiro/permissoes': typeof PassageiroPermissoesRoute
   '/passageiro/verificacao': typeof PassageiroVerificacaoRoute
   '/admin/': typeof AdminIndexRoute
@@ -171,6 +180,7 @@ export interface FileRouteTypes {
     | '/passageiro/boas-vindas'
     | '/passageiro/cadastro'
     | '/passageiro/entrar'
+    | '/passageiro/inicio'
     | '/passageiro/permissoes'
     | '/passageiro/verificacao'
     | '/admin/'
@@ -185,6 +195,7 @@ export interface FileRouteTypes {
     | '/passageiro/boas-vindas'
     | '/passageiro/cadastro'
     | '/passageiro/entrar'
+    | '/passageiro/inicio'
     | '/passageiro/permissoes'
     | '/passageiro/verificacao'
     | '/admin'
@@ -203,6 +214,7 @@ export interface FileRouteTypes {
     | '/passageiro/boas-vindas'
     | '/passageiro/cadastro'
     | '/passageiro/entrar'
+    | '/passageiro/inicio'
     | '/passageiro/permissoes'
     | '/passageiro/verificacao'
     | '/admin/'
@@ -306,6 +318,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PassageiroEntrarRouteImport
       parentRoute: typeof PassageiroRoute
     }
+    '/passageiro/inicio': {
+      id: '/passageiro/inicio'
+      path: '/inicio'
+      fullPath: '/passageiro/inicio'
+      preLoaderRoute: typeof PassageiroInicioRouteImport
+      parentRoute: typeof PassageiroRoute
+    }
     '/passageiro/permissoes': {
       id: '/passageiro/permissoes'
       path: '/permissoes'
@@ -363,6 +382,7 @@ interface PassageiroRouteChildren {
   PassageiroBoasVindasRoute: typeof PassageiroBoasVindasRoute
   PassageiroCadastroRoute: typeof PassageiroCadastroRoute
   PassageiroEntrarRoute: typeof PassageiroEntrarRoute
+  PassageiroInicioRoute: typeof PassageiroInicioRoute
   PassageiroPermissoesRoute: typeof PassageiroPermissoesRoute
   PassageiroVerificacaoRoute: typeof PassageiroVerificacaoRoute
   PassageiroIndexRoute: typeof PassageiroIndexRoute
@@ -372,6 +392,7 @@ const PassageiroRouteChildren: PassageiroRouteChildren = {
   PassageiroBoasVindasRoute: PassageiroBoasVindasRoute,
   PassageiroCadastroRoute: PassageiroCadastroRoute,
   PassageiroEntrarRoute: PassageiroEntrarRoute,
+  PassageiroInicioRoute: PassageiroInicioRoute,
   PassageiroPermissoesRoute: PassageiroPermissoesRoute,
   PassageiroVerificacaoRoute: PassageiroVerificacaoRoute,
   PassageiroIndexRoute: PassageiroIndexRoute,
@@ -415,3 +436,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
