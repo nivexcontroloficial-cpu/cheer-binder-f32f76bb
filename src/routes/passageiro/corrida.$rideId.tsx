@@ -1,4 +1,10 @@
-import { createFileRoute, useNavigate, useParams, Outlet } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  useNavigate,
+  useParams,
+  Outlet,
+  useLocation,
+} from "@tanstack/react-router";
 import { useState, useEffect, useMemo, useRef } from "react";
 import {
   ArrowLeft,
@@ -48,6 +54,7 @@ type ConnectionStatus = "stable" | "unstable" | "stopped" | "reconnecting";
 function ActiveRideScreen() {
   const { rideId } = useParams({ from: "/passageiro/corrida/$rideId" });
   const navigate = useNavigate();
+  const location = useLocation();
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [connection, setConnection] = useState<ConnectionStatus>("stable");
   const [eta, setEta] = useState(4);
@@ -216,7 +223,7 @@ function ActiveRideScreen() {
     navigate({ to: "/passageiro/cancelar/$rideId", params: { rideId: rideId || "" } });
   };
 
-  if (window.location.pathname.includes("/em-andamento")) {
+  if (location.pathname.includes("/em-andamento")) {
     return <Outlet />;
   }
 
