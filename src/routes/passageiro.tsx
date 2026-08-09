@@ -1,6 +1,6 @@
-import { createFileRoute, Outlet, Link, useLocation, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Outlet, Link, useLocation } from "@tanstack/react-router";
 import { RovyaBrand } from "@/components/RovyaBrand";
-import { User, ChevronLeft, Shield, Clock, Home, MessageCircle } from "lucide-react";
+import { User, Shield, Clock, Home, MessageCircle, Bell } from "lucide-react";
 
 export const Route = createFileRoute("/passageiro")({
   component: PassengerLayout,
@@ -10,20 +10,19 @@ function PassengerLayout() {
   const ICON_SIZE = 22;
   const STROKE = 1.8;
   const location = useLocation();
-  const navigate = useNavigate();
 
-  // Rotas que não devem exibir header/navbar
-  const publicRoutes = [
-    "/passageiro/boas-vindas",
-    "/passageiro/entrar",
-    "/passageiro/cadastro",
-    "/passageiro/verificacao",
-    "/passageiro/permissoes"
+  // Rotas principais que devem exibir o cabeçalho e a barra inferior
+  const mainRoutes = [
+    "/passageiro/inicio",
+    "/passageiro/corridas",
+    "/passageiro/mensagens",
+    "/passageiro/seguranca",
+    "/passageiro/perfil",
   ];
 
-  const isPublic = publicRoutes.includes(location.pathname);
+  const isMainRoute = mainRoutes.includes(location.pathname);
 
-  if (isPublic) {
+  if (!isMainRoute) {
     return <Outlet />;
   }
 
@@ -33,22 +32,21 @@ function PassengerLayout() {
       <header className="sticky top-0 z-50 w-full border-b border-slate-100 bg-white/80 backdrop-blur-md">
         <div className="container flex h-16 items-center justify-between px-4 mx-auto">
           <div className="flex items-center gap-4">
-            <button 
-              onClick={() => navigate({ to: -1 as any })} 
-              className="p-2 hover:bg-slate-50 rounded-xl transition-colors text-slate-400"
-            >
-              <ChevronLeft size={20} strokeWidth={STROKE} />
-            </button>
             <RovyaBrand subBrand="Passageiro" className="scale-90 origin-left" />
           </div>
           <div className="flex items-center gap-3">
-            <Link to="/passageiro/notificacoes" className="p-2 relative text-slate-400 hover:text-navy transition-colors">
-              <Clock size={20} strokeWidth={STROKE} />
+            <Link 
+              to="/passageiro/notificacoes" 
+              className="p-2 relative text-slate-400 hover:text-navy transition-colors"
+            >
+              <Bell size={20} strokeWidth={STROKE} />
               <span className="absolute top-2 right-2 w-2 h-2 bg-rovya-red rounded-full border-2 border-white"></span>
             </Link>
-            <div className="h-10 w-10 rounded-2xl bg-slate-100 flex items-center justify-center border border-slate-200">
-              <User size={20} strokeWidth={STROKE} className="text-slate-400" />
-            </div>
+            <Link to="/passageiro/perfil">
+              <div className="h-10 w-10 rounded-2xl bg-slate-100 flex items-center justify-center border border-slate-200 hover:bg-slate-200 transition-colors">
+                <User size={20} strokeWidth={STROKE} className="text-slate-400" />
+              </div>
+            </Link>
           </div>
         </div>
       </header>
@@ -97,10 +95,24 @@ function PassengerLayout() {
   );
 }
 
-
-function NavItem({ to, icon, label, active = false, badge }: { to: string; icon: React.ReactNode; label: string; active?: boolean; badge?: number }) {
+function NavItem({ 
+  to, 
+  icon, 
+  label, 
+  active = false, 
+  badge 
+}: { 
+  to: string; 
+  icon: React.ReactNode; 
+  label: string; 
+  active?: boolean; 
+  badge?: number 
+}) {
   return (
-    <Link to={to} className={`flex flex-col items-center gap-1 transition-all duration-300 ${active ? 'text-rovya-orange' : 'text-slate-300 hover:text-slate-500'}`}>
+    <Link 
+      to={to} 
+      className={`flex flex-col items-center gap-1 transition-all duration-300 ${active ? 'text-rovya-orange' : 'text-slate-300 hover:text-slate-500'}`}
+    >
       <div className={`p-2 rounded-2xl transition-all duration-300 relative ${active ? 'bg-rovya-orange/10' : 'bg-transparent'}`}>
         {icon}
         {badge && (
@@ -113,3 +125,4 @@ function NavItem({ to, icon, label, active = false, badge }: { to: string; icon:
     </Link>
   );
 }
+
