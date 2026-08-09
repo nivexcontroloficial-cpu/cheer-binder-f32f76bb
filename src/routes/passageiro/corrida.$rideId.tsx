@@ -328,6 +328,30 @@ function ActiveRideScreen() {
           </div>
 
           <div className="px-8 pb-8 space-y-6">
+            {/* PIN de Segurança (Aparece após chegada) */}
+            {hasArrived && (
+              <div className="animate-in fade-in slide-in-from-top-4 duration-700 pt-2">
+                <div className="bg-navy rounded-3xl p-6 text-white shadow-xl relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 p-4 opacity-10">
+                    <Lock size={60} />
+                  </div>
+                  <div className="relative z-10 flex flex-col items-center text-center gap-2">
+                    <span className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400">PIN de Segurança</span>
+                    <div className="flex gap-3 my-1">
+                      {pin.split('').map((digit, i) => (
+                        <div key={i} className="w-10 h-14 bg-white/10 rounded-xl border border-white/20 flex items-center justify-center">
+                          <span className="text-2xl font-black italic tracking-tighter">{digit}</span>
+                        </div>
+                      ))}
+                    </div>
+                    <p className="text-[10px] text-slate-300 font-medium max-w-[200px] leading-relaxed">
+                      Informe este código ao piloto <span className="text-white font-bold italic underline">após</span> subir no veículo.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Informações Resumidas do Piloto */}
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
@@ -369,6 +393,33 @@ function ActiveRideScreen() {
                 </button>
               </div>
             </div>
+
+            {/* Ações Rápidas de Chegada */}
+            {hasArrived && (
+              <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 space-y-3 pt-2">
+                <div className="flex gap-2">
+                   <button 
+                     onClick={() => handleQuickMessage("Já estou saindo!")}
+                     className="flex-1 py-3 px-4 bg-slate-50 border border-slate-100 rounded-2xl text-[10px] font-black uppercase tracking-widest text-navy hover:bg-slate-100 transition-all"
+                   >
+                     Já estou saindo
+                   </button>
+                   <button 
+                     onClick={() => handleQuickMessage("Estou no portão!")}
+                     className="flex-1 py-3 px-4 bg-slate-50 border border-slate-100 rounded-2xl text-[10px] font-black uppercase tracking-widest text-navy hover:bg-slate-100 transition-all"
+                   >
+                     Estou no portão
+                   </button>
+                </div>
+                <Button 
+                  onClick={() => toast.success("Piloto notificado: Você está a caminho!")}
+                  className="w-full py-6 rounded-2xl bg-rovya-orange hover:bg-rovya-orange/90 text-white font-black italic uppercase tracking-widest shadow-lg active:scale-[0.98] transition-all"
+                >
+                  <Navigation size={18} className="mr-2 rotate-45" fill="currentColor" />
+                  Estou Indo
+                </Button>
+              </div>
+            )}
 
             {/* Veículo e Segurança */}
             <div className="grid grid-cols-2 gap-3">
