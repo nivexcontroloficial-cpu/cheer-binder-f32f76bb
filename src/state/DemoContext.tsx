@@ -58,6 +58,8 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setCancellations(ALL_CANCELLATIONS);
       setIsLoading(false);
     }, 500);
+  const addRideToHistory = (ride: Ride) => {
+    setRides(prev => [ride, ...prev]);
   };
 
   return (
@@ -68,6 +70,7 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
       complaints,
       cancellations,
       resetData,
+      addRideToHistory,
       isLoading
     }}>
       {children}
