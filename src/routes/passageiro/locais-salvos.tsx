@@ -54,6 +54,13 @@ function SavedPlacesPage() {
     return places.find((p) => p.id === deleteId)?.label || "";
   }, [deleteId, places]);
 
+  const handleCancel = () => {
+    setNewLabel("");
+    setNewRegion("");
+    setNewType("other");
+    setIsAdding(false);
+  };
+
   const handleDelete = () => {
     if (deleteId) {
       setPlaces((prev) => prev.filter((p) => p.id !== deleteId));
@@ -80,10 +87,7 @@ function SavedPlacesPage() {
     };
 
     setPlaces((prev) => [...prev, newPlace]);
-    setIsAdding(false);
-    setNewLabel("");
-    setNewRegion("");
-    setNewType("other");
+    handleCancel();
     toast.success("Local adicionado somente nesta demonstração.");
   };
 
@@ -93,7 +97,6 @@ function SavedPlacesPage() {
       <div className="flex items-center gap-3 mb-4">
         <Link
           to="/passageiro/perfil"
-          type="button"
           aria-label="Voltar para o perfil"
           className="h-10 w-10 rounded-2xl bg-white border border-slate-100 flex items-center justify-center text-slate-400 hover:text-navy transition-colors focus-visible:ring-2 focus-visible:ring-navy focus-visible:outline-none"
         >
@@ -140,7 +143,7 @@ function SavedPlacesPage() {
               <h2 className="text-sm font-black text-navy uppercase italic">Novo Local</h2>
               <button
                 type="button"
-                onClick={() => setIsAdding(false)}
+                onClick={handleCancel}
                 className="p-2 text-slate-400 hover:text-rose-500 transition-colors"
                 aria-label="Cancelar adição"
               >
@@ -213,7 +216,7 @@ function SavedPlacesPage() {
             <div className="flex gap-2 pt-2">
               <button
                 type="button"
-                onClick={() => setIsAdding(false)}
+                onClick={handleCancel}
                 className="flex-1 h-12 rounded-2xl border border-slate-100 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:bg-slate-50 transition-colors"
               >
                 Cancelar
@@ -229,7 +232,11 @@ function SavedPlacesPage() {
         )}
 
         {/* Places List */}
-        <div className="space-y-3" aria-live="polite">
+        <div className="space-y-3">
+          <div aria-live="polite" className="sr-only">
+            {places.length} {places.length === 1 ? "local salvo" : "locais salvos"} nesta
+            demonstração.
+          </div>
           {places.map((place) => (
             <div
               key={place.id}
