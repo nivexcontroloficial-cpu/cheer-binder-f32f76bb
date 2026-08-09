@@ -113,6 +113,13 @@ function DemoSelector() {
               Novo Cadastro Piloto
               <ArrowRight size={14} strokeWidth={2.5} />
             </button>
+            <button 
+              onClick={() => navigate({ to: '/piloto/analise' })}
+              className="w-full py-3 bg-slate-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-black transition-all active:scale-95 rovya-shadow"
+            >
+              Status da Análise
+              <Clock size={14} strokeWidth={2.5} />
+            </button>
           </div>
  
           <DemoCard 

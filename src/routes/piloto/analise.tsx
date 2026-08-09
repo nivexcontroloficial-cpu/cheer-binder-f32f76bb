@@ -191,7 +191,7 @@ function PilotAnalysisPage() {
   return (
     <div className="min-h-screen bg-[#F8FAFC] flex flex-col font-sans text-navy">
       <header className="p-6 flex items-center justify-between">
-        <RovyaBrand size="sm" />
+        <RovyaBrand className="h-6" />
         <Link 
           to="/piloto/entrar"
           className="p-2 hover:bg-slate-100 rounded-full text-slate-400 transition-colors"
