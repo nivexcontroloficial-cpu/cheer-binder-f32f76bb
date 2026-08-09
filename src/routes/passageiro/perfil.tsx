@@ -37,7 +37,7 @@ function ProfilePage() {
   const handleLogout = () => {
     resetData();
     navigate({ to: '/passageiro/entrar' });
-    toast.success("Sessão encerrada");
+    toast.success("Demonstração reiniciada");
   };
 
   const handleSaveName = () => {
@@ -185,12 +185,12 @@ function ProfilePage() {
           className="w-full py-5 bg-rose-50 text-rose-600 rounded-[28px] flex items-center justify-center gap-3 font-black text-xs uppercase tracking-widest hover:bg-rose-100 transition-colors active:scale-95 mb-8"
         >
           <LogOut size={18} />
-          Encerrar Sessão
+          Sair da demonstração
         </button>
       </div>
 
       <p className="text-center text-[9px] text-slate-300 font-bold uppercase tracking-widest mb-4">
-        Rovya App v1.0.4 • Mock Environment
+        Rovya App v1.0.4 • Ambiente de demonstração
       </p>
     </div>
   );
