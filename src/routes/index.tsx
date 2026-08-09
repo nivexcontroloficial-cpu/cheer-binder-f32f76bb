@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { RovyaBrand } from "@/components/RovyaBrand";
-import { User, ShieldCheck, PlayCircle, Bike, Palette, RotateCcw, ArrowRight } from "lucide-react";
+import { User, ShieldCheck, PlayCircle, Bike, Palette, RotateCcw, ArrowRight, MessageSquare } from "lucide-react";
 import { useDemo } from "@/state/DemoContext";
 
 export const Route = createFileRoute("/")({
@@ -55,6 +55,14 @@ function DemoSelector() {
               className="w-full py-2 bg-slate-100 text-slate-500 rounded-xl text-[9px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-slate-200 transition-all active:scale-95"
             >
               Tela de Corrida Ativa (Direto)
+            </Link>
+            <Link 
+              to="/passageiro/chat/$rideId"
+              params={{ rideId: "ride-active-mock" }}
+              className="w-full py-2 bg-blue-50 text-blue-500 border border-blue-100 rounded-xl text-[9px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-blue-100 transition-all active:scale-95"
+            >
+              <MessageSquare size={10} strokeWidth={2.5} />
+              Chat com Piloto (Direto)
             </Link>
             <button 
               onClick={() => navigate({ to: '/passageiro/boas-vindas' })}

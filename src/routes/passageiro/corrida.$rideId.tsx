@@ -200,7 +200,7 @@ function ActiveRideScreen() {
   };
 
   const handleChat = () => {
-    toast.info("Abrindo chat com Carlos H...");
+    navigate({ to: "/passageiro/chat/$rideId", params: { rideId } });
   };
 
   const handleShare = () => {
