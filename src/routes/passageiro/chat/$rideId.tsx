@@ -43,6 +43,23 @@ interface Message {
   attachment?: string | undefined;
 }
 
+const DEFAULT_MESSAGES: Message[] = [
+  {
+    id: "1",
+    text: "Olá Rafael, estou chegando ao local de embarque.",
+    sender: "driver",
+    timestamp: new Date(Date.now() - 1000 * 60 * 5),
+    status: "read",
+  },
+  {
+    id: "2",
+    text: "Estou em uma Honda CG 160 Vermelha.",
+    sender: "driver",
+    timestamp: new Date(Date.now() - 1000 * 60 * 4),
+    status: "read",
+  }
+];
+
 function ChatScreen() {
   const { rideId } = useParams({ from: "/passageiro/chat/$rideId" });
   const navigate = useNavigate();
@@ -52,36 +69,76 @@ function ChatScreen() {
   const [showProtectedCall, setShowProtectedCall] = useState(false);
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
 
-  const [messages, setMessages] = useState<Message[]>(() => {
-    const saved = localStorage.getItem(`chat_history_${rideId}`);
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      return parsed.map((m: any) => ({ ...m, timestamp: new Date(m.timestamp) }));
-    }
-    return [
-      {
-        id: "1",
-        text: "Olá Rafael, estou chegando ao local de embarque.",
-        sender: "driver",
-        timestamp: new Date(Date.now() - 1000 * 60 * 5),
-        status: "read",
-      },
-      {
-        id: "2",
-        text: "Estou em uma Honda CG 160 Vermelha.",
-        sender: "driver",
-        timestamp: new Date(Date.now() - 1000 * 60 * 4),
-        status: "read",
-      }
-    ];
-  });
+  const [messages, setMessages] = useState<Message[]>(DEFAULT_MESSAGES);
+  const [isHydrated, setIsHydrated] = useState(false);
 
+  // Read from localStorage on client only
   useEffect(() => {
-    localStorage.setItem(`chat_history_${rideId}`, JSON.stringify(messages));
+    const storageKey = `chat_history_${rideId}`;
+    try {
+      const saved = localStorage.getItem(storageKey);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          const validMessages: Message[] = parsed
+            .map((m: unknown): Message | null => {
+              if (!m || typeof m !== 'object') return null;
+              const msg = m as Record<string, unknown>;
+              
+              // Minimal validation
+              if (
+                typeof msg.id !== 'string' ||
+                typeof msg.text !== 'string' ||
+                (msg.sender !== 'passenger' && msg.sender !== 'driver') ||
+                !['sending', 'sent', 'delivered', 'read', 'failed'].includes(msg.status as string)
+              ) {
+                return null;
+              }
+
+              const timestamp = new Date(msg.timestamp as string);
+              if (isNaN(timestamp.getTime())) return null;
+
+              return {
+                id: msg.id,
+                text: msg.text,
+                sender: msg.sender as "passenger" | "driver",
+                timestamp,
+                status: msg.status as MessageStatus,
+                // Do NOT restore attachments
+              };
+            })
+            .filter((m): m is Message => m !== null);
+
+          if (validMessages.length > 0) {
+            setMessages(validMessages);
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Error parsing chat history:", error);
+      localStorage.removeItem(storageKey);
+    } finally {
+      setIsHydrated(true);
+    }
+  }, [rideId]);
+
+  // Save to localStorage only after hydration
+  useEffect(() => {
+    if (!isHydrated) return;
+
+    const storageKey = `chat_history_${rideId}`;
+    try {
+      // Remove attachments before saving
+      const messagesToSave = messages.map(({ attachment, ...rest }) => rest);
+      localStorage.setItem(storageKey, JSON.stringify(messagesToSave));
+    } catch (error) {
+      console.error("Error saving chat history:", error);
+    }
+
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [messages, rideId]);
+  }, [messages, rideId, isHydrated]);
 
   const handleSendMessage = (text = inputText) => {
     if (!text.trim() && !selectedFile) return;
