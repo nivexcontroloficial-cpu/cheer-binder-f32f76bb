@@ -28,6 +28,8 @@ export * from "./pagination";
 export * from "./popover";
 export * from "./progress";
 export * from "./radio-group";
+export * from "./rating";
+export * from "./progress";
 export * from "./resizable";
 export * from "./scroll-area";
 export * from "./select";
