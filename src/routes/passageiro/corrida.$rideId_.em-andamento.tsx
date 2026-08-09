@@ -41,7 +41,7 @@ export const Route = createFileRoute("/passageiro/corrida/$rideId_/em-andamento"
 type ConnectionStatus = 'stable' | 'unstable' | 'stopped' | 'reconnecting';
 
 function InProgressRideScreen() {
-  const { rideId } = useParams({ from: '/passageiro/corrida/$rideId/em-andamento' });
+  const { rideId } = useParams({ from: '/passageiro/corrida/$rideId_/em-andamento' });
   const navigate = useNavigate();
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [connection, setConnection] = useState<ConnectionStatus>('stable');
