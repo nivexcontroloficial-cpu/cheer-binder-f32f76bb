@@ -129,6 +129,7 @@ function LoginScreen() {
       <button 
         type="button"
         onClick={() => setMode("options")}
+        type="button"
         className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-navy transition-colors self-center"
       >
         Voltar para opções
