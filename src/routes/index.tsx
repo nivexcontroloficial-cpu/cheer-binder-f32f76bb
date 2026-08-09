@@ -67,13 +67,22 @@ function DemoSelector() {
           />
         </div>
 
-        <Link 
-          to="/design-system"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-slate-200 rounded-2xl text-navy font-bold hover:bg-slate-50 transition-colors rovya-shadow"
-        >
-          <Palette size={18} strokeWidth={1.8} />
-          Catálogo Design System
-        </Link>
+        <div className="flex flex-wrap justify-center gap-4">
+          <Link 
+            to="/design-system"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-slate-200 rounded-2xl text-navy font-bold hover:bg-slate-50 transition-colors rovya-shadow"
+          >
+            <Palette size={18} strokeWidth={1.8} />
+            Visual Identity
+          </Link>
+          <Link 
+            to="/design-system/componentes"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-navy text-white rounded-2xl font-bold hover:bg-navy/90 transition-colors rovya-shadow"
+          >
+            <Palette size={18} strokeWidth={1.8} />
+            Component Library
+          </Link>
+        </div>
 
         <div className="mt-16 p-6 bg-amber-50 border border-amber-100 rounded-3xl max-w-md">
           <p className="text-[10px] text-amber-800 font-bold uppercase tracking-widest leading-relaxed">
