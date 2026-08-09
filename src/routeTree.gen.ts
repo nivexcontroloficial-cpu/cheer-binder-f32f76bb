@@ -34,6 +34,7 @@ import { Route as PilotoIndexRouteImport } from './routes/piloto/index'
 import { Route as SimuladorIndexRouteImport } from './routes/simulador/index'
 import { Route as PassageiroChatRideIdRouteImport } from './routes/passageiro/chat/$rideId'
 import { Route as PassageiroCorridaRideIdRouteImport } from './routes/passageiro/corrida.$rideId'
+import { Route as PassageiroCorridaRideIdConcluidaRouteImport } from './routes/passageiro/corrida.$rideId.concluida'
 import { Route as PassageiroCorridaRideIdEmAndamentoRouteImport } from './routes/passageiro/corrida/$rideId/em-andamento'
 
 const IndexRoute = IndexRouteImport.update({
@@ -162,6 +163,12 @@ const PassageiroCorridaRideIdRoute = PassageiroCorridaRideIdRouteImport.update({
   path: '/corrida/$rideId',
   getParentRoute: () => PassageiroRoute,
 } as any)
+const PassageiroCorridaRideIdConcluidaRoute =
+  PassageiroCorridaRideIdConcluidaRouteImport.update({
+    id: '/concluida',
+    path: '/concluida',
+    getParentRoute: () => PassageiroCorridaRideIdRoute,
+  } as any)
 const PassageiroCorridaRideIdEmAndamentoRoute =
   PassageiroCorridaRideIdEmAndamentoRouteImport.update({
     id: '/em-andamento',
@@ -195,6 +202,7 @@ export interface FileRoutesByFullPath {
   '/simulador/': typeof SimuladorIndexRoute
   '/passageiro/chat/$rideId': typeof PassageiroChatRideIdRoute
   '/passageiro/corrida/$rideId': typeof PassageiroCorridaRideIdRouteWithChildren
+  '/passageiro/corrida/$rideId/concluida': typeof PassageiroCorridaRideIdConcluidaRoute
   '/passageiro/corrida/$rideId/em-andamento': typeof PassageiroCorridaRideIdEmAndamentoRoute
 }
 export interface FileRoutesByTo {
@@ -219,6 +227,7 @@ export interface FileRoutesByTo {
   '/simulador': typeof SimuladorIndexRoute
   '/passageiro/chat/$rideId': typeof PassageiroChatRideIdRoute
   '/passageiro/corrida/$rideId': typeof PassageiroCorridaRideIdRouteWithChildren
+  '/passageiro/corrida/$rideId/concluida': typeof PassageiroCorridaRideIdConcluidaRoute
   '/passageiro/corrida/$rideId/em-andamento': typeof PassageiroCorridaRideIdEmAndamentoRoute
 }
 export interface FileRoutesById {
@@ -248,6 +257,7 @@ export interface FileRoutesById {
   '/simulador/': typeof SimuladorIndexRoute
   '/passageiro/chat/$rideId': typeof PassageiroChatRideIdRoute
   '/passageiro/corrida/$rideId': typeof PassageiroCorridaRideIdRouteWithChildren
+  '/passageiro/corrida/$rideId/concluida': typeof PassageiroCorridaRideIdConcluidaRoute
   '/passageiro/corrida/$rideId/em-andamento': typeof PassageiroCorridaRideIdEmAndamentoRoute
 }
 export interface FileRouteTypes {
@@ -278,6 +288,7 @@ export interface FileRouteTypes {
     | '/simulador/'
     | '/passageiro/chat/$rideId'
     | '/passageiro/corrida/$rideId'
+    | '/passageiro/corrida/$rideId/concluida'
     | '/passageiro/corrida/$rideId/em-andamento'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -302,6 +313,7 @@ export interface FileRouteTypes {
     | '/simulador'
     | '/passageiro/chat/$rideId'
     | '/passageiro/corrida/$rideId'
+    | '/passageiro/corrida/$rideId/concluida'
     | '/passageiro/corrida/$rideId/em-andamento'
   id:
     | '__root__'
@@ -330,6 +342,7 @@ export interface FileRouteTypes {
     | '/simulador/'
     | '/passageiro/chat/$rideId'
     | '/passageiro/corrida/$rideId'
+    | '/passageiro/corrida/$rideId/concluida'
     | '/passageiro/corrida/$rideId/em-andamento'
   fileRoutesById: FileRoutesById
 }
@@ -519,6 +532,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PassageiroCorridaRideIdRouteImport
       parentRoute: typeof PassageiroRoute
     }
+    '/passageiro/corrida/$rideId/concluida': {
+      id: '/passageiro/corrida/$rideId/concluida'
+      path: '/concluida'
+      fullPath: '/passageiro/corrida/$rideId/concluida'
+      preLoaderRoute: typeof PassageiroCorridaRideIdConcluidaRouteImport
+      parentRoute: typeof PassageiroCorridaRideIdRoute
+    }
     '/passageiro/corrida/$rideId/em-andamento': {
       id: '/passageiro/corrida/$rideId/em-andamento'
       path: '/em-andamento'
@@ -552,11 +572,14 @@ const DesignSystemRouteWithChildren = DesignSystemRoute._addFileChildren(
 )
 
 interface PassageiroCorridaRideIdRouteChildren {
+  PassageiroCorridaRideIdConcluidaRoute: typeof PassageiroCorridaRideIdConcluidaRoute
   PassageiroCorridaRideIdEmAndamentoRoute: typeof PassageiroCorridaRideIdEmAndamentoRoute
 }
 
 const PassageiroCorridaRideIdRouteChildren: PassageiroCorridaRideIdRouteChildren =
   {
+    PassageiroCorridaRideIdConcluidaRoute:
+      PassageiroCorridaRideIdConcluidaRoute,
     PassageiroCorridaRideIdEmAndamentoRoute:
       PassageiroCorridaRideIdEmAndamentoRoute,
   }
