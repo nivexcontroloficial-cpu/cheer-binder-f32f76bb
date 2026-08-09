@@ -1,19 +1,19 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import React from "react";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { 
-  ArrowLeft, 
+  MapPin, 
   Home, 
   Briefcase, 
   Heart, 
   Plus, 
-  MoreVertical, 
   Trash2, 
-  Edit3, 
-  MapPin,
-  Check
+  ChevronLeft,
+  Navigation,
+  MoreVertical
 } from "lucide-react";
-import { toast } from "sonner";
-import {
+import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { 
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -22,106 +22,131 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
 
-export const Route = createFileRoute("/passageiro/locais-salvos")({
-  component: SavedPlacesScreen,
-});
-
-interface Place {
+interface SavedPlace {
   id: string;
-  type: 'home' | 'work' | 'other';
   label: string;
   address: string;
+  type: 'home' | 'work' | 'other';
 }
 
-function SavedPlacesScreen() {
-  const navigate = useNavigate();
-  const [places, setPlaces] = useState<Place[]>([
-    { id: '1', type: 'home', label: 'Casa', address: 'Rua São João, 345' },
-    { id: '2', type: 'work', label: 'Trabalho', address: 'Av. Getúlio Vargas, 890' },
-    { id: '3', type: 'other', label: 'Academia', address: 'Av. Brasil, 450' },
-  ]);
+const INITIAL_PLACES: SavedPlace[] = [
+  { id: '1', label: 'Casa', address: 'Rua das Flores, 123, Jacarezinho - PR', type: 'home' },
+  { id: '2', label: 'Trabalho', address: 'Av. Brasil, 1500, Jacarezinho - PR', type: 'work' },
+  { id: '3', label: 'Academia', address: 'Rua Principal, 50, Jacarezinho - PR', type: 'other' },
+];
 
-  const handleDelete = (id: string) => {
-    setPlaces(places.filter(p => p.id !== id));
-    toast.success("Local removido com sucesso");
+export const Route = createFileRoute("/passageiro/locais-salvos")({
+  component: SavedPlacesPage,
+});
+
+function SavedPlacesPage() {
+  const [places, setPlaces] = useState<SavedPlace[]>(INITIAL_PLACES);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+
+  const handleDelete = () => {
+    if (deleteId) {
+      setPlaces(prev => prev.filter(p => p.id !== deleteId));
+      setDeleteId(null);
+      toast.success("Local removido com sucesso");
+    }
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-porcelain font-sans text-navy">
-      <header className="bg-white px-6 py-5 border-b border-slate-100 flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <button onClick={() => navigate({ to: "/passageiro/inicio" })} className="p-2 -ml-2 text-slate-400 hover:text-navy">
-            <ArrowLeft size={24} />
-          </button>
-          <h1 className="text-[11px] font-black uppercase tracking-widest text-navy">Locais Salvos</h1>
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+      <div className="flex items-center gap-3 mb-6">
+        <Link to="/passageiro/perfil" className="h-10 w-10 rounded-2xl bg-white border border-slate-100 flex items-center justify-center text-slate-400 hover:text-navy transition-colors">
+          <ChevronLeft size={20} />
+        </Link>
+        <div>
+          <h1 className="text-xl font-black tracking-tight text-navy uppercase">Locais Salvos</h1>
+          <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Seus destinos favoritos</p>
         </div>
-        <button className="h-10 w-10 bg-slate-50 border border-slate-100 rounded-xl flex items-center justify-center text-rovya-orange hover:bg-white hover:border-rovya-orange transition-all">
-          <Plus size={20} strokeWidth={2.5} />
-        </button>
-      </header>
+      </div>
 
-      <main className="flex-1 p-6 space-y-6">
-        <div className="space-y-4">
+      <div className="space-y-4">
+        <button 
+          onClick={() => toast.info("Simulando formulário de novo local...")}
+          className="w-full p-5 bg-white border border-dashed border-slate-200 rounded-[32px] flex items-center justify-center gap-3 text-slate-400 hover:border-navy/20 hover:text-navy transition-all group"
+        >
+          <div className="h-8 w-8 rounded-xl bg-slate-50 flex items-center justify-center group-hover:bg-navy group-hover:text-white transition-colors">
+            <Plus size={18} />
+          </div>
+          <span className="text-xs font-black uppercase tracking-widest">Adicionar Novo Local</span>
+        </button>
+
+        <div className="space-y-3">
           {places.map((place) => (
             <div 
               key={place.id}
-              className="bg-white p-5 rounded-[28px] border border-slate-100 shadow-sm flex items-center justify-between group hover:border-rovya-orange transition-all"
+              className="p-5 bg-white border border-slate-100 rounded-[32px] flex items-center justify-between group"
             >
-              <div className="flex items-center gap-4">
-                <div className="h-12 w-12 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-400 group-hover:text-rovya-orange transition-colors">
-                  {place.type === 'home' && <Home size={22} />}
-                  {place.type === 'work' && <Briefcase size={22} />}
-                  {place.type === 'other' && <Heart size={22} />}
+              <div className="flex items-center gap-4 flex-1 min-w-0">
+                <div className={`h-12 w-12 shrink-0 rounded-2xl flex items-center justify-center ${
+                  place.type === 'home' ? 'bg-blue-50 text-blue-500' : 
+                  place.type === 'work' ? 'bg-amber-50 text-amber-500' : 'bg-rose-50 text-rose-500'
+                }`}>
+                  {place.type === 'home' ? <Home size={20} /> : 
+                   place.type === 'work' ? <Briefcase size={20} /> : <Heart size={20} />}
                 </div>
-                <div>
-                  <h3 className="text-[11px] font-black uppercase tracking-widest text-navy">{place.label}</h3>
-                  <p className="text-[10px] text-slate-400 font-medium">{place.address}</p>
+                <div className="min-w-0 pr-4">
+                  <h3 className="text-sm font-black text-navy leading-tight mb-1">{place.label}</h3>
+                  <p className="text-[10px] text-slate-400 font-bold uppercase tracking-tight truncate">
+                    {place.address}
+                  </p>
                 </div>
               </div>
-
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <button className="p-2 text-slate-200 hover:text-rovya-red transition-colors">
-                    <Trash2 size={18} />
-                  </button>
-                </AlertDialogTrigger>
-                <AlertDialogContent className="rounded-[32px] border-none shadow-2xl">
-                  <AlertDialogHeader>
-                    <AlertDialogTitle className="text-[12px] font-black uppercase tracking-widest text-navy">Remover Local?</AlertDialogTitle>
-                    <AlertDialogDescription className="text-xs text-slate-500 font-medium">
-                      Tem certeza que deseja remover "{place.label}" dos seus favoritos?
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter className="flex-col sm:flex-row gap-2 mt-4">
-                    <AlertDialogCancel className="rounded-2xl border-slate-100 text-[10px] font-black uppercase tracking-widest">Cancelar</AlertDialogCancel>
-                    <AlertDialogAction 
-                      onClick={() => handleDelete(place.id)}
-                      className="bg-rovya-red hover:bg-red-700 rounded-2xl text-[10px] font-black uppercase tracking-widest border-none"
-                    >
-                      Remover
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+              
+              <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                <button 
+                  onClick={() => toast.info("Simulando início de corrida...")}
+                  className="p-2 text-slate-300 hover:text-navy"
+                >
+                  <Navigation size={18} />
+                </button>
+                <button 
+                  onClick={() => setDeleteId(place.id)}
+                  className="p-2 text-slate-300 hover:text-rose-500"
+                >
+                  <Trash2 size={18} />
+                </button>
+              </div>
             </div>
           ))}
-        </div>
 
-        <div className="p-6 bg-blue-50 border border-blue-100 rounded-[32px] flex gap-4">
-          <div className="h-10 w-10 bg-white rounded-xl flex items-center justify-center text-rovya-blue shrink-0 shadow-sm">
-            <MapPin size={20} />
-          </div>
-          <div className="space-y-1">
-            <h4 className="text-[10px] font-black uppercase tracking-widest text-blue-900">Agilidade no dia a dia</h4>
-            <p className="text-[10px] text-blue-700 leading-relaxed font-medium">
-              Salvar seus destinos frequentes permite solicitar corridas com apenas dois toques.
-            </p>
-          </div>
+          {places.length === 0 && (
+            <div className="py-20 text-center bg-white border border-dashed border-slate-200 rounded-[32px]">
+              <div className="h-16 w-16 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-4 text-slate-300">
+                <MapPin size={32} />
+              </div>
+              <p className="text-sm font-bold text-navy uppercase tracking-tight">Nenhum local salvo</p>
+              <p className="text-xs text-slate-400 mt-1 px-10">Salve seus endereços frequentes para pedir mais rápido.</p>
+            </div>
+          )}
         </div>
-      </main>
+      </div>
+
+      <AlertDialog open={!!deleteId} onOpenChange={(open) => !open && setDeleteId(null)}>
+        <AlertDialogContent className="rounded-[32px] border-slate-100">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-xl font-black text-navy uppercase italic">Remover Local?</AlertDialogTitle>
+            <AlertDialogDescription className="text-xs font-bold text-slate-500 uppercase tracking-tight">
+              Tem certeza que deseja remover este endereço dos seus locais salvos?
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="gap-2 sm:gap-0">
+            <AlertDialogCancel className="rounded-2xl text-[10px] font-black uppercase tracking-widest">Cancelar</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleDelete}
+              className="rounded-2xl bg-rose-500 text-white text-[10px] font-black uppercase tracking-widest hover:bg-rose-600"
+            >
+              Sim, Remover
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }

@@ -38,7 +38,7 @@ function DemoSelector() {
             <DemoCard 
               to="/passageiro/inicio"
               title="Passageiro"
-              description="Início (Sem Mapa)"
+              description="Conta Completa"
               icon={<User className="h-6 w-6" strokeWidth={1.8} />}
               color="border-blue-200 hover:border-[#2F80ED] text-[#2F80ED]"
               bg="bg-blue-50"
