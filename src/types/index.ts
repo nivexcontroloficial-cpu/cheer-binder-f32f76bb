@@ -61,14 +61,14 @@ export interface Ride {
   };
   status: RideStatus;
   fare: number;
-  distance: number; // in km
-  duration: number; // in minutes
+  distance: number;
+  duration: number;
   requestedAt: string;
-  acceptedAt?: string;
-  startedAt?: string;
-  completedAt?: string;
-  cancelledAt?: string;
-  cancellationReason?: string;
+  acceptedAt?: string | undefined;
+  startedAt?: string | undefined;
+  completedAt?: string | undefined;
+  cancelledAt?: string | undefined;
+  cancellationReason?: string | undefined;
 }
 
 export interface FareRule {
@@ -78,7 +78,7 @@ export interface FareRule {
   pricePerKm: number;
   pricePerMinute: number;
   minimumFare: number;
-  commissionRate: number; // 0 to 1
+  commissionRate: number;
 }
 
 export interface PlatformPlan {
@@ -95,8 +95,8 @@ export interface DriverInvoice {
   amount: number;
   dueDate: string;
   status: PaymentStatus;
-  paidAt?: string;
-  pixCode?: string;
+  paidAt?: string | undefined;
+  pixCode?: string | undefined;
 }
 
 export interface CityOperation {
@@ -115,7 +115,7 @@ export interface Shift {
   id: string;
   driverId: string;
   startedAt: string;
-  endedAt?: string;
+  endedAt?: string | undefined;
   totalEarned: number;
   totalRides: number;
 }
@@ -145,7 +145,7 @@ export interface IntegrityMatch {
   rideId: string;
   driverId: string;
   passengerId: string;
-  riskScore: number; // 0 to 100
+  riskScore: number;
   alerts: string[];
   status: 'safe' | 'suspicious' | 'blocked';
 }
