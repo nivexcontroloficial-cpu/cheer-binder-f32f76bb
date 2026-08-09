@@ -179,10 +179,10 @@ function ComponentsCatalog() {
           description="Cards e perfis."
         />
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           <Card className="rounded-[32px] rovya-shadow-lg border-white/5 overflow-hidden">
             <CardHeader className="bg-slate-50 border-b border-slate-100">
-              <CardTitle className="text-sm uppercase tracking-widest font-black">Perfil do Piloto</CardTitle>
+              <CardTitle className="text-sm uppercase tracking-widest font-black text-navy">Perfil do Piloto</CardTitle>
             </CardHeader>
             <CardContent className="p-8 flex flex-col items-center text-center space-y-4">
               <Avatar className="h-20 w-20 border-4 border-white shadow-xl">
@@ -190,19 +190,57 @@ function ComponentsCatalog() {
                 <AvatarFallback>CH</AvatarFallback>
               </Avatar>
               <div>
-                <h3 className="font-bold text-lg">Carlos Henrique</h3>
-                <p className="text-xs text-slate-500 font-bold uppercase tracking-widest">Toyota Corolla • ABC-1234</p>
+                <h3 className="font-bold text-lg text-navy">Carlos Henrique</h3>
+                <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Toyota Corolla • ABC-1234</p>
               </div>
               <div className="flex gap-1">
-                {[1,2,3,4,5].map(i => <Badge key={i} className="bg-rovya-amber h-2 w-2 p-0 rounded-full" />)}
+                {[1,2,3,4,5].map(i => <div key={i} className="bg-rovya-amber h-2 w-2 rounded-full" />)}
               </div>
             </CardContent>
+          </Card>
+
+          <Card className="rounded-[32px] rovya-shadow-lg border-white/5 overflow-hidden p-8 space-y-6">
+            <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Avaliação da Viagem</h3>
+            <div className="flex flex-col items-center gap-4 py-4">
+              <Rating value={4} />
+              <p className="text-sm font-medium text-slate-600">4.8 • Ótima experiência</p>
+            </div>
+            <Button variant="outline" className="w-full rounded-2xl">Enviar Comentário</Button>
+          </Card>
+
+          <Card className="rounded-[32px] rovya-shadow-lg border-white/5 overflow-hidden p-8 space-y-6">
+            <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400">Seleção de Veículo</h3>
+            <div className="space-y-3">
+              <VehicleOption label="Rovya X" price="R$ 18,50" eta="2 min" active />
+              <VehicleOption label="Rovya XL" price="R$ 24,90" eta="5 min" />
+            </div>
           </Card>
         </div>
       </section>
     </div>
   );
 }
+
+function VehicleOption({ label, price, eta, active = false }: { label: string, price: string, eta: string, active?: boolean }) {
+  return (
+    <div className={cn(
+      "flex items-center justify-between p-4 rounded-2xl border transition-all cursor-pointer",
+      active ? "border-rovya-orange bg-rovya-orange/5" : "border-slate-100 hover:border-slate-200"
+    )}>
+      <div className="flex items-center gap-3">
+        <div className={cn("h-4 w-4 rounded-full border-2", active ? "border-rovya-orange bg-rovya-orange" : "border-slate-300")} />
+        <div>
+          <p className="text-sm font-black text-navy uppercase tracking-tighter">{label}</p>
+          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{eta}</p>
+        </div>
+      </div>
+      <p className="text-sm font-black text-navy">{price}</p>
+    </div>
+  );
+}
+
+import { Rating } from "@/components/ui/rating";
+
 
 function SectionHeader({ icon, title, description }: { icon: React.ReactNode, title: string, description: string }) {
   return (
