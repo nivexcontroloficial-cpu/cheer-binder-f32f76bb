@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { RovyaBrand } from "@/components/RovyaBrand";
-import { User, ShieldCheck, PlayCircle, Bike, Palette, RotateCcw, ArrowRight, MessageSquare, Navigation as NavigationIcon, CheckCircle2, HeartPulse } from "lucide-react";
+import { User, ShieldCheck, PlayCircle, Bike, Palette, RotateCcw, ArrowRight, MessageSquare, Navigation as NavigationIcon, CheckCircle2, HeartPulse, Clock } from "lucide-react";
 import { useDemo } from "@/state/DemoContext";
 
 export const Route = createFileRoute("/")({
@@ -112,6 +112,13 @@ function DemoSelector() {
             >
               Novo Cadastro Piloto
               <ArrowRight size={14} strokeWidth={2.5} />
+            </button>
+            <button 
+              onClick={() => navigate({ to: '/piloto/analise' })}
+              className="w-full py-3 bg-slate-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-black transition-all active:scale-95 rovya-shadow"
+            >
+              Status da Análise
+              <Clock size={14} strokeWidth={2.5} />
             </button>
           </div>
  

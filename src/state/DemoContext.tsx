@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { UserStatus } from '../types';
 import { 
   ALL_DRIVERS, 
   ALL_RIDES, 
@@ -16,6 +17,10 @@ interface PilotRegistration {
   telefone: string;
   endereco: string;
   fotoUrl: string | null;
+  status: UserStatus;
+  rejectionReason?: string;
+  correctionField?: string;
+  correctionMessage?: string;
 }
 
 interface DemoContextType {
@@ -29,6 +34,7 @@ interface DemoContextType {
   loginPilot: () => void;
   pilotRegistration: PilotRegistration;
   updatePilotRegistration: (data: Partial<PilotRegistration>) => void;
+  setPilotStatus: (status: UserStatus, extra?: Partial<PilotRegistration>) => void;
   isLoading: boolean;
 }
 
@@ -48,7 +54,8 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
     email: '',
     telefone: '',
     endereco: '',
-    fotoUrl: null
+    fotoUrl: null,
+    status: 'pending'
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -88,7 +95,8 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
         email: '',
         telefone: '',
         endereco: '',
-        fotoUrl: null
+        fotoUrl: null,
+        status: 'pending'
       });
       setIsLoading(false);
     }, 500);
@@ -107,6 +115,9 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setPilotRegistration(prev => ({ ...prev, ...data }));
   };
 
+  const setPilotStatus = (status: UserStatus, extra?: Partial<PilotRegistration>) => {
+    setPilotRegistration(prev => ({ ...prev, status, ...extra }));
+  };
 
   return (
     <DemoContext.Provider value={{
@@ -120,6 +131,7 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
       loginPilot,
       pilotRegistration,
       updatePilotRegistration,
+      setPilotStatus,
       isLoading
     }}>
       {children}
