@@ -90,7 +90,7 @@ function NotificationsPage() {
       <Banner 
         variant="info" 
         className="mb-6"
-        message="Demonstração local: estas notificações e suas ações existem apenas nesta interface e não representam avisos reais."
+        description="Demonstração local: estas notificações e suas ações existem apenas nesta interface e não representam avisos reais."
       />
 
       <div className="flex items-center justify-between mb-6">
