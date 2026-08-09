@@ -1,11 +1,11 @@
 import { createFileRoute, useNavigate, useParams, Outlet } from "@tanstack/react-router";
 import { useState, useEffect, useMemo, useRef } from "react";
-import { 
-  ArrowLeft, 
-  MessageSquare, 
-  Phone, 
-  ShieldCheck, 
-  Share2, 
+import {
+  ArrowLeft,
+  MessageSquare,
+  Phone,
+  ShieldCheck,
+  Share2,
   AlertTriangle,
   Clock,
   Navigation,
@@ -21,7 +21,7 @@ import {
   CheckCircle2,
   Lock,
   MessageCircle,
-  EyeOff
+  EyeOff,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -43,13 +43,13 @@ export const Route = createFileRoute("/passageiro/corrida/$rideId")({
   component: ActiveRideScreen,
 });
 
-type ConnectionStatus = 'stable' | 'unstable' | 'stopped' | 'reconnecting';
+type ConnectionStatus = "stable" | "unstable" | "stopped" | "reconnecting";
 
 function ActiveRideScreen() {
-  const { rideId } = useParams({ from: '/passageiro/corrida/$rideId' });
+  const { rideId } = useParams({ from: "/passageiro/corrida/$rideId" });
   const navigate = useNavigate();
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
-  const [connection, setConnection] = useState<ConnectionStatus>('stable');
+  const [connection, setConnection] = useState<ConnectionStatus>("stable");
   const [eta, setEta] = useState(4);
   const [distanceMeters, setDistanceMeters] = useState(2500); // Começa com 2.5km
   const [progress, setProgress] = useState(0); // 0 a 100
@@ -73,8 +73,8 @@ function ActiveRideScreen() {
     vehicle: {
       model: "Honda CG 160",
       color: "Vermelha",
-      plate: "ABC1D23"
-    }
+      plate: "ABC1D23",
+    },
   };
 
   // Simulação de movimento e conexão
@@ -83,31 +83,32 @@ function ActiveRideScreen() {
     const handleSimulateArrival = () => {
       handlePilotArrival();
     };
-    
+
     const handleSimulateTimeOut = () => {
       setWaitTime(0);
       toast.error("Simulação: Tempo de espera esgotado.");
     };
 
-    window.addEventListener('simular-chegada', handleSimulateArrival);
-    window.addEventListener('simular-tempo-esgotado', handleSimulateTimeOut);
+    window.addEventListener("simular-chegada", handleSimulateArrival);
+    window.addEventListener("simular-tempo-esgotado", handleSimulateTimeOut);
 
-    if (hasArrived) return () => {
-      window.removeEventListener('simular-chegada', handleSimulateArrival);
-      window.removeEventListener('simular-tempo-esgotado', handleSimulateTimeOut);
-    };
+    if (hasArrived)
+      return () => {
+        window.removeEventListener("simular-chegada", handleSimulateArrival);
+        window.removeEventListener("simular-tempo-esgotado", handleSimulateTimeOut);
+      };
 
     const interval = setInterval(() => {
       // Movimento simulado
-      if (connection !== 'reconnecting' && connection !== 'stopped') {
-        setProgress(prev => {
+      if (connection !== "reconnecting" && connection !== "stopped") {
+        setProgress((prev) => {
           if (prev >= 100) return 100;
           return prev + 0.8;
         });
-        
+
         // Atualiza distância baseada no progresso (de 2500m até 0m)
-        setDistanceMeters(prev => {
-          const next = 2500 - (progress * 25);
+        setDistanceMeters((prev) => {
+          const next = 2500 - progress * 25;
           return next < 0 ? 0 : next;
         });
 
@@ -116,16 +117,16 @@ function ActiveRideScreen() {
           setIsNearAlertVisible(true);
           toast.info("Seu piloto está próximo! Prepare-se para o embarque.", {
             icon: <Info size={16} className="text-blue-500" />,
-            duration: 5000
+            duration: 5000,
           });
         }
-        
+
         // Atualiza ETA conforme progride
         if (progress > 25 && eta === 4) setEta(3);
         if (progress > 50 && eta === 3) setEta(2);
         if (progress > 75 && eta === 2) setEta(1);
         if (progress >= 95 && eta === 1) setEta(0);
-        
+
         // Auto-chegada se atingir 100%
         if (progress >= 99 && !hasArrived) {
           handlePilotArrival();
@@ -134,17 +135,16 @@ function ActiveRideScreen() {
 
       // Simulação de oscilação de sinal (aleatória)
       const rand = Math.random();
-      if (rand > 0.95) setConnection('reconnecting');
-      else if (rand > 0.90) setConnection('unstable');
-      else if (rand > 0.85) setConnection('stopped');
-      else if (rand < 0.20) setConnection('stable');
-
+      if (rand > 0.95) setConnection("reconnecting");
+      else if (rand > 0.9) setConnection("unstable");
+      else if (rand > 0.85) setConnection("stopped");
+      else if (rand < 0.2) setConnection("stable");
     }, 1500);
 
     return () => {
       clearInterval(interval);
-      window.removeEventListener('simular-chegada', handleSimulateArrival);
-      window.removeEventListener('simular-tempo-esgotado', handleSimulateTimeOut);
+      window.removeEventListener("simular-chegada", handleSimulateArrival);
+      window.removeEventListener("simular-tempo-esgotado", handleSimulateTimeOut);
     };
   }, [progress, connection, eta, distanceMeters, hasArrived, isNearAlertVisible]);
 
@@ -153,11 +153,11 @@ function ActiveRideScreen() {
     let timer: any;
     if (isWaitTimerActive && waitTime > 0) {
       timer = setInterval(() => {
-        setWaitTime(prev => prev - 1);
+        setWaitTime((prev) => prev - 1);
       }, 1000);
     } else if (waitTime === 0 && isWaitTimerActive) {
       toast.error("O piloto já pode cancelar por não comparecimento.", {
-        duration: 8000
+        duration: 8000,
       });
       setIsWaitTimerActive(false); // Para o timer no zero
     }
@@ -172,14 +172,14 @@ function ActiveRideScreen() {
     setIsWaitTimerActive(true);
     toast.success("O piloto Carlos H. chegou ao local de embarque!", {
       duration: 5000,
-      icon: <CheckCircle2 className="text-emerald-500" />
+      icon: <CheckCircle2 className="text-emerald-500" />,
     });
   };
 
   const formatWaitTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, '0')}`;
+    return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
   const handleQuickMessage = (msg: string) => {
@@ -190,13 +190,11 @@ function ActiveRideScreen() {
     navigate({ to: "/passageiro/denunciar/$rideId", params: { rideId: rideId || "" } });
   };
 
-
   const confirmReportDivergent = () => {
     toast.warning("Denúncia enviada. Você será redirecionado para o cancelamento protegido.");
     setIsDivergentVehicleAlertOpen(false);
     navigate({ to: "/passageiro/cancelar/$rideId", params: { rideId: rideId || "" } });
   };
-
 
   const handleCall = () => {
     toast.info("Iniciando chamada protegida Rovya...");
@@ -218,8 +216,7 @@ function ActiveRideScreen() {
     navigate({ to: "/passageiro/cancelar/$rideId", params: { rideId: rideId || "" } });
   };
 
-
-  if (window.location.pathname.includes('/em-andamento')) {
+  if (window.location.pathname.includes("/em-andamento")) {
     return <Outlet />;
   }
 
@@ -227,60 +224,72 @@ function ActiveRideScreen() {
     <div className="flex min-h-screen flex-col bg-porcelain font-sans text-navy overflow-hidden">
       {/* Mapa Esquemático de Fundo (Tela Cheia) */}
       <div className="absolute inset-0 bg-slate-100 z-0">
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(#111827 1px, transparent 1px)', backgroundSize: '32px 32px' }}></div>
-        
+        <div
+          className="absolute inset-0 opacity-10"
+          style={{
+            backgroundImage: "radial-gradient(#111827 1px, transparent 1px)",
+            backgroundSize: "32px 32px",
+          }}
+        ></div>
+
         {/* Rota Animada */}
         <svg className="absolute inset-0 w-full h-full">
-           <path 
-             d="M 100 200 L 250 400 L 400 300" 
-             fill="none" 
-             stroke="#E2E8F0" 
-             strokeWidth="8" 
-             strokeLinecap="round"
-           />
-           <path 
-             d="M 100 200 L 250 400 L 400 300" 
-             fill="none" 
-             stroke="#2F80ED" 
-             strokeWidth="8" 
-             strokeLinecap="round"
-             strokeDasharray="400"
-             strokeDashoffset={400 - (progress * 4)}
-             className="transition-all duration-1000 ease-linear"
-           />
-           
-           {/* Marcador do Piloto (Moto) */}
-           <g 
-             transform={`translate(${100 + (progress * 3)}, ${200 + (progress * 1)})`}
-             className="transition-all duration-1000 ease-linear"
-           >
-             <circle r="20" fill="white" className="shadow-lg" />
-             <circle r="18" fill="#F97316" className={connection === 'reconnecting' ? 'animate-pulse opacity-50' : ''} />
-             <foreignObject x="-10" y="-10" width="20" height="20">
-               <Navigation size={20} className="text-white rotate-45" fill="currentColor" />
-             </foreignObject>
-           </g>
+          <path
+            d="M 100 200 L 250 400 L 400 300"
+            fill="none"
+            stroke="#E2E8F0"
+            strokeWidth="8"
+            strokeLinecap="round"
+          />
+          <path
+            d="M 100 200 L 250 400 L 400 300"
+            fill="none"
+            stroke="#2F80ED"
+            strokeWidth="8"
+            strokeLinecap="round"
+            strokeDasharray="400"
+            strokeDashoffset={400 - progress * 4}
+            className="transition-all duration-1000 ease-linear"
+          />
 
-           {/* Marcador de Embarque (Destino do Piloto agora) */}
-           <g transform="translate(400, 300)">
-             <circle r="8" fill="#2F80ED" className="animate-ping opacity-20" />
-             <circle r="4" fill="#2F80ED" />
-           </g>
+          {/* Marcador do Piloto (Moto) */}
+          <g
+            transform={`translate(${100 + progress * 3}, ${200 + progress * 1})`}
+            className="transition-all duration-1000 ease-linear"
+          >
+            <circle r="20" fill="white" className="shadow-lg" />
+            <circle
+              r="18"
+              fill="#F97316"
+              className={connection === "reconnecting" ? "animate-pulse opacity-50" : ""}
+            />
+            <foreignObject x="-10" y="-10" width="20" height="20">
+              <Navigation size={20} className="text-white rotate-45" fill="currentColor" />
+            </foreignObject>
+          </g>
+
+          {/* Marcador de Embarque (Destino do Piloto agora) */}
+          <g transform="translate(400, 300)">
+            <circle r="8" fill="#2F80ED" className="animate-ping opacity-20" />
+            <circle r="4" fill="#2F80ED" />
+          </g>
         </svg>
 
         {/* Indicadores Flutuantes no Mapa */}
         <div className="absolute top-16 left-6 right-6 flex flex-col gap-3">
           {/* Status de Conexão */}
           <div className="self-start bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full border border-slate-100 shadow-sm flex items-center gap-2">
-            {connection === 'stable' && <Signal size={12} className="text-emerald-500" />}
-            {connection === 'unstable' && <SignalLow size={12} className="text-amber-500" />}
-            {connection === 'stopped' && <AlertTriangle size={12} className="text-amber-500" />}
-            {connection === 'reconnecting' && <WifiOff size={12} className="text-red-500 animate-pulse" />}
+            {connection === "stable" && <Signal size={12} className="text-emerald-500" />}
+            {connection === "unstable" && <SignalLow size={12} className="text-amber-500" />}
+            {connection === "stopped" && <AlertTriangle size={12} className="text-amber-500" />}
+            {connection === "reconnecting" && (
+              <WifiOff size={12} className="text-red-500 animate-pulse" />
+            )}
             <span className="text-[9px] font-black uppercase tracking-widest text-navy">
-              {connection === 'stable' && "GPS estável"}
-              {connection === 'unstable' && "GPS instável"}
-              {connection === 'stopped' && "Piloto parado"}
-              {connection === 'reconnecting' && "Reconectando..."}
+              {connection === "stable" && "GPS estável"}
+              {connection === "unstable" && "GPS instável"}
+              {connection === "stopped" && "Piloto parado"}
+              {connection === "reconnecting" && "Reconectando..."}
             </span>
           </div>
 
@@ -291,8 +300,12 @@ function ActiveRideScreen() {
                 <Navigation size={18} className="animate-pulse" />
               </div>
               <div className="flex flex-col">
-                <span className="text-[10px] font-black uppercase tracking-[0.1em]">Piloto Próximo</span>
-                <span className="text-xs font-bold leading-tight">O Carlos H. está a menos de 500m.</span>
+                <span className="text-[10px] font-black uppercase tracking-[0.1em]">
+                  Piloto Próximo
+                </span>
+                <span className="text-xs font-bold leading-tight">
+                  O Carlos H. está a menos de 500m.
+                </span>
               </div>
             </div>
           )}
@@ -303,20 +316,27 @@ function ActiveRideScreen() {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="h-2 w-2 rounded-full bg-emerald-500 animate-ping"></div>
-                  <span className="text-[10px] font-black uppercase tracking-widest text-emerald-600">Piloto no local</span>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-emerald-600">
+                    Piloto no local
+                  </span>
                 </div>
-                <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full ${waitTime < 60 ? 'bg-red-50 text-red-600' : 'bg-slate-50 text-navy'}`}>
-                  <Clock size={12} className={waitTime < 60 ? 'animate-pulse' : ''} />
+                <div
+                  className={`flex items-center gap-1.5 px-3 py-1 rounded-full ${waitTime < 60 ? "bg-red-50 text-red-600" : "bg-slate-50 text-navy"}`}
+                >
+                  <Clock size={12} className={waitTime < 60 ? "animate-pulse" : ""} />
                   <span className="text-xs font-black italic">{formatWaitTime(waitTime)}</span>
                 </div>
               </div>
               <div className="space-y-1">
                 <p className="text-[11px] font-bold text-navy leading-tight">
-                  Identifique o piloto pela placa <span className="underline decoration-emerald-500 decoration-2 underline-offset-2 tracking-widest">{pilot.vehicle.plate}</span>
+                  Identifique o piloto pela placa{" "}
+                  <span className="underline decoration-emerald-500 decoration-2 underline-offset-2 tracking-widest">
+                    {pilot.vehicle.plate}
+                  </span>
                 </p>
                 <p className="text-[9px] text-slate-500 font-medium">
-                  {waitTime > 0 
-                    ? "O tempo de espera cortesia está correndo." 
+                  {waitTime > 0
+                    ? "O tempo de espera cortesia está correndo."
                     : "Tempo esgotado. O piloto pode cancelar a qualquer momento."}
                 </p>
               </div>
@@ -326,15 +346,23 @@ function ActiveRideScreen() {
           {/* Card de ETA (Oculto se chegou) */}
           {!hasArrived && (
             <div className="bg-navy text-white px-5 py-3 rounded-2xl shadow-xl self-start flex items-center gap-4">
-               <div className="flex flex-col">
-                 <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Chegada em</span>
-                 <span className="text-xl font-black italic tracking-tighter">{eta > 0 ? `${eta} min` : 'Chegando!'}</span>
-               </div>
-               <div className="h-8 w-px bg-white/10"></div>
-               <div className="flex flex-col">
-                 <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Ponto</span>
-                 <span className="text-[10px] font-black uppercase tracking-tight truncate max-w-[120px]">Av. Getúlio Vargas</span>
-               </div>
+              <div className="flex flex-col">
+                <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">
+                  Chegada em
+                </span>
+                <span className="text-xl font-black italic tracking-tighter">
+                  {eta > 0 ? `${eta} min` : "Chegando!"}
+                </span>
+              </div>
+              <div className="h-8 w-px bg-white/10"></div>
+              <div className="flex flex-col">
+                <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">
+                  Ponto
+                </span>
+                <span className="text-[10px] font-black uppercase tracking-tight truncate max-w-[120px]">
+                  Av. Getúlio Vargas
+                </span>
+              </div>
             </div>
           )}
         </div>
@@ -342,9 +370,11 @@ function ActiveRideScreen() {
 
       {/* Interface Inferior Interativa */}
       <div className="mt-auto z-10">
-        <div className={`bg-white rounded-t-[40px] shadow-[0_-20px_40px_rgba(0,0,0,0.1)] transition-all duration-500 border-t border-slate-100 ${isDetailsOpen ? 'h-[80vh]' : 'h-auto'}`}>
+        <div
+          className={`bg-white rounded-t-[40px] shadow-[0_-20px_40px_rgba(0,0,0,0.1)] transition-all duration-500 border-t border-slate-100 ${isDetailsOpen ? "h-[80vh]" : "h-auto"}`}
+        >
           {/* Handle de expansão */}
-          <div 
+          <div
             onClick={() => setIsDetailsOpen(!isDetailsOpen)}
             className="w-full flex justify-center py-4 cursor-pointer"
           >
@@ -360,16 +390,25 @@ function ActiveRideScreen() {
                     <Lock size={60} />
                   </div>
                   <div className="relative z-10 flex flex-col items-center text-center gap-2">
-                    <span className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400">PIN de Segurança</span>
+                    <span className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400">
+                      PIN de Segurança
+                    </span>
                     <div className="flex gap-3 my-1">
-                      {pin.split('').map((digit, i) => (
-                        <div key={i} className="w-10 h-14 bg-white/10 rounded-xl border border-white/20 flex items-center justify-center">
-                          <span className="text-2xl font-black italic tracking-tighter">{digit}</span>
+                      {pin.split("").map((digit, i) => (
+                        <div
+                          key={i}
+                          className="w-10 h-14 bg-white/10 rounded-xl border border-white/20 flex items-center justify-center"
+                        >
+                          <span className="text-2xl font-black italic tracking-tighter">
+                            {digit}
+                          </span>
                         </div>
                       ))}
                     </div>
                     <p className="text-[10px] text-slate-300 font-medium max-w-[200px] leading-relaxed">
-                      Informe este código ao piloto <span className="text-white font-bold italic underline">após</span> subir no veículo.
+                      Informe este código ao piloto{" "}
+                      <span className="text-white font-bold italic underline">após</span> subir no
+                      veículo.
                     </p>
                   </div>
                 </div>
@@ -380,8 +419,8 @@ function ActiveRideScreen() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <div className="relative">
-                  <img 
-                    src={pilot.avatar} 
+                  <img
+                    src={pilot.avatar}
                     alt={pilot.name}
                     className="h-16 w-16 rounded-[22px] object-cover border-2 border-slate-50 shadow-sm"
                   />
@@ -391,7 +430,9 @@ function ActiveRideScreen() {
                 </div>
                 <div className="flex flex-col">
                   <div className="flex items-center gap-2">
-                    <h2 className="text-xl font-black italic tracking-tighter text-navy">{pilot.name}</h2>
+                    <h2 className="text-xl font-black italic tracking-tighter text-navy">
+                      {pilot.name}
+                    </h2>
                     <span className="text-xs font-bold text-rovya-orange flex items-center gap-0.5">
                       {pilot.rating}
                     </span>
@@ -403,13 +444,13 @@ function ActiveRideScreen() {
               </div>
 
               <div className="flex gap-2">
-                <button 
+                <button
                   onClick={handleChat}
                   className="h-12 w-12 bg-slate-50 text-navy rounded-2xl flex items-center justify-center border border-slate-100 hover:bg-slate-100 transition-all active:scale-95"
                 >
                   <MessageSquare size={20} strokeWidth={2.5} />
                 </button>
-                <button 
+                <button
                   onClick={handleCall}
                   className="h-12 w-12 bg-navy text-white rounded-2xl flex items-center justify-center hover:bg-navy/90 transition-all active:scale-95 shadow-md"
                 >
@@ -422,47 +463,66 @@ function ActiveRideScreen() {
             {hasArrived && (
               <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 space-y-3 pt-2">
                 <div className="flex gap-2">
-                   <button 
-                     onClick={() => handleQuickMessage("Já estou saindo!")}
-                     className="flex-1 py-3 px-4 bg-slate-50 border border-slate-100 rounded-2xl text-[10px] font-black uppercase tracking-widest text-navy hover:bg-slate-100 transition-all"
-                   >
-                     Já estou saindo
-                   </button>
-                   <button 
-                     onClick={() => handleQuickMessage("Estou no portão!")}
-                     className="flex-1 py-3 px-4 bg-slate-50 border border-slate-100 rounded-2xl text-[10px] font-black uppercase tracking-widest text-navy hover:bg-slate-100 transition-all"
-                   >
-                     Estou no portão
-                   </button>
+                  <button
+                    onClick={() => handleQuickMessage("Já estou saindo!")}
+                    className="flex-1 py-3 px-4 bg-slate-50 border border-slate-100 rounded-2xl text-[10px] font-black uppercase tracking-widest text-navy hover:bg-slate-100 transition-all"
+                  >
+                    Já estou saindo
+                  </button>
+                  <button
+                    onClick={() => handleQuickMessage("Estou no portão!")}
+                    className="flex-1 py-3 px-4 bg-slate-50 border border-slate-100 rounded-2xl text-[10px] font-black uppercase tracking-widest text-navy hover:bg-slate-100 transition-all"
+                  >
+                    Estou no portão
+                  </button>
                 </div>
-                 <Button 
-                   onClick={() => navigate({ to: "/passageiro/corrida/$rideId/concluida", params: { rideId: "RY-2026-00842" } })}
-                   className="w-full py-6 rounded-2xl bg-rovya-orange hover:bg-rovya-orange/90 text-white font-black italic uppercase tracking-widest shadow-lg active:scale-[0.98] transition-all"
-                 >
-                   <Navigation size={18} className="mr-2 rotate-45" fill="currentColor" />
-                   Simular Início da Corrida
-                 </Button>
-               </div>
+                <Button
+                  onClick={() =>
+                    navigate({
+                      to: "/passageiro/corrida/$rideId/concluida",
+                      params: { rideId: "RY-2026-00842" },
+                    })
+                  }
+                  className="w-full py-6 rounded-2xl bg-rovya-orange hover:bg-rovya-orange/90 text-white font-black italic uppercase tracking-widest shadow-lg active:scale-[0.98] transition-all"
+                >
+                  <Navigation size={18} className="mr-2 rotate-45" fill="currentColor" />
+                  Simular Início da Corrida
+                </Button>
+              </div>
             )}
 
             {/* Veículo e Segurança */}
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100">
-                <span className="block text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">Veículo</span>
+                <span className="block text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">
+                  Veículo
+                </span>
                 <div className="flex items-center gap-2">
                   <div className="h-6 w-6 rounded-lg bg-rovya-orange/10 flex items-center justify-center">
-                    <Navigation size={12} className="text-rovya-orange rotate-45" fill="currentColor" />
+                    <Navigation
+                      size={12}
+                      className="text-rovya-orange rotate-45"
+                      fill="currentColor"
+                    />
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-[10px] font-black text-navy uppercase">{pilot.vehicle.model}</span>
-                    <span className="text-[9px] font-bold text-slate-400 uppercase">{pilot.vehicle.color}</span>
+                    <span className="text-[10px] font-black text-navy uppercase">
+                      {pilot.vehicle.model}
+                    </span>
+                    <span className="text-[9px] font-bold text-slate-400 uppercase">
+                      {pilot.vehicle.color}
+                    </span>
                   </div>
                 </div>
               </div>
               <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100 relative overflow-hidden">
-                <span className="block text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">Placa Completa</span>
+                <span className="block text-[8px] font-black text-slate-400 uppercase tracking-widest mb-1">
+                  Placa Completa
+                </span>
                 <div className="flex items-center justify-between">
-                  <span className="text-[11px] font-black text-navy tracking-widest">{pilot.vehicle.plate}</span>
+                  <span className="text-[11px] font-black text-navy tracking-widest">
+                    {pilot.vehicle.plate}
+                  </span>
                   <div className="h-2 w-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]"></div>
                 </div>
                 {/* Visual da Placa Mercosul simulado */}
@@ -472,79 +532,100 @@ function ActiveRideScreen() {
 
             {/* Ações Secundárias */}
             <div className="flex items-center justify-between gap-4 py-2">
-               <button 
-                 onClick={handleShare}
-                 className="flex-1 flex flex-col items-center gap-2 py-3 bg-white border border-slate-100 rounded-2xl hover:bg-slate-50 transition-colors"
-               >
-                 <Share2 size={18} className="text-slate-400" />
-                 <span className="text-[9px] font-black uppercase tracking-widest text-slate-500">Compartilhar</span>
-               </button>
-               <button 
-                 onClick={handleSafety}
-                 className="flex-1 flex flex-col items-center gap-2 py-3 bg-white border border-slate-100 rounded-2xl hover:bg-slate-50 transition-colors"
-               >
-                 <ShieldCheck size={18} className="text-rovya-blue" />
-                 <span className="text-[9px] font-black uppercase tracking-widest text-navy">Segurança</span>
-               </button>
-               <button 
-                  onClick={() => setIsCancelDialogOpen(true)}
-                  className="flex-1 flex flex-col items-center gap-2 py-3 bg-white border border-slate-100 rounded-2xl hover:bg-red-50 transition-colors group"
-                >
-                  <X size={18} className="text-slate-300 group-hover:text-red-500" />
-                  <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 group-hover:text-red-500">Cancelar</span>
-                </button>
+              <button
+                onClick={handleShare}
+                className="flex-1 flex flex-col items-center gap-2 py-3 bg-white border border-slate-100 rounded-2xl hover:bg-slate-50 transition-colors"
+              >
+                <Share2 size={18} className="text-slate-400" />
+                <span className="text-[9px] font-black uppercase tracking-widest text-slate-500">
+                  Compartilhar
+                </span>
+              </button>
+              <button
+                onClick={handleSafety}
+                className="flex-1 flex flex-col items-center gap-2 py-3 bg-white border border-slate-100 rounded-2xl hover:bg-slate-50 transition-colors"
+              >
+                <ShieldCheck size={18} className="text-rovya-blue" />
+                <span className="text-[9px] font-black uppercase tracking-widest text-navy">
+                  Segurança
+                </span>
+              </button>
+              <button
+                onClick={() => setIsCancelDialogOpen(true)}
+                className="flex-1 flex flex-col items-center gap-2 py-3 bg-white border border-slate-100 rounded-2xl hover:bg-red-50 transition-colors group"
+              >
+                <X size={18} className="text-slate-300 group-hover:text-red-500" />
+                <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 group-hover:text-red-500">
+                  Cancelar
+                </span>
+              </button>
             </div>
-
 
             {/* Área Expansível (Mais Detalhes) */}
             {isDetailsOpen && (
               <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 space-y-6 pt-4 border-t border-slate-50">
-                 {/* Selos e Conquistas */}
-                 <section>
-                   <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-3">Conquistas do Piloto</h3>
-                   <div className="flex flex-wrap gap-2">
-                      {pilot.badges.map(badge => (
-                        <div key={badge} className="px-3 py-1.5 bg-orange-50 text-rovya-orange rounded-lg text-[9px] font-black uppercase tracking-widest border border-orange-100 flex items-center gap-2">
-                          <Star size={12} fill="currentColor" />
-                          {badge}
-                        </div>
-                      ))}
-                      <div className="px-3 py-1.5 bg-blue-50 text-rovya-blue rounded-lg text-[9px] font-black uppercase tracking-widest border border-blue-100 flex items-center gap-2">
-                        <ShieldCheck size={12} fill="currentColor" />
-                        Identidade Verificada
+                {/* Selos e Conquistas */}
+                <section>
+                  <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-3">
+                    Conquistas do Piloto
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {pilot.badges.map((badge) => (
+                      <div
+                        key={badge}
+                        className="px-3 py-1.5 bg-orange-50 text-rovya-orange rounded-lg text-[9px] font-black uppercase tracking-widest border border-orange-100 flex items-center gap-2"
+                      >
+                        <Star size={12} fill="currentColor" />
+                        {badge}
                       </div>
-                   </div>
-                 </section>
+                    ))}
+                    <div className="px-3 py-1.5 bg-blue-50 text-rovya-blue rounded-lg text-[9px] font-black uppercase tracking-widest border border-blue-100 flex items-center gap-2">
+                      <ShieldCheck size={12} fill="currentColor" />
+                      Identidade Verificada
+                    </div>
+                  </div>
+                </section>
 
-                 {/* Resumo Financeiro da Corrida */}
-                 <section className="bg-slate-50 rounded-3xl p-6 space-y-4">
-                    <div className="flex justify-between items-center">
-                       <h3 className="text-[10px] font-black uppercase tracking-widest text-navy">Resumo do Pagamento</h3>
-                       <span className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded text-[8px] font-black uppercase">Presencial</span>
+                {/* Resumo Financeiro da Corrida */}
+                <section className="bg-slate-50 rounded-3xl p-6 space-y-4">
+                  <div className="flex justify-between items-center">
+                    <h3 className="text-[10px] font-black uppercase tracking-widest text-navy">
+                      Resumo do Pagamento
+                    </h3>
+                    <span className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded text-[8px] font-black uppercase">
+                      Presencial
+                    </span>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-[10px]">
+                      <span className="text-slate-500 font-medium uppercase tracking-widest">
+                        Valor da Corrida
+                      </span>
+                      <span className="font-black text-navy tracking-tight italic">R$ 10,00</span>
                     </div>
-                    <div className="space-y-2">
-                       <div className="flex justify-between text-[10px]">
-                          <span className="text-slate-500 font-medium uppercase tracking-widest">Valor da Corrida</span>
-                          <span className="font-black text-navy tracking-tight italic">R$ 10,00</span>
-                       </div>
-                       <div className="flex justify-between text-[10px]">
-                          <span className="text-slate-500 font-medium uppercase tracking-widest">Forma Escolhida</span>
-                          <span className="font-black text-navy tracking-tight italic">PIX DIRETO AO PILOTO</span>
-                       </div>
+                    <div className="flex justify-between text-[10px]">
+                      <span className="text-slate-500 font-medium uppercase tracking-widest">
+                        Forma Escolhida
+                      </span>
+                      <span className="font-black text-navy tracking-tight italic">
+                        PIX DIRETO AO PILOTO
+                      </span>
                     </div>
-                    <div className="p-4 bg-white rounded-2xl border border-slate-100 flex gap-3">
-                       <Info size={16} className="text-rovya-blue shrink-0" />
-                       <p className="text-[9px] text-slate-500 font-medium leading-relaxed">
-                         O valor final é pago diretamente ao Carlos H. no desembarque. A Rovya não retém pagamentos online nesta modalidade.
-                       </p>
-                    </div>
-                 </section>
-
-                 <div className="pt-4">
-                    <p className="text-[8px] text-slate-300 font-bold uppercase tracking-[0.2em] text-center leading-relaxed">
-                      DADOS PRIVADOS PROTEGIDOS • NENHUM DOCUMENTO SENSÍVEL EXPOSTO
+                  </div>
+                  <div className="p-4 bg-white rounded-2xl border border-slate-100 flex gap-3">
+                    <Info size={16} className="text-rovya-blue shrink-0" />
+                    <p className="text-[9px] text-slate-500 font-medium leading-relaxed">
+                      O valor final é pago diretamente ao Carlos H. no desembarque. A Rovya não
+                      retém pagamentos online nesta modalidade.
                     </p>
-                 </div>
+                  </div>
+                </section>
+
+                <div className="pt-4">
+                  <p className="text-[8px] text-slate-300 font-bold uppercase tracking-[0.2em] text-center leading-relaxed">
+                    DADOS PRIVADOS PROTEGIDOS • NENHUM DOCUMENTO SENSÍVEL EXPOSTO
+                  </p>
+                </div>
               </div>
             )}
           </div>
@@ -555,32 +636,64 @@ function ActiveRideScreen() {
       <AlertDialog open={isCancelDialogOpen} onOpenChange={setIsCancelDialogOpen}>
         <AlertDialogContent className="rounded-[32px] p-8 max-w-[90vw] sm:max-w-md">
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-xl font-black italic uppercase tracking-tight text-navy">Cancelar Corrida?</AlertDialogTitle>
+            <AlertDialogTitle className="text-xl font-black italic uppercase tracking-tight text-navy">
+              Cancelar Corrida?
+            </AlertDialogTitle>
             <AlertDialogDescription className="text-xs text-slate-500 leading-relaxed pt-2">
-              O piloto já está a caminho. Cancelamentos frequentes podem resultar em suspensão temporária da sua conta.
+              O piloto já está a caminho. Cancelamentos frequentes podem resultar em suspensão
+              temporária da sua conta.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          
+
           <div className="py-6">
             <RadioGroup value={cancelReason} onValueChange={setCancelReason} className="space-y-3">
               <div className="flex items-center space-x-3 p-4 bg-slate-50 rounded-2xl border border-slate-100 cursor-pointer">
-                <RadioGroupItem value="too_long" id="too_long" className="text-rovya-orange border-slate-300" />
-                <Label htmlFor="too_long" className="flex-1 text-[11px] font-bold uppercase tracking-wider text-navy cursor-pointer">Piloto não se move</Label>
+                <RadioGroupItem
+                  value="too_long"
+                  id="too_long"
+                  className="text-rovya-orange border-slate-300"
+                />
+                <Label
+                  htmlFor="too_long"
+                  className="flex-1 text-[11px] font-bold uppercase tracking-wider text-navy cursor-pointer"
+                >
+                  Piloto não se move
+                </Label>
               </div>
               <div className="flex items-center space-x-3 p-4 bg-slate-50 rounded-2xl border border-slate-100 cursor-pointer">
-                <RadioGroupItem value="mistake" id="mistake" className="text-rovya-orange border-slate-300" />
-                <Label htmlFor="mistake" className="flex-1 text-[11px] font-bold uppercase tracking-wider text-navy cursor-pointer">Mudei de ideia</Label>
+                <RadioGroupItem
+                  value="mistake"
+                  id="mistake"
+                  className="text-rovya-orange border-slate-300"
+                />
+                <Label
+                  htmlFor="mistake"
+                  className="flex-1 text-[11px] font-bold uppercase tracking-wider text-navy cursor-pointer"
+                >
+                  Mudei de ideia
+                </Label>
               </div>
               <div className="flex items-center space-x-3 p-4 bg-slate-50 rounded-2xl border border-slate-100 cursor-pointer">
-                <RadioGroupItem value="unsafe" id="unsafe" className="text-rovya-orange border-slate-300" />
-                <Label htmlFor="unsafe" className="flex-1 text-[11px] font-bold uppercase tracking-wider text-navy cursor-pointer">Não me sinto seguro</Label>
+                <RadioGroupItem
+                  value="unsafe"
+                  id="unsafe"
+                  className="text-rovya-orange border-slate-300"
+                />
+                <Label
+                  htmlFor="unsafe"
+                  className="flex-1 text-[11px] font-bold uppercase tracking-wider text-navy cursor-pointer"
+                >
+                  Não me sinto seguro
+                </Label>
               </div>
             </RadioGroup>
           </div>
 
           <AlertDialogFooter className="flex-col sm:flex-row gap-3">
-            <AlertDialogCancel className="rounded-2xl h-14 text-[11px] font-black uppercase border-slate-200 mt-0">Manter Corrida</AlertDialogCancel>
-            <button 
+            <AlertDialogCancel className="rounded-2xl h-14 text-[11px] font-black uppercase border-slate-200 mt-0">
+              Manter Corrida
+            </AlertDialogCancel>
+            <button
               onClick={handleCancelRide}
               className="bg-red-500 text-white rounded-2xl h-14 px-6 text-[11px] font-black uppercase tracking-widest hover:bg-red-600 transition-all flex-1"
             >
@@ -599,19 +712,21 @@ function ActiveRideScreen() {
               Veículo Diferente?
             </AlertDialogTitle>
             <AlertDialogDescription className="text-xs text-slate-500 leading-relaxed pt-2">
-              Por sua segurança, nunca embarque em um veículo com placa ou modelo diferente do que aparece no app.
+              Por sua segurança, nunca embarque em um veículo com placa ou modelo diferente do que
+              aparece no app.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <div className="py-4 space-y-4">
             <div className="p-4 bg-red-50 rounded-2xl border border-red-100 flex gap-3">
               <ShieldCheck size={18} className="text-red-600 shrink-0" />
               <p className="text-[10px] text-red-700 font-bold leading-relaxed">
-                Reportar esta divergência cancelará a corrida imediatamente sem penalidades. (Simulação de Segurança Rovya)
+                Reportar esta divergência cancelará a corrida imediatamente sem penalidades.
+                (Simulação de Segurança Rovya)
               </p>
             </div>
           </div>
           <AlertDialogFooter className="flex-col gap-2">
-            <AlertDialogAction 
+            <AlertDialogAction
               onClick={confirmReportDivergent}
               className="w-full py-6 rounded-2xl bg-red-600 hover:bg-red-700 text-white font-black italic uppercase tracking-widest border-none"
             >
