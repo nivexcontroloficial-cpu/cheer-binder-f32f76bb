@@ -65,6 +65,14 @@ function DemoSelector() {
               <MessageSquare size={10} strokeWidth={2.5} />
               Chat com Piloto (Direto)
             </Link>
+            <Link 
+              to="/passageiro/corrida/$rideId/concluida"
+              params={{ rideId: "RY-2026-00842" }}
+              className="w-full py-2 bg-slate-800 text-white rounded-xl text-[9px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-slate-900 transition-all active:scale-95"
+            >
+              <CheckCircle2 size={10} strokeWidth={2.5} />
+              Corrida Concluída (Direto)
+            </Link>
             <button 
               onClick={() => navigate({ to: '/passageiro/boas-vindas' })}
               className="w-full py-3 bg-blue-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-blue-700 transition-all active:scale-95 rovya-shadow"
