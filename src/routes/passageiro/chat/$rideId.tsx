@@ -248,7 +248,9 @@ function ChatScreen() {
           <div className="flex items-center gap-3">
             <div className="relative">
               <div className="h-10 w-10 rounded-xl bg-navy flex items-center justify-center border border-slate-100">
-                <span className="text-white font-black italic tracking-tighter text-sm uppercase">CH</span>
+                <span className="text-white font-black italic tracking-tighter text-sm uppercase">
+                  CH
+                </span>
               </div>
               <div className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-blue-500 border-2 border-white"></div>
             </div>
@@ -305,9 +307,7 @@ function ChatScreen() {
                 </button>
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
-                    <button
-                      className="flex items-center gap-3 w-full p-4 rounded-2xl bg-red-50 text-red-600 hover:bg-red-100 transition-colors text-left"
-                    >
+                    <button className="flex items-center gap-3 w-full p-4 rounded-2xl bg-red-50 text-red-600 hover:bg-red-100 transition-colors text-left">
                       <Flag size={18} />
                       <span className="text-xs font-bold uppercase tracking-widest">
                         Denunciar Conversa
@@ -492,7 +492,8 @@ function ChatScreen() {
                 Simulação de chamada
               </h3>
               <p className="text-xs font-medium text-slate-500 leading-relaxed">
-                Esta é uma demonstração visual. Nenhuma ligação será realizada e nenhum número será utilizado.
+                Esta é uma demonstração visual. Nenhuma ligação será realizada e nenhum número será
+                utilizado.
               </p>
             </div>
 
@@ -519,4 +520,3 @@ function ChatScreen() {
     </div>
   );
 }
-
