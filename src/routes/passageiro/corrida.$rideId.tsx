@@ -79,7 +79,23 @@ function ActiveRideScreen() {
 
   // Simulação de movimento e conexão
   useEffect(() => {
-    if (hasArrived) return; // Para o movimento se já chegou
+    // Listeners do Simulador
+    const handleSimulateArrival = () => {
+      handlePilotArrival();
+    };
+    
+    const handleSimulateTimeOut = () => {
+      setWaitTime(0);
+      toast.error("Simulação: Tempo de espera esgotado.");
+    };
+
+    window.addEventListener('simular-chegada', handleSimulateArrival);
+    window.addEventListener('simular-tempo-esgotado', handleSimulateTimeOut);
+
+    if (hasArrived) return () => {
+      window.removeEventListener('simular-chegada', handleSimulateArrival);
+      window.removeEventListener('simular-tempo-esgotado', handleSimulateTimeOut);
+    };
 
     const interval = setInterval(() => {
       // Movimento simulado
@@ -96,7 +112,7 @@ function ActiveRideScreen() {
         });
 
         // Alerta de 500m
-        if (distanceMeters <= 500 && distanceMeters > 400 && !isNearAlertVisible) {
+        if (distanceMeters <= 500 && distanceMeters > 450 && !isNearAlertVisible) {
           setIsNearAlertVisible(true);
           toast.info("Seu piloto está próximo! Prepare-se para o embarque.", {
             icon: <Info size={16} className="text-blue-500" />,
@@ -110,7 +126,7 @@ function ActiveRideScreen() {
         if (progress > 75 && eta === 2) setEta(1);
         if (progress >= 95 && eta === 1) setEta(0);
         
-        // Auto-chegada se atingir 100% (ou gatilho manual via simulador)
+        // Auto-chegada se atingir 100%
         if (progress >= 99 && !hasArrived) {
           handlePilotArrival();
         }
@@ -125,20 +141,25 @@ function ActiveRideScreen() {
 
     }, 1500);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearInterval(interval);
+      window.removeEventListener('simular-chegada', handleSimulateArrival);
+      window.removeEventListener('simular-tempo-esgotado', handleSimulateTimeOut);
+    };
   }, [progress, connection, eta, distanceMeters, hasArrived, isNearAlertVisible]);
 
   // Cronômetro de espera
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let timer: any;
     if (isWaitTimerActive && waitTime > 0) {
       timer = setInterval(() => {
         setWaitTime(prev => prev - 1);
       }, 1000);
-    } else if (waitTime === 0) {
+    } else if (waitTime === 0 && isWaitTimerActive) {
       toast.error("O piloto já pode cancelar por não comparecimento.", {
         duration: 8000
       });
+      setIsWaitTimerActive(false); // Para o timer no zero
     }
     return () => clearInterval(timer);
   }, [isWaitTimerActive, waitTime]);
