@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminRouteImport } from './routes/admin'
+import { Route as DesignSystemRouteImport } from './routes/design-system'
 import { Route as PassageiroRouteImport } from './routes/passageiro'
 import { Route as PilotoRouteImport } from './routes/piloto'
 import { Route as SimuladorRouteImport } from './routes/simulador'
@@ -27,6 +28,11 @@ const IndexRoute = IndexRouteImport.update({
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
   path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DesignSystemRoute = DesignSystemRouteImport.update({
+  id: '/design-system',
+  path: '/design-system',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PassageiroRoute = PassageiroRouteImport.update({
@@ -68,6 +74,7 @@ const SimuladorIndexRoute = SimuladorIndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
+  '/design-system': typeof DesignSystemRoute
   '/passageiro': typeof PassageiroRouteWithChildren
   '/piloto': typeof PilotoRouteWithChildren
   '/simulador': typeof SimuladorRouteWithChildren
@@ -78,6 +85,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/design-system': typeof DesignSystemRoute
   '/admin': typeof AdminIndexRoute
   '/passageiro': typeof PassageiroIndexRoute
   '/piloto': typeof PilotoIndexRoute
@@ -87,6 +95,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
+  '/design-system': typeof DesignSystemRoute
   '/passageiro': typeof PassageiroRouteWithChildren
   '/piloto': typeof PilotoRouteWithChildren
   '/simulador': typeof SimuladorRouteWithChildren
@@ -100,6 +109,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/admin'
+    | '/design-system'
     | '/passageiro'
     | '/piloto'
     | '/simulador'
@@ -108,11 +118,13 @@ export interface FileRouteTypes {
     | '/piloto/'
     | '/simulador/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/admin' | '/passageiro' | '/piloto' | '/simulador'
+  to:
+    '/' | '/design-system' | '/admin' | '/passageiro' | '/piloto' | '/simulador'
   id:
     | '__root__'
     | '/'
     | '/admin'
+    | '/design-system'
     | '/passageiro'
     | '/piloto'
     | '/simulador'
@@ -125,6 +137,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
+  DesignSystemRoute: typeof DesignSystemRoute
   PassageiroRoute: typeof PassageiroRouteWithChildren
   PilotoRoute: typeof PilotoRouteWithChildren
   SimuladorRoute: typeof SimuladorRouteWithChildren
@@ -144,6 +157,13 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/design-system': {
+      id: '/design-system'
+      path: '/design-system'
+      fullPath: '/design-system'
+      preLoaderRoute: typeof DesignSystemRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/passageiro': {
@@ -246,6 +266,7 @@ const SimuladorRouteWithChildren = SimuladorRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
+  DesignSystemRoute: DesignSystemRoute,
   PassageiroRoute: PassageiroRouteWithChildren,
   PilotoRoute: PilotoRouteWithChildren,
   SimuladorRoute: SimuladorRouteWithChildren,
