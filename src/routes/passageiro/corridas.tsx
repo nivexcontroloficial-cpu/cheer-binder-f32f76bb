@@ -116,7 +116,7 @@ function RidesHistoryPage() {
                       {ride.id}
                     </p>
                     <p className="text-[9px] text-slate-400 font-bold uppercase tracking-tighter">
-                      {format(new Date(ride.requestedAt), "dd 'de' MMM, HH:mm", { locale: ptBR })}
+                      {ride.requestedAt ? format(new Date(ride.requestedAt), "dd 'de' MMM, HH:mm", { locale: ptBR }) : '-'}
                     </p>
                   </div>
                 </div>
