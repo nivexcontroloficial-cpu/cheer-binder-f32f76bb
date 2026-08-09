@@ -219,9 +219,12 @@ function ActiveRideScreen() {
   };
 
 
+  if (window.location.pathname.includes('/em-andamento')) {
+    return <Outlet />;
+  }
+
   return (
-    <div className="flex min-h-screen flex-col bg-porcelain font-sans text-navy overflow-hidden relative">
-      <Outlet />
+    <div className="flex min-h-screen flex-col bg-porcelain font-sans text-navy overflow-hidden">
       {/* Mapa Esquemático de Fundo (Tela Cheia) */}
       <div className="absolute inset-0 bg-slate-100 z-0">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(#111827 1px, transparent 1px)', backgroundSize: '32px 32px' }}></div>
