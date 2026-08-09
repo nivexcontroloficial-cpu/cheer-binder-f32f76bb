@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, useParams, Outlet } from "@tanstack/react-router";
 import { useState, useEffect, useMemo, useRef } from "react";
 import { 
   ArrowLeft, 
@@ -219,8 +219,13 @@ function ActiveRideScreen() {
   };
 
 
+import { Outlet } from "@tanstack/react-router";
+
+// ... (existing code stays the same)
+
   return (
-    <div className="flex min-h-screen flex-col bg-porcelain font-sans text-navy overflow-hidden">
+    <div className="flex min-h-screen flex-col bg-porcelain font-sans text-navy overflow-hidden relative">
+      <Outlet />
       {/* Mapa Esquemático de Fundo (Tela Cheia) */}
       <div className="absolute inset-0 bg-slate-100 z-0">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(#111827 1px, transparent 1px)', backgroundSize: '32px 32px' }}></div>
