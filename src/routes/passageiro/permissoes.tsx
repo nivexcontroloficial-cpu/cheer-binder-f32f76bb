@@ -4,7 +4,7 @@ import { useState } from "react";
 import { MapPin, Camera, Bell, ShieldCheck, Check, X, ArrowRight, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/permissions")({
+export const Route = createFileRoute("/passageiro/permissoes")({
   component: PermissionsScreen,
 });
 
