@@ -51,9 +51,16 @@ function ActiveRideScreen() {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [connection, setConnection] = useState<ConnectionStatus>('stable');
   const [eta, setEta] = useState(4);
+  const [distanceMeters, setDistanceMeters] = useState(2500); // Começa com 2.5km
   const [progress, setProgress] = useState(0); // 0 a 100
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
   const [cancelReason, setCancelReason] = useState("");
+  const [hasArrived, setHasArrived] = useState(false);
+  const [isNearAlertVisible, setIsNearAlertVisible] = useState(false);
+  const [waitTime, setWaitTime] = useState(300); // 5 minutos em segundos
+  const [isWaitTimerActive, setIsWaitTimerActive] = useState(false);
+  const [pin] = useState("4827");
+  const [isDivergentVehicleAlertOpen, setIsDivergentVehicleAlertOpen] = useState(false);
 
   // Dados Mock Obrigatórios do Piloto
   const pilot = {
