@@ -50,11 +50,12 @@ function DemoSelector() {
               Tela de Busca (Direto)
             </Link>
             <Link 
-              to="/passageiro/corrida/$rideId"
+              to="/passageiro/corrida/$rideId/em-andamento"
               params={{ rideId: "ride-active-mock" }}
-              className="w-full py-2 bg-slate-100 text-slate-500 rounded-xl text-[9px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-slate-200 transition-all active:scale-95"
+              className="w-full py-2 bg-emerald-50 text-emerald-600 border border-emerald-100 rounded-xl text-[9px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-emerald-100 transition-all active:scale-95"
             >
-              Tela de Corrida Ativa (Direto)
+              <Navigation size={10} strokeWidth={2.5} />
+              Corrida Em Andamento (Direto)
             </Link>
             <Link 
               to="/passageiro/chat/$rideId"
