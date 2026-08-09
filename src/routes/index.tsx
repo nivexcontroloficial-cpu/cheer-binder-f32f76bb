@@ -1,6 +1,6 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { RovyaBrand } from "@/components/RovyaBrand";
-import { User, ShieldCheck, PlayCircle, Bike, Palette, RotateCcw } from "lucide-react";
+import { User, ShieldCheck, PlayCircle, Bike, Palette, RotateCcw, ArrowRight } from "lucide-react";
 import { useDemo } from "@/state/DemoContext";
 
 export const Route = createFileRoute("/")({
@@ -18,6 +18,7 @@ export const Route = createFileRoute("/")({
 
 function DemoSelector() {
   const { resetData, isLoading } = useDemo();
+  const navigate = useNavigate();
 
   return (
     <div className="flex flex-col min-h-screen bg-[#F8FAFC] font-sans text-[#111827]">
@@ -33,14 +34,23 @@ function DemoSelector() {
         </div>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full mb-12">
-          <DemoCard 
-            to="/passageiro"
-            title="Passageiro"
-            description="Interface Rafael"
-            icon={<User className="h-6 w-6" strokeWidth={1.8} />}
-            color="border-blue-200 hover:border-[#2F80ED] text-[#2F80ED]"
-            bg="bg-blue-50"
-          />
+          <div className="flex flex-col gap-3">
+            <DemoCard 
+              to="/passageiro"
+              title="Passageiro"
+              description="Dashboard Logado"
+              icon={<User className="h-6 w-6" strokeWidth={1.8} />}
+              color="border-blue-200 hover:border-[#2F80ED] text-[#2F80ED]"
+              bg="bg-blue-50"
+            />
+            <button 
+              onClick={() => navigate({ to: '/passageiro/boas-vindas' })}
+              className="w-full py-3 bg-blue-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-blue-700 transition-all active:scale-95 rovya-shadow"
+            >
+              Iniciar Fluxo Boas-Vindas
+              <ArrowRight size={14} strokeWidth={2.5} />
+            </button>
+          </div>
           
           <DemoCard 
             to="/piloto"
