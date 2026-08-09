@@ -1,6 +1,6 @@
-import { createFileRoute, Outlet, Link, useLocation } from "@tanstack/react-router";
+import { createFileRoute, Outlet, Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { RovyaBrand } from "@/components/RovyaBrand";
-import { User, ChevronLeft, MapPin, Bell, Shield, Clock, Home } from "lucide-react";
+import { User, ChevronLeft, Shield, Clock, Home, MessageCircle } from "lucide-react";
 
 export const Route = createFileRoute("/passageiro")({
   component: PassengerLayout,
@@ -10,23 +10,42 @@ function PassengerLayout() {
   const ICON_SIZE = 22;
   const STROKE = 1.8;
   const location = useLocation();
+  const navigate = useNavigate();
+
+  // Rotas que não devem exibir header/navbar
+  const publicRoutes = [
+    "/passageiro/boas-vindas",
+    "/passageiro/entrar",
+    "/passageiro/cadastro",
+    "/passageiro/verificacao",
+    "/passageiro/permissoes"
+  ];
+
+  const isPublic = publicRoutes.includes(location.pathname);
+
+  if (isPublic) {
+    return <Outlet />;
+  }
 
   return (
     <div className="flex flex-col min-h-screen bg-porcelain font-sans text-navy">
-      {/* Header Passageiro */}
+      {/* Header Passageiro Único */}
       <header className="sticky top-0 z-50 w-full border-b border-slate-100 bg-white/80 backdrop-blur-md">
         <div className="container flex h-16 items-center justify-between px-4 mx-auto">
           <div className="flex items-center gap-4">
-            <Link to="/" className="p-2 hover:bg-slate-50 rounded-xl transition-colors text-slate-400">
+            <button 
+              onClick={() => navigate({ to: -1 as any })} 
+              className="p-2 hover:bg-slate-50 rounded-xl transition-colors text-slate-400"
+            >
               <ChevronLeft size={20} strokeWidth={STROKE} />
-            </Link>
+            </button>
             <RovyaBrand subBrand="Passageiro" className="scale-90 origin-left" />
           </div>
           <div className="flex items-center gap-3">
-            <div className="text-right hidden sm:block">
-              <p className="text-sm font-black tracking-tight uppercase text-navy">Rafael</p>
-              <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Nível 4</p>
-            </div>
+            <Link to="/passageiro/notificacoes" className="p-2 relative text-slate-400 hover:text-navy transition-colors">
+              <Clock size={20} strokeWidth={STROKE} />
+              <span className="absolute top-2 right-2 w-2 h-2 bg-rovya-red rounded-full border-2 border-white"></span>
+            </Link>
             <div className="h-10 w-10 rounded-2xl bg-slate-100 flex items-center justify-center border border-slate-200">
               <User size={20} strokeWidth={STROKE} className="text-slate-400" />
             </div>
@@ -39,45 +58,45 @@ function PassengerLayout() {
         <Outlet />
       </main>
 
-      {/* Bottom Navigation Passageiro */}
+      {/* Bottom Navigation Passageiro Único */}
       <nav className="fixed bottom-0 left-0 z-50 w-full pb-safe bg-white border-t border-slate-100 px-4 md:px-0 rovya-shadow-lg">
         <div className="container h-20 mx-auto flex items-center justify-around max-w-lg">
           <NavItem 
-            to="/passageiro" 
+            to="/passageiro/inicio" 
             icon={<Home size={ICON_SIZE} strokeWidth={STROKE} />} 
             label="Início" 
-            active={location.pathname === "/passageiro"} 
+            active={location.pathname === "/passageiro/inicio"} 
           />
           <NavItem 
             to="/passageiro/corridas" 
             icon={<Clock size={ICON_SIZE} strokeWidth={STROKE} />} 
             label="Corridas" 
-            active={location.pathname.includes("/corridas")} 
+            active={location.pathname === "/passageiro/corridas"} 
           />
           <NavItem 
-            to="/passageiro/notificacoes" 
-            icon={<Bell size={ICON_SIZE} strokeWidth={STROKE} />} 
-            label="Avisos" 
-            active={location.pathname.includes("/notificacoes")} 
-            badge={2}
+            to="/passageiro/mensagens" 
+            icon={<MessageCircle size={ICON_SIZE} strokeWidth={STROKE} />} 
+            label="Mensagens" 
+            active={location.pathname === "/passageiro/mensagens"} 
           />
           <NavItem 
             to="/passageiro/seguranca" 
             icon={<Shield size={ICON_SIZE} strokeWidth={STROKE} />} 
             label="Segurança" 
-            active={location.pathname.includes("/seguranca")} 
+            active={location.pathname === "/passageiro/seguranca"} 
           />
           <NavItem 
             to="/passageiro/perfil" 
             icon={<User size={ICON_SIZE} strokeWidth={STROKE} />} 
             label="Perfil" 
-            active={location.pathname.includes("/perfil")} 
+            active={location.pathname === "/passageiro/perfil"} 
           />
         </div>
       </nav>
     </div>
   );
 }
+
 
 function NavItem({ to, icon, label, active = false, badge }: { to: string; icon: React.ReactNode; label: string; active?: boolean; badge?: number }) {
   return (
