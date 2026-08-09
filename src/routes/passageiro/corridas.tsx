@@ -34,11 +34,16 @@ function RidesHistoryPage() {
         if (filter === 'cancelled') return ride.status === 'cancelled';
         return true;
       })
-      .filter(ride => 
-        ride.origin.address.toLowerCase().includes(search.toLowerCase()) ||
-        ride.destination.address.toLowerCase().includes(search.toLowerCase()) ||
-        ride.id.toLowerCase().includes(search.toLowerCase())
-      )
+      .filter(ride => {
+        const query = search.toLowerCase();
+        const originAddr = ride.origin?.address?.toLowerCase() || '';
+        const destAddr = ride.destination?.address?.toLowerCase() || '';
+        const rideId = ride.id?.toLowerCase() || '';
+        
+        return originAddr.includes(query) || 
+               destAddr.includes(query) || 
+               rideId.includes(query);
+      })
       .sort((a, b) => new Date(b.requestedAt).getTime() - new Date(a.requestedAt).getTime());
   }, [rides, filter, search]);
 
