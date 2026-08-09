@@ -90,9 +90,12 @@ export const Route = createFileRoute("/simulador/")({
   ),
 });
 
-function SimulatorButton({ icon, label, sub, color }: { icon: React.ReactNode, label: string, sub: string, color: string }) {
+function SimulatorButton({ icon, label, sub, color, onClick }: { icon: React.ReactNode, label: string, sub: string, color: string, onClick?: () => void }) {
   return (
-    <button className="flex flex-col items-start p-6 bg-white/5 border border-white/5 rounded-3xl hover:border-white/20 transition-all group text-left">
+    <button 
+      onClick={onClick}
+      className="flex flex-col items-start p-6 bg-white/5 border border-white/5 rounded-3xl hover:border-white/20 transition-all group text-left w-full"
+    >
       <div className={`p-3 rounded-2xl mb-4 transition-transform group-hover:scale-110 ${color} text-white`}>
         {icon}
       </div>
