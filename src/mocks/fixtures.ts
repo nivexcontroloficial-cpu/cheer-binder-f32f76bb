@@ -6,7 +6,8 @@ import {
   CityOperation, 
   Complaint, 
   Cancellation, 
-  DriverInvoice 
+  DriverInvoice,
+  UserStatus
 } from "../types";
 
 export const MOCK_CITY: CityOperation = {
@@ -73,7 +74,7 @@ export const ALL_DRIVERS: Driver[] = [
     name: `Motorista Teste ${i + 2}`,
     email: `driver${i + 2}***@email.com`,
     phone: `(43) 99***-***${i}`,
-    status: (i % 10 === 0) ? "pending" : "active",
+    status: ((i % 10 === 0) ? "pending" : "active") as UserStatus,
     rating: 4.5 + (Math.random() * 0.5),
     totalRides: Math.floor(Math.random() * 200),
     walletBalance: Math.floor(Math.random() * 500),
