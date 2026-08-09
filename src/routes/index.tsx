@@ -32,7 +32,7 @@ function DemoSelector() {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full mb-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full mb-12">
           <DemoCard 
             to="/passageiro"
             title="Passageiro"
@@ -53,21 +53,22 @@ function DemoSelector() {
  
           <DemoCard 
             to="/admin"
-            title="Admin"
-            description="Rovya Control"
+            title="Rovya Control"
+            description="Administração"
             icon={<ShieldCheck className="h-6 w-6" strokeWidth={1.8} />}
             color="border-slate-200 hover:border-slate-900 text-slate-900"
             bg="bg-slate-50"
           />
- 
-          <DemoCard 
+        </div>
+
+        <div className="mb-12">
+          <Link 
             to="/simulador"
-            title="Simulador"
-            description="Backend Mock"
-            icon={<PlayCircle className="h-6 w-6" strokeWidth={1.8} />}
-            color="border-emerald-200 hover:border-emerald-600 text-emerald-600"
-            bg="bg-emerald-50"
-          />
+            className="group inline-flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-xl text-[10px] font-bold text-slate-400 uppercase tracking-widest hover:border-emerald-500 hover:text-emerald-600 transition-all"
+          >
+            <PlayCircle size={14} strokeWidth={1.8} className="group-hover:scale-110 transition-transform" />
+            Acessar Simulador de Eventos
+          </Link>
         </div>
  
         <div className="flex flex-wrap justify-center gap-4">
