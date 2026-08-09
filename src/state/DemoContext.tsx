@@ -58,9 +58,12 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setCancellations(ALL_CANCELLATIONS);
       setIsLoading(false);
     }, 500);
+  };
+
   const addRideToHistory = (ride: Ride) => {
     setRides(prev => [ride, ...prev]);
   };
+
 
   return (
     <DemoContext.Provider value={{
