@@ -48,8 +48,9 @@ function RidesHistoryPage() {
     if (!address) return '---';
     // Simulando ocultação de endereço exato para privacidade
     const parts = address.split(',');
-    if (parts.length > 1) {
-      return parts[0].trim(); // Pega apenas a primeira parte (ex: Bairro ou Rua principal)
+    const firstPart = parts[0];
+    if (parts.length > 1 && firstPart) {
+      return firstPart.trim(); // Pega apenas a primeira parte (ex: Bairro ou Rua principal)
     }
     return address;
   };
