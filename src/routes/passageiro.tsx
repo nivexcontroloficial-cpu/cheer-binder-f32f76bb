@@ -1,6 +1,6 @@
 import { createFileRoute, Outlet, Link, useLocation } from "@tanstack/react-router";
 import { RovyaBrand } from "@/components/RovyaBrand";
-import { User, ChevronLeft, MapPin, MessageSquare, Shield, Clock, Home } from "lucide-react";
+import { User, ChevronLeft, MapPin, Bell, Shield, Clock, Home } from "lucide-react";
 
 export const Route = createFileRoute("/passageiro")({
   component: PassengerLayout,
@@ -49,26 +49,26 @@ function PassengerLayout() {
             active={location.pathname === "/passageiro"} 
           />
           <NavItem 
-            to="/passageiro" 
+            to="/passageiro/corridas" 
             icon={<Clock size={ICON_SIZE} strokeWidth={STROKE} />} 
             label="Corridas" 
             active={location.pathname.includes("/corridas")} 
           />
           <NavItem 
-            to="/passageiro" 
-            icon={<MessageSquare size={ICON_SIZE} strokeWidth={STROKE} />} 
-            label="Mensagens" 
-            active={location.pathname.includes("/mensagens")} 
-            badge={3}
+            to="/passageiro/notificacoes" 
+            icon={<Bell size={ICON_SIZE} strokeWidth={STROKE} />} 
+            label="Avisos" 
+            active={location.pathname.includes("/notificacoes")} 
+            badge={2}
           />
           <NavItem 
-            to="/passageiro" 
+            to="/passageiro/seguranca" 
             icon={<Shield size={ICON_SIZE} strokeWidth={STROKE} />} 
             label="Segurança" 
             active={location.pathname.includes("/seguranca")} 
           />
           <NavItem 
-            to="/passageiro" 
+            to="/passageiro/perfil" 
             icon={<User size={ICON_SIZE} strokeWidth={STROKE} />} 
             label="Perfil" 
             active={location.pathname.includes("/perfil")} 
