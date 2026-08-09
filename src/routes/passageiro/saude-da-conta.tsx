@@ -1,6 +1,7 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { ChevronLeft, Shield, HeartPulse, History, AlertTriangle, ChevronRight, Scale } from "lucide-react";
-import { MOCK_ACCOUNT_HEALTH, getHealthColor, getHealthLabel } from "@/services/mock/account-health";
+import { ChevronLeft, Shield, HeartPulse, History, AlertTriangle, ChevronRight, Scale, FileText } from "lucide-react";
+import { MOCK_ACCOUNT_HEALTH, getHealthColor, getHealthLabel, MOCK_PROTOCOLS, getStatusLabel } from "@/services/mock/support";
+
 
 export const Route = createFileRoute("/passageiro/saude-da-conta")({
   component: AccountHealthPage,
@@ -35,11 +36,38 @@ function AccountHealthPage() {
         </div>
       </section>
 
+      <section className="space-y-4 mb-8">
+        <div className="flex items-center justify-between">
+          <h2 className="text-sm font-black uppercase tracking-wider text-navy">Protocolos de Suporte</h2>
+          <Link to="/passageiro/suporte" className="text-[10px] font-bold text-blue-500 uppercase">Ajuda</Link>
+        </div>
+        {MOCK_PROTOCOLS.map(proto => (
+          <Link 
+            key={proto.id} 
+            to="/passageiro/protocolos/$caseId" 
+            params={{ caseId: proto.id }}
+            className="p-4 bg-white border border-slate-100 rounded-2xl flex items-center justify-between hover:bg-slate-50"
+          >
+            <div className="flex items-center gap-4">
+              <div className={`h-10 w-10 rounded-xl flex items-center justify-center ${proto.status === 'resolvida' ? 'bg-emerald-50 text-emerald-500' : 'bg-blue-50 text-blue-500'}`}>
+                <FileText size={20} />
+              </div>
+              <div>
+                <p className="font-bold text-sm text-navy">{proto.id}</p>
+                <p className="text-[9px] text-slate-400 font-black uppercase">{getStatusLabel(proto.status)}</p>
+              </div>
+            </div>
+            <ChevronRight size={16} className="text-slate-300" />
+          </Link>
+        ))}
+      </section>
+
       <section className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-sm font-black uppercase tracking-wider text-navy">Ocorrências Recentes</h2>
+          <h2 className="text-sm font-black uppercase tracking-wider text-navy">Impactos no Score</h2>
           <span className="text-[10px] font-bold text-slate-400">Últimos 30 dias</span>
         </div>
+
 
         {health.occurrences.map((occ) => (
           <Link 

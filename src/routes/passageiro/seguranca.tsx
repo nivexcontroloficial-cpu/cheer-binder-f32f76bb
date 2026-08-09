@@ -144,17 +144,18 @@ function SafetyScreen() {
           <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-400 px-2">Suporte e Emergência</h3>
           
           <button 
-            onClick={() => toast.info("Conectando com nossa Central de Segurança...")}
+            onClick={() => navigate({ to: "/passageiro/suporte" })}
             className="w-full bg-white p-5 rounded-3xl border border-slate-100 flex items-center gap-4 active:scale-[0.98] transition-all shadow-sm"
           >
             <div className="h-12 w-12 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600">
               <HeadphonesIcon size={24} />
             </div>
             <div className="text-left">
-              <span className="block text-sm font-black italic tracking-tighter uppercase">Falar com Suporte Rovya</span>
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Atendimento especializado 24h</span>
+              <span className="block text-sm font-black italic tracking-tighter uppercase">Central de Ajuda</span>
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Atendimento e Protocolos</span>
             </div>
           </button>
+
 
           <button 
             onClick={handleEmergencyCall}

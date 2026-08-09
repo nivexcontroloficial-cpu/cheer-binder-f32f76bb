@@ -153,13 +153,30 @@ function ProfilePage() {
           <h2 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4 px-2">Suporte</h2>
           <div className="bg-white border border-slate-100 rounded-[32px] overflow-hidden">
             <ProfileLink 
-              to="/passageiro" 
+              to="/passageiro/suporte" 
               icon={<HelpCircle size={18} />} 
               label="Ajuda" 
               description="FAQ, Central de suporte"
             />
           </div>
         </section>
+
+        <section>
+          <h2 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4 px-2">Gestão de Conta</h2>
+          <div className="bg-white border border-slate-100 rounded-[32px] overflow-hidden">
+             <button 
+              onClick={() => toast.warning("Simulando fluxo de exclusão de conta...")}
+              className="w-full flex items-center justify-between p-5 hover:bg-red-50 transition-colors"
+            >
+              <div className="flex items-center gap-4 text-red-400">
+                <AlertCircle size={18} />
+                <span className="text-sm font-bold text-red-600">Excluir Minha Conta</span>
+              </div>
+              <ChevronRight size={18} className="text-red-200" />
+            </button>
+          </div>
+        </section>
+
 
         <button 
           onClick={handleLogout}
