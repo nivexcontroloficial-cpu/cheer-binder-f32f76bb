@@ -1,11 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Search, MapPin, Navigation } from "lucide-react";
+import { Search, MapPin, Navigation, ShieldCheck } from "lucide-react";
 
 export const Route = createFileRoute("/passageiro/")({
   component: () => (
     <div className="space-y-6">
       <div className="bg-white rounded-[32px] p-8 border border-slate-100 rovya-shadow-lg">
-        <h2 className="text-2xl font-black tracking-tight mb-1">Olá, Rafael</h2>
+        <div className="flex items-center justify-between mb-1">
+          <h2 className="text-2xl font-black tracking-tight">Olá, Rafael</h2>
+          <div className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-50 border border-emerald-100 rounded-full">
+            <ShieldCheck size={14} className="text-rovya-green" />
+            <span className="text-[9px] font-black uppercase tracking-widest text-emerald-800">Verificado</span>
+          </div>
+        </div>
         <p className="text-sm font-bold text-slate-400 uppercase tracking-widest">Para onde vamos hoje?</p>
         
         <div className="mt-8 relative group">
