@@ -219,10 +219,6 @@ function ActiveRideScreen() {
   };
 
 
-import { Outlet } from "@tanstack/react-router";
-
-// ... (existing code stays the same)
-
   return (
     <div className="flex min-h-screen flex-col bg-porcelain font-sans text-navy overflow-hidden relative">
       <Outlet />
