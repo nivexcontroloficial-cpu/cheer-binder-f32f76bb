@@ -34,7 +34,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useDemo } from "@/state/DemoContext";
 
-export const Route = createFileRoute("/passageiro/corrida/$rideId/em-andamento")({
+export const Route = createFileRoute("/passageiro/corrida/$rideId_/em-andamento")({
   component: InProgressRideScreen,
 });
 
