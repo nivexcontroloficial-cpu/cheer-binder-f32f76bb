@@ -191,9 +191,11 @@ function ActiveRideScreen() {
   };
 
   const confirmReportDivergent = () => {
-    toast.warning("Denúncia enviada. Você pode cancelar sem taxas.");
+    toast.warning("Denúncia enviada. Você será redirecionado para o cancelamento protegido.");
     setIsDivergentVehicleAlertOpen(false);
+    navigate({ to: "/passageiro/cancelar/$rideId", params: { rideId: rideId || "" } });
   };
+
 
   const handleCall = () => {
     toast.info("Iniciando chamada protegida Rovya...");
@@ -212,13 +214,9 @@ function ActiveRideScreen() {
   };
 
   const handleCancelRide = () => {
-    if (!cancelReason) {
-      toast.error("Selecione um motivo para o cancelamento.");
-      return;
-    }
-    toast.error("Corrida cancelada. Lembre-se: cancelamentos frequentes afetam sua pontuação.");
-    navigate({ to: "/passageiro/inicio" });
+    navigate({ to: "/passageiro/cancelar/$rideId", params: { rideId: rideId || "" } });
   };
+
 
   return (
     <div className="flex min-h-screen flex-col bg-porcelain font-sans text-navy overflow-hidden">
@@ -467,7 +465,7 @@ function ActiveRideScreen() {
               </div>
             </div>
 
-            {/* Ações Secundárias (Visíveis ou no expansível) */}
+            {/* Ações Secundárias */}
             <div className="flex items-center justify-between gap-4 py-2">
                <button 
                  onClick={handleShare}
@@ -483,14 +481,15 @@ function ActiveRideScreen() {
                  <ShieldCheck size={18} className="text-rovya-blue" />
                  <span className="text-[9px] font-black uppercase tracking-widest text-navy">Segurança</span>
                </button>
-                <button 
-                  onClick={handleReportDivergent}
+               <button 
+                  onClick={() => setIsCancelDialogOpen(true)}
                   className="flex-1 flex flex-col items-center gap-2 py-3 bg-white border border-slate-100 rounded-2xl hover:bg-red-50 transition-colors group"
                 >
-                  <EyeOff size={18} className="text-slate-300 group-hover:text-red-500" />
-                  <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 group-hover:text-red-500">Veículo Dif.</span>
+                  <X size={18} className="text-slate-300 group-hover:text-red-500" />
+                  <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 group-hover:text-red-500">Cancelar</span>
                 </button>
             </div>
+
 
             {/* Área Expansível (Mais Detalhes) */}
             {isDetailsOpen && (
