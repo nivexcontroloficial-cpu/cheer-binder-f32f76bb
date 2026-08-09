@@ -602,7 +602,7 @@ function ActiveRideScreen() {
             <div className="p-4 bg-red-50 rounded-2xl border border-red-100 flex gap-3">
               <ShieldCheck size={18} className="text-red-600 shrink-0" />
               <p className="text-[10px] text-red-700 font-bold leading-relaxed">
-                Reportar esta divergência cancelará a corrida imediatamente sem penalidades para você.
+                Reportar esta divergência cancelará a corrida imediatamente sem penalidades. (Simulação de Segurança Rovya)
               </p>
             </div>
           </div>
