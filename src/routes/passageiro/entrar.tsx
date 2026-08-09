@@ -70,21 +70,35 @@ function LoginScreen() {
         <div className="h-px flex-1 bg-slate-100" />
       </div>
 
-      <button className="w-full h-14 bg-white border border-slate-200 text-navy rounded-2xl font-black uppercase tracking-widest text-[10px] flex items-center px-6 gap-4 hover:bg-slate-50 transition-all active:scale-[0.98]">
+      <button 
+        type="button"
+        onClick={() => {
+          toast.info("Demonstração: entrada com Google simulada");
+          navigate({ to: "/passageiro/inicio" });
+        }}
+        className="w-full h-14 bg-white border border-slate-200 text-navy rounded-2xl font-black uppercase tracking-widest text-[10px] flex items-center px-6 gap-4 hover:bg-slate-50 transition-all active:scale-[0.98]"
+      >
         <Chrome size={18} strokeWidth={2.5} />
         Entrar com Google
       </button>
 
-      <button className="w-full h-14 bg-white border border-slate-200 text-navy rounded-2xl font-black uppercase tracking-widest text-[10px] flex items-center px-6 gap-4 hover:bg-slate-50 transition-all active:scale-[0.98]">
+      <button 
+        type="button"
+        onClick={() => {
+          toast.info("Demonstração: entrada com Apple simulada");
+          navigate({ to: "/passageiro/inicio" });
+        }}
+        className="w-full h-14 bg-white border border-slate-200 text-navy rounded-2xl font-black uppercase tracking-widest text-[10px] flex items-center px-6 gap-4 hover:bg-slate-50 transition-all active:scale-[0.98]"
+      >
         <Apple size={18} strokeWidth={2.5} />
         Entrar com Apple
       </button>
 
       <p className="mt-8 text-[10px] text-slate-400 leading-relaxed text-center px-4">
         Ao continuar, você concorda com nossos{" "}
-        <Link to="/passageiro/boas-vindas" className="text-navy font-black underline decoration-rovya-orange underline-offset-4">Termos de Uso</Link>{" "}
+        <Link to="/passageiro/termos" className="text-navy font-black underline decoration-rovya-orange underline-offset-4">Termos de Uso</Link>{" "}
         e{" "}
-        <Link to="/passageiro/boas-vindas" className="text-navy font-black underline decoration-rovya-orange underline-offset-4">Política de Privacidade</Link>.
+        <Link to="/passageiro/privacidade" className="text-navy font-black underline decoration-rovya-orange underline-offset-4">Política de Privacidade</Link>.
       </p>
     </div>
   );
