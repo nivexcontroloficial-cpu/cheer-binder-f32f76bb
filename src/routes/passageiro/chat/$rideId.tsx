@@ -40,7 +40,7 @@ interface Message {
   sender: "passenger" | "driver";
   timestamp: Date;
   status: MessageStatus;
-  attachment?: string;
+  attachment?: string | undefined;
 }
 
 function ChatScreen() {
