@@ -58,13 +58,15 @@ function WelcomeScreen() {
     }
   };
 
+  const currentStep = ONBOARDING_STEPS[step] || ONBOARDING_STEPS[0];
+
   return (
     <div className="flex min-h-screen flex-col bg-white font-sans text-navy selection:bg-rovya-orange/20 animate-in fade-in slide-in-from-bottom-4 duration-700">
       <div className="relative flex-1 overflow-hidden">
         {/* Top Image */}
         <div className="h-[55vh] w-full overflow-hidden relative">
           <img 
-            src={ONBOARDING_STEPS[step].image} 
+            src={currentStep.image} 
             alt="Onboarding" 
             className="h-full w-full object-cover transition-all duration-700 scale-105"
           />
@@ -83,10 +85,10 @@ function WelcomeScreen() {
           </div>
 
           <h1 className="text-3xl font-black tracking-tighter uppercase italic leading-tight mb-4 max-w-xs transition-all duration-500">
-            {ONBOARDING_STEPS[step].title}
+            {currentStep.title}
           </h1>
           <p className="text-slate-500 text-sm leading-relaxed mb-12 max-w-xs transition-all duration-500">
-            {ONBOARDING_STEPS[step].description}
+            {currentStep.description}
           </p>
         </div>
       </div>

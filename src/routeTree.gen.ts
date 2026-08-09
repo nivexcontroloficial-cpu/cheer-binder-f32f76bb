@@ -18,6 +18,7 @@ import { Route as SimuladorRouteImport } from './routes/simulador'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as DesignSystemComponentesRouteImport } from './routes/design-system/componentes'
 import { Route as PassageiroIndexRouteImport } from './routes/passageiro/index'
+import { Route as PassageiroBoasVindasRouteImport } from './routes/passageiro/boas-vindas'
 import { Route as PilotoIndexRouteImport } from './routes/piloto/index'
 import { Route as SimuladorIndexRouteImport } from './routes/simulador/index'
 
@@ -66,6 +67,11 @@ const PassageiroIndexRoute = PassageiroIndexRouteImport.update({
   path: '/',
   getParentRoute: () => PassageiroRoute,
 } as any)
+const PassageiroBoasVindasRoute = PassageiroBoasVindasRouteImport.update({
+  id: '/boas-vindas',
+  path: '/boas-vindas',
+  getParentRoute: () => PassageiroRoute,
+} as any)
 const PilotoIndexRoute = PilotoIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -85,6 +91,7 @@ export interface FileRoutesByFullPath {
   '/piloto': typeof PilotoRouteWithChildren
   '/simulador': typeof SimuladorRouteWithChildren
   '/design-system/componentes': typeof DesignSystemComponentesRoute
+  '/passageiro/boas-vindas': typeof PassageiroBoasVindasRoute
   '/admin/': typeof AdminIndexRoute
   '/passageiro/': typeof PassageiroIndexRoute
   '/piloto/': typeof PilotoIndexRoute
@@ -94,6 +101,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/design-system': typeof DesignSystemRouteWithChildren
   '/design-system/componentes': typeof DesignSystemComponentesRoute
+  '/passageiro/boas-vindas': typeof PassageiroBoasVindasRoute
   '/admin': typeof AdminIndexRoute
   '/passageiro': typeof PassageiroIndexRoute
   '/piloto': typeof PilotoIndexRoute
@@ -108,6 +116,7 @@ export interface FileRoutesById {
   '/piloto': typeof PilotoRouteWithChildren
   '/simulador': typeof SimuladorRouteWithChildren
   '/design-system/componentes': typeof DesignSystemComponentesRoute
+  '/passageiro/boas-vindas': typeof PassageiroBoasVindasRoute
   '/admin/': typeof AdminIndexRoute
   '/passageiro/': typeof PassageiroIndexRoute
   '/piloto/': typeof PilotoIndexRoute
@@ -123,6 +132,7 @@ export interface FileRouteTypes {
     | '/piloto'
     | '/simulador'
     | '/design-system/componentes'
+    | '/passageiro/boas-vindas'
     | '/admin/'
     | '/passageiro/'
     | '/piloto/'
@@ -132,6 +142,7 @@ export interface FileRouteTypes {
     | '/'
     | '/design-system'
     | '/design-system/componentes'
+    | '/passageiro/boas-vindas'
     | '/admin'
     | '/passageiro'
     | '/piloto'
@@ -145,6 +156,7 @@ export interface FileRouteTypes {
     | '/piloto'
     | '/simulador'
     | '/design-system/componentes'
+    | '/passageiro/boas-vindas'
     | '/admin/'
     | '/passageiro/'
     | '/piloto/'
@@ -225,6 +237,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PassageiroIndexRouteImport
       parentRoute: typeof PassageiroRoute
     }
+    '/passageiro/boas-vindas': {
+      id: '/passageiro/boas-vindas'
+      path: '/boas-vindas'
+      fullPath: '/passageiro/boas-vindas'
+      preLoaderRoute: typeof PassageiroBoasVindasRouteImport
+      parentRoute: typeof PassageiroRoute
+    }
     '/piloto/': {
       id: '/piloto/'
       path: '/'
@@ -265,10 +284,12 @@ const DesignSystemRouteWithChildren = DesignSystemRoute._addFileChildren(
 )
 
 interface PassageiroRouteChildren {
+  PassageiroBoasVindasRoute: typeof PassageiroBoasVindasRoute
   PassageiroIndexRoute: typeof PassageiroIndexRoute
 }
 
 const PassageiroRouteChildren: PassageiroRouteChildren = {
+  PassageiroBoasVindasRoute: PassageiroBoasVindasRoute,
   PassageiroIndexRoute: PassageiroIndexRoute,
 }
 
@@ -310,3 +331,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
