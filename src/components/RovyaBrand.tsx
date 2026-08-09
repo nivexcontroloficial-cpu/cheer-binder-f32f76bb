@@ -50,7 +50,7 @@ export const RovyaBrand = ({
 }: { 
   className?: string, 
   variant?: "default" | "white",
-  subBrand?: "Passageiro" | "Piloto" | "Control" | null
+  subBrand?: "Passageiro" | "Piloto" | "Control" | "Simulator" | null
 }) => {
   const textColor = variant === "white" ? "text-white" : "text-[#111827]";
   const subColor = variant === "white" ? "text-white/70" : "text-slate-500";

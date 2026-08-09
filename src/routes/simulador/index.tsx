@@ -1,32 +1,77 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { PlayCircle, Zap, Activity, Cpu } from "lucide-react";
 
 export const Route = createFileRoute("/simulador/")({
   component: () => (
-    <div className="max-w-4xl mx-auto space-y-8">
-      <div className="bg-slate-800 border border-slate-700 p-8 rounded-2xl">
-        <h2 className="text-2xl font-bold mb-6 flex items-center gap-2">
-          Controles do Simulador
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <button className="p-4 bg-emerald-600 hover:bg-emerald-500 rounded-xl font-bold transition-colors">
-            Gerar Corrida Aleatória
-          </button>
-          <button className="p-4 bg-amber-600 hover:bg-amber-500 rounded-xl font-bold transition-colors">
-            Simular Pico de Demanda
-          </button>
+    <div className="max-w-6xl mx-auto space-y-8">
+      <div className="bg-slate-900 border border-white/5 p-10 rounded-[32px] rovya-shadow-lg">
+        <div className="flex items-center gap-3 mb-8">
+          <div className="p-3 bg-rovya-orange/10 rounded-2xl text-rovya-orange">
+            <Cpu size={24} />
+          </div>
+          <div>
+            <h2 className="text-xl font-black uppercase tracking-widest text-white">Console de Operações</h2>
+            <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1">Ambiente de Teste Rovya v1.0</p>
+          </div>
+        </div>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <SimulatorButton 
+            icon={<PlayCircle size={20} />} 
+            label="Injetar Corrida" 
+            sub="Simular Rafael (Passageiro)"
+            color="bg-rovya-orange"
+          />
+          <SimulatorButton 
+            icon={<Zap size={20} />} 
+            label="Pico de Demanda" 
+            sub="Simular +50 chamadas/min"
+            color="bg-rovya-blue"
+          />
+          <SimulatorButton 
+            icon={<Activity size={20} />} 
+            label="Audit Log Dump" 
+            sub="Exportar JSON da sessão"
+            color="bg-slate-700"
+          />
         </div>
       </div>
       
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="p-6 bg-slate-800/50 border border-slate-700 rounded-xl font-mono text-sm">
-          <p className="text-emerald-500 mb-2">// Logs do Sistema</p>
-          <p className="text-slate-400">[15:42:01] Motorista Carlos entrou em operação</p>
-          <p className="text-slate-400">[15:43:12] Rafael solicitou corrida (Centro -{">"} Orla)</p>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        <div className="p-8 bg-black/40 border border-white/5 rounded-[32px] font-mono text-xs">
+          <div className="flex items-center justify-between mb-6">
+            <p className="text-emerald-500 font-black tracking-widest uppercase">System Runtime Logs</p>
+            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping"></span>
+          </div>
+          <div className="space-y-3 opacity-60">
+            <p className="text-slate-400 font-bold">[18:51:04] <span className="text-white">BOOT_SEQUENCE</span>: Módulos de interface carregados.</p>
+            <p className="text-slate-400 font-bold">[18:52:12] <span className="text-rovya-blue">AUTH_MOCK</span>: Carlos Henrique online na célula 01.</p>
+            <p className="text-slate-400 font-bold">[18:53:45] <span className="text-rovya-orange">GEO_MOCK</span>: Rafael definiu rota (Mock Location).</p>
+            <p className="text-slate-400 font-bold animate-pulse text-emerald-500">&gt; AWAITTING_INPUT_...</p>
+          </div>
         </div>
-        <div className="h-64 bg-slate-800 border border-slate-700 rounded-xl flex items-center justify-center text-slate-600">
-          Mapa de simulação de tráfego
+        
+        <div className="aspect-video bg-slate-900 border border-white/5 rounded-[32px] flex flex-col items-center justify-center p-12 text-center text-slate-600 gap-4">
+          <div className="p-4 bg-white/5 rounded-2xl border border-white/5">
+            <Activity size={32} strokeWidth={1.5} />
+          </div>
+          <p className="text-[10px] font-black uppercase tracking-[0.2em] leading-relaxed">
+            Visualizador de Malha de Tráfego<br/>indisponível em modo estático.
+          </p>
         </div>
       </div>
     </div>
   ),
 });
+
+function SimulatorButton({ icon, label, sub, color }: { icon: React.ReactNode, label: string, sub: string, color: string }) {
+  return (
+    <button className="flex flex-col items-start p-6 bg-white/5 border border-white/5 rounded-3xl hover:border-white/20 transition-all group text-left">
+      <div className={`p-3 rounded-2xl mb-4 transition-transform group-hover:scale-110 ${color} text-white`}>
+        {icon}
+      </div>
+      <span className="text-[11px] font-black uppercase tracking-widest text-white">{label}</span>
+      <span className="text-[9px] font-bold uppercase tracking-tighter text-slate-500 mt-1">{sub}</span>
+    </button>
+  );
+}
