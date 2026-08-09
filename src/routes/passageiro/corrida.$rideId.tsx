@@ -187,8 +187,9 @@ function ActiveRideScreen() {
   };
 
   const handleReportDivergent = () => {
-    setIsDivergentVehicleAlertOpen(true);
+    navigate({ to: "/passageiro/denunciar/$rideId", params: { rideId: rideId || "" } });
   };
+
 
   const confirmReportDivergent = () => {
     toast.warning("Denúncia enviada. Você será redirecionado para o cancelamento protegido.");
