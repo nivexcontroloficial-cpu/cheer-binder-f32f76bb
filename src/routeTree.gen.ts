@@ -19,6 +19,7 @@ import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as DesignSystemComponentesRouteImport } from './routes/design-system/componentes'
 import { Route as PassageiroIndexRouteImport } from './routes/passageiro/index'
 import { Route as PassageiroBoasVindasRouteImport } from './routes/passageiro/boas-vindas'
+import { Route as PassageiroCadastroRouteImport } from './routes/passageiro/cadastro'
 import { Route as PassageiroEntrarRouteImport } from './routes/passageiro/entrar'
 import { Route as PilotoIndexRouteImport } from './routes/piloto/index'
 import { Route as SimuladorIndexRouteImport } from './routes/simulador/index'
@@ -73,6 +74,11 @@ const PassageiroBoasVindasRoute = PassageiroBoasVindasRouteImport.update({
   path: '/boas-vindas',
   getParentRoute: () => PassageiroRoute,
 } as any)
+const PassageiroCadastroRoute = PassageiroCadastroRouteImport.update({
+  id: '/cadastro',
+  path: '/cadastro',
+  getParentRoute: () => PassageiroRoute,
+} as any)
 const PassageiroEntrarRoute = PassageiroEntrarRouteImport.update({
   id: '/entrar',
   path: '/entrar',
@@ -98,6 +104,7 @@ export interface FileRoutesByFullPath {
   '/simulador': typeof SimuladorRouteWithChildren
   '/design-system/componentes': typeof DesignSystemComponentesRoute
   '/passageiro/boas-vindas': typeof PassageiroBoasVindasRoute
+  '/passageiro/cadastro': typeof PassageiroCadastroRoute
   '/passageiro/entrar': typeof PassageiroEntrarRoute
   '/admin/': typeof AdminIndexRoute
   '/passageiro/': typeof PassageiroIndexRoute
@@ -109,6 +116,7 @@ export interface FileRoutesByTo {
   '/design-system': typeof DesignSystemRouteWithChildren
   '/design-system/componentes': typeof DesignSystemComponentesRoute
   '/passageiro/boas-vindas': typeof PassageiroBoasVindasRoute
+  '/passageiro/cadastro': typeof PassageiroCadastroRoute
   '/passageiro/entrar': typeof PassageiroEntrarRoute
   '/admin': typeof AdminIndexRoute
   '/passageiro': typeof PassageiroIndexRoute
@@ -125,6 +133,7 @@ export interface FileRoutesById {
   '/simulador': typeof SimuladorRouteWithChildren
   '/design-system/componentes': typeof DesignSystemComponentesRoute
   '/passageiro/boas-vindas': typeof PassageiroBoasVindasRoute
+  '/passageiro/cadastro': typeof PassageiroCadastroRoute
   '/passageiro/entrar': typeof PassageiroEntrarRoute
   '/admin/': typeof AdminIndexRoute
   '/passageiro/': typeof PassageiroIndexRoute
@@ -142,6 +151,7 @@ export interface FileRouteTypes {
     | '/simulador'
     | '/design-system/componentes'
     | '/passageiro/boas-vindas'
+    | '/passageiro/cadastro'
     | '/passageiro/entrar'
     | '/admin/'
     | '/passageiro/'
@@ -153,6 +163,7 @@ export interface FileRouteTypes {
     | '/design-system'
     | '/design-system/componentes'
     | '/passageiro/boas-vindas'
+    | '/passageiro/cadastro'
     | '/passageiro/entrar'
     | '/admin'
     | '/passageiro'
@@ -168,6 +179,7 @@ export interface FileRouteTypes {
     | '/simulador'
     | '/design-system/componentes'
     | '/passageiro/boas-vindas'
+    | '/passageiro/cadastro'
     | '/passageiro/entrar'
     | '/admin/'
     | '/passageiro/'
@@ -256,6 +268,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PassageiroBoasVindasRouteImport
       parentRoute: typeof PassageiroRoute
     }
+    '/passageiro/cadastro': {
+      id: '/passageiro/cadastro'
+      path: '/cadastro'
+      fullPath: '/passageiro/cadastro'
+      preLoaderRoute: typeof PassageiroCadastroRouteImport
+      parentRoute: typeof PassageiroRoute
+    }
     '/passageiro/entrar': {
       id: '/passageiro/entrar'
       path: '/entrar'
@@ -304,12 +323,14 @@ const DesignSystemRouteWithChildren = DesignSystemRoute._addFileChildren(
 
 interface PassageiroRouteChildren {
   PassageiroBoasVindasRoute: typeof PassageiroBoasVindasRoute
+  PassageiroCadastroRoute: typeof PassageiroCadastroRoute
   PassageiroEntrarRoute: typeof PassageiroEntrarRoute
   PassageiroIndexRoute: typeof PassageiroIndexRoute
 }
 
 const PassageiroRouteChildren: PassageiroRouteChildren = {
   PassageiroBoasVindasRoute: PassageiroBoasVindasRoute,
+  PassageiroCadastroRoute: PassageiroCadastroRoute,
   PassageiroEntrarRoute: PassageiroEntrarRoute,
   PassageiroIndexRoute: PassageiroIndexRoute,
 }
