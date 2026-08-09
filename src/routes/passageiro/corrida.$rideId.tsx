@@ -260,18 +260,59 @@ function ActiveRideScreen() {
             </span>
           </div>
 
-          {/* Card de ETA */}
-          <div className="bg-navy text-white px-5 py-3 rounded-2xl shadow-xl self-start flex items-center gap-4">
-             <div className="flex flex-col">
-               <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Chegada em</span>
-               <span className="text-xl font-black italic tracking-tighter">{eta > 0 ? `${eta} min` : 'Chegando!'}</span>
-             </div>
-             <div className="h-8 w-px bg-white/10"></div>
-             <div className="flex flex-col">
-               <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Ponto</span>
-               <span className="text-[10px] font-black uppercase tracking-tight truncate max-w-[120px]">Av. Getúlio Vargas</span>
-             </div>
-          </div>
+          {/* Banner de Proximidade (500m) */}
+          {distanceMeters <= 500 && !hasArrived && (
+            <div className="animate-in slide-in-from-top duration-500 bg-rovya-orange text-white px-4 py-3 rounded-2xl shadow-xl flex items-center gap-3 border border-white/20">
+              <div className="bg-white/20 p-2 rounded-xl">
+                <Navigation size={18} className="animate-pulse" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-[10px] font-black uppercase tracking-[0.1em]">Piloto Próximo</span>
+                <span className="text-xs font-bold leading-tight">O Carlos H. está a menos de 500m.</span>
+              </div>
+            </div>
+          )}
+
+          {/* Estado de Chegada / Espera */}
+          {hasArrived && (
+            <div className="animate-in zoom-in duration-500 bg-white border-2 border-emerald-500 px-5 py-4 rounded-3xl shadow-2xl flex flex-col gap-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="h-2 w-2 rounded-full bg-emerald-500 animate-ping"></div>
+                  <span className="text-[10px] font-black uppercase tracking-widest text-emerald-600">Piloto no local</span>
+                </div>
+                <div className={`flex items-center gap-1.5 px-3 py-1 rounded-full ${waitTime < 60 ? 'bg-red-50 text-red-600' : 'bg-slate-50 text-navy'}`}>
+                  <Clock size={12} className={waitTime < 60 ? 'animate-pulse' : ''} />
+                  <span className="text-xs font-black italic">{formatWaitTime(waitTime)}</span>
+                </div>
+              </div>
+              <div className="space-y-1">
+                <p className="text-[11px] font-bold text-navy leading-tight">
+                  Identifique o piloto pela placa <span className="underline decoration-emerald-500 decoration-2 underline-offset-2 tracking-widest">{pilot.vehicle.plate}</span>
+                </p>
+                <p className="text-[9px] text-slate-500 font-medium">
+                  {waitTime > 0 
+                    ? "O tempo de espera cortesia está correndo." 
+                    : "Tempo esgotado. O piloto pode cancelar a qualquer momento."}
+                </p>
+              </div>
+            </div>
+          )}
+
+          {/* Card de ETA (Oculto se chegou) */}
+          {!hasArrived && (
+            <div className="bg-navy text-white px-5 py-3 rounded-2xl shadow-xl self-start flex items-center gap-4">
+               <div className="flex flex-col">
+                 <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Chegada em</span>
+                 <span className="text-xl font-black italic tracking-tighter">{eta > 0 ? `${eta} min` : 'Chegando!'}</span>
+               </div>
+               <div className="h-8 w-px bg-white/10"></div>
+               <div className="flex flex-col">
+                 <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">Ponto</span>
+                 <span className="text-[10px] font-black uppercase tracking-tight truncate max-w-[120px]">Av. Getúlio Vargas</span>
+               </div>
+            </div>
+          )}
         </div>
       </div>
 
