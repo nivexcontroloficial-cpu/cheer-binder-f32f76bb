@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { RovyaBrand } from "@/components/RovyaBrand";
-import { User, ShieldCheck, PlayCircle, Bike, Palette } from "lucide-react";
+import { User, ShieldCheck, PlayCircle, Bike, Palette, RotateCcw } from "lucide-react";
+import { useDemo } from "@/state/DemoContext";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -16,6 +17,8 @@ export const Route = createFileRoute("/")({
 });
 
 function DemoSelector() {
+  const { resetData, isLoading } = useDemo();
+
   return (
     <div className="flex flex-col min-h-screen bg-[#F8FAFC] font-sans text-[#111827]">
       <main className="flex-1 flex flex-col items-center justify-center p-6 text-center max-w-5xl mx-auto w-full">
@@ -47,7 +50,7 @@ function DemoSelector() {
             color="border-orange-200 hover:border-[#F97316] text-[#F97316]"
             bg="bg-orange-50"
           />
-
+ 
           <DemoCard 
             to="/admin"
             title="Admin"
@@ -56,7 +59,7 @@ function DemoSelector() {
             color="border-slate-200 hover:border-slate-900 text-slate-900"
             bg="bg-slate-50"
           />
-
+ 
           <DemoCard 
             to="/simulador"
             title="Simulador"
@@ -66,7 +69,7 @@ function DemoSelector() {
             bg="bg-emerald-50"
           />
         </div>
-
+ 
         <div className="flex flex-wrap justify-center gap-4">
           <Link 
             to="/design-system"
@@ -82,25 +85,39 @@ function DemoSelector() {
             <Palette size={18} strokeWidth={1.8} />
             Component Library
           </Link>
+          <button 
+            onClick={resetData}
+            disabled={isLoading}
+            className="inline-flex items-center gap-2 px-6 py-3 bg-white border border-slate-200 rounded-2xl text-slate-500 font-bold hover:bg-slate-50 transition-colors rovya-shadow disabled:opacity-50"
+          >
+            <RotateCcw size={18} strokeWidth={1.8} className={isLoading ? "animate-spin" : ""} />
+            Reset Demo Data
+          </button>
         </div>
-
+ 
         <div className="mt-16 p-6 bg-amber-50 border border-amber-100 rounded-3xl max-w-md">
           <p className="text-[10px] text-amber-800 font-bold uppercase tracking-widest leading-relaxed">
-            Módulo de Conhecimento
+            Camada de Dados Mock
+          </p>
+          <p className="mt-2 text-xs text-amber-900 leading-relaxed">
+            Os dados mostrados são gerados localmente e podem ser resetados. Nenhuma persistência real em nuvem está ativa.
+          </p>
+          <p className="mt-4 text-[10px] text-amber-800 font-bold uppercase tracking-widest leading-relaxed">
+            Invariantes de Segurança
           </p>
           <p className="mt-2 text-xs text-amber-900 leading-relaxed">
             Nenhum backend, banco, autenticação real, pagamento real, GPS real ou notificação real foi conectado nesta etapa.
           </p>
         </div>
       </main>
-
+ 
       <footer className="p-8 text-center text-[10px] text-slate-400 uppercase tracking-widest font-black">
         ROVYA PROJECT • 2026
       </footer>
     </div>
   );
 }
-
+ 
 function DemoCard({ to, title, description, icon, color, bg }: { 
   to: string; 
   title: string; 
