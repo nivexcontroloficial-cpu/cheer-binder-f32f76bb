@@ -1,4 +1,10 @@
-import { createFileRoute, useNavigate, useParams, Outlet, useLocation } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  useNavigate,
+  useParams,
+  Outlet,
+  useLocation,
+} from "@tanstack/react-router";
 import { useState, useEffect, useMemo, useRef } from "react";
 import {
   ArrowLeft,
