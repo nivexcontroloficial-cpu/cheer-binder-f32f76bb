@@ -19,14 +19,40 @@ export const Route = createFileRoute("/simulador/")({
           <SimulatorButton 
             icon={<PlayCircle size={20} />} 
             label="Injetar Corrida" 
-            sub="Simular Rafael (Passageiro)"
+            sub="Passageiro (Rafael)"
             color="bg-rovya-orange"
+            onClick={() => window.location.href = '/passageiro/buscando'}
           />
           <SimulatorButton 
             icon={<Zap size={20} />} 
-            label="Pico de Demanda" 
-            sub="Simular +50 chamadas/min"
+            label="Simular Aceite" 
+            sub="Piloto (Carlos H.)"
             color="bg-rovya-blue"
+            onClick={() => window.location.href = '/passageiro/corrida/mock-ride-id'}
+          />
+          <SimulatorButton 
+            icon={<Activity size={20} />} 
+            label="Simular Chegada" 
+            sub="Gatilho de espera + PIN"
+            color="bg-emerald-600"
+            onClick={() => {
+              const event = new CustomEvent('simular-chegada');
+              window.dispatchEvent(event);
+              alert("Comando de chegada enviado para a tela de corrida ativa.");
+            }}
+          />
+        </div>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+          <SimulatorButton 
+            icon={<Cpu size={20} />} 
+            label="Zerar Cronômetro" 
+            sub="Simular não comparecimento"
+            color="bg-red-600"
+            onClick={() => {
+              const event = new CustomEvent('simular-tempo-esgotado');
+              window.dispatchEvent(event);
+            }}
           />
           <SimulatorButton 
             icon={<Activity size={20} />} 
@@ -34,6 +60,7 @@ export const Route = createFileRoute("/simulador/")({
             sub="Exportar JSON da sessão"
             color="bg-slate-700"
           />
+        </div>
         </div>
       </div>
       
