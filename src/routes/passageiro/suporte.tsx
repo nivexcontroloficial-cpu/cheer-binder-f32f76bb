@@ -42,8 +42,7 @@ function SupportCenter() {
     const term = searchTerm.toLowerCase().trim();
     if (!term) return FAQS;
     return FAQS.filter(
-      (faq) =>
-        faq.q.toLowerCase().includes(term) || faq.a.toLowerCase().includes(term),
+      (faq) => faq.q.toLowerCase().includes(term) || faq.a.toLowerCase().includes(term),
     );
   }, [searchTerm]);
 
@@ -63,9 +62,7 @@ function SupportCenter() {
           >
             <ArrowLeft size={20} strokeWidth={2.5} />
           </button>
-          <h1 className="text-xl font-black italic tracking-tighter uppercase">
-            Central de Ajuda
-          </h1>
+          <h1 className="text-xl font-black italic tracking-tighter uppercase">Central de Ajuda</h1>
         </div>
 
         {/* Simulaton Warning */}
@@ -80,10 +77,7 @@ function SupportCenter() {
           <label htmlFor="faq-search" className="sr-only">
             Buscar perguntas frequentes
           </label>
-          <Search
-            className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300"
-            size={18}
-          />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" size={18} />
           <input
             id="faq-search"
             type="text"
@@ -124,9 +118,7 @@ function SupportCenter() {
               <LifeBuoy size={24} />
             </div>
             <div className="flex flex-col items-center">
-              <span className="text-[10px] font-black uppercase tracking-widest">
-                Protocolos
-              </span>
+              <span className="text-[10px] font-black uppercase tracking-widest">Protocolos</span>
               <span className="text-[8px] font-bold text-emerald-500 uppercase tracking-tighter">
                 simulados
               </span>
@@ -185,9 +177,7 @@ function SupportCenter() {
             >
               <div className="flex items-center gap-3 text-slate-400">
                 <BookOpen size={18} />
-                <span className="text-sm font-bold text-navy">
-                  Termos de Uso
-                </span>
+                <span className="text-sm font-bold text-navy">Termos de Uso</span>
               </div>
               <ChevronRight size={16} className="text-slate-200" />
             </button>
@@ -198,9 +188,7 @@ function SupportCenter() {
             >
               <div className="flex items-center gap-3 text-slate-400">
                 <ShieldAlert size={18} />
-                <span className="text-sm font-bold text-navy">
-                  Política de Privacidade
-                </span>
+                <span className="text-sm font-bold text-navy">Política de Privacidade</span>
               </div>
               <ChevronRight size={16} className="text-slate-200" />
             </button>
