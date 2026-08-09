@@ -36,6 +36,8 @@ import { Route as PassageiroSegurancaRouteImport } from './routes/passageiro/seg
 import { Route as PassageiroSuporteRouteImport } from './routes/passageiro/suporte'
 import { Route as PassageiroVerificacaoRouteImport } from './routes/passageiro/verificacao'
 import { Route as PilotoIndexRouteImport } from './routes/piloto/index'
+import { Route as PilotoBoasVindasRouteImport } from './routes/piloto/boas-vindas'
+import { Route as PilotoEntrarRouteImport } from './routes/piloto/entrar'
 import { Route as SimuladorIndexRouteImport } from './routes/simulador/index'
 import { Route as PassageiroCancelarRideIdRouteImport } from './routes/passageiro/cancelar.$rideId'
 import { Route as PassageiroChatRideIdRouteImport } from './routes/passageiro/chat/$rideId'
@@ -182,6 +184,16 @@ const PilotoIndexRoute = PilotoIndexRouteImport.update({
   path: '/',
   getParentRoute: () => PilotoRoute,
 } as any)
+const PilotoBoasVindasRoute = PilotoBoasVindasRouteImport.update({
+  id: '/boas-vindas',
+  path: '/boas-vindas',
+  getParentRoute: () => PilotoRoute,
+} as any)
+const PilotoEntrarRoute = PilotoEntrarRouteImport.update({
+  id: '/entrar',
+  path: '/entrar',
+  getParentRoute: () => PilotoRoute,
+} as any)
 const SimuladorIndexRoute = SimuladorIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -259,6 +271,8 @@ export interface FileRoutesByFullPath {
   '/passageiro/seguranca': typeof PassageiroSegurancaRoute
   '/passageiro/suporte': typeof PassageiroSuporteRoute
   '/passageiro/verificacao': typeof PassageiroVerificacaoRoute
+  '/piloto/boas-vindas': typeof PilotoBoasVindasRoute
+  '/piloto/entrar': typeof PilotoEntrarRoute
   '/admin/': typeof AdminIndexRoute
   '/passageiro/': typeof PassageiroIndexRoute
   '/piloto/': typeof PilotoIndexRoute
@@ -293,6 +307,8 @@ export interface FileRoutesByTo {
   '/passageiro/seguranca': typeof PassageiroSegurancaRoute
   '/passageiro/suporte': typeof PassageiroSuporteRoute
   '/passageiro/verificacao': typeof PassageiroVerificacaoRoute
+  '/piloto/boas-vindas': typeof PilotoBoasVindasRoute
+  '/piloto/entrar': typeof PilotoEntrarRoute
   '/admin': typeof AdminIndexRoute
   '/passageiro': typeof PassageiroIndexRoute
   '/piloto': typeof PilotoIndexRoute
@@ -332,6 +348,8 @@ export interface FileRoutesById {
   '/passageiro/seguranca': typeof PassageiroSegurancaRoute
   '/passageiro/suporte': typeof PassageiroSuporteRoute
   '/passageiro/verificacao': typeof PassageiroVerificacaoRoute
+  '/piloto/boas-vindas': typeof PilotoBoasVindasRoute
+  '/piloto/entrar': typeof PilotoEntrarRoute
   '/admin/': typeof AdminIndexRoute
   '/passageiro/': typeof PassageiroIndexRoute
   '/piloto/': typeof PilotoIndexRoute
@@ -372,6 +390,8 @@ export interface FileRouteTypes {
     | '/passageiro/seguranca'
     | '/passageiro/suporte'
     | '/passageiro/verificacao'
+    | '/piloto/boas-vindas'
+    | '/piloto/entrar'
     | '/admin/'
     | '/passageiro/'
     | '/piloto/'
@@ -406,6 +426,8 @@ export interface FileRouteTypes {
     | '/passageiro/seguranca'
     | '/passageiro/suporte'
     | '/passageiro/verificacao'
+    | '/piloto/boas-vindas'
+    | '/piloto/entrar'
     | '/admin'
     | '/passageiro'
     | '/piloto'
@@ -444,6 +466,8 @@ export interface FileRouteTypes {
     | '/passageiro/seguranca'
     | '/passageiro/suporte'
     | '/passageiro/verificacao'
+    | '/piloto/boas-vindas'
+    | '/piloto/entrar'
     | '/admin/'
     | '/passageiro/'
     | '/piloto/'
@@ -658,6 +682,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PilotoIndexRouteImport
       parentRoute: typeof PilotoRoute
     }
+    '/piloto/boas-vindas': {
+      id: '/piloto/boas-vindas'
+      path: '/boas-vindas'
+      fullPath: '/piloto/boas-vindas'
+      preLoaderRoute: typeof PilotoBoasVindasRouteImport
+      parentRoute: typeof PilotoRoute
+    }
+    '/piloto/entrar': {
+      id: '/piloto/entrar'
+      path: '/entrar'
+      fullPath: '/piloto/entrar'
+      preLoaderRoute: typeof PilotoEntrarRouteImport
+      parentRoute: typeof PilotoRoute
+    }
     '/simulador/': {
       id: '/simulador/'
       path: '/'
@@ -823,10 +861,14 @@ const PassageiroRouteWithChildren = PassageiroRoute._addFileChildren(
 )
 
 interface PilotoRouteChildren {
+  PilotoBoasVindasRoute: typeof PilotoBoasVindasRoute
+  PilotoEntrarRoute: typeof PilotoEntrarRoute
   PilotoIndexRoute: typeof PilotoIndexRoute
 }
 
 const PilotoRouteChildren: PilotoRouteChildren = {
+  PilotoBoasVindasRoute: PilotoBoasVindasRoute,
+  PilotoEntrarRoute: PilotoEntrarRoute,
   PilotoIndexRoute: PilotoIndexRoute,
 }
 

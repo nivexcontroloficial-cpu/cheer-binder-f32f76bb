@@ -16,6 +16,7 @@ interface DemoContextType {
   cancellations: Cancellation[];
   resetData: () => void;
   addRideToHistory: (ride: Ride) => void;
+  loginPilot: () => void;
   isLoading: boolean;
 }
 
@@ -64,6 +65,11 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setRides(prev => [ride, ...prev]);
   };
 
+  const loginPilot = () => {
+    // Apenas simulação de estado de login
+    console.log("Piloto logado na demo");
+  };
+
 
   return (
     <DemoContext.Provider value={{
@@ -74,6 +80,7 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
       cancellations,
       resetData,
       addRideToHistory,
+      loginPilot,
       isLoading
     }}>
       {children}
