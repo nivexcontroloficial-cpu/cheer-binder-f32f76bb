@@ -65,10 +65,10 @@ function ConfirmRideScreen() {
   };
 
   const handleOrder = () => {
-    toast.success("Buscando pilotos próximos...");
+    toast.success("Solicitando corrida...");
     setTimeout(() => {
-      navigate({ to: "/passageiro/inicio" });
-    }, 2000);
+      navigate({ to: "/passageiro/buscando" });
+    }, 1500);
   };
 
   return (

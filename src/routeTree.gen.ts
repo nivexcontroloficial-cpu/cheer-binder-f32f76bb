@@ -19,6 +19,7 @@ import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as DesignSystemComponentesRouteImport } from './routes/design-system/componentes'
 import { Route as PassageiroIndexRouteImport } from './routes/passageiro/index'
 import { Route as PassageiroBoasVindasRouteImport } from './routes/passageiro/boas-vindas'
+import { Route as PassageiroBuscandoRouteImport } from './routes/passageiro/buscando'
 import { Route as PassageiroCadastroRouteImport } from './routes/passageiro/cadastro'
 import { Route as PassageiroConfirmarCorridaRouteImport } from './routes/passageiro/confirmar-corrida'
 import { Route as PassageiroDestinoRouteImport } from './routes/passageiro/destino'
@@ -79,6 +80,11 @@ const PassageiroIndexRoute = PassageiroIndexRouteImport.update({
 const PassageiroBoasVindasRoute = PassageiroBoasVindasRouteImport.update({
   id: '/boas-vindas',
   path: '/boas-vindas',
+  getParentRoute: () => PassageiroRoute,
+} as any)
+const PassageiroBuscandoRoute = PassageiroBuscandoRouteImport.update({
+  id: '/buscando',
+  path: '/buscando',
   getParentRoute: () => PassageiroRoute,
 } as any)
 const PassageiroCadastroRoute = PassageiroCadastroRouteImport.update({
@@ -147,6 +153,7 @@ export interface FileRoutesByFullPath {
   '/simulador': typeof SimuladorRouteWithChildren
   '/design-system/componentes': typeof DesignSystemComponentesRoute
   '/passageiro/boas-vindas': typeof PassageiroBoasVindasRoute
+  '/passageiro/buscando': typeof PassageiroBuscandoRoute
   '/passageiro/cadastro': typeof PassageiroCadastroRoute
   '/passageiro/confirmar-corrida': typeof PassageiroConfirmarCorridaRoute
   '/passageiro/destino': typeof PassageiroDestinoRoute
@@ -166,6 +173,7 @@ export interface FileRoutesByTo {
   '/design-system': typeof DesignSystemRouteWithChildren
   '/design-system/componentes': typeof DesignSystemComponentesRoute
   '/passageiro/boas-vindas': typeof PassageiroBoasVindasRoute
+  '/passageiro/buscando': typeof PassageiroBuscandoRoute
   '/passageiro/cadastro': typeof PassageiroCadastroRoute
   '/passageiro/confirmar-corrida': typeof PassageiroConfirmarCorridaRoute
   '/passageiro/destino': typeof PassageiroDestinoRoute
@@ -190,6 +198,7 @@ export interface FileRoutesById {
   '/simulador': typeof SimuladorRouteWithChildren
   '/design-system/componentes': typeof DesignSystemComponentesRoute
   '/passageiro/boas-vindas': typeof PassageiroBoasVindasRoute
+  '/passageiro/buscando': typeof PassageiroBuscandoRoute
   '/passageiro/cadastro': typeof PassageiroCadastroRoute
   '/passageiro/confirmar-corrida': typeof PassageiroConfirmarCorridaRoute
   '/passageiro/destino': typeof PassageiroDestinoRoute
@@ -215,6 +224,7 @@ export interface FileRouteTypes {
     | '/simulador'
     | '/design-system/componentes'
     | '/passageiro/boas-vindas'
+    | '/passageiro/buscando'
     | '/passageiro/cadastro'
     | '/passageiro/confirmar-corrida'
     | '/passageiro/destino'
@@ -234,6 +244,7 @@ export interface FileRouteTypes {
     | '/design-system'
     | '/design-system/componentes'
     | '/passageiro/boas-vindas'
+    | '/passageiro/buscando'
     | '/passageiro/cadastro'
     | '/passageiro/confirmar-corrida'
     | '/passageiro/destino'
@@ -257,6 +268,7 @@ export interface FileRouteTypes {
     | '/simulador'
     | '/design-system/componentes'
     | '/passageiro/boas-vindas'
+    | '/passageiro/buscando'
     | '/passageiro/cadastro'
     | '/passageiro/confirmar-corrida'
     | '/passageiro/destino'
@@ -351,6 +363,13 @@ declare module '@tanstack/react-router' {
       path: '/boas-vindas'
       fullPath: '/passageiro/boas-vindas'
       preLoaderRoute: typeof PassageiroBoasVindasRouteImport
+      parentRoute: typeof PassageiroRoute
+    }
+    '/passageiro/buscando': {
+      id: '/passageiro/buscando'
+      path: '/buscando'
+      fullPath: '/passageiro/buscando'
+      preLoaderRoute: typeof PassageiroBuscandoRouteImport
       parentRoute: typeof PassageiroRoute
     }
     '/passageiro/cadastro': {
@@ -457,6 +476,7 @@ const DesignSystemRouteWithChildren = DesignSystemRoute._addFileChildren(
 
 interface PassageiroRouteChildren {
   PassageiroBoasVindasRoute: typeof PassageiroBoasVindasRoute
+  PassageiroBuscandoRoute: typeof PassageiroBuscandoRoute
   PassageiroCadastroRoute: typeof PassageiroCadastroRoute
   PassageiroConfirmarCorridaRoute: typeof PassageiroConfirmarCorridaRoute
   PassageiroDestinoRoute: typeof PassageiroDestinoRoute
@@ -471,6 +491,7 @@ interface PassageiroRouteChildren {
 
 const PassageiroRouteChildren: PassageiroRouteChildren = {
   PassageiroBoasVindasRoute: PassageiroBoasVindasRoute,
+  PassageiroBuscandoRoute: PassageiroBuscandoRoute,
   PassageiroCadastroRoute: PassageiroCadastroRoute,
   PassageiroConfirmarCorridaRoute: PassageiroConfirmarCorridaRoute,
   PassageiroDestinoRoute: PassageiroDestinoRoute,
