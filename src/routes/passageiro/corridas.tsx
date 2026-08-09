@@ -47,7 +47,8 @@ function RidesHistoryPage() {
       .sort((a, b) => new Date(b.requestedAt).getTime() - new Date(a.requestedAt).getTime());
   }, [rides, filter, search]);
 
-  const getRegion = (address: string) => {
+  const getRegion = (address?: string) => {
+    if (!address) return '---';
     // Simulando ocultação de endereço exato para privacidade
     const parts = address.split(',');
     if (parts.length > 1) {
