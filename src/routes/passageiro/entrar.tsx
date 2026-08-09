@@ -48,7 +48,7 @@ function LoginScreen() {
     setTimeout(() => {
       setIsLoading(false);
       toast.success("Acesso autorizado!");
-      navigate({ to: "/passageiro" });
+      navigate({ to: "/passageiro/verificacao" });
     }, 2000);
   };
 

@@ -27,7 +27,7 @@ function SignupScreen() {
       setTimeout(() => {
         setIsLoading(false);
         toast.success("Perfil criado com sucesso!");
-        navigate({ to: "/passageiro" });
+        navigate({ to: "/passageiro/verificacao" });
       }, 2000);
     }
   };
