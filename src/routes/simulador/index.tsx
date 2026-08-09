@@ -1,8 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { PlayCircle, Zap, Activity, Cpu } from "lucide-react";
+import { PlayCircle, Zap, Activity, Cpu, ShieldAlert, CheckCircle, Clock, XCircle, MapPin } from "lucide-react";
+import { useDemo } from "@/state/DemoContext";
 
 export const Route = createFileRoute("/simulador/")({
-  component: () => (
+  component: SimulatorPage,
+});
+
+function SimulatorPage() {
+  const { setPilotStatus } = useDemo();
+
     <div className="max-w-6xl mx-auto space-y-8">
       <div className="bg-slate-900 border border-white/5 p-10 rounded-[32px] rovya-shadow-lg">
         <div className="flex items-center gap-3 mb-8">
@@ -60,6 +66,67 @@ export const Route = createFileRoute("/simulador/")({
             sub="Exportar JSON da sessão"
             color="bg-slate-700"
           />
+        </div>
+
+        <div className="flex flex-col gap-3 mt-10">
+          <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-500 mb-2">Estados de Análise (Piloto)</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <SimulatorButton 
+              icon={<Clock size={20} />} 
+              label="Set: Em Análise" 
+              sub="Fila de espera padrão"
+              color="bg-amber-500"
+              onClick={() => {
+                setPilotStatus('pending');
+                window.location.href = '/piloto/analise';
+              }}
+            />
+            <SimulatorButton 
+              icon={<ShieldAlert size={20} />} 
+              label="Set: Correção" 
+              sub="Solicitar novo documento"
+              color="bg-rovya-blue"
+              onClick={() => {
+                setPilotStatus('needs_info', { 
+                  correctionField: 'CNH', 
+                  correctionMessage: 'A foto da CNH está com reflexo. Por favor, envie uma nova foto nítida.' 
+                });
+                window.location.href = '/piloto/analise';
+              }}
+            />
+            <SimulatorButton 
+              icon={<CheckCircle size={20} />} 
+              label="Set: Aprovado" 
+              sub="Liberar para operação"
+              color="bg-emerald-600"
+              onClick={() => {
+                setPilotStatus('active');
+                window.location.href = '/piloto/analise';
+              }}
+            />
+            <SimulatorButton 
+              icon={<XCircle size={20} />} 
+              label="Set: Rejeitado" 
+              sub="Perfil não compatível"
+              color="bg-red-600"
+              onClick={() => {
+                setPilotStatus('rejected', { 
+                  rejectionReason: 'Não foi possível validar os antecedentes criminais com os dados fornecidos.' 
+                });
+                window.location.href = '/piloto/analise';
+              }}
+            />
+            <SimulatorButton 
+              icon={<MapPin size={20} />} 
+              label="Set: Cidade Off" 
+              sub="Lista de espera (Região)"
+              color="bg-slate-700"
+              onClick={() => {
+                setPilotStatus('city_unavailable');
+                window.location.href = '/piloto/analise';
+              }}
+            />
+          </div>
         </div>
       </div>
       
