@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { RovyaBrand } from "@/components/RovyaBrand";
-import { User, ShieldCheck, PlayCircle, Bike, Palette, RotateCcw, ArrowRight, MessageSquare } from "lucide-react";
+import { User, ShieldCheck, PlayCircle, Bike, Palette, RotateCcw, ArrowRight, MessageSquare, Navigation as NavigationIcon } from "lucide-react";
 import { useDemo } from "@/state/DemoContext";
 
 export const Route = createFileRoute("/")({
@@ -54,7 +54,7 @@ function DemoSelector() {
               params={{ rideId: "ride-active-mock" }}
               className="w-full py-2 bg-emerald-50 text-emerald-600 border border-emerald-100 rounded-xl text-[9px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-emerald-100 transition-all active:scale-95"
             >
-              <Navigation size={10} strokeWidth={2.5} />
+              <NavigationIcon size={10} strokeWidth={2.5} />
               Corrida Em Andamento (Direto)
             </Link>
             <Link 
