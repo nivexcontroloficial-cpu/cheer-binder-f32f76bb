@@ -68,6 +68,7 @@ function ChatScreen() {
   const [isTyping, setIsTyping] = useState(false);
   const [showProtectedCall, setShowProtectedCall] = useState(false);
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
+  const [showReportConfirm, setShowReportConfirm] = useState(false);
 
   const [messages, setMessages] = useState<Message[]>(DEFAULT_MESSAGES);
   const [hydratedRideId, setHydratedRideId] = useState<string | null>(null);
@@ -228,7 +229,8 @@ function ChatScreen() {
   };
 
   const handleReport = () => {
-    toast.success("Mensagem denunciada. Nossa equipe de segurança irá analisar.");
+    toast.info("Demonstração: nenhuma denúncia real foi enviada.");
+    navigate({ to: "/passageiro/denunciar/$rideId", params: { rideId } });
   };
 
   const quickReplies = ["Estou saindo!", "Estou no local.", "Pode me esperar?", "Ok, obrigado."];
@@ -245,12 +247,8 @@ function ChatScreen() {
           </button>
           <div className="flex items-center gap-3">
             <div className="relative">
-              <div className="h-10 w-10 rounded-xl bg-slate-200 overflow-hidden border border-slate-100">
-                <img
-                  src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=100&h=100&fit=crop"
-                  alt="Carlos H."
-                  className="w-full h-full object-cover"
-                />
+              <div className="h-10 w-10 rounded-xl bg-navy flex items-center justify-center border border-slate-100">
+                <span className="text-white font-black italic tracking-tighter text-sm uppercase">CH</span>
               </div>
               <div className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-blue-500 border-2 border-white"></div>
             </div>
@@ -260,10 +258,10 @@ function ChatScreen() {
               </h2>
               <div className="flex items-center gap-1.5 mt-0.5">
                 <span className="text-[9px] font-black text-blue-500 uppercase tracking-widest">
-                  Online
+                  Online simulado
                 </span>
                 <span className="text-[8px] text-slate-400 font-bold uppercase tracking-widest">
-                  • Visto há 2 min
+                  • Status fictício da demonstração
                 </span>
               </div>
             </div>
@@ -278,7 +276,7 @@ function ChatScreen() {
             <Phone size={18} strokeWidth={2.5} />
           </button>
 
-          <AlertDialog>
+          <AlertDialog open={showReportConfirm} onOpenChange={setShowReportConfirm}>
             <AlertDialogTrigger asChild>
               <button className="h-10 w-10 bg-slate-50 text-navy rounded-xl flex items-center justify-center hover:bg-slate-100 active:scale-95 transition-all">
                 <MoreVertical size={18} strokeWidth={2.5} />
@@ -296,24 +294,48 @@ function ChatScreen() {
               <div className="flex flex-col gap-2 py-2">
                 <button
                   onClick={() => {
-                    toast.info("Monitoramento de segurança intensificado.");
+                    navigate({ to: "/passageiro/seguranca" });
                   }}
                   className="flex items-center gap-3 w-full p-4 rounded-2xl bg-slate-50 text-navy hover:bg-slate-100 transition-colors text-left"
                 >
                   <Shield size={18} className="text-blue-500" />
                   <span className="text-xs font-bold uppercase tracking-widest">
-                    Ativar Segurança
+                    Central de Segurança
                   </span>
                 </button>
-                <button
-                  onClick={handleReport}
-                  className="flex items-center gap-3 w-full p-4 rounded-2xl bg-red-50 text-red-600 hover:bg-red-100 transition-colors text-left"
-                >
-                  <Flag size={18} />
-                  <span className="text-xs font-bold uppercase tracking-widest">
-                    Denunciar Conversa
-                  </span>
-                </button>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <button
+                      className="flex items-center gap-3 w-full p-4 rounded-2xl bg-red-50 text-red-600 hover:bg-red-100 transition-colors text-left"
+                    >
+                      <Flag size={18} />
+                      <span className="text-xs font-bold uppercase tracking-widest">
+                        Denunciar Conversa
+                      </span>
+                    </button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent className="rounded-3xl max-w-[90vw] w-[320px]">
+                    <AlertDialogHeader>
+                      <AlertDialogTitle className="font-black italic tracking-tighter text-navy uppercase">
+                        Confirmar Denúncia?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription className="text-xs font-medium text-slate-500">
+                        Você será encaminhado para a tela de denúncia para relatar o ocorrido.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter className="flex flex-col gap-2 mt-4 sm:flex-col">
+                      <AlertDialogAction
+                        onClick={handleReport}
+                        className="w-full bg-red-600 text-white rounded-2xl text-xs font-bold uppercase tracking-widest h-12"
+                      >
+                        Confirmar
+                      </AlertDialogAction>
+                      <AlertDialogCancel className="w-full rounded-2xl border-slate-200 text-xs font-bold uppercase tracking-widest h-12">
+                        Voltar
+                      </AlertDialogCancel>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
               <AlertDialogFooter>
                 <AlertDialogCancel className="rounded-2xl border-slate-200 text-xs font-bold uppercase tracking-widest">
@@ -326,10 +348,10 @@ function ChatScreen() {
       </header>
 
       <div ref={scrollRef} className="flex-1 overflow-y-auto p-6 space-y-4 bg-porcelain/50">
-        <div className="flex justify-center mb-6">
-          <div className="bg-white/80 border border-slate-100 px-4 py-1.5 rounded-full shadow-sm">
+        <div className="flex justify-center mb-6 text-center">
+          <div className="bg-white/80 border border-slate-100 px-4 py-1.5 rounded-full shadow-sm max-w-[90%]">
             <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">
-              Conversa segura e criptografada
+              Conversa simulada — nenhuma mensagem é enviada pela internet
             </span>
           </div>
         </div>
@@ -467,32 +489,22 @@ function ChatScreen() {
 
             <div className="space-y-2">
               <h3 className="text-xl font-black italic tracking-tighter text-navy uppercase">
-                Chamada Protegida
+                Simulação de chamada
               </h3>
               <p className="text-xs font-medium text-slate-500 leading-relaxed">
-                Seu número real nunca será compartilhado. A conexão é feita através do nosso
-                servidor seguro.
+                Esta é uma demonstração visual. Nenhuma ligação será realizada e nenhum número será utilizado.
               </p>
-            </div>
-
-            <div className="w-full bg-slate-50 border border-slate-100 p-4 rounded-3xl flex flex-col gap-1">
-              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">
-                Número Virtual Temporário
-              </span>
-              <span className="text-lg font-black italic tracking-tighter text-navy">
-                (43) 4004-9827
-              </span>
             </div>
 
             <div className="flex flex-col w-full gap-3 mt-4">
               <Button
                 onClick={() => {
-                  toast.success("Ligando...");
+                  toast.success("Demonstração concluída: nenhuma ligação foi realizada.");
                   setShowProtectedCall(false);
                 }}
                 className="w-full bg-navy text-white h-14 rounded-2xl text-xs font-black uppercase tracking-widest"
               >
-                Iniciar Chamada
+                Simular chamada
               </Button>
               <button
                 onClick={() => setShowProtectedCall(false)}
@@ -507,3 +519,4 @@ function ChatScreen() {
     </div>
   );
 }
+
