@@ -62,9 +62,9 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   // Persistência em localStorage
   useEffect(() => {
-    const saved = localStorage.getItem('rovya_demo_data');
-    if (saved) {
-      try {
+    try {
+      const saved = localStorage.getItem('rovya_demo_data');
+      if (saved) {
         const data = JSON.parse(saved);
         if (data && typeof data === 'object') {
           if (Array.isArray(data.drivers)) setDrivers(data.drivers);
@@ -72,20 +72,26 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
           if (Array.isArray(data.invoices)) setInvoices(data.invoices);
           if (Array.isArray(data.complaints)) setComplaints(data.complaints);
           if (Array.isArray(data.cancellations)) setCancellations(data.cancellations);
-          if (data.pilotRegistration) setPilotRegistration(data.pilotRegistration);
+          if (data.pilotRegistration) {
+            // Não persistir CPF
+            const cleanedRegistration = { ...data.pilotRegistration, cpf: '' };
+            setPilotRegistration(cleanedRegistration);
+          }
         }
-      } catch (e) {
-        console.error("Erro ao carregar dados da demo:", e);
-        localStorage.removeItem('rovya_demo_data');
-        resetData();
       }
+    } catch (e) {
+      console.error("Erro ao carregar dados da demo:", e);
+      localStorage.removeItem('rovya_demo_data');
+      resetData();
     }
   }, []);
 
   useEffect(() => {
     try {
+      // Não persistir CPF em localStorage
+      const registrationToSave = { ...pilotRegistration, cpf: '' };
       localStorage.setItem('rovya_demo_data', JSON.stringify({
-        drivers, rides, invoices, complaints, cancellations, pilotRegistration
+        drivers, rides, invoices, complaints, cancellations, pilotRegistration: registrationToSave
       }));
     } catch (e) {
       console.error("Erro ao salvar dados da demo:", e);

@@ -96,10 +96,11 @@ function SignupScreen() {
               </>
             ) : (
               <div className="space-y-2">
-                <label className="text-[10px] font-black uppercase tracking-widest text-slate-400">CPF</label>
+                <label htmlFor="cpf-input" className="text-[10px] font-black uppercase tracking-widest text-slate-400">CPF</label>
                 <div className="relative">
                   <ShieldCheck className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" size={18} strokeWidth={2} />
                   <input 
+                    id="cpf-input"
                     required
                     type="text"
                     value={formData.cpf}
@@ -111,7 +112,7 @@ function SignupScreen() {
                 <div className="flex gap-2 p-3 bg-blue-50 border border-blue-100 rounded-xl mt-4">
                   <Info size={14} className="text-blue-500 shrink-0 mt-0.5" />
                   <p className="text-[9px] text-blue-700 leading-relaxed font-medium italic">
-                    Utilizamos o CPF apenas para verificar antecedentes e garantir a segurança de toda a comunidade Rovya. Seus dados são criptografados.
+                    Utilizamos o CPF apenas para verificar antecedentes nesta simulação. Seus dados informados permanecem somente no ambiente local.
                   </p>
                 </div>
               </div>
