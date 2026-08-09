@@ -82,6 +82,7 @@ function RideCompletedScreen() {
     // Salva no histórico simulado
     addRideToHistory({
       id: rideSummary.id,
+      passengerId: "p1",
       origin: { address: rideSummary.origin, lat: 0, lng: 0 },
       destination: { address: rideSummary.destination, lat: 0, lng: 0 },
       status: 'completed',
