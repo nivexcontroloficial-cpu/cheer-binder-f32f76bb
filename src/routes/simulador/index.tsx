@@ -19,14 +19,40 @@ export const Route = createFileRoute("/simulador/")({
           <SimulatorButton 
             icon={<PlayCircle size={20} />} 
             label="Injetar Corrida" 
-            sub="Simular Rafael (Passageiro)"
+            sub="Passageiro (Rafael)"
             color="bg-rovya-orange"
+            onClick={() => window.location.href = '/passageiro/buscando'}
           />
           <SimulatorButton 
             icon={<Zap size={20} />} 
-            label="Pico de Demanda" 
-            sub="Simular +50 chamadas/min"
+            label="Simular Aceite" 
+            sub="Piloto (Carlos H.)"
             color="bg-rovya-blue"
+            onClick={() => window.location.href = '/passageiro/corrida/mock-ride-id'}
+          />
+          <SimulatorButton 
+            icon={<Activity size={20} />} 
+            label="Simular Chegada" 
+            sub="Gatilho de espera + PIN"
+            color="bg-emerald-600"
+            onClick={() => {
+              const event = new CustomEvent('simular-chegada');
+              window.dispatchEvent(event);
+              alert("Comando de chegada enviado para a tela de corrida ativa.");
+            }}
+          />
+        </div>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+          <SimulatorButton 
+            icon={<Cpu size={20} />} 
+            label="Zerar Cronômetro" 
+            sub="Simular não comparecimento"
+            color="bg-red-600"
+            onClick={() => {
+              const event = new CustomEvent('simular-tempo-esgotado');
+              window.dispatchEvent(event);
+            }}
           />
           <SimulatorButton 
             icon={<Activity size={20} />} 
@@ -64,9 +90,12 @@ export const Route = createFileRoute("/simulador/")({
   ),
 });
 
-function SimulatorButton({ icon, label, sub, color }: { icon: React.ReactNode, label: string, sub: string, color: string }) {
+function SimulatorButton({ icon, label, sub, color, onClick }: { icon: React.ReactNode, label: string, sub: string, color: string, onClick?: () => void }) {
   return (
-    <button className="flex flex-col items-start p-6 bg-white/5 border border-white/5 rounded-3xl hover:border-white/20 transition-all group text-left">
+    <button 
+      onClick={onClick}
+      className="flex flex-col items-start p-6 bg-white/5 border border-white/5 rounded-3xl hover:border-white/20 transition-all group text-left w-full"
+    >
       <div className={`p-3 rounded-2xl mb-4 transition-transform group-hover:scale-110 ${color} text-white`}>
         {icon}
       </div>
