@@ -97,7 +97,6 @@ function SavedPlacesPage() {
       <div className="flex items-center gap-3 mb-4">
         <Link
           to="/passageiro/perfil"
-          type="button"
           aria-label="Voltar para o perfil"
           className="h-10 w-10 rounded-2xl bg-white border border-slate-100 flex items-center justify-center text-slate-400 hover:text-navy transition-colors focus-visible:ring-2 focus-visible:ring-navy focus-visible:outline-none"
         >
