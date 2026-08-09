@@ -74,12 +74,3 @@ function SidebarItem({ icon, label, active = false }: { icon: React.ReactNode; l
     </button>
   );
 }
-
-function SidebarItem({ icon, label, active = false }: { icon: React.ReactNode; label: string; active?: boolean }) {
-  return (
-    <button className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-colors ${active ? 'bg-[#2F80ED]/10 text-[#2F80ED]' : 'text-slate-600 hover:bg-slate-50'}`}>
-      {icon}
-      {label}
-    </button>
-  );
-}
