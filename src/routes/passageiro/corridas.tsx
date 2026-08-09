@@ -1,21 +1,18 @@
+import React from "react";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { 
   History, 
   MapPin, 
   ChevronRight, 
-  Calendar, 
-  CreditCard, 
   Clock, 
   Search,
   CheckCircle2,
-  XCircle,
-  AlertCircle
+  XCircle
 } from "lucide-react";
 import { useDemo } from "@/state/DemoContext";
 import { useState, useMemo } from "react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 
 export const Route = createFileRoute("/passageiro/corridas")({
