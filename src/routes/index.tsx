@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { RovyaBrand } from "@/components/RovyaBrand";
-import { User, ShieldCheck, PlayCircle, Bike, Palette, RotateCcw, ArrowRight, MessageSquare, Navigation as NavigationIcon, CheckCircle2 } from "lucide-react";
+import { User, ShieldCheck, PlayCircle, Bike, Palette, RotateCcw, ArrowRight, MessageSquare, Navigation as NavigationIcon, CheckCircle2, HeartPulse } from "lucide-react";
 import { useDemo } from "@/state/DemoContext";
 
 export const Route = createFileRoute("/")({
@@ -38,11 +38,19 @@ function DemoSelector() {
             <DemoCard 
               to="/passageiro/inicio"
               title="Passageiro"
-              description="Conta Completa"
+              description="Conta Completa & Saúde"
               icon={<User className="h-6 w-6" strokeWidth={1.8} />}
               color="border-blue-200 hover:border-[#2F80ED] text-[#2F80ED]"
               bg="bg-blue-50"
             />
+            <Link 
+              to="/passageiro/saude-da-conta"
+              className="w-full py-2 bg-emerald-50 text-emerald-600 border border-emerald-100 rounded-xl text-[9px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-emerald-100 transition-all active:scale-95"
+            >
+              <HeartPulse size={10} strokeWidth={2.5} />
+              Saúde da Conta (Direto)
+            </Link>
+
             <Link 
               to="/passageiro/buscando"
               className="w-full py-2 bg-slate-100 text-slate-500 rounded-xl text-[9px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-slate-200 transition-all active:scale-95"

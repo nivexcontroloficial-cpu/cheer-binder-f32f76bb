@@ -31,6 +31,7 @@ import { Route as PassageiroLocalizarRouteImport } from './routes/passageiro/loc
 import { Route as PassageiroNotificacoesRouteImport } from './routes/passageiro/notificacoes'
 import { Route as PassageiroPerfilRouteImport } from './routes/passageiro/perfil'
 import { Route as PassageiroPermissoesRouteImport } from './routes/passageiro/permissoes'
+import { Route as PassageiroSaudeDaContaRouteImport } from './routes/passageiro/saude-da-conta'
 import { Route as PassageiroSegurancaRouteImport } from './routes/passageiro/seguranca'
 import { Route as PassageiroVerificacaoRouteImport } from './routes/passageiro/verificacao'
 import { Route as PilotoIndexRouteImport } from './routes/piloto/index'
@@ -152,6 +153,11 @@ const PassageiroPermissoesRoute = PassageiroPermissoesRouteImport.update({
   path: '/permissoes',
   getParentRoute: () => PassageiroRoute,
 } as any)
+const PassageiroSaudeDaContaRoute = PassageiroSaudeDaContaRouteImport.update({
+  id: '/saude-da-conta',
+  path: '/saude-da-conta',
+  getParentRoute: () => PassageiroRoute,
+} as any)
 const PassageiroSegurancaRoute = PassageiroSegurancaRouteImport.update({
   id: '/seguranca',
   path: '/seguranca',
@@ -222,6 +228,7 @@ export interface FileRoutesByFullPath {
   '/passageiro/notificacoes': typeof PassageiroNotificacoesRoute
   '/passageiro/perfil': typeof PassageiroPerfilRoute
   '/passageiro/permissoes': typeof PassageiroPermissoesRoute
+  '/passageiro/saude-da-conta': typeof PassageiroSaudeDaContaRoute
   '/passageiro/seguranca': typeof PassageiroSegurancaRoute
   '/passageiro/verificacao': typeof PassageiroVerificacaoRoute
   '/admin/': typeof AdminIndexRoute
@@ -251,6 +258,7 @@ export interface FileRoutesByTo {
   '/passageiro/notificacoes': typeof PassageiroNotificacoesRoute
   '/passageiro/perfil': typeof PassageiroPerfilRoute
   '/passageiro/permissoes': typeof PassageiroPermissoesRoute
+  '/passageiro/saude-da-conta': typeof PassageiroSaudeDaContaRoute
   '/passageiro/seguranca': typeof PassageiroSegurancaRoute
   '/passageiro/verificacao': typeof PassageiroVerificacaoRoute
   '/admin': typeof AdminIndexRoute
@@ -285,6 +293,7 @@ export interface FileRoutesById {
   '/passageiro/notificacoes': typeof PassageiroNotificacoesRoute
   '/passageiro/perfil': typeof PassageiroPerfilRoute
   '/passageiro/permissoes': typeof PassageiroPermissoesRoute
+  '/passageiro/saude-da-conta': typeof PassageiroSaudeDaContaRoute
   '/passageiro/seguranca': typeof PassageiroSegurancaRoute
   '/passageiro/verificacao': typeof PassageiroVerificacaoRoute
   '/admin/': typeof AdminIndexRoute
@@ -320,6 +329,7 @@ export interface FileRouteTypes {
     | '/passageiro/notificacoes'
     | '/passageiro/perfil'
     | '/passageiro/permissoes'
+    | '/passageiro/saude-da-conta'
     | '/passageiro/seguranca'
     | '/passageiro/verificacao'
     | '/admin/'
@@ -349,6 +359,7 @@ export interface FileRouteTypes {
     | '/passageiro/notificacoes'
     | '/passageiro/perfil'
     | '/passageiro/permissoes'
+    | '/passageiro/saude-da-conta'
     | '/passageiro/seguranca'
     | '/passageiro/verificacao'
     | '/admin'
@@ -382,6 +393,7 @@ export interface FileRouteTypes {
     | '/passageiro/notificacoes'
     | '/passageiro/perfil'
     | '/passageiro/permissoes'
+    | '/passageiro/saude-da-conta'
     | '/passageiro/seguranca'
     | '/passageiro/verificacao'
     | '/admin/'
@@ -560,6 +572,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PassageiroPermissoesRouteImport
       parentRoute: typeof PassageiroRoute
     }
+    '/passageiro/saude-da-conta': {
+      id: '/passageiro/saude-da-conta'
+      path: '/saude-da-conta'
+      fullPath: '/passageiro/saude-da-conta'
+      preLoaderRoute: typeof PassageiroSaudeDaContaRouteImport
+      parentRoute: typeof PassageiroRoute
+    }
     '/passageiro/seguranca': {
       id: '/passageiro/seguranca'
       path: '/seguranca'
@@ -680,6 +699,7 @@ interface PassageiroRouteChildren {
   PassageiroNotificacoesRoute: typeof PassageiroNotificacoesRoute
   PassageiroPerfilRoute: typeof PassageiroPerfilRoute
   PassageiroPermissoesRoute: typeof PassageiroPermissoesRoute
+  PassageiroSaudeDaContaRoute: typeof PassageiroSaudeDaContaRoute
   PassageiroSegurancaRoute: typeof PassageiroSegurancaRoute
   PassageiroVerificacaoRoute: typeof PassageiroVerificacaoRoute
   PassageiroIndexRoute: typeof PassageiroIndexRoute
@@ -702,6 +722,7 @@ const PassageiroRouteChildren: PassageiroRouteChildren = {
   PassageiroNotificacoesRoute: PassageiroNotificacoesRoute,
   PassageiroPerfilRoute: PassageiroPerfilRoute,
   PassageiroPermissoesRoute: PassageiroPermissoesRoute,
+  PassageiroSaudeDaContaRoute: PassageiroSaudeDaContaRoute,
   PassageiroSegurancaRoute: PassageiroSegurancaRoute,
   PassageiroVerificacaoRoute: PassageiroVerificacaoRoute,
   PassageiroIndexRoute: PassageiroIndexRoute,
