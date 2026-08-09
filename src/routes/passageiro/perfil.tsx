@@ -1,23 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
-import { 
-  User, 
-  MapPin, 
-  CreditCard, 
-  Shield, 
-  HelpCircle, 
-  LogOut, 
-  ChevronRight, 
-  Camera, 
+import {
+  User,
+  MapPin,
+  CreditCard,
+  Shield,
+  HelpCircle,
+  LogOut,
+  ChevronRight,
+  Camera,
   Star,
   CheckCircle2,
   Lock,
   Phone,
-  AlertCircle
+  AlertCircle,
+  Info,
 } from "lucide-react";
 
-import { useDemo } from "@/state/DemoContext";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
@@ -28,78 +27,170 @@ export const Route = createFileRoute("/passageiro/perfil")({
 
 function ProfilePage() {
   const navigate = useNavigate();
-  const { resetData } = useDemo();
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState("Rafael");
   const [tempName, setTempName] = useState("Rafael");
-  const [avatar, setAvatar] = useState<string | null>(null);
+  const [avatarIndex, setAvatarIndex] = useState(0);
 
   const handleLogout = () => {
-    resetData();
-    navigate({ to: '/passageiro/entrar' });
-    toast.success("Demonstração reiniciada");
+    toast.info("Saída simulada. Nenhuma sessão real foi encerrada.", {
+      duration: 4000,
+    });
+    navigate({ to: "/passageiro/entrar" });
   };
 
   const handleSaveName = () => {
-    setName(tempName);
+    const trimmedName = tempName.trim();
+
+    if (!trimmedName) {
+      toast.error("O nome não pode ser vazio.");
+      setTempName(name);
+      return;
+    }
+
+    setName(trimmedName);
     setIsEditing(false);
-    toast.success("Perfil atualizado");
+    toast.success("Nome alterado somente nesta demonstração.");
+  };
+
+  const handleCancelEdit = () => {
+    setTempName(name);
+    setIsEditing(false);
   };
 
   const handlePhotoClick = () => {
-    toast.info("Simulando abertura de câmera...");
-    // Mock de troca de foto
-    setTimeout(() => {
-      setAvatar("https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=150&h=150");
-      toast.success("Foto atualizada localmente");
-    }, 1500);
+    // Apenas alterna um avatar visual simulado localmente
+    setAvatarIndex((prev) => (prev + 1) % 3);
+    toast.info(
+      "Simulação: avatar alterado visualmente. Nenhuma câmera ou imagem real foi acessada.",
+    );
   };
+
+  const getAvatarContent = () => {
+    const colors = ["bg-slate-100", "bg-blue-100", "bg-rovya-orange/10"];
+    const textColors = ["text-slate-300", "text-blue-400", "text-rovya-orange"];
+    const currentName = name || "R";
+    const initial = currentName.charAt(0).toUpperCase();
+
+    if (avatarIndex === 0) {
+      return (
+        <User
+          size={40}
+          className={textColors[0]}
+          aria-label={`Avatar simulado de ${name}`}
+        />
+      );
+    }
+
+    return (
+      <div
+        className={`h-full w-full flex items-center justify-center font-black text-2xl ${textColors[avatarIndex]}`}
+        aria-label={`Avatar simulado com inicial ${initial}`}
+      >
+        {initial}
+      </div>
+    );
+  };
+
+  const avatarColors = ["bg-slate-100", "bg-blue-100", "bg-rovya-orange/10"];
 
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+      {/* Banner de aviso de demonstração */}
+      <div className="bg-blue-50 border border-blue-100 p-4 rounded-[24px] mb-8 flex gap-3">
+        <Info size={18} className="text-blue-500 shrink-0" aria-hidden="true" />
+        <p className="text-[11px] font-bold text-blue-700 leading-tight">
+          Demonstração local: os dados e as ações deste perfil são simulados e
+          não alteram uma conta real.
+        </p>
+      </div>
+
       <div className="flex flex-col items-center mb-8">
         <div className="relative mb-4">
-          <div className="h-24 w-24 rounded-[32px] bg-slate-100 border-4 border-white shadow-xl overflow-hidden flex items-center justify-center">
-            {avatar ? (
-              <img src={avatar} alt="Avatar" className="h-full w-full object-cover" />
-            ) : (
-              <User size={40} className="text-slate-300" />
-            )}
+          <div
+            className={`h-24 w-24 rounded-[32px] ${avatarColors[avatarIndex]} border-4 border-white shadow-xl overflow-hidden flex items-center justify-center`}
+          >
+            {getAvatarContent()}
           </div>
-          <button 
+          <button
+            type="button"
             onClick={handlePhotoClick}
+            aria-label="Alterar avatar simulado"
             className="absolute -bottom-1 -right-1 h-8 w-8 rounded-xl bg-navy text-white flex items-center justify-center shadow-lg border-2 border-white active:scale-90 transition-transform"
           >
-            <Camera size={14} />
+            <Camera size={14} aria-hidden="true" />
           </button>
         </div>
 
         {isEditing ? (
           <div className="flex flex-col items-center gap-2 w-full max-w-xs">
-            <Input 
-              value={tempName} 
-              onChange={(e) => setTempName(e.target.value)}
-              className="text-center h-10 rounded-xl font-bold text-navy"
-              autoFocus
-            />
+            <div className="w-full">
+              <label
+                htmlFor="profile-name"
+                className="sr-only"
+              >
+                Nome do passageiro
+              </label>
+              <Input
+                id="profile-name"
+                value={tempName}
+                onChange={(e) => setTempName(e.target.value)}
+                maxLength={30}
+                placeholder="Seu nome"
+                className="text-center h-10 rounded-xl font-bold text-navy"
+                autoFocus
+              />
+            </div>
             <div className="flex gap-2 w-full">
-              <Button onClick={() => setIsEditing(false)} variant="ghost" className="flex-1 text-[10px] font-black uppercase">Cancelar</Button>
-              <Button onClick={handleSaveName} className="flex-1 bg-navy text-white text-[10px] font-black uppercase rounded-xl">Salvar</Button>
+              <Button
+                type="button"
+                onClick={handleCancelEdit}
+                variant="ghost"
+                className="flex-1 text-[10px] font-black uppercase"
+              >
+                Cancelar
+              </Button>
+              <Button
+                type="button"
+                onClick={handleSaveName}
+                className="flex-1 bg-navy text-white text-[10px] font-black uppercase rounded-xl"
+              >
+                Salvar
+              </Button>
             </div>
           </div>
         ) : (
           <div className="text-center">
             <div className="flex items-center justify-center gap-2 mb-1">
-              <h1 className="text-2xl font-black tracking-tight text-navy uppercase italic">{name}</h1>
-              <CheckCircle2 size={16} className="text-blue-500" />
+              <h1 className="text-2xl font-black tracking-tight text-navy uppercase italic">
+                {name}
+              </h1>
+              <div className="flex items-center gap-1 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100">
+                <CheckCircle2
+                  size={12}
+                  className="text-blue-500"
+                  aria-hidden="true"
+                />
+                <span className="text-[9px] font-black text-blue-600 uppercase tracking-tighter">
+                  Simulação
+                </span>
+              </div>
             </div>
             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest flex items-center justify-center gap-2">
-              <Star size={10} className="fill-rovya-orange text-rovya-orange" />
-              4.9 • Passageiro Nível 4
+              <Star
+                size={10}
+                className="fill-rovya-orange text-rovya-orange"
+                aria-hidden="true"
+              />
+              4.9 • Nível 4 (Exemplo)
             </p>
-            <button 
-              onClick={() => { setTempName(name); setIsEditing(true); }}
-              className="mt-2 text-[9px] font-black text-blue-500 uppercase tracking-widest hover:underline"
+            <button
+              type="button"
+              onClick={() => {
+                setTempName(name);
+                setIsEditing(true);
+              }}
+              className="mt-2 text-[9px] font-black text-blue-500 uppercase tracking-widest hover:underline focus-visible:ring-2 focus-visible:ring-blue-500 outline-none rounded-sm px-1"
             >
               Editar Nome
             </button>
@@ -109,82 +200,108 @@ function ProfilePage() {
 
       <div className="space-y-6">
         <section>
-          <h2 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4 px-2">Conta e Segurança</h2>
+          <h2 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4 px-2">
+            Conta e Segurança
+          </h2>
           <div className="bg-white border border-slate-100 rounded-[32px] overflow-hidden">
-            <ProfileItem 
-              icon={<Phone size={18} />} 
-              label="Telefone" 
-              value="(43) 999**-**12" 
+            <ProfileItem
+              icon={<Phone size={18} aria-hidden="true" />}
+              label="Telefone"
+              value="(43) 999**-**12"
               readOnly
             />
-            <ProfileLink 
-              to="/passageiro/locais-salvos" 
-              icon={<MapPin size={18} />} 
-              label="Locais Salvos" 
+            <ProfileLink
+              to="/passageiro/locais-salvos"
+              icon={<MapPin size={18} aria-hidden="true" />}
+              label="Locais Salvos"
               description="Casa, Trabalho, Favoritos"
             />
-            <ProfileLink 
-              to="/passageiro" 
-              icon={<CreditCard size={18} />} 
-              label="Formas de Pagamento" 
-              description="Dinheiro, Pix, Máquina"
-            />
+            <div className="flex items-center justify-between p-5 border-b border-slate-50 last:border-0 opacity-80">
+              <div className="flex items-center gap-4">
+                <div className="text-slate-400">
+                  <CreditCard size={18} aria-hidden="true" />
+                </div>
+                <div>
+                  <p className="text-sm font-black text-navy leading-none mb-1">
+                    Formas presenciais — demonstração
+                  </p>
+                  <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">
+                    Nenhuma transação financeira ocorre
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
         <section>
-          <h2 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4 px-2">Privacidade</h2>
+          <h2 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4 px-2">
+            Privacidade
+          </h2>
           <div className="bg-white border border-slate-100 rounded-[32px] overflow-hidden">
-            <ProfileLink 
-              to="/passageiro/saude-da-conta" 
-              icon={<Shield size={18} />} 
-              label="Saúde da Conta" 
-              description="Score excelente, ocorrências"
+            <ProfileLink
+              to="/passageiro/saude-da-conta"
+              icon={<Shield size={18} aria-hidden="true" />}
+              label="Saúde da Conta"
+              description="Score simulado (Demonstração)"
             />
 
-            <ProfileLink 
-              to="/passageiro" 
-              icon={<Lock size={18} />} 
-              label="Dados Pessoais" 
+            <ProfileLink
+              to="/passageiro/privacidade"
+              icon={<Lock size={18} aria-hidden="true" />}
+              label="Dados Pessoais"
               description="Gerenciar informações"
             />
           </div>
         </section>
 
         <section>
-          <h2 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4 px-2">Suporte</h2>
+          <h2 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4 px-2">
+            Suporte
+          </h2>
           <div className="bg-white border border-slate-100 rounded-[32px] overflow-hidden">
-            <ProfileLink 
-              to="/passageiro/suporte" 
-              icon={<HelpCircle size={18} />} 
-              label="Ajuda" 
+            <ProfileLink
+              to="/passageiro/suporte"
+              icon={<HelpCircle size={18} aria-hidden="true" />}
+              label="Ajuda"
               description="FAQ, Central de suporte"
             />
           </div>
         </section>
 
         <section>
-          <h2 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4 px-2">Gestão de Conta</h2>
+          <h2 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4 px-2">
+            Gestão de Conta
+          </h2>
           <div className="bg-white border border-slate-100 rounded-[32px] overflow-hidden">
-             <button 
-              onClick={() => toast.warning("Simulando fluxo de exclusão de conta...")}
-              className="w-full flex items-center justify-between p-5 hover:bg-red-50 transition-colors"
+            <button
+              type="button"
+              onClick={() =>
+                toast.info("Simulação local: nenhuma conta foi excluída.")
+              }
+              className="w-full flex items-center justify-between p-5 hover:bg-red-50 transition-colors focus-visible:bg-red-50 outline-none"
             >
               <div className="flex items-center gap-4 text-red-400">
-                <AlertCircle size={18} />
-                <span className="text-sm font-bold text-red-600">Excluir Minha Conta</span>
+                <AlertCircle size={18} aria-hidden="true" />
+                <span className="text-sm font-bold text-red-600">
+                  Simular exclusão de conta
+                </span>
               </div>
-              <ChevronRight size={18} className="text-red-200" />
+              <ChevronRight
+                size={18}
+                className="text-red-200"
+                aria-hidden="true"
+              />
             </button>
           </div>
         </section>
 
-
-        <button 
+        <button
+          type="button"
           onClick={handleLogout}
-          className="w-full py-5 bg-rose-50 text-rose-600 rounded-[28px] flex items-center justify-center gap-3 font-black text-xs uppercase tracking-widest hover:bg-rose-100 transition-colors active:scale-95 mb-8"
+          className="w-full py-5 bg-rose-50 text-rose-600 rounded-[28px] flex items-center justify-center gap-3 font-black text-xs uppercase tracking-widest hover:bg-rose-100 transition-colors active:scale-95 mb-8 outline-none focus-visible:ring-2 focus-visible:ring-rose-500"
         >
-          <LogOut size={18} />
+          <LogOut size={18} aria-hidden="true" />
           Sair da demonstração
         </button>
       </div>
@@ -196,32 +313,68 @@ function ProfilePage() {
   );
 }
 
-function ProfileItem({ icon, label, value, readOnly = false }: { icon: React.ReactNode, label: string, value: string, readOnly?: boolean }) {
+function ProfileItem({
+  icon,
+  label,
+  value,
+  readOnly = false,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  value: string;
+  readOnly?: boolean;
+}) {
   return (
     <div className="flex items-center justify-between p-5 border-b border-slate-50 last:border-0">
       <div className="flex items-center gap-4">
         <div className="text-slate-400">{icon}</div>
         <div>
-          <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest leading-none mb-1">{label}</p>
+          <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest leading-none mb-1">
+            {label}
+          </p>
           <p className="text-xs font-bold text-navy">{value}</p>
         </div>
       </div>
-      {readOnly && <Lock size={14} className="text-slate-200" />}
+      {readOnly && (
+        <Lock size={14} className="text-slate-200" aria-hidden="true" />
+      )}
     </div>
   );
 }
 
-function ProfileLink({ to, icon, label, description }: { to: string, icon: React.ReactNode, label: string, description: string }) {
+function ProfileLink({
+  to,
+  icon,
+  label,
+  description,
+}: {
+  to: string;
+  icon: React.ReactNode;
+  label: string;
+  description: string;
+}) {
   return (
-    <Link to={to} className="flex items-center justify-between p-5 border-b border-slate-50 last:border-0 hover:bg-slate-50 transition-colors active:bg-slate-100">
+    <Link
+      to={to}
+      className="flex items-center justify-between p-5 border-b border-slate-50 last:border-0 hover:bg-slate-50 transition-colors active:bg-slate-100 outline-none focus-visible:bg-slate-50"
+    >
       <div className="flex items-center gap-4">
         <div className="text-slate-400">{icon}</div>
         <div>
-          <p className="text-sm font-black text-navy leading-none mb-1">{label}</p>
-          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">{description}</p>
+          <p className="text-sm font-black text-navy leading-none mb-1">
+            {label}
+          </p>
+          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">
+            {description}
+          </p>
         </div>
       </div>
-      <ChevronRight size={18} className="text-slate-200" />
+      <ChevronRight
+        size={18}
+        className="text-slate-200"
+        aria-hidden="true"
+      />
     </Link>
   );
 }
+
