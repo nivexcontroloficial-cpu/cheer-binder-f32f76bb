@@ -26,9 +26,12 @@ function PassengerHomeScreen() {
 
   const handleCalculate = () => {
     if (destination.trim()) {
-      // Navegaria para a próxima etapa (não definida neste prompt)
-      console.log("Calculando corrida para:", destination);
+      navigate({ to: "/passageiro/destino" });
     }
+  };
+
+  const openDestination = () => {
+    navigate({ to: "/passageiro/destino" });
   };
 
   return (
@@ -93,6 +96,7 @@ function PassengerHomeScreen() {
               <input 
                 type="text" 
                 value={destination}
+                onFocus={openDestination}
                 onChange={(e) => setDestination(e.target.value)}
                 placeholder="PARA ONDE VAMOS?" 
                 className="w-full h-16 bg-white border-2 border-slate-100 rounded-2xl pl-10 pr-4 text-[11px] font-black uppercase tracking-[0.2em] text-navy focus:outline-none focus:border-rovya-orange transition-all placeholder:text-slate-300 shadow-sm"
@@ -125,8 +129,8 @@ function PassengerHomeScreen() {
 
         {/* Favoritos */}
         <section className="grid grid-cols-2 gap-4">
-          <FavoriteButton icon={<Navigation size={18} />} label="Trabalho" sub="Av. Getúlio Vargas, 890" />
-          <FavoriteButton icon={<Clock size={18} />} label="Casa" sub="Rua São João, 345" />
+          <FavoriteButton onClick={() => navigate({ to: '/passageiro/locais-salvos' })} icon={<Navigation size={18} />} label="Trabalho" sub="Av. Getúlio Vargas, 890" />
+          <FavoriteButton onClick={() => navigate({ to: '/passageiro/locais-salvos' })} icon={<Clock size={18} />} label="Casa" sub="Rua São João, 345" />
         </section>
 
         {/* Destinos Recentes */}
@@ -173,9 +177,9 @@ function PassengerHomeScreen() {
   );
 }
 
-function FavoriteButton({ icon, label, sub }: { icon: React.ReactNode, label: string, sub: string }) {
+function FavoriteButton({ icon, label, sub, onClick }: { icon: React.ReactNode, label: string, sub: string, onClick?: () => void }) {
   return (
-    <button className="p-5 bg-white rounded-[28px] border border-slate-100 text-left hover:border-rovya-orange transition-all shadow-sm group">
+    <button onClick={onClick} className="p-5 bg-white rounded-[28px] border border-slate-100 text-left hover:border-rovya-orange transition-all shadow-sm group">
       <div className="h-10 w-10 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400 group-hover:text-rovya-orange transition-colors mb-3">
         {icon}
       </div>
