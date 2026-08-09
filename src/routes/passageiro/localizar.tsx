@@ -64,7 +64,7 @@ function MockMapScreen() {
         </div>
 
         <button 
-          onClick={() => navigate({ to: "/passageiro/inicio" })}
+          onClick={() => navigate({ to: "/passageiro/confirmar-corrida" })}
           className="w-full h-16 bg-navy text-white rounded-[24px] font-black uppercase tracking-widest text-[12px] flex items-center justify-center gap-2 hover:bg-navy/90 transition-all active:scale-95 rovya-shadow"
         >
           Confirmar Local
