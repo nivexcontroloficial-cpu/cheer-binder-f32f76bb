@@ -1,13 +1,13 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { 
-  ArrowLeft, 
-  Search, 
-  MessageSquare, 
-  BookOpen, 
-  ShieldAlert, 
+import {
+  ArrowLeft,
+  Search,
+  MessageSquare,
+  BookOpen,
+  ShieldAlert,
   ChevronRight,
   LifeBuoy,
-  AlertCircle
+  AlertCircle,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useState, useMemo } from "react";
@@ -16,21 +16,33 @@ export const Route = createFileRoute("/passageiro/suporte")({
   component: SupportCenter,
 });
 
+const FAQS = [
+  {
+    id: 1,
+    q: "Como cancelar uma corrida?",
+    a: "Você pode cancelar clicando no botão 'Cancelar' durante a busca ou no menu da corrida ativa.",
+  },
+  {
+    id: 2,
+    q: "Esqueci um objeto na moto",
+    a: "Abra um protocolo de 'Outros' informando a data, hora e descrição do objeto.",
+  },
+  {
+    id: 3,
+    q: "Taxa de cancelamento indevida",
+    a: "Vá em Saúde da Conta, localize a ocorrência e abra um Recurso.",
+  },
+];
+
 function SupportCenter() {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
 
-  const faqs = [
-    { id: 1, q: "Como cancelar uma corrida?", a: "Você pode cancelar clicando no botão 'Cancelar' durante a busca ou no menu da corrida ativa." },
-    { id: 2, q: "Esqueci um objeto na moto", a: "Abra um protocolo de 'Outros' informando a data, hora e descrição do objeto." },
-    { id: 3, q: "Taxa de cancelamento indevida", a: "Vá em Saúde da Conta, localize a ocorrência e abra um Recurso." }
-  ];
-
   const filteredFaqs = useMemo(() => {
     const term = searchTerm.toLowerCase().trim();
-    if (!term) return faqs;
-    return faqs.filter(
-      faq => faq.q.toLowerCase().includes(term) || faq.a.toLowerCase().includes(term)
+    if (!term) return FAQS;
+    return FAQS.filter(
+      (faq) => faq.q.toLowerCase().includes(term) || faq.a.toLowerCase().includes(term),
     );
   }, [searchTerm]);
 
@@ -42,7 +54,7 @@ function SupportCenter() {
     <div className="flex min-h-screen flex-col bg-porcelain font-sans text-navy">
       <header className="bg-white px-6 py-8 border-b border-slate-100 space-y-4">
         <div className="flex items-center gap-4">
-          <button 
+          <button
             type="button"
             onClick={() => navigate({ to: "/passageiro/inicio" })}
             className="h-10 w-10 bg-slate-50 rounded-xl flex items-center justify-center text-navy focus:ring-2 focus:ring-navy outline-none"
@@ -60,13 +72,15 @@ function SupportCenter() {
             Demonstração local: nenhum atendimento real será iniciado.
           </p>
         </div>
-        
+
         <div className="relative">
-          <label htmlFor="faq-search" className="sr-only">Buscar perguntas frequentes</label>
+          <label htmlFor="faq-search" className="sr-only">
+            Buscar perguntas frequentes
+          </label>
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" size={18} />
-          <input 
+          <input
             id="faq-search"
-            type="text" 
+            type="text"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Como podemos ajudar?"
@@ -78,7 +92,7 @@ function SupportCenter() {
       <main className="flex-1 p-6 space-y-8">
         {/* Quick Contact */}
         <section className="grid grid-cols-2 gap-3">
-          <button 
+          <button
             type="button"
             onClick={handleChatClick}
             className="bg-white p-5 rounded-[32px] border border-slate-100 flex flex-col items-center gap-3 active:scale-95 transition-all shadow-sm focus:ring-2 focus:ring-navy outline-none"
@@ -87,11 +101,15 @@ function SupportCenter() {
               <MessageSquare size={24} />
             </div>
             <div className="flex flex-col items-center">
-              <span className="text-[10px] font-black uppercase tracking-widest text-center">Chat de suporte</span>
-              <span className="text-[8px] font-bold text-blue-500 uppercase tracking-tighter">— Simulado</span>
+              <span className="text-[10px] font-black uppercase tracking-widest text-center">
+                Chat de suporte
+              </span>
+              <span className="text-[8px] font-bold text-blue-500 uppercase tracking-tighter">
+                — Simulado
+              </span>
             </div>
           </button>
-          <button 
+          <button
             type="button"
             onClick={() => navigate({ to: "/passageiro/saude-da-conta" })}
             className="bg-white p-5 rounded-[32px] border border-slate-100 flex flex-col items-center gap-3 active:scale-95 transition-all shadow-sm focus:ring-2 focus:ring-navy outline-none"
@@ -101,22 +119,32 @@ function SupportCenter() {
             </div>
             <div className="flex flex-col items-center">
               <span className="text-[10px] font-black uppercase tracking-widest">Protocolos</span>
-              <span className="text-[8px] font-bold text-emerald-500 uppercase tracking-tighter">simulados</span>
+              <span className="text-[8px] font-bold text-emerald-500 uppercase tracking-tighter">
+                simulados
+              </span>
             </div>
           </button>
         </section>
 
         {/* FAQ Section */}
         <section className="space-y-4">
-          <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-400 px-2">Dúvidas Frequentes</h3>
-          
+          <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-400 px-2">
+            Dúvidas Frequentes
+          </h3>
+
           <div className="space-y-2" aria-live="polite">
             {filteredFaqs.length > 0 ? (
-              filteredFaqs.map(faq => (
-                <details key={faq.id} className="group bg-white border border-slate-100 rounded-2xl overflow-hidden focus-within:ring-2 focus-within:ring-navy">
+              filteredFaqs.map((faq) => (
+                <details
+                  key={faq.id}
+                  className="group bg-white border border-slate-100 rounded-2xl overflow-hidden focus-within:ring-2 focus-within:ring-navy"
+                >
                   <summary className="flex items-center justify-between p-5 cursor-pointer list-none outline-none">
                     <span className="text-sm font-bold text-navy">{faq.q}</span>
-                    <ChevronRight size={18} className="text-slate-200 group-open:rotate-90 transition-transform" />
+                    <ChevronRight
+                      size={18}
+                      className="text-slate-200 group-open:rotate-90 transition-transform"
+                    />
                   </summary>
                   <div className="px-5 pb-5 text-xs text-slate-500 leading-relaxed border-t border-slate-50 pt-4">
                     {faq.a}
@@ -125,8 +153,12 @@ function SupportCenter() {
               ))
             ) : (
               <div className="bg-white border border-slate-100 rounded-2xl p-8 text-center space-y-2">
-                <p className="text-sm font-bold text-navy">Nenhuma dúvida encontrada nesta demonstração.</p>
-                <p className="text-xs text-slate-400">Tente buscar por termos como "cancelar", "objeto" ou "taxa".</p>
+                <p className="text-sm font-bold text-navy">
+                  Nenhuma dúvida encontrada nesta demonstração.
+                </p>
+                <p className="text-xs text-slate-400">
+                  Tente buscar por termos como "cancelar", "objeto" ou "taxa".
+                </p>
               </div>
             )}
           </div>
@@ -134,31 +166,33 @@ function SupportCenter() {
 
         {/* Policy Links */}
         <section className="space-y-3">
-           <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-400 px-2">Políticas</h3>
-           <div className="bg-white border border-slate-100 rounded-[32px] overflow-hidden">
-              <button 
-                type="button"
-                onClick={() => navigate({ to: "/passageiro/termos" })}
-                className="w-full flex items-center justify-between p-5 border-b border-slate-50 hover:bg-slate-50 focus:bg-slate-50 outline-none"
-              >
-                <div className="flex items-center gap-3 text-slate-400">
-                  <BookOpen size={18} />
-                  <span className="text-sm font-bold text-navy">Termos de Uso</span>
-                </div>
-                <ChevronRight size={16} className="text-slate-200" />
-              </button>
-              <button 
-                type="button"
-                onClick={() => navigate({ to: "/passageiro/privacidade" })}
-                className="w-full flex items-center justify-between p-5 hover:bg-slate-50 focus:bg-slate-50 outline-none"
-              >
-                <div className="flex items-center gap-3 text-slate-400">
-                  <ShieldAlert size={18} />
-                  <span className="text-sm font-bold text-navy">Política de Privacidade</span>
-                </div>
-                <ChevronRight size={16} className="text-slate-200" />
-              </button>
-           </div>
+          <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-400 px-2">
+            Políticas
+          </h3>
+          <div className="bg-white border border-slate-100 rounded-[32px] overflow-hidden">
+            <button
+              type="button"
+              onClick={() => navigate({ to: "/passageiro/termos" })}
+              className="w-full flex items-center justify-between p-5 border-b border-slate-50 hover:bg-slate-50 focus:bg-slate-50 outline-none"
+            >
+              <div className="flex items-center gap-3 text-slate-400">
+                <BookOpen size={18} />
+                <span className="text-sm font-bold text-navy">Termos de Uso</span>
+              </div>
+              <ChevronRight size={16} className="text-slate-200" />
+            </button>
+            <button
+              type="button"
+              onClick={() => navigate({ to: "/passageiro/privacidade" })}
+              className="w-full flex items-center justify-between p-5 hover:bg-slate-50 focus:bg-slate-50 outline-none"
+            >
+              <div className="flex items-center gap-3 text-slate-400">
+                <ShieldAlert size={18} />
+                <span className="text-sm font-bold text-navy">Política de Privacidade</span>
+              </div>
+              <ChevronRight size={16} className="text-slate-200" />
+            </button>
+          </div>
         </section>
       </main>
 
@@ -168,4 +202,3 @@ function SupportCenter() {
     </div>
   );
 }
-
