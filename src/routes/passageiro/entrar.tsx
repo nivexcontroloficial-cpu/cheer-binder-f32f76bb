@@ -48,13 +48,13 @@ function LoginScreen() {
     setTimeout(() => {
       setIsLoading(false);
       toast.success("Acesso autorizado!");
-      navigate({ to: "/passageiro" }); // Direciona para a home por enquanto, fluxo de verificação virá depois
+      navigate({ to: "/passageiro" });
     }, 2000);
   };
 
   const renderOptions = () => (
     <div className="flex flex-col gap-4 w-full animate-in fade-in slide-in-from-bottom-4 duration-500">
-      <h2 className="text-xl font-black uppercase tracking-tight italic mb-2">Como deseja entrar?</h2>
+      <h2 className="text-xl font-black uppercase tracking-tight italic mb-2 text-navy">Como deseja entrar?</h2>
       
       <button 
         onClick={() => setMode("phone")}
@@ -92,7 +92,7 @@ function LoginScreen() {
   const renderPhoneForm = () => (
     <form onSubmit={handlePhoneSubmit} className="flex flex-col gap-6 w-full animate-in fade-in slide-in-from-left-4 duration-500">
       <div className="space-y-2">
-        <h2 className="text-xl font-black uppercase tracking-tight italic">Seu número</h2>
+        <h2 className="text-xl font-black uppercase tracking-tight italic text-navy">Seu número</h2>
         <p className="text-sm text-slate-500">Enviaremos um código de verificação por SMS.</p>
       </div>
 
@@ -111,7 +111,7 @@ function LoginScreen() {
       </div>
 
       {error && (
-        <div className="flex items-center gap-2 text-rovya-red text-[10px] font-bold uppercase tracking-widest bg-rovya-red/5 p-3 rounded-xl border border-rovya-red/10 animate-in shake-in duration-300">
+        <div className="flex items-center gap-2 text-rovya-red text-[10px] font-bold uppercase tracking-widest bg-rovya-red/5 p-3 rounded-xl border border-rovya-red/10 animate-in shake duration-300">
           <AlertCircle size={14} />
           {error}
         </div>
@@ -133,7 +133,7 @@ function LoginScreen() {
       >
         Voltar para opções
       </button>
-form>
+    </form>
   );
 
   const renderOtpForm = () => (
@@ -142,8 +142,8 @@ form>
         <div className="h-14 w-14 bg-rovya-orange/10 rounded-2xl flex items-center justify-center text-rovya-orange mx-auto mb-4">
           <CheckCircle2 size={24} strokeWidth={2.5} />
         </div>
-        <h2 className="text-xl font-black uppercase tracking-tight italic">Verifique seu SMS</h2>
-        <p className="text-sm text-slate-500">Digitou o código enviado para <br/><span className="text-navy font-bold">{phoneNumber}</span></p>
+        <h2 className="text-xl font-black uppercase tracking-tight italic text-navy">Verifique seu SMS</h2>
+        <p className="text-sm text-slate-500 text-center">Digite o código enviado para <br/><span className="text-navy font-bold">{phoneNumber}</span></p>
       </div>
 
       <input 
@@ -191,7 +191,7 @@ form>
       >
         Alterar número de telefone
       </button>
-form>
+    </form>
   );
 
   return (
