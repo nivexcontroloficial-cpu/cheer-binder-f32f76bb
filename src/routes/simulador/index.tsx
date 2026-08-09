@@ -9,6 +9,7 @@ export const Route = createFileRoute("/simulador/")({
 function SimulatorPage() {
   const { setPilotStatus } = useDemo();
 
+  return (
     <div className="max-w-6xl mx-auto space-y-8">
       <div className="bg-slate-900 border border-white/5 p-10 rounded-[32px] rovya-shadow-lg">
         <div className="flex items-center gap-3 mb-8">
@@ -154,8 +155,8 @@ function SimulatorPage() {
         </div>
       </div>
     </div>
-  ),
-});
+  );
+}
 
 function SimulatorButton({ icon, label, sub, color, onClick }: { icon: React.ReactNode, label: string, sub: string, color: string, onClick?: () => void }) {
   return (
