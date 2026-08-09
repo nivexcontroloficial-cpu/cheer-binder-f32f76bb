@@ -22,6 +22,12 @@ import { Badge } from "@/components/ui/badge";
 export const Route = createFileRoute("/piloto/operacao")({
   head: () => ({
     title: "Operação Online - Rovya Piloto",
+    meta: [
+      {
+        name: "description",
+        content: "Central de Operação para Pilotos Rovya.",
+      },
+    ],
   }),
   component: PilotOperation,
 });
