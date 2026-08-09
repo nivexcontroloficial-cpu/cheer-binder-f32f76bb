@@ -31,7 +31,7 @@ function PermissionsScreen() {
     setTimeout(() => {
       setIsLoading(false);
       toast.success("Configurações salvas!");
-      navigate({ to: "/passageiro" });
+      navigate({ to: "/passageiro/inicio" });
     }, 1500);
   };
 

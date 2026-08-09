@@ -36,9 +36,9 @@ function DemoSelector() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full mb-12">
           <div className="flex flex-col gap-3">
             <DemoCard 
-              to="/passageiro"
+              to="/passageiro/inicio"
               title="Passageiro"
-              description="Dashboard Logado"
+              description="Início (Sem Mapa)"
               icon={<User className="h-6 w-6" strokeWidth={1.8} />}
               color="border-blue-200 hover:border-[#2F80ED] text-[#2F80ED]"
               bg="bg-blue-50"
