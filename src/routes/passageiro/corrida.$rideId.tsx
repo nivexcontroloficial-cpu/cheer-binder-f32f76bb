@@ -79,19 +79,41 @@ function ActiveRideScreen() {
 
   // Simulação de movimento e conexão
   useEffect(() => {
+    if (hasArrived) return; // Para o movimento se já chegou
+
     const interval = setInterval(() => {
       // Movimento simulado
       if (connection !== 'reconnecting' && connection !== 'stopped') {
         setProgress(prev => {
           if (prev >= 100) return 100;
-          return prev + 0.5;
+          return prev + 0.8;
         });
+        
+        // Atualiza distância baseada no progresso (de 2500m até 0m)
+        setDistanceMeters(prev => {
+          const next = 2500 - (progress * 25);
+          return next < 0 ? 0 : next;
+        });
+
+        // Alerta de 500m
+        if (distanceMeters <= 500 && distanceMeters > 400 && !isNearAlertVisible) {
+          setIsNearAlertVisible(true);
+          toast.info("Seu piloto está próximo! Prepare-se para o embarque.", {
+            icon: <Info size={16} className="text-blue-500" />,
+            duration: 5000
+          });
+        }
         
         // Atualiza ETA conforme progride
         if (progress > 25 && eta === 4) setEta(3);
         if (progress > 50 && eta === 3) setEta(2);
         if (progress > 75 && eta === 2) setEta(1);
         if (progress >= 95 && eta === 1) setEta(0);
+        
+        // Auto-chegada se atingir 100% (ou gatilho manual via simulador)
+        if (progress >= 99 && !hasArrived) {
+          handlePilotArrival();
+        }
       }
 
       // Simulação de oscilação de sinal (aleatória)
@@ -101,10 +123,56 @@ function ActiveRideScreen() {
       else if (rand > 0.85) setConnection('stopped');
       else if (rand < 0.20) setConnection('stable');
 
-    }, 2000);
+    }, 1500);
 
     return () => clearInterval(interval);
-  }, [progress, connection, eta]);
+  }, [progress, connection, eta, distanceMeters, hasArrived, isNearAlertVisible]);
+
+  // Cronômetro de espera
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (isWaitTimerActive && waitTime > 0) {
+      timer = setInterval(() => {
+        setWaitTime(prev => prev - 1);
+      }, 1000);
+    } else if (waitTime === 0) {
+      toast.error("O piloto já pode cancelar por não comparecimento.", {
+        duration: 8000
+      });
+    }
+    return () => clearInterval(timer);
+  }, [isWaitTimerActive, waitTime]);
+
+  const handlePilotArrival = () => {
+    setHasArrived(true);
+    setEta(0);
+    setProgress(100);
+    setDistanceMeters(0);
+    setIsWaitTimerActive(true);
+    toast.success("O piloto Carlos H. chegou ao local de embarque!", {
+      duration: 5000,
+      icon: <CheckCircle2 className="text-emerald-500" />
+    });
+  };
+
+  const formatWaitTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const handleQuickMessage = (msg: string) => {
+    toast.success(`Mensagem enviada: "${msg}"`);
+  };
+
+  const handleReportDivergent = () => {
+    setIsDivergentVehicleAlertOpen(true);
+  };
+
+  const confirmReportDivergent = () => {
+    toast.warning("Denúncia enviada. Você pode cancelar sem taxas.");
+    setIsDivergentVehicleAlertOpen(false);
+  };
 
   const handleCall = () => {
     toast.info("Iniciando chamada protegida Rovya...");
