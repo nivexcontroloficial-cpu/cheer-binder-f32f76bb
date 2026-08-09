@@ -15,6 +15,7 @@ interface DemoContextType {
   complaints: Complaint[];
   cancellations: Cancellation[];
   resetData: () => void;
+  addRideToHistory: (ride: Ride) => void;
   isLoading: boolean;
 }
 
@@ -59,6 +60,11 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }, 500);
   };
 
+  const addRideToHistory = (ride: Ride) => {
+    setRides(prev => [ride, ...prev]);
+  };
+
+
   return (
     <DemoContext.Provider value={{
       drivers,
@@ -67,6 +73,7 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
       complaints,
       cancellations,
       resetData,
+      addRideToHistory,
       isLoading
     }}>
       {children}
