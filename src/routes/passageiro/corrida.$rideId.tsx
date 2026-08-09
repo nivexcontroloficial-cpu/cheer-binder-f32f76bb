@@ -564,6 +564,40 @@ function ActiveRideScreen() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Dialog de Veículo Divergente */}
+      <AlertDialog open={isDivergentVehicleAlertOpen} onOpenChange={setIsDivergentVehicleAlertOpen}>
+        <AlertDialogContent className="rounded-[32px] p-8 max-w-[90vw] sm:max-w-md">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-xl font-black italic uppercase tracking-tight text-red-600 flex items-center gap-2">
+              <AlertTriangle size={24} />
+              Veículo Diferente?
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-xs text-slate-500 leading-relaxed pt-2">
+              Por sua segurança, nunca embarque em um veículo com placa ou modelo diferente do que aparece no app.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <div className="py-4 space-y-4">
+            <div className="p-4 bg-red-50 rounded-2xl border border-red-100 flex gap-3">
+              <ShieldCheck size={18} className="text-red-600 shrink-0" />
+              <p className="text-[10px] text-red-700 font-bold leading-relaxed">
+                Reportar esta divergência cancelará a corrida imediatamente sem penalidades para você.
+              </p>
+            </div>
+          </div>
+          <AlertDialogFooter className="flex-col gap-2">
+            <AlertDialogAction 
+              onClick={confirmReportDivergent}
+              className="w-full py-6 rounded-2xl bg-red-600 hover:bg-red-700 text-white font-black italic uppercase tracking-widest border-none"
+            >
+              Reportar e Cancelar
+            </AlertDialogAction>
+            <AlertDialogCancel className="w-full py-6 rounded-2xl border-slate-100 text-[10px] font-black uppercase tracking-widest text-slate-400">
+              Voltar
+            </AlertDialogCancel>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 }
