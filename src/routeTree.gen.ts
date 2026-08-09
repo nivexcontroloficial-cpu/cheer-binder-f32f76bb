@@ -39,6 +39,7 @@ import { Route as PilotoIndexRouteImport } from './routes/piloto/index'
 import { Route as PilotoAnaliseRouteImport } from './routes/piloto/analise'
 import { Route as PilotoBoasVindasRouteImport } from './routes/piloto/boas-vindas'
 import { Route as PilotoEntrarRouteImport } from './routes/piloto/entrar'
+import { Route as PilotoOperacaoRouteImport } from './routes/piloto/operacao'
 import { Route as SimuladorIndexRouteImport } from './routes/simulador/index'
 import { Route as PassageiroCancelarRideIdRouteImport } from './routes/passageiro/cancelar.$rideId'
 import { Route as PassageiroChatRideIdRouteImport } from './routes/passageiro/chat/$rideId'
@@ -206,6 +207,11 @@ const PilotoEntrarRoute = PilotoEntrarRouteImport.update({
   path: '/entrar',
   getParentRoute: () => PilotoRoute,
 } as any)
+const PilotoOperacaoRoute = PilotoOperacaoRouteImport.update({
+  id: '/operacao',
+  path: '/operacao',
+  getParentRoute: () => PilotoRoute,
+} as any)
 const SimuladorIndexRoute = SimuladorIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -317,6 +323,7 @@ export interface FileRoutesByFullPath {
   '/piloto/analise': typeof PilotoAnaliseRoute
   '/piloto/boas-vindas': typeof PilotoBoasVindasRoute
   '/piloto/entrar': typeof PilotoEntrarRoute
+  '/piloto/operacao': typeof PilotoOperacaoRoute
   '/admin/': typeof AdminIndexRoute
   '/passageiro/': typeof PassageiroIndexRoute
   '/piloto/': typeof PilotoIndexRoute
@@ -360,6 +367,7 @@ export interface FileRoutesByTo {
   '/piloto/analise': typeof PilotoAnaliseRoute
   '/piloto/boas-vindas': typeof PilotoBoasVindasRoute
   '/piloto/entrar': typeof PilotoEntrarRoute
+  '/piloto/operacao': typeof PilotoOperacaoRoute
   '/admin': typeof AdminIndexRoute
   '/passageiro': typeof PassageiroIndexRoute
   '/piloto': typeof PilotoIndexRoute
@@ -408,6 +416,7 @@ export interface FileRoutesById {
   '/piloto/analise': typeof PilotoAnaliseRoute
   '/piloto/boas-vindas': typeof PilotoBoasVindasRoute
   '/piloto/entrar': typeof PilotoEntrarRoute
+  '/piloto/operacao': typeof PilotoOperacaoRoute
   '/admin/': typeof AdminIndexRoute
   '/passageiro/': typeof PassageiroIndexRoute
   '/piloto/': typeof PilotoIndexRoute
@@ -457,6 +466,7 @@ export interface FileRouteTypes {
     | '/piloto/analise'
     | '/piloto/boas-vindas'
     | '/piloto/entrar'
+    | '/piloto/operacao'
     | '/admin/'
     | '/passageiro/'
     | '/piloto/'
@@ -500,6 +510,7 @@ export interface FileRouteTypes {
     | '/piloto/analise'
     | '/piloto/boas-vindas'
     | '/piloto/entrar'
+    | '/piloto/operacao'
     | '/admin'
     | '/passageiro'
     | '/piloto'
@@ -547,6 +558,7 @@ export interface FileRouteTypes {
     | '/piloto/analise'
     | '/piloto/boas-vindas'
     | '/piloto/entrar'
+    | '/piloto/operacao'
     | '/admin/'
     | '/passageiro/'
     | '/piloto/'
@@ -788,6 +800,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PilotoEntrarRouteImport
       parentRoute: typeof PilotoRoute
     }
+    '/piloto/operacao': {
+      id: '/piloto/operacao'
+      path: '/operacao'
+      fullPath: '/piloto/operacao'
+      preLoaderRoute: typeof PilotoOperacaoRouteImport
+      parentRoute: typeof PilotoRoute
+    }
     '/simulador/': {
       id: '/simulador/'
       path: '/'
@@ -998,6 +1017,7 @@ interface PilotoRouteChildren {
   PilotoAnaliseRoute: typeof PilotoAnaliseRoute
   PilotoBoasVindasRoute: typeof PilotoBoasVindasRoute
   PilotoEntrarRoute: typeof PilotoEntrarRoute
+  PilotoOperacaoRoute: typeof PilotoOperacaoRoute
   PilotoIndexRoute: typeof PilotoIndexRoute
   PilotoCadastroCorrigirRoute: typeof PilotoCadastroCorrigirRoute
   PilotoCadastroDocumentosRoute: typeof PilotoCadastroDocumentosRoute
@@ -1011,6 +1031,7 @@ const PilotoRouteChildren: PilotoRouteChildren = {
   PilotoAnaliseRoute: PilotoAnaliseRoute,
   PilotoBoasVindasRoute: PilotoBoasVindasRoute,
   PilotoEntrarRoute: PilotoEntrarRoute,
+  PilotoOperacaoRoute: PilotoOperacaoRoute,
   PilotoIndexRoute: PilotoIndexRoute,
   PilotoCadastroCorrigirRoute: PilotoCadastroCorrigirRoute,
   PilotoCadastroDocumentosRoute: PilotoCadastroDocumentosRoute,
@@ -1046,3 +1067,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
