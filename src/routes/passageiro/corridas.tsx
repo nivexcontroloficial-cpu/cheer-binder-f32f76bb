@@ -140,12 +140,12 @@ function RidesHistoryPage() {
                 <div className="relative">
                   <div className="absolute -left-[1.35rem] top-1/2 -translate-y-1/2 h-2 w-2 rounded-full bg-slate-300 ring-4 ring-white" />
                   <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none mb-1">Origem</p>
-                  <p className="text-xs font-semibold text-navy truncate">{getRegion(ride.origin.address)}</p>
+                  <p className="text-xs font-semibold text-navy truncate">{getRegion(ride.origin?.address)}</p>
                 </div>
                 <div className="relative">
                   <div className="absolute -left-[1.35rem] top-1/2 -translate-y-1/2 h-2 w-2 rounded-full bg-rovya-orange ring-4 ring-white" />
                   <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest leading-none mb-1">Destino</p>
-                  <p className="text-xs font-semibold text-navy truncate">{getRegion(ride.destination.address)}</p>
+                  <p className="text-xs font-semibold text-navy truncate">{getRegion(ride.destination?.address)}</p>
                 </div>
               </div>
 
