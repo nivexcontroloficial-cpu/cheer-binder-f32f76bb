@@ -232,7 +232,11 @@ function SavedPlacesPage() {
         )}
 
         {/* Places List */}
-        <div className="space-y-3" aria-live="polite">
+        <div className="space-y-3">
+          <div aria-live="polite" className="sr-only">
+            {places.length} {places.length === 1 ? "local salvo" : "locais salvos"} nesta
+            demonstração.
+          </div>
           {places.map((place) => (
             <div
               key={place.id}
