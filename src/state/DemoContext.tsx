@@ -60,24 +60,36 @@ export const DemoProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const [isLoading, setIsLoading] = useState(false);
 
-  // Persistência em localStorage (opcional conforme prompt)
+  // Persistência em localStorage
   useEffect(() => {
     const saved = localStorage.getItem('rovya_demo_data');
     if (saved) {
-      const data = JSON.parse(saved);
-      setDrivers(data.drivers);
-      setRides(data.rides);
-      setInvoices(data.invoices);
-      data.complaints && setComplaints(data.complaints);
-      data.cancellations && setCancellations(data.cancellations);
-      data.pilotRegistration && setPilotRegistration(data.pilotRegistration);
+      try {
+        const data = JSON.parse(saved);
+        if (data && typeof data === 'object') {
+          if (Array.isArray(data.drivers)) setDrivers(data.drivers);
+          if (Array.isArray(data.rides)) setRides(data.rides);
+          if (Array.isArray(data.invoices)) setInvoices(data.invoices);
+          if (Array.isArray(data.complaints)) setComplaints(data.complaints);
+          if (Array.isArray(data.cancellations)) setCancellations(data.cancellations);
+          if (data.pilotRegistration) setPilotRegistration(data.pilotRegistration);
+        }
+      } catch (e) {
+        console.error("Erro ao carregar dados da demo:", e);
+        localStorage.removeItem('rovya_demo_data');
+        resetData();
+      }
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('rovya_demo_data', JSON.stringify({
-      drivers, rides, invoices, complaints, cancellations, pilotRegistration
-    }));
+    try {
+      localStorage.setItem('rovya_demo_data', JSON.stringify({
+        drivers, rides, invoices, complaints, cancellations, pilotRegistration
+      }));
+    } catch (e) {
+      console.error("Erro ao salvar dados da demo:", e);
+    }
   }, [drivers, rides, invoices, complaints, cancellations, pilotRegistration]);
 
   const resetData = () => {
