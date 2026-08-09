@@ -50,53 +50,61 @@ export const getHealthColor = (status: AccountHealthStatus): string => {
 };
 
 export const calculateCancellationConsequence = (
-  rideState: 'before_accept' | 'tolerance' | 'driving' | 'arrived',
+  rideState: "before_accept" | "tolerance" | "driving" | "arrived",
   reasonId: string
 ): CancellationConsequence => {
-  // Motivos protegidos
-  const protectedReasons = ['pilot_asked', 'different_vehicle', 'safety_concern', 'system_error'];
-  
+  // Motivos protegidos conforme requisitos Etapa 05
+  const protectedReasons = [
+    "pilot_asked",
+    "different_vehicle",
+    "safety_concern",
+  ];
+
   if (protectedReasons.includes(reasonId)) {
     return {
       fee: 0,
-      impact: 'none',
-      message: 'Este cancelamento não afetará sua pontuação por ser um motivo de segurança ou operacional.',
-      canCancelFree: true
+      impact: "none",
+      message:
+        "Este cancelamento não afetará sua pontuação por ser um motivo de segurança ou operacional.",
+      canCancelFree: true,
     };
   }
 
-  if (rideState === 'before_accept') {
+  if (rideState === "before_accept") {
     return {
       fee: 0,
-      impact: 'none',
-      message: 'Você pode cancelar agora sem taxas ou impacto na conta.',
-      canCancelFree: true
+      impact: "none",
+      message: "Você pode cancelar agora sem taxas ou impacto na conta.",
+      canCancelFree: true,
     };
   }
 
-  if (rideState === 'tolerance') {
+  if (rideState === "tolerance") {
     return {
       fee: 0,
-      impact: 'low',
-      message: 'Cancelamento dentro do tempo de tolerância. Sem taxa, mas monitorado.',
-      canCancelFree: true
+      impact: "low",
+      message:
+        "Cancelamento dentro do tempo de tolerância. Sem taxa, mas monitorado.",
+      canCancelFree: true,
     };
   }
 
-  if (rideState === 'driving') {
+  if (rideState === "driving") {
     return {
-      fee: 5.50,
-      impact: 'medium',
-      message: 'Taxa de R$ 5,50 aplicada pelo deslocamento do piloto. Impacto moderado na saúde da conta.',
-      canCancelFree: false
+      fee: 5.5,
+      impact: "medium",
+      message:
+        "Estimativa de taxa pelo deslocamento do piloto. Impacto moderado na saúde da conta.",
+      canCancelFree: false,
     };
   }
 
   // arrived
   return {
-    fee: 8.00,
-    impact: 'high',
-    message: 'Taxa de R$ 8,00 aplicada (Piloto no local). Impacto alto na saúde da conta.',
-    canCancelFree: false
+    fee: 8.0,
+    impact: "high",
+    message:
+      "Estimativa de taxa (Piloto no local). Impacto na saúde da conta.",
+    canCancelFree: false,
   };
 };
