@@ -38,16 +38,9 @@ function RidesHistoryPage() {
         const destAddr = ride.destination?.address?.toLowerCase() || "";
         const rideId = ride.id?.toLowerCase() || "";
 
-        return (
-          originAddr.includes(query) ||
-          destAddr.includes(query) ||
-          rideId.includes(query)
-        );
+        return originAddr.includes(query) || destAddr.includes(query) || rideId.includes(query);
       })
-      .sort(
-        (a, b) =>
-          new Date(b.requestedAt).getTime() - new Date(a.requestedAt).getTime(),
-      );
+      .sort((a, b) => new Date(b.requestedAt).getTime() - new Date(a.requestedAt).getTime());
   }, [rides, filter, search]);
 
   const getRegion = (address?: string) => {
@@ -66,8 +59,7 @@ function RidesHistoryPage() {
       <div className="mb-6 p-3 bg-blue-50/50 border border-blue-100 rounded-2xl flex items-start gap-3">
         <AlertCircle size={16} className="text-blue-500 shrink-0 mt-0.5" />
         <p className="text-[10px] font-medium text-blue-700 leading-tight">
-          Demonstração local: este histórico, sua busca e seus filtros utilizam
-          corridas simuladas.
+          Demonstração local: este histórico, sua busca e seus filtros utilizam corridas simuladas.
         </p>
       </div>
 
@@ -76,9 +68,7 @@ function RidesHistoryPage() {
           <History size={20} strokeWidth={2} />
         </div>
         <div>
-          <h1 className="text-xl font-black tracking-tight text-navy uppercase">
-            Histórico
-          </h1>
+          <h1 className="text-xl font-black tracking-tight text-navy uppercase">Histórico</h1>
           <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
             Suas viagens recentes
           </p>
@@ -87,10 +77,7 @@ function RidesHistoryPage() {
 
       <div className="space-y-4 mb-6">
         <div className="relative">
-          <Search
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
-            size={16}
-          />
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
           <Label htmlFor="search-rides" className="sr-only">
             Buscar por destino ou ID
           </Label>
@@ -100,9 +87,7 @@ function RidesHistoryPage() {
             placeholder="Buscar por destino ou ID..."
             className="pl-10 h-12 bg-white border-slate-100 rounded-2xl text-xs font-medium"
             value={search}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setSearch(e.target.value)
-            }
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
           />
         </div>
 
@@ -111,11 +96,7 @@ function RidesHistoryPage() {
           role="group"
           aria-label="Filtrar histórico de corridas"
         >
-          <FilterButton
-            active={filter === "all"}
-            onClick={() => setFilter("all")}
-            label="Todas"
-          />
+          <FilterButton active={filter === "all"} onClick={() => setFilter("all")} label="Todas" />
           <FilterButton
             active={filter === "completed"}
             onClick={() => setFilter("completed")}
@@ -128,7 +109,10 @@ function RidesHistoryPage() {
           />
         </div>
 
-        <div aria-live="polite" className="text-[9px] font-bold text-slate-400 uppercase tracking-widest px-1">
+        <div
+          aria-live="polite"
+          className="text-[9px] font-bold text-slate-400 uppercase tracking-widest px-1"
+        >
           {filteredRides.length}{" "}
           {filteredRides.length === 1 ? "resultado encontrado" : "resultados encontrados"}
         </div>
@@ -167,11 +151,9 @@ function RidesHistoryPage() {
                       </p>
                       <p className="text-[9px] text-slate-400 font-bold uppercase tracking-tighter">
                         {ride.requestedAt
-                          ? format(
-                              new Date(ride.requestedAt),
-                              "dd 'de' MMM, HH:mm",
-                              { locale: ptBR },
-                            )
+                          ? format(new Date(ride.requestedAt), "dd 'de' MMM, HH:mm", {
+                              locale: ptBR,
+                            })
                           : "-"}
                       </p>
                     </div>
@@ -184,11 +166,7 @@ function RidesHistoryPage() {
                       }).format(ride.fare)}
                     </p>
                     <p className="text-[9px] text-slate-400 font-bold uppercase tracking-widest">
-                      {isCompleted
-                        ? "Finalizada"
-                        : isCancelled
-                          ? "Cancelada"
-                          : "Em curso"}
+                      {isCompleted ? "Finalizada" : isCancelled ? "Cancelada" : "Em curso"}
                     </p>
                   </div>
                 </div>
@@ -225,9 +203,7 @@ function RidesHistoryPage() {
                       {ride.distance.toFixed(1)} km
                     </div>
                   </div>
-                  {isCompleted && (
-                    <ChevronRight size={16} className="text-slate-300" />
-                  )}
+                  {isCompleted && <ChevronRight size={16} className="text-slate-300" />}
                 </div>
               </div>
             );
@@ -289,4 +265,3 @@ function FilterButton({
     </button>
   );
 }
-
