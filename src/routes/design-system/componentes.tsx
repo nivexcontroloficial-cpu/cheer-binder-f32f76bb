@@ -11,7 +11,7 @@ import {
   AvatarImage,
   AvatarFallback,
   Skeleton
-} from "@/components/ui";
+} from "@/components/ui/index";
 import { Chip } from "@/components/ui/chip";
 import { Banner } from "@/components/ui/banner";
 import { EmptyState } from "@/components/ui/empty-state";
