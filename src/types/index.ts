@@ -1,4 +1,4 @@
-export type UserStatus = 'active' | 'pending' | 'blocked' | 'suspended';
+export type UserStatus = 'active' | 'pending' | 'blocked' | 'suspended' | 'needs_info' | 'rejected' | 'city_unavailable';
 export type RideStatus = 'requested' | 'accepted' | 'in_progress' | 'completed' | 'cancelled';
 export type PaymentStatus = 'pending' | 'paid' | 'overdue' | 'cancelled';
 export type ComplaintStatus = 'open' | 'investigating' | 'resolved' | 'dismissed';
