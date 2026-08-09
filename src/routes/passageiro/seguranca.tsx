@@ -1,12 +1,11 @@
-import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
 import { 
   ArrowLeft, 
   Shield, 
   Share2, 
   Users, 
   Phone, 
-  MessageCircle, 
   CheckCircle2, 
   ArrowRight,
   ShieldAlert,
@@ -15,7 +14,6 @@ import {
   Lock,
   HeadphonesIcon
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import {
   AlertDialog,
@@ -41,7 +39,7 @@ function SafetyScreen() {
   ];
 
   const handleShareRide = () => {
-    toast.success("Link de rastreamento enviado aos seus contatos de confiança!");
+    toast.success("Demonstração: Simulação de compartilhamento do trajeto enviada!");
   };
 
   const handleEmergencyCall = () => {
@@ -49,23 +47,13 @@ function SafetyScreen() {
   };
 
   const confirmEmergencyCall = () => {
-    toast.error("Simulando chamada para 190...");
+    toast.error("Demonstração: Em uma versão real, o aparelho abriria a ligação para o 190.");
     setIsEmergencyConfirmOpen(false);
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-porcelain font-sans text-navy">
-      <header className="bg-white px-6 py-6 border-b border-slate-100 flex items-center gap-4">
-        <button 
-          onClick={() => navigate({ to: -1 as any })}
-          className="h-10 w-10 bg-slate-50 rounded-xl flex items-center justify-center text-navy active:scale-95 transition-all"
-        >
-          <ArrowLeft size={20} strokeWidth={2.5} />
-        </button>
-        <h1 className="text-xl font-black italic tracking-tighter uppercase">Central de Segurança</h1>
-      </header>
-
-      <main className="flex-1 p-6 space-y-6">
+    <div className="flex flex-col bg-porcelain font-sans text-navy selection:bg-rovya-orange/20 animate-in fade-in duration-500">
+      <main className="flex-1 space-y-6">
         {/* Shield Status */}
         <div className="bg-navy rounded-[32px] p-8 text-white relative overflow-hidden shadow-2xl">
           <div className="absolute top-0 right-0 p-6 opacity-10">
@@ -74,13 +62,13 @@ function SafetyScreen() {
           <div className="relative z-10 flex flex-col gap-2">
             <div className="flex items-center gap-2">
               <ShieldCheck className="text-blue-400" size={20} />
-              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-400">Proteção Ativa</span>
+              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-blue-400">Recursos Disponíveis</span>
             </div>
             <h2 className="text-2xl font-black italic tracking-tighter uppercase leading-tight">
-              Você está sendo<br/>monitorado.
+              Central de<br/>Segurança.
             </h2>
             <p className="text-xs text-slate-400 font-medium leading-relaxed max-w-[200px] mt-2">
-              Toda a sua rota é gravada e rastreada por nossa central 24h.
+              Demonstração local — nenhum rastreamento real está ativo.
             </p>
           </div>
         </div>
@@ -90,6 +78,7 @@ function SafetyScreen() {
           <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-400 px-2">Ações Rápidas</h3>
           
           <button 
+            type="button"
             onClick={handleShareRide}
             className="w-full bg-white p-5 rounded-3xl border border-slate-100 flex items-center justify-between group active:scale-[0.98] transition-all shadow-sm"
           >
@@ -98,8 +87,8 @@ function SafetyScreen() {
                 <Share2 size={24} />
               </div>
               <div className="text-left">
-                <span className="block text-sm font-black italic tracking-tighter uppercase">Compartilhar Trajeto</span>
-                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Enviar link em tempo real</span>
+                <span className="block text-sm font-black italic tracking-tighter uppercase">Simular Compartilhamento</span>
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Apenas ambiente de demonstração</span>
               </div>
             </div>
             <ArrowRight size={20} className="text-slate-200 group-hover:text-blue-500 transition-colors" />
@@ -113,10 +102,14 @@ function SafetyScreen() {
                 </div>
                 <div className="text-left">
                   <span className="block text-sm font-black italic tracking-tighter uppercase">Contatos de Confiança</span>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{trustedContacts.length} contato adicionado</span>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">{trustedContacts.length} contato simulado</span>
                 </div>
               </div>
-              <button className="h-8 w-8 bg-slate-50 rounded-lg flex items-center justify-center text-navy border border-slate-100">
+              <button 
+                type="button"
+                onClick={() => toast.info("Demonstração: Gerenciamento de contatos fictícios.")}
+                className="h-8 w-8 bg-slate-50 rounded-lg flex items-center justify-center text-navy border border-slate-100"
+              >
                 <Lock size={14} />
               </button>
             </div>
@@ -144,6 +137,7 @@ function SafetyScreen() {
           <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-400 px-2">Suporte e Emergência</h3>
           
           <button 
+            type="button"
             onClick={() => navigate({ to: "/passageiro/suporte" })}
             className="w-full bg-white p-5 rounded-3xl border border-slate-100 flex items-center gap-4 active:scale-[0.98] transition-all shadow-sm"
           >
@@ -152,12 +146,13 @@ function SafetyScreen() {
             </div>
             <div className="text-left">
               <span className="block text-sm font-black italic tracking-tighter uppercase">Central de Ajuda</span>
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Atendimento e Protocolos</span>
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Protocolos de Simulação</span>
             </div>
           </button>
 
 
           <button 
+            type="button"
             onClick={handleEmergencyCall}
             className="w-full bg-red-50 p-5 rounded-3xl border border-red-100 flex items-center gap-4 active:scale-[0.98] transition-all"
           >
@@ -165,8 +160,8 @@ function SafetyScreen() {
               <ShieldAlert size={24} />
             </div>
             <div className="text-left">
-              <span className="block text-sm font-black italic tracking-tighter uppercase text-red-700">Ligar para Emergência</span>
-              <span className="text-[10px] font-bold text-red-400 uppercase tracking-widest">Acionar 190 (Polícia Militar)</span>
+              <span className="block text-sm font-black italic tracking-tighter uppercase text-red-700">Simular Emergência</span>
+              <span className="text-[10px] font-bold text-red-400 uppercase tracking-widest">Em uma versão real, ligaria para 190</span>
             </div>
           </button>
         </section>
@@ -174,21 +169,21 @@ function SafetyScreen() {
         <div className="p-4 bg-amber-50 rounded-2xl border border-amber-100 flex gap-3">
           <AlertTriangle size={16} className="text-amber-600 shrink-0" />
           <p className="text-[10px] text-amber-800 font-medium leading-relaxed italic">
-            A Rovya não é um serviço de segurança pública. Em caso de perigo iminente, sempre acione as autoridades locais através do número 190.
+            Esta é uma demonstração local. Nenhuma chamada real para as autoridades ou rastreamento 24h está ativo neste ambiente de teste.
           </p>
         </div>
       </main>
 
       {/* Confirmation Dialogs */}
       <AlertDialog open={isEmergencyConfirmOpen} onOpenChange={setIsEmergencyConfirmOpen}>
-        <AlertDialogContent className="rounded-[32px] p-8 max-w-[90vw] sm:max-w-md">
+        <AlertDialogContent className="rounded-[32px] p-8 max-w-[90vw] sm:max-w-md border-none">
           <AlertDialogHeader>
             <AlertDialogTitle className="text-xl font-black italic uppercase tracking-tight text-red-600 flex items-center gap-2">
               <ShieldAlert size={24} />
-              Confirmar Chamada?
+              Simular Orientação?
             </AlertDialogTitle>
             <AlertDialogDescription className="text-xs text-slate-500 font-medium leading-relaxed pt-2">
-              Você está prestes a ligar para o número de emergência 190. Use esta ação apenas em situações críticas.
+              Você está prestes a simular uma chamada de emergência para o 190. Nesta demonstração, nenhuma ligação real será feita.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="flex-col gap-2 mt-4">
@@ -196,7 +191,7 @@ function SafetyScreen() {
               onClick={confirmEmergencyCall}
               className="w-full py-6 rounded-2xl bg-red-600 hover:bg-red-700 text-white font-black italic uppercase tracking-widest border-none"
             >
-              Ligar Agora
+              Simular Chamada
             </AlertDialogAction>
             <AlertDialogCancel className="w-full py-6 rounded-2xl border-slate-100 text-[10px] font-black uppercase tracking-widest text-slate-400">
               Cancelar
