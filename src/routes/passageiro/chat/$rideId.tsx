@@ -70,7 +70,7 @@ function ChatScreen() {
   const [selectedFile, setSelectedFile] = useState<string | null>(null);
 
   const [messages, setMessages] = useState<Message[]>(DEFAULT_MESSAGES);
-  const [isHydrated, setIsHydrated] = useState(false);
+  const [hydratedRideId, setHydratedRideId] = useState<string | null>(null);
 
   // Read from localStorage on client only
   useEffect(() => {
@@ -80,53 +80,69 @@ function ChatScreen() {
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed)) {
-          const validMessages: Message[] = parsed
-            .map((m: unknown): Message | null => {
-              if (!m || typeof m !== "object") return null;
-              const msg = m as Record<string, unknown>;
+          let allValid = true;
+          const validMessages: Message[] = [];
 
-              // Minimal validation
-              if (
-                typeof msg["id"] !== "string" ||
-                typeof msg["text"] !== "string" ||
-                (msg["sender"] !== "passenger" && msg["sender"] !== "driver") ||
-                !["sending", "sent", "delivered", "read", "failed"].includes(
-                  msg["status"] as string,
-                )
-              ) {
-                return null;
-              }
+          for (const m of parsed) {
+            if (!m || typeof m !== "object") {
+              allValid = false;
+              break;
+            }
+            const msg = m as Record<string, unknown>;
 
-              const timestamp = new Date(msg["timestamp"] as string);
-              if (isNaN(timestamp.getTime())) return null;
+            // Strict validation
+            const hasId = typeof msg["id"] === "string";
+            const hasText = typeof msg["text"] === "string";
+            const hasSender = msg["sender"] === "passenger" || msg["sender"] === "driver";
+            const hasStatus = ["sending", "sent", "delivered", "read", "failed"].includes(
+              msg["status"] as string,
+            );
+            const timestamp = new Date(msg["timestamp"] as string);
+            const hasValidDate = !isNaN(timestamp.getTime());
 
-              return {
-                id: msg["id"],
-                text: msg["text"],
-                sender: msg["sender"] as "passenger" | "driver",
-                timestamp,
-                status: msg["status"] as MessageStatus,
-                // Do NOT restore attachments
-              };
-            })
-            .filter((m): m is Message => m !== null);
+            if (!hasId || !hasText || !hasSender || !hasStatus || !hasValidDate) {
+              allValid = false;
+              break;
+            }
 
-          if (validMessages.length > 0) {
-            setMessages(validMessages);
+            validMessages.push({
+              id: msg["id"] as string,
+              text: msg["text"] as string,
+              sender: msg["sender"] as "passenger" | "driver",
+              timestamp,
+              status: msg["status"] as MessageStatus,
+              // Do NOT restore attachments
+            });
           }
+
+          if (allValid) {
+            setMessages(validMessages);
+          } else {
+            console.warn(`Corrupted chat history for ${rideId}. Discarding entire array.`);
+            localStorage.removeItem(storageKey);
+            setMessages(DEFAULT_MESSAGES);
+          }
+        } else {
+          // Not an array, discard
+          localStorage.removeItem(storageKey);
+          setMessages(DEFAULT_MESSAGES);
         }
+      } else {
+        // No history saved, use default
+        setMessages(DEFAULT_MESSAGES);
       }
     } catch (error) {
       console.error("Error parsing chat history:", error);
       localStorage.removeItem(storageKey);
+      setMessages(DEFAULT_MESSAGES);
     } finally {
-      setIsHydrated(true);
+      setHydratedRideId(rideId);
     }
   }, [rideId]);
 
-  // Save to localStorage only after hydration
+  // Save to localStorage only after hydration and only for current rideId
   useEffect(() => {
-    if (!isHydrated) return;
+    if (hydratedRideId !== rideId) return;
 
     const storageKey = `chat_history_${rideId}`;
     try {
@@ -140,7 +156,7 @@ function ChatScreen() {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [messages, rideId, isHydrated]);
+  }, [messages, rideId, hydratedRideId]);
 
   const handleSendMessage = (text = inputText) => {
     if (!text.trim() && !selectedFile) return;
