@@ -16,6 +16,7 @@ import { Route as PassageiroRouteImport } from './routes/passageiro'
 import { Route as PilotoRouteImport } from './routes/piloto'
 import { Route as SimuladorRouteImport } from './routes/simulador'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as DesignSystemComponentesRouteImport } from './routes/design-system/componentes'
 import { Route as PassageiroIndexRouteImport } from './routes/passageiro/index'
 import { Route as PilotoIndexRouteImport } from './routes/piloto/index'
 import { Route as SimuladorIndexRouteImport } from './routes/simulador/index'
@@ -55,6 +56,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
+const DesignSystemComponentesRoute = DesignSystemComponentesRouteImport.update({
+  id: '/componentes',
+  path: '/componentes',
+  getParentRoute: () => DesignSystemRoute,
+} as any)
 const PassageiroIndexRoute = PassageiroIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -74,10 +80,11 @@ const SimuladorIndexRoute = SimuladorIndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
-  '/design-system': typeof DesignSystemRoute
+  '/design-system': typeof DesignSystemRouteWithChildren
   '/passageiro': typeof PassageiroRouteWithChildren
   '/piloto': typeof PilotoRouteWithChildren
   '/simulador': typeof SimuladorRouteWithChildren
+  '/design-system/componentes': typeof DesignSystemComponentesRoute
   '/admin/': typeof AdminIndexRoute
   '/passageiro/': typeof PassageiroIndexRoute
   '/piloto/': typeof PilotoIndexRoute
@@ -85,7 +92,8 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/design-system': typeof DesignSystemRoute
+  '/design-system': typeof DesignSystemRouteWithChildren
+  '/design-system/componentes': typeof DesignSystemComponentesRoute
   '/admin': typeof AdminIndexRoute
   '/passageiro': typeof PassageiroIndexRoute
   '/piloto': typeof PilotoIndexRoute
@@ -95,10 +103,11 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/admin': typeof AdminRouteWithChildren
-  '/design-system': typeof DesignSystemRoute
+  '/design-system': typeof DesignSystemRouteWithChildren
   '/passageiro': typeof PassageiroRouteWithChildren
   '/piloto': typeof PilotoRouteWithChildren
   '/simulador': typeof SimuladorRouteWithChildren
+  '/design-system/componentes': typeof DesignSystemComponentesRoute
   '/admin/': typeof AdminIndexRoute
   '/passageiro/': typeof PassageiroIndexRoute
   '/piloto/': typeof PilotoIndexRoute
@@ -113,13 +122,20 @@ export interface FileRouteTypes {
     | '/passageiro'
     | '/piloto'
     | '/simulador'
+    | '/design-system/componentes'
     | '/admin/'
     | '/passageiro/'
     | '/piloto/'
     | '/simulador/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    '/' | '/design-system' | '/admin' | '/passageiro' | '/piloto' | '/simulador'
+    | '/'
+    | '/design-system'
+    | '/design-system/componentes'
+    | '/admin'
+    | '/passageiro'
+    | '/piloto'
+    | '/simulador'
   id:
     | '__root__'
     | '/'
@@ -128,6 +144,7 @@ export interface FileRouteTypes {
     | '/passageiro'
     | '/piloto'
     | '/simulador'
+    | '/design-system/componentes'
     | '/admin/'
     | '/passageiro/'
     | '/piloto/'
@@ -137,7 +154,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdminRoute: typeof AdminRouteWithChildren
-  DesignSystemRoute: typeof DesignSystemRoute
+  DesignSystemRoute: typeof DesignSystemRouteWithChildren
   PassageiroRoute: typeof PassageiroRouteWithChildren
   PilotoRoute: typeof PilotoRouteWithChildren
   SimuladorRoute: typeof SimuladorRouteWithChildren
@@ -194,6 +211,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/design-system/componentes': {
+      id: '/design-system/componentes'
+      path: '/componentes'
+      fullPath: '/design-system/componentes'
+      preLoaderRoute: typeof DesignSystemComponentesRouteImport
+      parentRoute: typeof DesignSystemRoute
+    }
     '/passageiro/': {
       id: '/passageiro/'
       path: '/'
@@ -227,6 +251,18 @@ const AdminRouteChildren: AdminRouteChildren = {
 }
 
 const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
+interface DesignSystemRouteChildren {
+  DesignSystemComponentesRoute: typeof DesignSystemComponentesRoute
+}
+
+const DesignSystemRouteChildren: DesignSystemRouteChildren = {
+  DesignSystemComponentesRoute: DesignSystemComponentesRoute,
+}
+
+const DesignSystemRouteWithChildren = DesignSystemRoute._addFileChildren(
+  DesignSystemRouteChildren,
+)
 
 interface PassageiroRouteChildren {
   PassageiroIndexRoute: typeof PassageiroIndexRoute
@@ -266,7 +302,7 @@ const SimuladorRouteWithChildren = SimuladorRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminRoute: AdminRouteWithChildren,
-  DesignSystemRoute: DesignSystemRoute,
+  DesignSystemRoute: DesignSystemRouteWithChildren,
   PassageiroRoute: PassageiroRouteWithChildren,
   PilotoRoute: PilotoRouteWithChildren,
   SimuladorRoute: SimuladorRouteWithChildren,
