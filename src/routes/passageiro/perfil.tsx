@@ -73,13 +73,7 @@ function ProfilePage() {
     const initial = currentName.charAt(0).toUpperCase();
 
     if (avatarIndex === 0) {
-      return (
-        <User
-          size={40}
-          className={textColors[0]}
-          aria-label={`Avatar simulado de ${name}`}
-        />
-      );
+      return <User size={40} className={textColors[0]} aria-label={`Avatar simulado de ${name}`} />;
     }
 
     return (
@@ -100,8 +94,8 @@ function ProfilePage() {
       <div className="bg-blue-50 border border-blue-100 p-4 rounded-[24px] mb-8 flex gap-3">
         <Info size={18} className="text-blue-500 shrink-0" aria-hidden="true" />
         <p className="text-[11px] font-bold text-blue-700 leading-tight">
-          Demonstração local: os dados e as ações deste perfil são simulados e
-          não alteram uma conta real.
+          Demonstração local: os dados e as ações deste perfil são simulados e não alteram uma conta
+          real.
         </p>
       </div>
 
@@ -125,10 +119,7 @@ function ProfilePage() {
         {isEditing ? (
           <div className="flex flex-col items-center gap-2 w-full max-w-xs">
             <div className="w-full">
-              <label
-                htmlFor="profile-name"
-                className="sr-only"
-              >
+              <label htmlFor="profile-name" className="sr-only">
                 Nome do passageiro
               </label>
               <Input
@@ -166,22 +157,14 @@ function ProfilePage() {
                 {name}
               </h1>
               <div className="flex items-center gap-1 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100">
-                <CheckCircle2
-                  size={12}
-                  className="text-blue-500"
-                  aria-hidden="true"
-                />
+                <CheckCircle2 size={12} className="text-blue-500" aria-hidden="true" />
                 <span className="text-[9px] font-black text-blue-600 uppercase tracking-tighter">
                   Simulação
                 </span>
               </div>
             </div>
             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest flex items-center justify-center gap-2">
-              <Star
-                size={10}
-                className="fill-rovya-orange text-rovya-orange"
-                aria-hidden="true"
-              />
+              <Star size={10} className="fill-rovya-orange text-rovya-orange" aria-hidden="true" />
               4.9 • Nível 4 (Exemplo)
             </p>
             <button
@@ -276,22 +259,14 @@ function ProfilePage() {
           <div className="bg-white border border-slate-100 rounded-[32px] overflow-hidden">
             <button
               type="button"
-              onClick={() =>
-                toast.info("Simulação local: nenhuma conta foi excluída.")
-              }
+              onClick={() => toast.info("Simulação local: nenhuma conta foi excluída.")}
               className="w-full flex items-center justify-between p-5 hover:bg-red-50 transition-colors focus-visible:bg-red-50 outline-none"
             >
               <div className="flex items-center gap-4 text-red-400">
                 <AlertCircle size={18} aria-hidden="true" />
-                <span className="text-sm font-bold text-red-600">
-                  Simular exclusão de conta
-                </span>
+                <span className="text-sm font-bold text-red-600">Simular exclusão de conta</span>
               </div>
-              <ChevronRight
-                size={18}
-                className="text-red-200"
-                aria-hidden="true"
-              />
+              <ChevronRight size={18} className="text-red-200" aria-hidden="true" />
             </button>
           </div>
         </section>
@@ -335,9 +310,7 @@ function ProfileItem({
           <p className="text-xs font-bold text-navy">{value}</p>
         </div>
       </div>
-      {readOnly && (
-        <Lock size={14} className="text-slate-200" aria-hidden="true" />
-      )}
+      {readOnly && <Lock size={14} className="text-slate-200" aria-hidden="true" />}
     </div>
   );
 }
@@ -361,20 +334,13 @@ function ProfileLink({
       <div className="flex items-center gap-4">
         <div className="text-slate-400">{icon}</div>
         <div>
-          <p className="text-sm font-black text-navy leading-none mb-1">
-            {label}
-          </p>
+          <p className="text-sm font-black text-navy leading-none mb-1">{label}</p>
           <p className="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">
             {description}
           </p>
         </div>
       </div>
-      <ChevronRight
-        size={18}
-        className="text-slate-200"
-        aria-hidden="true"
-      />
+      <ChevronRight size={18} className="text-slate-200" aria-hidden="true" />
     </Link>
   );
 }
-
