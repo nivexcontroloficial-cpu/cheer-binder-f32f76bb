@@ -82,28 +82,30 @@ function ChatScreen() {
         if (Array.isArray(parsed)) {
           const validMessages: Message[] = parsed
             .map((m: unknown): Message | null => {
-              if (!m || typeof m !== 'object') return null;
+              if (!m || typeof m !== "object") return null;
               const msg = m as Record<string, unknown>;
-              
+
               // Minimal validation
               if (
-                typeof msg['id'] !== 'string' ||
-                typeof msg['text'] !== 'string' ||
-                (msg['sender'] !== 'passenger' && msg['sender'] !== 'driver') ||
-                !['sending', 'sent', 'delivered', 'read', 'failed'].includes(msg['status'] as string)
+                typeof msg["id"] !== "string" ||
+                typeof msg["text"] !== "string" ||
+                (msg["sender"] !== "passenger" && msg["sender"] !== "driver") ||
+                !["sending", "sent", "delivered", "read", "failed"].includes(
+                  msg["status"] as string,
+                )
               ) {
                 return null;
               }
 
-              const timestamp = new Date(msg['timestamp'] as string);
+              const timestamp = new Date(msg["timestamp"] as string);
               if (isNaN(timestamp.getTime())) return null;
 
               return {
-                id: msg['id'],
-                text: msg['text'],
-                sender: msg['sender'] as "passenger" | "driver",
+                id: msg["id"],
+                text: msg["text"],
+                sender: msg["sender"] as "passenger" | "driver",
                 timestamp,
-                status: msg['status'] as MessageStatus,
+                status: msg["status"] as MessageStatus,
                 // Do NOT restore attachments
               };
             })
