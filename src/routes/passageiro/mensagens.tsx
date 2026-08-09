@@ -41,8 +41,10 @@ function MensagensScreen() {
 
   return (
     <div className="flex flex-col gap-2">
-      <h1 className="text-xs font-black uppercase tracking-widest text-navy mb-4 px-2">Conversas</h1>
-      
+      <h1 className="text-xs font-black uppercase tracking-widest text-navy mb-4 px-2">
+        Conversas
+      </h1>
+
       {conversas.map((chat) => (
         <Link
           key={chat.id}
@@ -60,7 +62,7 @@ function MensagensScreen() {
               <h3 className="text-sm font-black text-navy truncate">{chat.name}</h3>
               <span className="text-[9px] font-bold text-slate-400 uppercase">{chat.time}</span>
             </div>
-            
+
             <p className="text-[10px] font-bold text-slate-400 uppercase mb-1">{chat.rideId}</p>
             <p className="text-[11px] font-medium text-slate-600 truncate leading-relaxed">
               {chat.preview}
@@ -68,7 +70,9 @@ function MensagensScreen() {
 
             {chat.isSimulated && (
               <div className="inline-flex items-center mt-2 px-2 py-0.5 rounded-full bg-slate-100 border border-slate-200">
-                <span className="text-[8px] font-black uppercase text-slate-400 tracking-wider">Conversa simulada</span>
+                <span className="text-[8px] font-black uppercase text-slate-400 tracking-wider">
+                  Conversa simulada
+                </span>
               </div>
             )}
           </div>
@@ -77,4 +81,3 @@ function MensagensScreen() {
     </div>
   );
 }
-
