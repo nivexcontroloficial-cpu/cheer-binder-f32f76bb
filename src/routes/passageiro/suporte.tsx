@@ -94,7 +94,8 @@ function SupportCenter() {
            <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-400 px-2">Políticas</h3>
            <div className="bg-white border border-slate-100 rounded-[32px] overflow-hidden">
               <button 
-                onClick={() => navigate({ to: "/passageiro" })}
+                type="button"
+                onClick={() => navigate({ to: "/passageiro/termos" })}
                 className="w-full flex items-center justify-between p-5 border-b border-slate-50 hover:bg-slate-50"
               >
                 <div className="flex items-center gap-3 text-slate-400">
@@ -104,7 +105,8 @@ function SupportCenter() {
                 <ChevronRight size={16} className="text-slate-200" />
               </button>
               <button 
-                onClick={() => navigate({ to: "/passageiro" })}
+                type="button"
+                onClick={() => navigate({ to: "/passageiro/privacidade" })}
                 className="w-full flex items-center justify-between p-5 hover:bg-slate-50"
               >
                 <div className="flex items-center gap-3 text-slate-400">

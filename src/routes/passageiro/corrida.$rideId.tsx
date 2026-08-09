@@ -431,14 +431,14 @@ function ActiveRideScreen() {
                      Estou no portão
                    </button>
                 </div>
-                <Button 
-                  onClick={() => navigate({ to: "/passageiro/corrida/$rideId/concluida", params: { rideId: "RY-2026-00842" } })}
-                  className="w-full py-6 rounded-2xl bg-rovya-orange hover:bg-rovya-orange/90 text-white font-black italic uppercase tracking-widest shadow-lg active:scale-[0.98] transition-all"
-                >
-                  <Navigation size={18} className="mr-2 rotate-45" fill="currentColor" />
-                  Estou Indo
-                </Button>
-              </div>
+                 <Button 
+                   onClick={() => navigate({ to: "/passageiro/corrida/$rideId/concluida", params: { rideId: "RY-2026-00842" } })}
+                   className="w-full py-6 rounded-2xl bg-rovya-orange hover:bg-rovya-orange/90 text-white font-black italic uppercase tracking-widest shadow-lg active:scale-[0.98] transition-all"
+                 >
+                   <Navigation size={18} className="mr-2 rotate-45" fill="currentColor" />
+                   Simular Início da Corrida
+                 </Button>
+               </div>
             )}
 
             {/* Veículo e Segurança */}
@@ -602,7 +602,7 @@ function ActiveRideScreen() {
             <div className="p-4 bg-red-50 rounded-2xl border border-red-100 flex gap-3">
               <ShieldCheck size={18} className="text-red-600 shrink-0" />
               <p className="text-[10px] text-red-700 font-bold leading-relaxed">
-                Reportar esta divergência cancelará a corrida imediatamente sem penalidades para você.
+                Reportar esta divergência cancelará a corrida imediatamente sem penalidades. (Simulação de Segurança Rovya)
               </p>
             </div>
           </div>
