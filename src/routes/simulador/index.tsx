@@ -127,6 +127,16 @@ function SimulatorPage() {
                 window.location.href = '/piloto/analise';
               }}
             />
+            <SimulatorButton 
+              icon={<ShieldAlert size={20} />} 
+              label="Set: Bloqueio" 
+              sub="Bloqueio por débito"
+              color="bg-red-900"
+              onClick={() => {
+                setPilotStatus('debt_blocked');
+                window.location.href = '/piloto/operacao';
+              }}
+            />
           </div>
         </div>
       </div>
