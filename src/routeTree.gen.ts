@@ -28,12 +28,15 @@ import { Route as PassageiroEntrarRouteImport } from './routes/passageiro/entrar
 import { Route as PassageiroInicioRouteImport } from './routes/passageiro/inicio'
 import { Route as PassageiroLocaisSalvosRouteImport } from './routes/passageiro/locais-salvos'
 import { Route as PassageiroLocalizarRouteImport } from './routes/passageiro/localizar'
+import { Route as PassageiroMensagensRouteImport } from './routes/passageiro/mensagens'
 import { Route as PassageiroNotificacoesRouteImport } from './routes/passageiro/notificacoes'
 import { Route as PassageiroPerfilRouteImport } from './routes/passageiro/perfil'
 import { Route as PassageiroPermissoesRouteImport } from './routes/passageiro/permissoes'
+import { Route as PassageiroPrivacidadeRouteImport } from './routes/passageiro/privacidade'
 import { Route as PassageiroSaudeDaContaRouteImport } from './routes/passageiro/saude-da-conta'
 import { Route as PassageiroSegurancaRouteImport } from './routes/passageiro/seguranca'
 import { Route as PassageiroSuporteRouteImport } from './routes/passageiro/suporte'
+import { Route as PassageiroTermosRouteImport } from './routes/passageiro/termos'
 import { Route as PassageiroVerificacaoRouteImport } from './routes/passageiro/verificacao'
 import { Route as PilotoIndexRouteImport } from './routes/piloto/index'
 import { Route as PilotoAnaliseRouteImport } from './routes/piloto/analise'
@@ -152,6 +155,11 @@ const PassageiroLocalizarRoute = PassageiroLocalizarRouteImport.update({
   path: '/localizar',
   getParentRoute: () => PassageiroRoute,
 } as any)
+const PassageiroMensagensRoute = PassageiroMensagensRouteImport.update({
+  id: '/mensagens',
+  path: '/mensagens',
+  getParentRoute: () => PassageiroRoute,
+} as any)
 const PassageiroNotificacoesRoute = PassageiroNotificacoesRouteImport.update({
   id: '/notificacoes',
   path: '/notificacoes',
@@ -167,6 +175,11 @@ const PassageiroPermissoesRoute = PassageiroPermissoesRouteImport.update({
   path: '/permissoes',
   getParentRoute: () => PassageiroRoute,
 } as any)
+const PassageiroPrivacidadeRoute = PassageiroPrivacidadeRouteImport.update({
+  id: '/privacidade',
+  path: '/privacidade',
+  getParentRoute: () => PassageiroRoute,
+} as any)
 const PassageiroSaudeDaContaRoute = PassageiroSaudeDaContaRouteImport.update({
   id: '/saude-da-conta',
   path: '/saude-da-conta',
@@ -180,6 +193,11 @@ const PassageiroSegurancaRoute = PassageiroSegurancaRouteImport.update({
 const PassageiroSuporteRoute = PassageiroSuporteRouteImport.update({
   id: '/suporte',
   path: '/suporte',
+  getParentRoute: () => PassageiroRoute,
+} as any)
+const PassageiroTermosRoute = PassageiroTermosRouteImport.update({
+  id: '/termos',
+  path: '/termos',
   getParentRoute: () => PassageiroRoute,
 } as any)
 const PassageiroVerificacaoRoute = PassageiroVerificacaoRouteImport.update({
@@ -313,12 +331,15 @@ export interface FileRoutesByFullPath {
   '/passageiro/inicio': typeof PassageiroInicioRoute
   '/passageiro/locais-salvos': typeof PassageiroLocaisSalvosRoute
   '/passageiro/localizar': typeof PassageiroLocalizarRoute
+  '/passageiro/mensagens': typeof PassageiroMensagensRoute
   '/passageiro/notificacoes': typeof PassageiroNotificacoesRoute
   '/passageiro/perfil': typeof PassageiroPerfilRoute
   '/passageiro/permissoes': typeof PassageiroPermissoesRoute
+  '/passageiro/privacidade': typeof PassageiroPrivacidadeRoute
   '/passageiro/saude-da-conta': typeof PassageiroSaudeDaContaRoute
   '/passageiro/seguranca': typeof PassageiroSegurancaRoute
   '/passageiro/suporte': typeof PassageiroSuporteRoute
+  '/passageiro/termos': typeof PassageiroTermosRoute
   '/passageiro/verificacao': typeof PassageiroVerificacaoRoute
   '/piloto/analise': typeof PilotoAnaliseRoute
   '/piloto/boas-vindas': typeof PilotoBoasVindasRoute
@@ -357,12 +378,15 @@ export interface FileRoutesByTo {
   '/passageiro/inicio': typeof PassageiroInicioRoute
   '/passageiro/locais-salvos': typeof PassageiroLocaisSalvosRoute
   '/passageiro/localizar': typeof PassageiroLocalizarRoute
+  '/passageiro/mensagens': typeof PassageiroMensagensRoute
   '/passageiro/notificacoes': typeof PassageiroNotificacoesRoute
   '/passageiro/perfil': typeof PassageiroPerfilRoute
   '/passageiro/permissoes': typeof PassageiroPermissoesRoute
+  '/passageiro/privacidade': typeof PassageiroPrivacidadeRoute
   '/passageiro/saude-da-conta': typeof PassageiroSaudeDaContaRoute
   '/passageiro/seguranca': typeof PassageiroSegurancaRoute
   '/passageiro/suporte': typeof PassageiroSuporteRoute
+  '/passageiro/termos': typeof PassageiroTermosRoute
   '/passageiro/verificacao': typeof PassageiroVerificacaoRoute
   '/piloto/analise': typeof PilotoAnaliseRoute
   '/piloto/boas-vindas': typeof PilotoBoasVindasRoute
@@ -406,12 +430,15 @@ export interface FileRoutesById {
   '/passageiro/inicio': typeof PassageiroInicioRoute
   '/passageiro/locais-salvos': typeof PassageiroLocaisSalvosRoute
   '/passageiro/localizar': typeof PassageiroLocalizarRoute
+  '/passageiro/mensagens': typeof PassageiroMensagensRoute
   '/passageiro/notificacoes': typeof PassageiroNotificacoesRoute
   '/passageiro/perfil': typeof PassageiroPerfilRoute
   '/passageiro/permissoes': typeof PassageiroPermissoesRoute
+  '/passageiro/privacidade': typeof PassageiroPrivacidadeRoute
   '/passageiro/saude-da-conta': typeof PassageiroSaudeDaContaRoute
   '/passageiro/seguranca': typeof PassageiroSegurancaRoute
   '/passageiro/suporte': typeof PassageiroSuporteRoute
+  '/passageiro/termos': typeof PassageiroTermosRoute
   '/passageiro/verificacao': typeof PassageiroVerificacaoRoute
   '/piloto/analise': typeof PilotoAnaliseRoute
   '/piloto/boas-vindas': typeof PilotoBoasVindasRoute
@@ -456,12 +483,15 @@ export interface FileRouteTypes {
     | '/passageiro/inicio'
     | '/passageiro/locais-salvos'
     | '/passageiro/localizar'
+    | '/passageiro/mensagens'
     | '/passageiro/notificacoes'
     | '/passageiro/perfil'
     | '/passageiro/permissoes'
+    | '/passageiro/privacidade'
     | '/passageiro/saude-da-conta'
     | '/passageiro/seguranca'
     | '/passageiro/suporte'
+    | '/passageiro/termos'
     | '/passageiro/verificacao'
     | '/piloto/analise'
     | '/piloto/boas-vindas'
@@ -500,12 +530,15 @@ export interface FileRouteTypes {
     | '/passageiro/inicio'
     | '/passageiro/locais-salvos'
     | '/passageiro/localizar'
+    | '/passageiro/mensagens'
     | '/passageiro/notificacoes'
     | '/passageiro/perfil'
     | '/passageiro/permissoes'
+    | '/passageiro/privacidade'
     | '/passageiro/saude-da-conta'
     | '/passageiro/seguranca'
     | '/passageiro/suporte'
+    | '/passageiro/termos'
     | '/passageiro/verificacao'
     | '/piloto/analise'
     | '/piloto/boas-vindas'
@@ -548,12 +581,15 @@ export interface FileRouteTypes {
     | '/passageiro/inicio'
     | '/passageiro/locais-salvos'
     | '/passageiro/localizar'
+    | '/passageiro/mensagens'
     | '/passageiro/notificacoes'
     | '/passageiro/perfil'
     | '/passageiro/permissoes'
+    | '/passageiro/privacidade'
     | '/passageiro/saude-da-conta'
     | '/passageiro/seguranca'
     | '/passageiro/suporte'
+    | '/passageiro/termos'
     | '/passageiro/verificacao'
     | '/piloto/analise'
     | '/piloto/boas-vindas'
@@ -723,6 +759,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PassageiroLocalizarRouteImport
       parentRoute: typeof PassageiroRoute
     }
+    '/passageiro/mensagens': {
+      id: '/passageiro/mensagens'
+      path: '/mensagens'
+      fullPath: '/passageiro/mensagens'
+      preLoaderRoute: typeof PassageiroMensagensRouteImport
+      parentRoute: typeof PassageiroRoute
+    }
     '/passageiro/notificacoes': {
       id: '/passageiro/notificacoes'
       path: '/notificacoes'
@@ -744,6 +787,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PassageiroPermissoesRouteImport
       parentRoute: typeof PassageiroRoute
     }
+    '/passageiro/privacidade': {
+      id: '/passageiro/privacidade'
+      path: '/privacidade'
+      fullPath: '/passageiro/privacidade'
+      preLoaderRoute: typeof PassageiroPrivacidadeRouteImport
+      parentRoute: typeof PassageiroRoute
+    }
     '/passageiro/saude-da-conta': {
       id: '/passageiro/saude-da-conta'
       path: '/saude-da-conta'
@@ -763,6 +813,13 @@ declare module '@tanstack/react-router' {
       path: '/suporte'
       fullPath: '/passageiro/suporte'
       preLoaderRoute: typeof PassageiroSuporteRouteImport
+      parentRoute: typeof PassageiroRoute
+    }
+    '/passageiro/termos': {
+      id: '/passageiro/termos'
+      path: '/termos'
+      fullPath: '/passageiro/termos'
+      preLoaderRoute: typeof PassageiroTermosRouteImport
       parentRoute: typeof PassageiroRoute
     }
     '/passageiro/verificacao': {
@@ -966,12 +1023,15 @@ interface PassageiroRouteChildren {
   PassageiroInicioRoute: typeof PassageiroInicioRoute
   PassageiroLocaisSalvosRoute: typeof PassageiroLocaisSalvosRoute
   PassageiroLocalizarRoute: typeof PassageiroLocalizarRoute
+  PassageiroMensagensRoute: typeof PassageiroMensagensRoute
   PassageiroNotificacoesRoute: typeof PassageiroNotificacoesRoute
   PassageiroPerfilRoute: typeof PassageiroPerfilRoute
   PassageiroPermissoesRoute: typeof PassageiroPermissoesRoute
+  PassageiroPrivacidadeRoute: typeof PassageiroPrivacidadeRoute
   PassageiroSaudeDaContaRoute: typeof PassageiroSaudeDaContaRoute
   PassageiroSegurancaRoute: typeof PassageiroSegurancaRoute
   PassageiroSuporteRoute: typeof PassageiroSuporteRoute
+  PassageiroTermosRoute: typeof PassageiroTermosRoute
   PassageiroVerificacaoRoute: typeof PassageiroVerificacaoRoute
   PassageiroIndexRoute: typeof PassageiroIndexRoute
   PassageiroCancelarRideIdRoute: typeof PassageiroCancelarRideIdRoute
@@ -993,12 +1053,15 @@ const PassageiroRouteChildren: PassageiroRouteChildren = {
   PassageiroInicioRoute: PassageiroInicioRoute,
   PassageiroLocaisSalvosRoute: PassageiroLocaisSalvosRoute,
   PassageiroLocalizarRoute: PassageiroLocalizarRoute,
+  PassageiroMensagensRoute: PassageiroMensagensRoute,
   PassageiroNotificacoesRoute: PassageiroNotificacoesRoute,
   PassageiroPerfilRoute: PassageiroPerfilRoute,
   PassageiroPermissoesRoute: PassageiroPermissoesRoute,
+  PassageiroPrivacidadeRoute: PassageiroPrivacidadeRoute,
   PassageiroSaudeDaContaRoute: PassageiroSaudeDaContaRoute,
   PassageiroSegurancaRoute: PassageiroSegurancaRoute,
   PassageiroSuporteRoute: PassageiroSuporteRoute,
+  PassageiroTermosRoute: PassageiroTermosRoute,
   PassageiroVerificacaoRoute: PassageiroVerificacaoRoute,
   PassageiroIndexRoute: PassageiroIndexRoute,
   PassageiroCancelarRideIdRoute: PassageiroCancelarRideIdRoute,
