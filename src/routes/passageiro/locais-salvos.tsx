@@ -54,6 +54,13 @@ function SavedPlacesPage() {
     return places.find((p) => p.id === deleteId)?.label || "";
   }, [deleteId, places]);
 
+  const handleCancel = () => {
+    setNewLabel("");
+    setNewRegion("");
+    setNewType("other");
+    setIsAdding(false);
+  };
+
   const handleDelete = () => {
     if (deleteId) {
       setPlaces((prev) => prev.filter((p) => p.id !== deleteId));
@@ -80,10 +87,7 @@ function SavedPlacesPage() {
     };
 
     setPlaces((prev) => [...prev, newPlace]);
-    setIsAdding(false);
-    setNewLabel("");
-    setNewRegion("");
-    setNewType("other");
+    handleCancel();
     toast.success("Local adicionado somente nesta demonstração.");
   };
 
