@@ -114,8 +114,15 @@ function DemoSelector() {
               <ArrowRight size={14} strokeWidth={2.5} />
             </button>
             <button 
+              onClick={() => navigate({ to: '/piloto/operacao' })}
+              className="w-full py-3 bg-rovya-green text-navy rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-rovya-green/90 transition-all active:scale-95 rovya-shadow"
+            >
+              Central de Operação
+              <NavigationIcon size={14} strokeWidth={2.5} />
+            </button>
+            <button 
               onClick={() => navigate({ to: '/piloto/analise' })}
-              className="w-full py-3 bg-slate-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-black transition-all active:scale-95 rovya-shadow"
+              className="w-full py-3 bg-slate-900 text-white border border-white/10 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-black transition-all active:scale-95 rovya-shadow"
             >
               Status da Análise
               <Clock size={14} strokeWidth={2.5} />

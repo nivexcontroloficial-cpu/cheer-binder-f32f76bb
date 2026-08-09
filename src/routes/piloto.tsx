@@ -46,10 +46,10 @@ function PilotLayout() {
       <nav className="fixed bottom-0 left-0 z-50 w-full pb-safe bg-graphite border-t border-white/5 px-4 md:px-0 shadow-[0_-10px_20px_-5px_rgba(0,0,0,0.3)]">
         <div className="container h-20 mx-auto flex items-center justify-around max-w-lg">
           <NavItem 
-            to="/piloto" 
+            to="/piloto/operacao" 
             icon={<Navigation size={ICON_SIZE} strokeWidth={STROKE} />} 
             label="Operação" 
-            active={location.pathname === "/piloto"} 
+            active={location.pathname === "/piloto/operacao"} 
           />
           <NavItem 
             to="/piloto" 
