@@ -10,33 +10,124 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as PassageiroRouteImport } from './routes/passageiro'
+import { Route as PilotoRouteImport } from './routes/piloto'
+import { Route as SimuladorRouteImport } from './routes/simulador'
+import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as PassageiroIndexRouteImport } from './routes/passageiro/index'
+import { Route as PilotoIndexRouteImport } from './routes/piloto/index'
+import { Route as SimuladorIndexRouteImport } from './routes/simulador/index'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PassageiroRoute = PassageiroRouteImport.update({
+  id: '/passageiro',
+  path: '/passageiro',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PilotoRoute = PilotoRouteImport.update({
+  id: '/piloto',
+  path: '/piloto',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SimuladorRoute = SimuladorRouteImport.update({
+  id: '/simulador',
+  path: '/simulador',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const PassageiroIndexRoute = PassageiroIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PassageiroRoute,
+} as any)
+const PilotoIndexRoute = PilotoIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => PilotoRoute,
+} as any)
+const SimuladorIndexRoute = SimuladorIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SimuladorRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/passageiro': typeof PassageiroRouteWithChildren
+  '/piloto': typeof PilotoRouteWithChildren
+  '/simulador': typeof SimuladorRouteWithChildren
+  '/admin/': typeof AdminIndexRoute
+  '/passageiro/': typeof PassageiroIndexRoute
+  '/piloto/': typeof PilotoIndexRoute
+  '/simulador/': typeof SimuladorIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminIndexRoute
+  '/passageiro': typeof PassageiroIndexRoute
+  '/piloto': typeof PilotoIndexRoute
+  '/simulador': typeof SimuladorIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/passageiro': typeof PassageiroRouteWithChildren
+  '/piloto': typeof PilotoRouteWithChildren
+  '/simulador': typeof SimuladorRouteWithChildren
+  '/admin/': typeof AdminIndexRoute
+  '/passageiro/': typeof PassageiroIndexRoute
+  '/piloto/': typeof PilotoIndexRoute
+  '/simulador/': typeof SimuladorIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/admin'
+    | '/passageiro'
+    | '/piloto'
+    | '/simulador'
+    | '/admin/'
+    | '/passageiro/'
+    | '/piloto/'
+    | '/simulador/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/admin' | '/passageiro' | '/piloto' | '/simulador'
+  id:
+    | '__root__'
+    | '/'
+    | '/admin'
+    | '/passageiro'
+    | '/piloto'
+    | '/simulador'
+    | '/admin/'
+    | '/passageiro/'
+    | '/piloto/'
+    | '/simulador/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRouteWithChildren
+  PassageiroRoute: typeof PassageiroRouteWithChildren
+  PilotoRoute: typeof PilotoRouteWithChildren
+  SimuladorRoute: typeof SimuladorRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +139,116 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/passageiro': {
+      id: '/passageiro'
+      path: '/passageiro'
+      fullPath: '/passageiro'
+      preLoaderRoute: typeof PassageiroRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/piloto': {
+      id: '/piloto'
+      path: '/piloto'
+      fullPath: '/piloto'
+      preLoaderRoute: typeof PilotoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/simulador': {
+      id: '/simulador'
+      path: '/simulador'
+      fullPath: '/simulador'
+      preLoaderRoute: typeof SimuladorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/passageiro/': {
+      id: '/passageiro/'
+      path: '/'
+      fullPath: '/passageiro/'
+      preLoaderRoute: typeof PassageiroIndexRouteImport
+      parentRoute: typeof PassageiroRoute
+    }
+    '/piloto/': {
+      id: '/piloto/'
+      path: '/'
+      fullPath: '/piloto/'
+      preLoaderRoute: typeof PilotoIndexRouteImport
+      parentRoute: typeof PilotoRoute
+    }
+    '/simulador/': {
+      id: '/simulador/'
+      path: '/'
+      fullPath: '/simulador/'
+      preLoaderRoute: typeof SimuladorIndexRouteImport
+      parentRoute: typeof SimuladorRoute
+    }
   }
 }
 
+interface AdminRouteChildren {
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
+interface PassageiroRouteChildren {
+  PassageiroIndexRoute: typeof PassageiroIndexRoute
+}
+
+const PassageiroRouteChildren: PassageiroRouteChildren = {
+  PassageiroIndexRoute: PassageiroIndexRoute,
+}
+
+const PassageiroRouteWithChildren = PassageiroRoute._addFileChildren(
+  PassageiroRouteChildren,
+)
+
+interface PilotoRouteChildren {
+  PilotoIndexRoute: typeof PilotoIndexRoute
+}
+
+const PilotoRouteChildren: PilotoRouteChildren = {
+  PilotoIndexRoute: PilotoIndexRoute,
+}
+
+const PilotoRouteWithChildren =
+  PilotoRoute._addFileChildren(PilotoRouteChildren)
+
+interface SimuladorRouteChildren {
+  SimuladorIndexRoute: typeof SimuladorIndexRoute
+}
+
+const SimuladorRouteChildren: SimuladorRouteChildren = {
+  SimuladorIndexRoute: SimuladorIndexRoute,
+}
+
+const SimuladorRouteWithChildren = SimuladorRoute._addFileChildren(
+  SimuladorRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRouteWithChildren,
+  PassageiroRoute: PassageiroRouteWithChildren,
+  PilotoRoute: PilotoRouteWithChildren,
+  SimuladorRoute: SimuladorRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -21,7 +21,7 @@ export const Route = createFileRoute("/simulador/")({
         <div className="p-6 bg-slate-800/50 border border-slate-700 rounded-xl font-mono text-sm">
           <p className="text-emerald-500 mb-2">// Logs do Sistema</p>
           <p className="text-slate-400">[15:42:01] Motorista Carlos entrou em operação</p>
-          <p className="text-slate-400">[15:43:12] Rafael solicitou corrida (Centro -> Orla)</p>
+          <p className="text-slate-400">[15:43:12] Rafael solicitou corrida (Centro -{">"} Orla)</p>
         </div>
         <div className="h-64 bg-slate-800 border border-slate-700 rounded-xl flex items-center justify-center text-slate-600">
           Mapa de simulação de tráfego
