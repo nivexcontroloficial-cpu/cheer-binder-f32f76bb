@@ -70,7 +70,7 @@ function RidesHistoryPage() {
             placeholder="Buscar por destino ou ID..." 
             className="pl-10 h-12 bg-white border-slate-100 rounded-2xl text-xs font-medium"
             value={search}
-            onChange={(e) => setSearch(e.target?.value || '')}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
           />
         </div>
 
