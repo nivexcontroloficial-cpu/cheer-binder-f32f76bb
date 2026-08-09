@@ -4,7 +4,6 @@ import {
   MapPin, 
   Navigation, 
   ShieldCheck, 
-  Bell, 
   Clock, 
   Star, 
   CreditCard, 
@@ -14,7 +13,14 @@ import {
   Plus
 } from "lucide-react";
 import { useState } from "react";
-import { RovyaBrand } from "@/components/RovyaBrand";
+import { toast } from "sonner";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 export const Route = createFileRoute("/passageiro/inicio")({
   component: PassengerHomeScreen,
@@ -23,6 +29,7 @@ export const Route = createFileRoute("/passageiro/inicio")({
 function PassengerHomeScreen() {
   const [destination, setDestination] = useState("");
   const navigate = useNavigate();
+  const [paymentMethod, setPaymentMethod] = useState("Dinheiro");
 
   const handleCalculate = () => {
     if (destination.trim()) {
@@ -34,34 +41,20 @@ function PassengerHomeScreen() {
     navigate({ to: "/passageiro/destino" });
   };
 
+  const handleRecentClick = (dest: string) => {
+    setDestination(dest);
+    navigate({ to: "/passageiro/confirmar-corrida" });
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-[#F8FAFC] font-sans text-navy">
-      {/* Header Fixo */}
-      <header className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md border-b border-slate-100 px-6 py-4 flex items-center justify-between">
-        <div className="flex flex-col">
-          <div className="flex items-center gap-2">
-            <MapPinned size={14} className="text-rovya-orange" />
-            <span className="text-[10px] font-black uppercase tracking-widest text-navy">Jacarezinho • PR</span>
-          </div>
-          <h1 className="text-lg font-black tracking-tight mt-0.5">Olá, Rafael</h1>
+      <main className="flex-1 space-y-8 pb-32">
+        {/* Localização Atual Contexto */}
+        <div className="flex items-center gap-2 px-2">
+          <MapPinned size={14} className="text-rovya-orange" />
+          <span className="text-[10px] font-black uppercase tracking-widest text-navy">Jacarezinho • PR</span>
         </div>
-        
-        <div className="flex items-center gap-3">
-          <Link to="/passageiro" className="relative p-2 bg-slate-50 rounded-xl border border-slate-100 text-slate-400 hover:text-navy transition-colors">
-            <Bell size={20} strokeWidth={1.8} />
-            <span className="absolute top-2 right-2 w-2 h-2 bg-rovya-red rounded-full border-2 border-white"></span>
-          </Link>
-          <div className="h-10 w-10 rounded-2xl bg-navy flex items-center justify-center border border-navy overflow-hidden">
-            <img 
-              src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?auto=format&fit=crop&q=80&w=100" 
-              alt="Avatar" 
-              className="w-full h-full object-cover opacity-90"
-            />
-          </div>
-        </div>
-      </header>
 
-      <main className="flex-1 p-6 space-y-8 pb-32">
         {/* Selo de Segurança */}
         <div className="flex items-center justify-between p-4 bg-emerald-50 border border-emerald-100 rounded-3xl animate-in fade-in slide-in-from-top-4 duration-500">
           <div className="flex items-center gap-3">
@@ -105,12 +98,45 @@ function PassengerHomeScreen() {
           </div>
 
           <div className="flex items-center justify-between pt-2">
-            <button className="flex items-center gap-2 px-4 py-2 bg-slate-50 rounded-xl border border-slate-100 text-navy hover:bg-white hover:border-rovya-orange transition-all">
-              <CreditCard size={14} strokeWidth={2} className="text-slate-400" />
-              <span className="text-[9px] font-black uppercase tracking-widest">Dinheiro</span>
-            </button>
+            <Sheet>
+              <SheetTrigger asChild>
+                <button type="button" className="flex items-center gap-2 px-4 py-2 bg-slate-50 rounded-xl border border-slate-100 text-navy hover:bg-white hover:border-rovya-orange transition-all">
+                  <CreditCard size={14} strokeWidth={2} className="text-slate-400" />
+                  <span className="text-[9px] font-black uppercase tracking-widest">{paymentMethod}</span>
+                </button>
+              </SheetTrigger>
+              <SheetContent side="bottom" className="rounded-t-[32px] p-8 border-none">
+                <SheetHeader>
+                  <SheetTitle className="text-xl font-black uppercase italic tracking-tighter text-navy">Selecione o Pagamento</SheetTitle>
+                </SheetHeader>
+                <div className="grid grid-cols-1 gap-3 py-6">
+                  {["Dinheiro", "Pix Direto", "Cartão (Na Máquina)"].map((method) => (
+                    <button
+                      key={method}
+                      onClick={() => {
+                        setPaymentMethod(method);
+                        toast.success(`Pagamento definido como ${method}`);
+                      }}
+                      className={`w-full p-5 rounded-2xl border flex items-center justify-between transition-all ${
+                        paymentMethod === method ? 'bg-navy text-white border-navy' : 'bg-slate-50 text-navy border-slate-100'
+                      }`}
+                    >
+                      <span className="text-[11px] font-black uppercase tracking-widest">{method}</span>
+                      <ChevronRight size={16} />
+                    </button>
+                  ))}
+                </div>
+                <p className="text-[9px] text-slate-400 font-medium italic text-center">
+                  * Nesta demonstração, o pagamento é sempre presencial ao piloto.
+                </p>
+              </SheetContent>
+            </Sheet>
             
-            <button className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-slate-400 hover:text-navy transition-colors">
+            <button 
+              type="button"
+              onClick={() => toast.info("Demonstração: funcionalidade de agendamento simulada selecionada.")}
+              className="flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-slate-400 hover:text-navy transition-colors"
+            >
               <Plus size={14} strokeWidth={2.5} className="text-rovya-orange" />
               Agendar
             </button>
@@ -137,14 +163,33 @@ function PassengerHomeScreen() {
         <section className="space-y-4">
           <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 ml-2">Destinos Recentes</h3>
           <div className="bg-white rounded-[32px] border border-slate-100 overflow-hidden shadow-sm">
-            <RecentItem icon={<MapPin size={16} />} title="Shopping Jacarezinho" address="Centro, Jacarezinho - PR" />
-            <RecentItem icon={<MapPin size={16} />} title="Terminal Rodoviário" address="Rua das Flores, 123" />
-            <RecentItem icon={<Star size={16} />} title="Academia Fit" address="Av. Brasil, 450" last />
+            <RecentItem 
+              onClick={() => handleRecentClick("Shopping Jacarezinho")}
+              icon={<MapPin size={16} />} 
+              title="Shopping Jacarezinho" 
+              address="Centro, Jacarezinho - PR" 
+            />
+            <RecentItem 
+              onClick={() => handleRecentClick("Terminal Rodoviário")}
+              icon={<MapPin size={16} />} 
+              title="Terminal Rodoviário" 
+              address="Avenida Manoel Ribas, 123" 
+            />
+            <RecentItem 
+              onClick={() => handleRecentClick("Academia Fit")}
+              icon={<Star size={16} />} 
+              title="Academia Fit" 
+              address="Rua Paraná, 450" 
+              last 
+            />
           </div>
         </section>
 
         {/* Banner Promocional */}
-        <section className="p-6 bg-navy rounded-[32px] text-white relative overflow-hidden group">
+        <section 
+          onClick={() => toast.info("Demonstração: Promoção ativa de R$ 10,00 para novos indicados.")}
+          className="p-6 bg-navy rounded-[32px] text-white relative overflow-hidden group cursor-pointer"
+        >
           <div className="absolute top-0 right-0 w-32 h-32 bg-rovya-orange/20 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-rovya-orange/30 transition-colors"></div>
           <div className="relative z-10 flex items-center justify-between">
             <div className="space-y-2">
@@ -156,23 +201,12 @@ function PassengerHomeScreen() {
                 Indique amigos e ganhe<br/>R$ 10,00 de desconto
               </h4>
             </div>
-            <button className="h-10 w-10 bg-white/10 hover:bg-white/20 rounded-xl flex items-center justify-center transition-colors">
+            <div className="h-10 w-10 bg-white/10 group-hover:bg-white/20 rounded-xl flex items-center justify-center transition-colors">
               <ChevronRight size={18} />
-            </button>
+            </div>
           </div>
         </section>
       </main>
-
-      {/* Navegação Inferior (Início Ativo) */}
-      <nav className="fixed bottom-0 left-0 z-50 w-full pb-safe bg-white border-t border-slate-100 px-6 rovya-shadow-lg">
-        <div className="container h-20 mx-auto flex items-center justify-between max-w-lg">
-          <NavItem to="/passageiro/inicio" icon={<Navigation size={22} />} label="Início" active />
-          <NavItem to="/passageiro" icon={<Clock size={22} />} label="Corridas" />
-          <NavItem to="/passageiro" icon={<Plus size={22} className="rotate-45" />} label="Mensagens" badge={3} />
-          <NavItem to="/passageiro" icon={<ShieldCheck size={22} />} label="Segurança" />
-          <NavItem to="/passageiro" icon={<Star size={22} />} label="Perfil" />
-        </div>
-      </nav>
     </div>
   );
 }
@@ -189,9 +223,9 @@ function FavoriteButton({ icon, label, sub, onClick }: { icon: React.ReactNode, 
   );
 }
 
-function RecentItem({ icon, title, address, last }: { icon: React.ReactNode, title: string, address: string, last?: boolean }) {
+function RecentItem({ icon, title, address, last, onClick }: { icon: React.ReactNode, title: string, address: string, last?: boolean, onClick: () => void }) {
   return (
-    <button className={`w-full p-4 flex items-center gap-4 hover:bg-slate-50 transition-colors ${!last ? 'border-b border-slate-50' : ''}`}>
+    <button onClick={onClick} className={`w-full p-4 flex items-center gap-4 hover:bg-slate-50 transition-colors ${!last ? 'border-b border-slate-50' : ''}`}>
       <div className="h-10 w-10 bg-slate-50 rounded-xl flex items-center justify-center text-slate-300">
         {icon}
       </div>
@@ -201,21 +235,5 @@ function RecentItem({ icon, title, address, last }: { icon: React.ReactNode, tit
       </div>
       <ChevronRight size={14} className="text-slate-200" />
     </button>
-  );
-}
-
-function NavItem({ to, icon, label, active = false, badge }: { to: string; icon: React.ReactNode; label: string; active?: boolean; badge?: number }) {
-  return (
-    <Link to={to} className={`flex flex-col items-center gap-1 transition-all duration-300 ${active ? 'text-rovya-orange' : 'text-slate-300 hover:text-slate-500'}`}>
-      <div className={`p-2 rounded-2xl transition-all duration-300 relative ${active ? 'bg-rovya-orange/10 scale-110' : 'bg-transparent'}`}>
-        {icon}
-        {badge && (
-          <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rovya-red text-[8px] font-black text-white ring-2 ring-white">
-            {badge}
-          </span>
-        )}
-      </div>
-      <span className={`text-[8px] font-black uppercase tracking-[0.15em] ${active ? 'opacity-100' : 'opacity-60'}`}>{label}</span>
-    </Link>
   );
 }
