@@ -31,12 +31,15 @@ import { Route as PassageiroLocalizarRouteImport } from './routes/passageiro/loc
 import { Route as PassageiroNotificacoesRouteImport } from './routes/passageiro/notificacoes'
 import { Route as PassageiroPerfilRouteImport } from './routes/passageiro/perfil'
 import { Route as PassageiroPermissoesRouteImport } from './routes/passageiro/permissoes'
+import { Route as PassageiroSaudeDaContaRouteImport } from './routes/passageiro/saude-da-conta'
 import { Route as PassageiroSegurancaRouteImport } from './routes/passageiro/seguranca'
 import { Route as PassageiroVerificacaoRouteImport } from './routes/passageiro/verificacao'
 import { Route as PilotoIndexRouteImport } from './routes/piloto/index'
 import { Route as SimuladorIndexRouteImport } from './routes/simulador/index'
+import { Route as PassageiroCancelarRideIdRouteImport } from './routes/passageiro/cancelar.$rideId'
 import { Route as PassageiroChatRideIdRouteImport } from './routes/passageiro/chat/$rideId'
 import { Route as PassageiroCorridaRideIdRouteImport } from './routes/passageiro/corrida.$rideId'
+import { Route as PassageiroRecursosCaseIdRouteImport } from './routes/passageiro/recursos.$caseId'
 import { Route as PassageiroCorridaRideIdConcluidaRouteImport } from './routes/passageiro/corrida.$rideId.concluida'
 import { Route as PassageiroCorridaRideIdEmAndamentoRouteImport } from './routes/passageiro/corrida/$rideId/em-andamento'
 
@@ -151,6 +154,11 @@ const PassageiroPermissoesRoute = PassageiroPermissoesRouteImport.update({
   path: '/permissoes',
   getParentRoute: () => PassageiroRoute,
 } as any)
+const PassageiroSaudeDaContaRoute = PassageiroSaudeDaContaRouteImport.update({
+  id: '/saude-da-conta',
+  path: '/saude-da-conta',
+  getParentRoute: () => PassageiroRoute,
+} as any)
 const PassageiroSegurancaRoute = PassageiroSegurancaRouteImport.update({
   id: '/seguranca',
   path: '/seguranca',
@@ -171,6 +179,12 @@ const SimuladorIndexRoute = SimuladorIndexRouteImport.update({
   path: '/',
   getParentRoute: () => SimuladorRoute,
 } as any)
+const PassageiroCancelarRideIdRoute =
+  PassageiroCancelarRideIdRouteImport.update({
+    id: '/cancelar/$rideId',
+    path: '/cancelar/$rideId',
+    getParentRoute: () => PassageiroRoute,
+  } as any)
 const PassageiroChatRideIdRoute = PassageiroChatRideIdRouteImport.update({
   id: '/chat/$rideId',
   path: '/chat/$rideId',
@@ -181,6 +195,12 @@ const PassageiroCorridaRideIdRoute = PassageiroCorridaRideIdRouteImport.update({
   path: '/corrida/$rideId',
   getParentRoute: () => PassageiroRoute,
 } as any)
+const PassageiroRecursosCaseIdRoute =
+  PassageiroRecursosCaseIdRouteImport.update({
+    id: '/recursos/$caseId',
+    path: '/recursos/$caseId',
+    getParentRoute: () => PassageiroRoute,
+  } as any)
 const PassageiroCorridaRideIdConcluidaRoute =
   PassageiroCorridaRideIdConcluidaRouteImport.update({
     id: '/concluida',
@@ -215,14 +235,17 @@ export interface FileRoutesByFullPath {
   '/passageiro/notificacoes': typeof PassageiroNotificacoesRoute
   '/passageiro/perfil': typeof PassageiroPerfilRoute
   '/passageiro/permissoes': typeof PassageiroPermissoesRoute
+  '/passageiro/saude-da-conta': typeof PassageiroSaudeDaContaRoute
   '/passageiro/seguranca': typeof PassageiroSegurancaRoute
   '/passageiro/verificacao': typeof PassageiroVerificacaoRoute
   '/admin/': typeof AdminIndexRoute
   '/passageiro/': typeof PassageiroIndexRoute
   '/piloto/': typeof PilotoIndexRoute
   '/simulador/': typeof SimuladorIndexRoute
+  '/passageiro/cancelar/$rideId': typeof PassageiroCancelarRideIdRoute
   '/passageiro/chat/$rideId': typeof PassageiroChatRideIdRoute
   '/passageiro/corrida/$rideId': typeof PassageiroCorridaRideIdRouteWithChildren
+  '/passageiro/recursos/$caseId': typeof PassageiroRecursosCaseIdRoute
   '/passageiro/corrida/$rideId/concluida': typeof PassageiroCorridaRideIdConcluidaRoute
   '/passageiro/corrida/$rideId/em-andamento': typeof PassageiroCorridaRideIdEmAndamentoRoute
 }
@@ -243,14 +266,17 @@ export interface FileRoutesByTo {
   '/passageiro/notificacoes': typeof PassageiroNotificacoesRoute
   '/passageiro/perfil': typeof PassageiroPerfilRoute
   '/passageiro/permissoes': typeof PassageiroPermissoesRoute
+  '/passageiro/saude-da-conta': typeof PassageiroSaudeDaContaRoute
   '/passageiro/seguranca': typeof PassageiroSegurancaRoute
   '/passageiro/verificacao': typeof PassageiroVerificacaoRoute
   '/admin': typeof AdminIndexRoute
   '/passageiro': typeof PassageiroIndexRoute
   '/piloto': typeof PilotoIndexRoute
   '/simulador': typeof SimuladorIndexRoute
+  '/passageiro/cancelar/$rideId': typeof PassageiroCancelarRideIdRoute
   '/passageiro/chat/$rideId': typeof PassageiroChatRideIdRoute
   '/passageiro/corrida/$rideId': typeof PassageiroCorridaRideIdRouteWithChildren
+  '/passageiro/recursos/$caseId': typeof PassageiroRecursosCaseIdRoute
   '/passageiro/corrida/$rideId/concluida': typeof PassageiroCorridaRideIdConcluidaRoute
   '/passageiro/corrida/$rideId/em-andamento': typeof PassageiroCorridaRideIdEmAndamentoRoute
 }
@@ -276,14 +302,17 @@ export interface FileRoutesById {
   '/passageiro/notificacoes': typeof PassageiroNotificacoesRoute
   '/passageiro/perfil': typeof PassageiroPerfilRoute
   '/passageiro/permissoes': typeof PassageiroPermissoesRoute
+  '/passageiro/saude-da-conta': typeof PassageiroSaudeDaContaRoute
   '/passageiro/seguranca': typeof PassageiroSegurancaRoute
   '/passageiro/verificacao': typeof PassageiroVerificacaoRoute
   '/admin/': typeof AdminIndexRoute
   '/passageiro/': typeof PassageiroIndexRoute
   '/piloto/': typeof PilotoIndexRoute
   '/simulador/': typeof SimuladorIndexRoute
+  '/passageiro/cancelar/$rideId': typeof PassageiroCancelarRideIdRoute
   '/passageiro/chat/$rideId': typeof PassageiroChatRideIdRoute
   '/passageiro/corrida/$rideId': typeof PassageiroCorridaRideIdRouteWithChildren
+  '/passageiro/recursos/$caseId': typeof PassageiroRecursosCaseIdRoute
   '/passageiro/corrida/$rideId/concluida': typeof PassageiroCorridaRideIdConcluidaRoute
   '/passageiro/corrida/$rideId/em-andamento': typeof PassageiroCorridaRideIdEmAndamentoRoute
 }
@@ -310,14 +339,17 @@ export interface FileRouteTypes {
     | '/passageiro/notificacoes'
     | '/passageiro/perfil'
     | '/passageiro/permissoes'
+    | '/passageiro/saude-da-conta'
     | '/passageiro/seguranca'
     | '/passageiro/verificacao'
     | '/admin/'
     | '/passageiro/'
     | '/piloto/'
     | '/simulador/'
+    | '/passageiro/cancelar/$rideId'
     | '/passageiro/chat/$rideId'
     | '/passageiro/corrida/$rideId'
+    | '/passageiro/recursos/$caseId'
     | '/passageiro/corrida/$rideId/concluida'
     | '/passageiro/corrida/$rideId/em-andamento'
   fileRoutesByTo: FileRoutesByTo
@@ -338,14 +370,17 @@ export interface FileRouteTypes {
     | '/passageiro/notificacoes'
     | '/passageiro/perfil'
     | '/passageiro/permissoes'
+    | '/passageiro/saude-da-conta'
     | '/passageiro/seguranca'
     | '/passageiro/verificacao'
     | '/admin'
     | '/passageiro'
     | '/piloto'
     | '/simulador'
+    | '/passageiro/cancelar/$rideId'
     | '/passageiro/chat/$rideId'
     | '/passageiro/corrida/$rideId'
+    | '/passageiro/recursos/$caseId'
     | '/passageiro/corrida/$rideId/concluida'
     | '/passageiro/corrida/$rideId/em-andamento'
   id:
@@ -370,14 +405,17 @@ export interface FileRouteTypes {
     | '/passageiro/notificacoes'
     | '/passageiro/perfil'
     | '/passageiro/permissoes'
+    | '/passageiro/saude-da-conta'
     | '/passageiro/seguranca'
     | '/passageiro/verificacao'
     | '/admin/'
     | '/passageiro/'
     | '/piloto/'
     | '/simulador/'
+    | '/passageiro/cancelar/$rideId'
     | '/passageiro/chat/$rideId'
     | '/passageiro/corrida/$rideId'
+    | '/passageiro/recursos/$caseId'
     | '/passageiro/corrida/$rideId/concluida'
     | '/passageiro/corrida/$rideId/em-andamento'
   fileRoutesById: FileRoutesById
@@ -547,6 +585,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PassageiroPermissoesRouteImport
       parentRoute: typeof PassageiroRoute
     }
+    '/passageiro/saude-da-conta': {
+      id: '/passageiro/saude-da-conta'
+      path: '/saude-da-conta'
+      fullPath: '/passageiro/saude-da-conta'
+      preLoaderRoute: typeof PassageiroSaudeDaContaRouteImport
+      parentRoute: typeof PassageiroRoute
+    }
     '/passageiro/seguranca': {
       id: '/passageiro/seguranca'
       path: '/seguranca'
@@ -575,6 +620,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SimuladorIndexRouteImport
       parentRoute: typeof SimuladorRoute
     }
+    '/passageiro/cancelar/$rideId': {
+      id: '/passageiro/cancelar/$rideId'
+      path: '/cancelar/$rideId'
+      fullPath: '/passageiro/cancelar/$rideId'
+      preLoaderRoute: typeof PassageiroCancelarRideIdRouteImport
+      parentRoute: typeof PassageiroRoute
+    }
     '/passageiro/chat/$rideId': {
       id: '/passageiro/chat/$rideId'
       path: '/chat/$rideId'
@@ -587,6 +639,13 @@ declare module '@tanstack/react-router' {
       path: '/corrida/$rideId'
       fullPath: '/passageiro/corrida/$rideId'
       preLoaderRoute: typeof PassageiroCorridaRideIdRouteImport
+      parentRoute: typeof PassageiroRoute
+    }
+    '/passageiro/recursos/$caseId': {
+      id: '/passageiro/recursos/$caseId'
+      path: '/recursos/$caseId'
+      fullPath: '/passageiro/recursos/$caseId'
+      preLoaderRoute: typeof PassageiroRecursosCaseIdRouteImport
       parentRoute: typeof PassageiroRoute
     }
     '/passageiro/corrida/$rideId/concluida': {
@@ -660,11 +719,14 @@ interface PassageiroRouteChildren {
   PassageiroNotificacoesRoute: typeof PassageiroNotificacoesRoute
   PassageiroPerfilRoute: typeof PassageiroPerfilRoute
   PassageiroPermissoesRoute: typeof PassageiroPermissoesRoute
+  PassageiroSaudeDaContaRoute: typeof PassageiroSaudeDaContaRoute
   PassageiroSegurancaRoute: typeof PassageiroSegurancaRoute
   PassageiroVerificacaoRoute: typeof PassageiroVerificacaoRoute
   PassageiroIndexRoute: typeof PassageiroIndexRoute
+  PassageiroCancelarRideIdRoute: typeof PassageiroCancelarRideIdRoute
   PassageiroChatRideIdRoute: typeof PassageiroChatRideIdRoute
   PassageiroCorridaRideIdRoute: typeof PassageiroCorridaRideIdRouteWithChildren
+  PassageiroRecursosCaseIdRoute: typeof PassageiroRecursosCaseIdRoute
 }
 
 const PassageiroRouteChildren: PassageiroRouteChildren = {
@@ -681,11 +743,14 @@ const PassageiroRouteChildren: PassageiroRouteChildren = {
   PassageiroNotificacoesRoute: PassageiroNotificacoesRoute,
   PassageiroPerfilRoute: PassageiroPerfilRoute,
   PassageiroPermissoesRoute: PassageiroPermissoesRoute,
+  PassageiroSaudeDaContaRoute: PassageiroSaudeDaContaRoute,
   PassageiroSegurancaRoute: PassageiroSegurancaRoute,
   PassageiroVerificacaoRoute: PassageiroVerificacaoRoute,
   PassageiroIndexRoute: PassageiroIndexRoute,
+  PassageiroCancelarRideIdRoute: PassageiroCancelarRideIdRoute,
   PassageiroChatRideIdRoute: PassageiroChatRideIdRoute,
   PassageiroCorridaRideIdRoute: PassageiroCorridaRideIdRouteWithChildren,
+  PassageiroRecursosCaseIdRoute: PassageiroRecursosCaseIdRoute,
 }
 
 const PassageiroRouteWithChildren = PassageiroRoute._addFileChildren(

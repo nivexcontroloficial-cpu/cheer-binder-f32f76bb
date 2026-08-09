@@ -134,11 +134,12 @@ function ProfilePage() {
           <h2 className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-4 px-2">Privacidade</h2>
           <div className="bg-white border border-slate-100 rounded-[32px] overflow-hidden">
             <ProfileLink 
-              to="/passageiro" 
+              to="/passageiro/saude-da-conta" 
               icon={<Shield size={18} />} 
-              label="Segurança" 
-              description="Contatos de confiança, PIN"
+              label="Saúde da Conta" 
+              description="Score excelente, ocorrências"
             />
+
             <ProfileLink 
               to="/passageiro" 
               icon={<Lock size={18} />} 
