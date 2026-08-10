@@ -256,61 +256,101 @@ function ConfirmRideScreen() {
         <div className="mt-auto bg-white border-t border-slate-100 p-8 rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] space-y-6">
           <div className="flex items-end justify-between">
             <div className="space-y-1">
-              <div 
+              <button
+                type="button"
+                aria-expanded={isDetailsOpen}
+                aria-controls="fare-details"
                 onClick={() => setIsDetailsOpen(!isDetailsOpen)}
-                className="flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-slate-400 cursor-pointer hover:text-navy transition-colors"
+                className="flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-navy transition-colors focus-visible:ring-2 focus-visible:ring-rovya-orange outline-none rounded-sm px-1 -ml-1"
               >
-                Preço Final
-                {isDetailsOpen ? <ChevronDown size={12} /> : <ChevronUp size={12} />}
-              </div>
+                Estimativa simulada
+                {isDetailsOpen ? (
+                  <ChevronDown size={12} aria-hidden="true" />
+                ) : (
+                  <ChevronUp size={12} aria-hidden="true" />
+                )}
+              </button>
               <div className="text-3xl font-black text-navy tracking-tighter italic">
-                R$ {finalPrice.toFixed(2).replace('.', ',')}
+                {formatCurrency(finalPrice)}
               </div>
             </div>
-            
+
             <div className="flex flex-col items-end gap-1">
               <div className="flex items-center gap-1.5 px-3 py-1 bg-emerald-50 text-rovya-green rounded-lg text-[9px] font-black uppercase tracking-widest border border-emerald-100">
-                <ShieldCheck size={12} />
-                Preço Fixo
+                <ShieldCheck size={12} aria-hidden="true" />
+                Valor demonstrativo
               </div>
               {isPromoApplied && (
-                <span className="text-[9px] font-bold text-rovya-orange uppercase tracking-widest">- R$ 5,00 cupom</span>
+                <span className="text-[9px] font-bold text-rovya-orange uppercase tracking-widest">
+                  - {formatCurrency(5.0)} cupom
+                </span>
               )}
             </div>
           </div>
 
           {/* Detalhes da Tarifa (Accordion Simulado) */}
           {isDetailsOpen && (
-            <div className="bg-slate-50 rounded-2xl p-4 space-y-2 animate-in slide-in-from-bottom-2 duration-300">
+            <div
+              id="fare-details"
+              className="bg-slate-50 rounded-2xl p-4 space-y-2 animate-in slide-in-from-bottom-2 duration-300"
+            >
               <DetailRow label="Tarifa Base" value={baseFare} />
-              <DetailRow label="Distância (6,8km)" value={distance * pricePerKm} />
+              <DetailRow
+                label="Distância (6,8km)"
+                value={distance * pricePerKm}
+              />
               <DetailRow label="Tempo (18min)" value={duration * pricePerMin} />
-              <DetailRow label="Alta Demanda (x1.2)" value={subtotal - (baseFare + (distance * pricePerKm) + (duration * pricePerMin))} />
-              {isPromoApplied && <DetailRow label="Desconto ROVYA5" value={-5.00} highlight />}
+              <DetailRow
+                label="Alta Demanda (x1.2)"
+                value={
+                  subtotal -
+                  (baseFare + distance * pricePerKm + duration * pricePerMin)
+                }
+              />
+              {isPromoApplied && (
+                <DetailRow
+                  label="Desconto DEMO5"
+                  value={-5.0}
+                  highlight
+                />
+              )}
               <div className="pt-2 border-t border-slate-200 mt-2 flex justify-between">
-                <span className="text-[9px] font-black uppercase text-navy">Total</span>
-                <span className="text-[10px] font-black text-navy">R$ {finalPrice.toFixed(2).replace('.', ',')}</span>
+                <span className="text-[9px] font-black uppercase text-navy">
+                  Total
+                </span>
+                <span className="text-[10px] font-black text-navy">
+                  {formatCurrency(finalPrice)}
+                </span>
               </div>
+              <p className="text-[8px] text-slate-400 italic text-center mt-2">
+                * O valor não constitui cobrança ou oferta real.
+              </p>
             </div>
           )}
 
           <div className="space-y-4">
             <div className="flex items-start gap-3 p-4 bg-blue-50 border border-blue-100 rounded-2xl">
-              <Info size={16} className="text-rovya-blue shrink-0 mt-0.5" />
+              <Info size={16} className="text-rovya-blue shrink-0 mt-0.5" aria-hidden="true" />
               <p className="text-[9px] text-blue-700 font-medium leading-relaxed">
-                Você escolheu pagar por <span className="font-black uppercase">{
-                  paymentMethod === 'cash' ? 'Dinheiro' : 
-                  paymentMethod === 'pix' ? 'Pix Direto' : 'Cartão na Máquina'
-                }</span>. O valor será cobrado pelo piloto após o desembarque.
+                Você escolheu a opção{" "}
+                <span className="font-black uppercase">
+                  {paymentMethod === "cash"
+                    ? "Dinheiro"
+                    : paymentMethod === "pix"
+                      ? "Pix"
+                      : "Cartão"}
+                </span>{" "}
+                (apenas demonstração). Nenhuma transação real ocorrerá.
               </p>
             </div>
 
-            <button 
+            <button
+              type="button"
               onClick={handleOrder}
-              className="w-full h-16 bg-navy text-white rounded-[24px] font-black uppercase tracking-widest text-[12px] flex items-center justify-center gap-3 hover:bg-navy/90 transition-all active:scale-95 rovya-shadow"
+              className="w-full h-16 bg-navy text-white rounded-[24px] font-black uppercase tracking-widest text-[12px] flex items-center justify-center gap-3 hover:bg-navy/90 transition-all active:scale-95 rovya-shadow focus-visible:ring-4 focus-visible:ring-rovya-orange outline-none"
             >
-              Pedir Rovya
-              <ChevronRight size={20} strokeWidth={3} />
+              Continuar para busca simulada
+              <ChevronRight size={20} strokeWidth={3} aria-hidden="true" />
             </button>
           </div>
         </div>
@@ -318,6 +358,7 @@ function ConfirmRideScreen() {
     </div>
   );
 }
+
 
 function PaymentButton({ active, onClick, icon, label }: { active: boolean, onClick: () => void, icon: React.ReactNode, label: string }) {
   return (
