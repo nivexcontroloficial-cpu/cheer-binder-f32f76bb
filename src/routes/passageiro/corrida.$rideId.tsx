@@ -488,10 +488,10 @@ function ActiveRideScreen() {
                 <div className="relative">
                   <img
                     src={pilot.avatar}
-                    alt={pilot.name}
+                    alt="Foto fictícia do piloto Carlos H. para demonstração"
                     className="h-16 w-16 rounded-[22px] object-cover border-2 border-slate-50 shadow-sm"
                   />
-                  <div className="absolute -bottom-1 -right-1 bg-white p-1 rounded-lg shadow-sm border border-slate-100">
+                  <div className="absolute -bottom-1 -right-1 bg-white p-1 rounded-lg shadow-sm border border-slate-100" aria-hidden="true">
                     <Star size={10} fill="#F97316" className="text-rovya-orange" />
                   </div>
                 </div>
@@ -501,27 +501,31 @@ function ActiveRideScreen() {
                       {pilot.name}
                     </h2>
                     <span className="text-xs font-bold text-rovya-orange flex items-center gap-0.5">
-                      {pilot.rating}
+                      {pilot.rating.toLocaleString("pt-BR")}
                     </span>
                   </div>
                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                    {pilot.totalRides} Corridas • {pilot.timeAtRovya}
+                    {pilot.totalRides} Corridas • {pilot.timeAtRovya} na Rovya
                   </p>
                 </div>
               </div>
 
               <div className="flex gap-2">
                 <button
+                  type="button"
                   onClick={handleChat}
+                  aria-label="Chat com piloto"
                   className="h-12 w-12 bg-slate-50 text-navy rounded-2xl flex items-center justify-center border border-slate-100 hover:bg-slate-100 transition-all active:scale-95"
                 >
-                  <MessageSquare size={20} strokeWidth={2.5} />
+                  <MessageSquare size={20} strokeWidth={2.5} aria-hidden="true" />
                 </button>
                 <button
+                  type="button"
                   onClick={handleCall}
+                  aria-label="Ligar para piloto"
                   className="h-12 w-12 bg-navy text-white rounded-2xl flex items-center justify-center hover:bg-navy/90 transition-all active:scale-95 shadow-md"
                 >
-                  <Phone size={20} strokeWidth={2.5} />
+                  <Phone size={20} strokeWidth={2.5} aria-hidden="true" />
                 </button>
               </div>
             </div>
