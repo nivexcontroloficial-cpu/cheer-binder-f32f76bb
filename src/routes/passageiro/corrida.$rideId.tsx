@@ -659,7 +659,7 @@ function ActiveRideScreen() {
                       </div>
                     ))}
                     <div className="px-3 py-1.5 bg-blue-50 text-rovya-blue rounded-lg text-[9px] font-black uppercase tracking-widest border border-blue-100 flex items-center gap-2">
-                      <ShieldCheck size={12} fill="currentColor" />
+                      <ShieldCheck size={12} fill="currentColor" aria-hidden="true" />
                       Identidade Verificada
                     </div>
                   </div>
