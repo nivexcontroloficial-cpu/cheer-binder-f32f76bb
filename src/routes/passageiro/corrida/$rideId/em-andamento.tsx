@@ -210,6 +210,25 @@ function InProgressRideScreen() {
           </button>
         </div>
 
+        {desvioResult && (
+          <div
+            role="status"
+            aria-live="polite"
+            className="rounded-2xl border border-slate-100 bg-slate-50 p-4 space-y-3"
+          >
+            <p className="text-[11px] font-bold text-navy leading-snug">{desvioResult}</p>
+            {desvioResult.startsWith("Atendimento simulado") && (
+              <button
+                type="button"
+                onClick={() => navigate({ to: "/passageiro/seguranca", search: { rideId } })}
+                className="w-full h-11 bg-navy text-white rounded-2xl font-black uppercase text-[9px] focus:outline-none focus:ring-2 focus:ring-navy"
+              >
+                Ir para Central de Segurança
+              </button>
+            )}
+          </div>
+        )}
+
         <button
           type="button"
           onClick={() => setIsAltDestConfirmOpen(true)}
@@ -225,7 +244,7 @@ function InProgressRideScreen() {
             className="h-12 bg-slate-50 text-navy rounded-2xl font-black uppercase text-[9px] flex items-center justify-center gap-2 hover:bg-slate-100 transition-all focus:outline-none focus:ring-2 focus:ring-navy"
             aria-label="Central de Segurança"
           >
-            <Shield size={14} /> Segurança
+            <Shield size={14} aria-hidden="true" /> Segurança
           </button>
           <button
             type="button"
@@ -235,7 +254,7 @@ function InProgressRideScreen() {
             className="h-12 bg-slate-50 text-navy rounded-2xl font-black uppercase text-[9px] flex items-center justify-center gap-2 hover:bg-slate-100 transition-all focus:outline-none focus:ring-2 focus:ring-navy"
             aria-label="Reportar problema"
           >
-            <AlertTriangle size={14} /> Denunciar
+            <AlertTriangle size={14} aria-hidden="true" /> Denunciar
           </button>
         </div>
 
