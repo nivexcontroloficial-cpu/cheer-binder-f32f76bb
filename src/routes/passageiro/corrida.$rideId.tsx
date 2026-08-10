@@ -303,7 +303,7 @@ function ActiveRideScreen() {
         <div className="absolute top-24 left-6 right-6 flex flex-col gap-3">
           {/* Status de Conexão e Última Atualização */}
           <div className="flex flex-col gap-2 self-start">
-            <div 
+            <div
               className="bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full border border-slate-100 shadow-sm flex items-center gap-2"
               aria-live="polite"
             >
