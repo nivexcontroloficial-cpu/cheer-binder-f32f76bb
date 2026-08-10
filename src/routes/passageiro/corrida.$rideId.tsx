@@ -42,7 +42,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 
 export const Route = createFileRoute("/passageiro/corrida/$rideId")({
@@ -60,14 +59,17 @@ function ActiveRideScreen() {
   const [eta, setEta] = useState(4);
   const [distanceMeters, setDistanceMeters] = useState(2500); // Começa com 2.5km
   const [progress, setProgress] = useState(0); // 0 a 100
-  const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
-  const [cancelReason, setCancelReason] = useState("");
   const [hasArrived, setHasArrived] = useState(false);
   const [isNearAlertVisible, setIsNearAlertVisible] = useState(false);
   const [waitTime, setWaitTime] = useState(300); // 5 minutos em segundos
   const [isWaitTimerActive, setIsWaitTimerActive] = useState(false);
   const [pin] = useState("4827");
   const [isDivergentVehicleAlertOpen, setIsDivergentVehicleAlertOpen] = useState(false);
+  const [lastUpdate, setLastUpdate] = useState("");
+
+  useEffect(() => {
+    setLastUpdate(new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }));
+  }, []);
 
   // Dados Mock Obrigatórios do Piloto
   const pilot = {
@@ -190,7 +192,7 @@ function ActiveRideScreen() {
   };
 
   const handleQuickMessage = (msg: string) => {
-    toast.success(`Mensagem enviada: "${msg}"`);
+    toast.success(`Simulação: "${msg}" adicionada apenas à demonstração local. Nada foi enviado.`);
   };
 
   const handleReportDivergent = () => {
@@ -204,19 +206,19 @@ function ActiveRideScreen() {
   };
 
   const handleCall = () => {
-    toast.info("Iniciando chamada protegida Rovya...");
+    toast.info("Chamada protegida simulada. Nenhuma ligação real foi iniciada.");
   };
 
   const handleChat = () => {
-    navigate({ to: "/passageiro/chat/$rideId", params: { rideId } });
+    navigate({ to: "/passageiro/chat/$rideId", params: { rideId: rideId || "" } });
   };
 
   const handleShare = () => {
-    toast.success("Link de rastreamento copiado para compartilhar!");
+    toast.success("Compartilhamento simulado. Nenhum link foi criado, copiado ou enviado.");
   };
 
   const handleSafety = () => {
-    toast.warning("Central de Segurança ativada. Monitorando sua rota.");
+    navigate({ to: "/passageiro/seguranca" });
   };
 
   const handleCancelRide = () => {
@@ -227,20 +229,35 @@ function ActiveRideScreen() {
     return <Outlet />;
   }
 
+  const rideSummary = {
+    price: "R$ 18,00",
+    method: "Dinheiro",
+    details: "Pagamento presencial demonstrativo",
+  };
+
   return (
     <div className="flex min-h-screen flex-col bg-porcelain font-sans text-navy overflow-hidden">
+      {/* Banner de Transparência */}
+      <div className="z-50 bg-amber-50 border-b border-amber-100 px-4 py-2 flex items-start gap-2 animate-in fade-in duration-700">
+        <Info size={14} className="text-amber-600 mt-0.5 shrink-0" />
+        <p className="text-[9px] font-bold text-amber-900 leading-tight">
+          Demonstração local: piloto, trajeto, localização e comunicação são simulados. Nenhum GPS real está ativo.
+        </p>
+      </div>
+
       {/* Mapa Esquemático de Fundo (Tela Cheia) */}
-      <div className="absolute inset-0 bg-slate-100 z-0">
+      <div className="absolute inset-0 bg-slate-100 z-0" aria-label="Mapa esquemático da demonstração">
         <div
           className="absolute inset-0 opacity-10"
           style={{
             backgroundImage: "radial-gradient(#111827 1px, transparent 1px)",
             backgroundSize: "32px 32px",
           }}
+          aria-hidden="true"
         ></div>
 
         {/* Rota Animada */}
-        <svg className="absolute inset-0 w-full h-full">
+        <svg className="absolute inset-0 w-full h-full" aria-hidden="true">
           <path
             d="M 100 200 L 250 400 L 400 300"
             fill="none"
@@ -283,28 +300,40 @@ function ActiveRideScreen() {
         </svg>
 
         {/* Indicadores Flutuantes no Mapa */}
-        <div className="absolute top-16 left-6 right-6 flex flex-col gap-3">
-          {/* Status de Conexão */}
-          <div className="self-start bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full border border-slate-100 shadow-sm flex items-center gap-2">
-            {connection === "stable" && <Signal size={12} className="text-emerald-500" />}
-            {connection === "unstable" && <SignalLow size={12} className="text-amber-500" />}
-            {connection === "stopped" && <AlertTriangle size={12} className="text-amber-500" />}
-            {connection === "reconnecting" && (
-              <WifiOff size={12} className="text-red-500 animate-pulse" />
+        <div className="absolute top-24 left-6 right-6 flex flex-col gap-3">
+          {/* Status de Conexão e Última Atualização */}
+          <div className="flex flex-col gap-2 self-start">
+            <div 
+              className="bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full border border-slate-100 shadow-sm flex items-center gap-2"
+              aria-live="polite"
+            >
+              {connection === "stable" && <Signal size={12} className="text-emerald-500" />}
+              {connection === "unstable" && <SignalLow size={12} className="text-amber-500" />}
+              {connection === "stopped" && <AlertTriangle size={12} className="text-amber-500" />}
+              {connection === "reconnecting" && (
+                <WifiOff size={12} className="text-red-500 animate-pulse" />
+              )}
+              <span className="text-[9px] font-black uppercase tracking-widest text-navy">
+                {connection === "stable" && "GPS simulado estável"}
+                {connection === "unstable" && "GPS simulado instável"}
+                {connection === "stopped" && "Piloto simulado parado"}
+                {connection === "reconnecting" && "Reconectando simulação..."}
+              </span>
+            </div>
+            {lastUpdate && (
+              <div className="bg-white/80 backdrop-blur-sm px-2 py-1 rounded-lg self-start border border-slate-50 shadow-sm">
+                <span className="text-[8px] font-bold text-slate-400 uppercase tracking-tight">
+                  Última atualização simulada: {lastUpdate}
+                </span>
+              </div>
             )}
-            <span className="text-[9px] font-black uppercase tracking-widest text-navy">
-              {connection === "stable" && "GPS estável"}
-              {connection === "unstable" && "GPS instável"}
-              {connection === "stopped" && "Piloto parado"}
-              {connection === "reconnecting" && "Reconectando..."}
-            </span>
           </div>
 
           {/* Banner de Proximidade (500m) */}
           {distanceMeters <= 500 && !hasArrived && (
             <div className="animate-in slide-in-from-top duration-500 bg-rovya-orange text-white px-4 py-3 rounded-2xl shadow-xl flex items-center gap-3 border border-white/20">
               <div className="bg-white/20 p-2 rounded-xl">
-                <Navigation size={18} className="animate-pulse" />
+                <Navigation size={18} className="animate-pulse" aria-hidden="true" />
               </div>
               <div className="flex flex-col">
                 <span className="text-[10px] font-black uppercase tracking-[0.1em]">
@@ -361,13 +390,13 @@ function ActiveRideScreen() {
                   {eta > 0 ? `${eta} min` : "Chegando!"}
                 </span>
               </div>
-              <div className="h-8 w-px bg-white/10"></div>
+              <div className="h-8 w-px bg-white/10" aria-hidden="true"></div>
               <div className="flex flex-col">
                 <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">
                   Ponto
                 </span>
                 <span className="text-[10px] font-black uppercase tracking-tight truncate max-w-[120px]">
-                  Av. Getúlio Vargas
+                  Centro, Jacarezinho
                 </span>
               </div>
             </div>
@@ -380,20 +409,51 @@ function ActiveRideScreen() {
         <div
           className={`bg-white rounded-t-[40px] shadow-[0_-20px_40px_rgba(0,0,0,0.1)] transition-all duration-500 border-t border-slate-100 ${isDetailsOpen ? "h-[80vh]" : "h-auto"}`}
         >
-          {/* Handle de expansão */}
-          <div
-            onClick={() => setIsDetailsOpen(!isDetailsOpen)}
-            className="w-full flex justify-center py-4 cursor-pointer"
-          >
-            <div className="w-12 h-1.5 bg-slate-100 rounded-full"></div>
+          {/* Controles da Simulação */}
+          <div className="px-6 py-4 flex flex-wrap gap-2 justify-center border-b border-slate-50 bg-slate-50/50">
+            <span className="w-full text-[8px] font-black text-slate-400 uppercase tracking-widest text-center mb-1">
+              Controles locais da demonstração
+            </span>
+            {[
+              { id: "stable", label: "Sinal Estável", icon: Signal },
+              { id: "unstable", label: "GPS Instável", icon: SignalLow },
+              { id: "stopped", label: "Piloto Parado", icon: AlertTriangle },
+              { id: "reconnecting", label: "Reconectando", icon: WifiOff },
+            ].map((btn) => (
+              <button
+                key={btn.id}
+                type="button"
+                onClick={() => setConnection(btn.id as ConnectionStatus)}
+                aria-pressed={connection === btn.id}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[9px] font-bold uppercase transition-all ${
+                  connection === btn.id
+                    ? "bg-navy text-white shadow-md scale-105"
+                    : "bg-white text-slate-500 border border-slate-200 hover:border-slate-300"
+                }`}
+              >
+                <btn.icon size={10} aria-hidden="true" />
+                {btn.label}
+              </button>
+            ))}
           </div>
 
-          <div className="px-8 pb-8 space-y-6">
+          {/* Handle de expansão */}
+          <button
+            type="button"
+            onClick={() => setIsDetailsOpen(!isDetailsOpen)}
+            aria-expanded={isDetailsOpen}
+            aria-controls="ride-details-panel"
+            className="w-full flex justify-center py-4 cursor-pointer hover:bg-slate-50 transition-colors"
+          >
+            <div className="w-12 h-1.5 bg-slate-100 rounded-full"></div>
+          </button>
+
+          <div id="ride-details-panel" className="px-8 pb-8 space-y-6 overflow-y-auto">
             {/* PIN de Segurança (Aparece após chegada) */}
             {hasArrived && (
               <div className="animate-in fade-in slide-in-from-top-4 duration-700 pt-2">
                 <div className="bg-navy rounded-3xl p-6 text-white shadow-xl relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 p-4 opacity-10">
+                  <div className="absolute top-0 right-0 p-4 opacity-10" aria-hidden="true">
                     <Lock size={60} />
                   </div>
                   <div className="relative z-10 flex flex-col items-center text-center gap-2">
@@ -428,10 +488,10 @@ function ActiveRideScreen() {
                 <div className="relative">
                   <img
                     src={pilot.avatar}
-                    alt={pilot.name}
+                    alt="Foto fictícia do piloto Carlos H. para demonstração"
                     className="h-16 w-16 rounded-[22px] object-cover border-2 border-slate-50 shadow-sm"
                   />
-                  <div className="absolute -bottom-1 -right-1 bg-white p-1 rounded-lg shadow-sm border border-slate-100">
+                  <div className="absolute -bottom-1 -right-1 bg-white p-1 rounded-lg shadow-sm border border-slate-100" aria-hidden="true">
                     <Star size={10} fill="#F97316" className="text-rovya-orange" />
                   </div>
                 </div>
@@ -441,27 +501,31 @@ function ActiveRideScreen() {
                       {pilot.name}
                     </h2>
                     <span className="text-xs font-bold text-rovya-orange flex items-center gap-0.5">
-                      {pilot.rating}
+                      {pilot.rating.toLocaleString("pt-BR")}
                     </span>
                   </div>
                   <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                    {pilot.totalRides} Corridas • {pilot.timeAtRovya}
+                    {pilot.totalRides} Corridas • {pilot.timeAtRovya} na Rovya
                   </p>
                 </div>
               </div>
 
               <div className="flex gap-2">
                 <button
+                  type="button"
                   onClick={handleChat}
+                  aria-label="Chat com piloto"
                   className="h-12 w-12 bg-slate-50 text-navy rounded-2xl flex items-center justify-center border border-slate-100 hover:bg-slate-100 transition-all active:scale-95"
                 >
-                  <MessageSquare size={20} strokeWidth={2.5} />
+                  <MessageSquare size={20} strokeWidth={2.5} aria-hidden="true" />
                 </button>
                 <button
+                  type="button"
                   onClick={handleCall}
+                  aria-label="Ligar para piloto"
                   className="h-12 w-12 bg-navy text-white rounded-2xl flex items-center justify-center hover:bg-navy/90 transition-all active:scale-95 shadow-md"
                 >
-                  <Phone size={20} strokeWidth={2.5} />
+                  <Phone size={20} strokeWidth={2.5} aria-hidden="true" />
                 </button>
               </div>
             </div>
@@ -540,28 +604,31 @@ function ActiveRideScreen() {
             {/* Ações Secundárias */}
             <div className="flex items-center justify-between gap-4 py-2">
               <button
+                type="button"
                 onClick={handleShare}
                 className="flex-1 flex flex-col items-center gap-2 py-3 bg-white border border-slate-100 rounded-2xl hover:bg-slate-50 transition-colors"
               >
-                <Share2 size={18} className="text-slate-400" />
+                <Share2 size={18} className="text-slate-400" aria-hidden="true" />
                 <span className="text-[9px] font-black uppercase tracking-widest text-slate-500">
                   Compartilhar
                 </span>
               </button>
               <button
+                type="button"
                 onClick={handleSafety}
                 className="flex-1 flex flex-col items-center gap-2 py-3 bg-white border border-slate-100 rounded-2xl hover:bg-slate-50 transition-colors"
               >
-                <ShieldCheck size={18} className="text-rovya-blue" />
+                <ShieldCheck size={18} className="text-rovya-blue" aria-hidden="true" />
                 <span className="text-[9px] font-black uppercase tracking-widest text-navy">
                   Segurança
                 </span>
               </button>
               <button
-                onClick={() => setIsCancelDialogOpen(true)}
+                type="button"
+                onClick={handleCancelRide}
                 className="flex-1 flex flex-col items-center gap-2 py-3 bg-white border border-slate-100 rounded-2xl hover:bg-red-50 transition-colors group"
               >
-                <X size={18} className="text-slate-300 group-hover:text-red-500" />
+                <X size={18} className="text-slate-300 group-hover:text-red-500" aria-hidden="true" />
                 <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 group-hover:text-red-500">
                   Cancelar
                 </span>
@@ -606,16 +673,18 @@ function ActiveRideScreen() {
                   <div className="space-y-2">
                     <div className="flex justify-between text-[10px]">
                       <span className="text-slate-500 font-medium uppercase tracking-widest">
-                        Valor da Corrida
+                        Preço final simulado
                       </span>
-                      <span className="font-black text-navy tracking-tight italic">R$ 10,00</span>
+                      <span className="font-black text-navy tracking-tight italic">
+                        {rideSummary.price}
+                      </span>
                     </div>
                     <div className="flex justify-between text-[10px]">
                       <span className="text-slate-500 font-medium uppercase tracking-widest">
                         Forma Escolhida
                       </span>
                       <span className="font-black text-navy tracking-tight italic">
-                        PIX DIRETO AO PILOTO
+                        {rideSummary.method}
                       </span>
                     </div>
                   </div>
@@ -639,76 +708,6 @@ function ActiveRideScreen() {
         </div>
       </div>
 
-      {/* Dialog de Cancelamento (Repetido do fluxo de busca, mas com contexto de corrida ativa) */}
-      <AlertDialog open={isCancelDialogOpen} onOpenChange={setIsCancelDialogOpen}>
-        <AlertDialogContent className="rounded-[32px] p-8 max-w-[90vw] sm:max-w-md">
-          <AlertDialogHeader>
-            <AlertDialogTitle className="text-xl font-black italic uppercase tracking-tight text-navy">
-              Cancelar Corrida?
-            </AlertDialogTitle>
-            <AlertDialogDescription className="text-xs text-slate-500 leading-relaxed pt-2">
-              O piloto já está a caminho. Cancelamentos frequentes podem resultar em suspensão
-              temporária da sua conta.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-
-          <div className="py-6">
-            <RadioGroup value={cancelReason} onValueChange={setCancelReason} className="space-y-3">
-              <div className="flex items-center space-x-3 p-4 bg-slate-50 rounded-2xl border border-slate-100 cursor-pointer">
-                <RadioGroupItem
-                  value="too_long"
-                  id="too_long"
-                  className="text-rovya-orange border-slate-300"
-                />
-                <Label
-                  htmlFor="too_long"
-                  className="flex-1 text-[11px] font-bold uppercase tracking-wider text-navy cursor-pointer"
-                >
-                  Piloto não se move
-                </Label>
-              </div>
-              <div className="flex items-center space-x-3 p-4 bg-slate-50 rounded-2xl border border-slate-100 cursor-pointer">
-                <RadioGroupItem
-                  value="mistake"
-                  id="mistake"
-                  className="text-rovya-orange border-slate-300"
-                />
-                <Label
-                  htmlFor="mistake"
-                  className="flex-1 text-[11px] font-bold uppercase tracking-wider text-navy cursor-pointer"
-                >
-                  Mudei de ideia
-                </Label>
-              </div>
-              <div className="flex items-center space-x-3 p-4 bg-slate-50 rounded-2xl border border-slate-100 cursor-pointer">
-                <RadioGroupItem
-                  value="unsafe"
-                  id="unsafe"
-                  className="text-rovya-orange border-slate-300"
-                />
-                <Label
-                  htmlFor="unsafe"
-                  className="flex-1 text-[11px] font-bold uppercase tracking-wider text-navy cursor-pointer"
-                >
-                  Não me sinto seguro
-                </Label>
-              </div>
-            </RadioGroup>
-          </div>
-
-          <AlertDialogFooter className="flex-col sm:flex-row gap-3">
-            <AlertDialogCancel className="rounded-2xl h-14 text-[11px] font-black uppercase border-slate-200 mt-0">
-              Manter Corrida
-            </AlertDialogCancel>
-            <button
-              onClick={handleCancelRide}
-              className="bg-red-500 text-white rounded-2xl h-14 px-6 text-[11px] font-black uppercase tracking-widest hover:bg-red-600 transition-all flex-1"
-            >
-              Confirmar Cancelamento
-            </button>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
 
       {/* Dialog de Veículo Divergente */}
       <AlertDialog open={isDivergentVehicleAlertOpen} onOpenChange={setIsDivergentVehicleAlertOpen}>
