@@ -108,4 +108,8 @@
       0 4px 6px -4px rgb(17 24 39 / 0.08);
   }
 }
+112: 
+113: #lovable-badge {
+114:   display: none !important;
+115: }
 
