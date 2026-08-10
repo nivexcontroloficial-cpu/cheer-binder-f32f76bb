@@ -66,10 +66,10 @@ function ChatScreen() {
   const { rideId } = useParams({ from: "/passageiro/chat/$rideId" });
   const navigate = useNavigate();
   const scrollRef = useRef<HTMLDivElement>(null);
-  
+
   // Timers management
   const timersRef = useRef<Set<ReturnType<typeof setTimeout>>>(new Set());
-  
+
   const addTimer = useCallback((callback: () => void, ms: number) => {
     const timerId = setTimeout(() => {
       timersRef.current.delete(timerId);
@@ -184,82 +184,85 @@ function ChatScreen() {
     }
   }, [messages, rideId, hydratedRideId]);
 
-  const handleSendMessage = useCallback((text = inputText) => {
-    if ((!text.trim() && !hasFakeAttachment) || isBlocked) return;
+  const handleSendMessage = useCallback(
+    (text = inputText) => {
+      if ((!text.trim() && !hasFakeAttachment) || isBlocked) return;
 
-    const newMessageId = Date.now().toString();
-    const newMessage: Message = {
-      id: newMessageId,
-      text: text.trim(),
-      sender: "passenger",
-      timestamp: new Date(),
-      status: "sending",
-      attachment: hasFakeAttachment,
-    };
+      const newMessageId = Date.now().toString();
+      const newMessage: Message = {
+        id: newMessageId,
+        text: text.trim(),
+        sender: "passenger",
+        timestamp: new Date(),
+        status: "sending",
+        attachment: hasFakeAttachment,
+      };
 
-    setMessages((prev) => [...prev, newMessage]);
-    setInputText("");
-    setHasFakeAttachment(false);
+      setMessages((prev) => [...prev, newMessage]);
+      setInputText("");
+      setHasFakeAttachment(false);
 
-    if (simulateFailure) {
-      setSimulateFailure(false);
-      addTimer(() => {
-        setMessages((prev) =>
-          prev.map((m) => (m.id === newMessageId ? { ...m, status: "failed" } : m)),
-        );
-      }, 1000);
-      return;
-    }
-
-    // Fluxo normal de estados
-    addTimer(() => {
-      setMessages((prev) =>
-        prev.map((m) => (m.id === newMessageId ? { ...m, status: "sent" } : m)),
-      );
-      
-      addTimer(() => {
-        setMessages((prev) =>
-          prev.map((m) => (m.id === newMessageId ? { ...m, status: "delivered" } : m)),
-        );
-        
+      if (simulateFailure) {
+        setSimulateFailure(false);
         addTimer(() => {
           setMessages((prev) =>
-            prev.map((m) => (m.id === newMessageId ? { ...m, status: "read" } : m)),
+            prev.map((m) => (m.id === newMessageId ? { ...m, status: "failed" } : m)),
+          );
+        }, 1000);
+        return;
+      }
+
+      // Fluxo normal de estados
+      addTimer(() => {
+        setMessages((prev) =>
+          prev.map((m) => (m.id === newMessageId ? { ...m, status: "sent" } : m)),
+        );
+
+        addTimer(() => {
+          setMessages((prev) =>
+            prev.map((m) => (m.id === newMessageId ? { ...m, status: "delivered" } : m)),
           );
 
-          // Resposta simulada após visualização
-          if (!isBlocked) {
-            addTimer(() => {
-              setIsTyping(true);
+          addTimer(() => {
+            setMessages((prev) =>
+              prev.map((m) => (m.id === newMessageId ? { ...m, status: "read" } : m)),
+            );
+
+            // Resposta simulada após visualização
+            if (!isBlocked) {
               addTimer(() => {
-                setIsTyping(false);
-                const reply: Message = {
-                  id: (Date.now() + 1).toString(),
-                  text: "Perfeito, te aguardo no ponto de encontro combinado.",
-                  sender: "driver",
-                  timestamp: new Date(),
-                  status: "read",
-                };
-                setMessages((prev) => [...prev, reply]);
-                setLastActivity("agora");
-              }, 2500);
-            }, 1000);
-          }
-        }, 1500);
-      }, 1000);
-    }, 800);
-  }, [inputText, hasFakeAttachment, isBlocked, simulateFailure, addTimer]);
+                setIsTyping(true);
+                addTimer(() => {
+                  setIsTyping(false);
+                  const reply: Message = {
+                    id: (Date.now() + 1).toString(),
+                    text: "Perfeito, te aguardo no ponto de encontro combinado.",
+                    sender: "driver",
+                    timestamp: new Date(),
+                    status: "read",
+                  };
+                  setMessages((prev) => [...prev, reply]);
+                  setLastActivity("agora");
+                }, 2500);
+              }, 1000);
+            }
+          }, 1500);
+        }, 1000);
+      }, 800);
+    },
+    [inputText, hasFakeAttachment, isBlocked, simulateFailure, addTimer],
+  );
 
   const resendMessage = (id: string) => {
     setMessages((prev) => prev.map((m) => (m.id === id ? { ...m, status: "sending" } : m)));
-    
+
     addTimer(() => {
       setMessages((prev) => prev.map((m) => (m.id === id ? { ...m, status: "sent" } : m)));
       addTimer(() => {
         setMessages((prev) => prev.map((m) => (m.id === id ? { ...m, status: "delivered" } : m)));
         addTimer(() => {
           setMessages((prev) => prev.map((m) => (m.id === id ? { ...m, status: "read" } : m)));
-          
+
           if (!isBlocked) {
             addTimer(() => {
               setIsTyping(true);
@@ -303,12 +306,19 @@ function ChatScreen() {
           </button>
           <div className="flex items-center gap-3">
             <div className="relative">
-              <div className="h-10 w-10 rounded-xl bg-navy flex items-center justify-center border border-slate-100" role="img" aria-label="Avatar de Carlos H.">
+              <div
+                className="h-10 w-10 rounded-xl bg-navy flex items-center justify-center border border-slate-100"
+                role="img"
+                aria-label="Avatar de Carlos H."
+              >
                 <span className="text-white font-black italic tracking-tighter text-sm uppercase">
                   CH
                 </span>
               </div>
-              <div className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-blue-500 border-2 border-white" aria-hidden="true"></div>
+              <div
+                className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-blue-500 border-2 border-white"
+                aria-hidden="true"
+              ></div>
             </div>
             <div className="flex flex-col">
               <h2 className="text-sm font-black italic tracking-tighter text-navy uppercase leading-none">
@@ -340,7 +350,7 @@ function ChatScreen() {
 
           <AlertDialog open={showReportConfirm} onOpenChange={setShowReportConfirm}>
             <AlertDialogTrigger asChild>
-              <button 
+              <button
                 type="button"
                 className="h-10 w-10 bg-slate-50 text-navy rounded-xl flex items-center justify-center hover:bg-slate-100 active:scale-95 transition-all"
                 aria-label="Opções adicionais"
@@ -368,15 +378,20 @@ function ChatScreen() {
                     Central de Segurança
                   </span>
                 </button>
-                
+
                 <button
                   type="button"
                   onClick={() => {
                     setIsBlocked(!isBlocked);
                     setShowReportConfirm(false);
-                    toast.info(isBlocked ? "Piloto desbloqueado localmente." : "Bloqueio somente nesta demonstração.", {
-                      description: isBlocked ? "" : "O piloto não poderá mais enviar mensagens.",
-                    });
+                    toast.info(
+                      isBlocked
+                        ? "Piloto desbloqueado localmente."
+                        : "Bloqueio somente nesta demonstração.",
+                      {
+                        description: isBlocked ? "" : "O piloto não poderá mais enviar mensagens.",
+                      },
+                    );
                   }}
                   className={`flex items-center gap-3 w-full p-4 rounded-2xl transition-colors text-left ${isBlocked ? "bg-emerald-50 text-emerald-600 hover:bg-emerald-100" : "bg-slate-50 text-navy hover:bg-slate-100"}`}
                 >
@@ -388,7 +403,10 @@ function ChatScreen() {
 
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
-                    <button type="button" className="flex items-center gap-3 w-full p-4 rounded-2xl bg-red-50 text-red-600 hover:bg-red-100 transition-colors text-left">
+                    <button
+                      type="button"
+                      className="flex items-center gap-3 w-full p-4 rounded-2xl bg-red-50 text-red-600 hover:bg-red-100 transition-colors text-left"
+                    >
                       <Flag size={18} aria-hidden="true" />
                       <span className="text-xs font-bold uppercase tracking-widest">
                         Denunciar Conversa
@@ -401,7 +419,8 @@ function ChatScreen() {
                         Confirmar Denúncia?
                       </AlertDialogTitle>
                       <AlertDialogDescription className="text-xs font-medium text-slate-500">
-                        Você será encaminhado para a tela de denúncia para relatar o ocorrido. Nenhuma denúncia real será enviada.
+                        Você será encaminhado para a tela de denúncia para relatar o ocorrido.
+                        Nenhuma denúncia real será enviada.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter className="flex flex-col gap-2 mt-4 sm:flex-col">
@@ -417,16 +436,19 @@ function ChatScreen() {
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialog>
-                
+
                 <div className="flex items-center gap-3 w-full p-4 rounded-2xl bg-slate-50 text-navy">
-                  <input 
-                    type="checkbox" 
-                    id="sim-fail" 
+                  <input
+                    type="checkbox"
+                    id="sim-fail"
                     checked={simulateFailure}
                     onChange={(e) => setSimulateFailure(e.target.checked)}
                     className="w-4 h-4 rounded border-slate-300 text-navy focus:ring-navy"
                   />
-                  <label htmlFor="sim-fail" className="text-[10px] font-bold uppercase tracking-widest cursor-pointer">
+                  <label
+                    htmlFor="sim-fail"
+                    className="text-[10px] font-bold uppercase tracking-widest cursor-pointer"
+                  >
                     Simular falha no próximo envio
                   </label>
                 </div>
@@ -441,7 +463,11 @@ function ChatScreen() {
         </div>
       </header>
 
-      <div ref={scrollRef} className="flex-1 overflow-y-auto p-6 space-y-4 bg-porcelain/50" aria-live="polite">
+      <div
+        ref={scrollRef}
+        className="flex-1 overflow-y-auto p-6 space-y-4 bg-porcelain/50"
+        aria-live="polite"
+      >
         <div className="flex justify-center mb-6 text-center">
           <div className="bg-white/80 border border-slate-100 px-4 py-1.5 rounded-full shadow-sm max-w-[90%]">
             <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">
@@ -476,7 +502,10 @@ function ChatScreen() {
               <p className="text-[13px] font-medium leading-relaxed">{msg.text}</p>
 
               <div className="flex items-center gap-1.5 mt-2 justify-end">
-                <span className="text-[9px] font-bold opacity-50 uppercase" aria-label={`Enviada às ${msg.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`}>
+                <span
+                  className="text-[9px] font-bold opacity-50 uppercase"
+                  aria-label={`Enviada às ${msg.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`}
+                >
                   {msg.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                 </span>
 
@@ -486,26 +515,28 @@ function ChatScreen() {
                     {msg.status === "sent" && <Check size={10} />}
                     {msg.status === "delivered" && <CheckCheck size={10} />}
                     {msg.status === "read" && <CheckCheck size={10} className="text-blue-400" />}
-                    {msg.status === "failed" && (
-                      <AlertCircle size={10} className="text-red-400" />
-                    )}
+                    {msg.status === "failed" && <AlertCircle size={10} className="text-red-400" />}
                   </div>
                 )}
-                
+
                 {msg.sender === "passenger" && (
-                   <span className="sr-only">
-                     Status: {
-                       msg.status === "sending" ? "Enviando" :
-                       msg.status === "sent" ? "Enviada" :
-                       msg.status === "delivered" ? "Entregue" :
-                       msg.status === "read" ? "Visualizada" : "Falha no envio"
-                     }
-                   </span>
+                  <span className="sr-only">
+                    Status:{" "}
+                    {msg.status === "sending"
+                      ? "Enviando"
+                      : msg.status === "sent"
+                        ? "Enviada"
+                        : msg.status === "delivered"
+                          ? "Entregue"
+                          : msg.status === "read"
+                            ? "Visualizada"
+                            : "Falha no envio"}
+                  </span>
                 )}
               </div>
             </div>
             {msg.status === "failed" && (
-              <button 
+              <button
                 type="button"
                 onClick={() => resendMessage(msg.id)}
                 className="flex items-center gap-1.5 mt-1 hover:opacity-80"
@@ -570,9 +601,11 @@ function ChatScreen() {
           <div className="mb-4 p-3 bg-red-50 border border-red-100 rounded-2xl flex items-center justify-between">
             <div className="flex items-center gap-2 text-red-600">
               <Ban size={14} />
-              <span className="text-[10px] font-black uppercase tracking-widest">Bloqueio somente nesta demonstração</span>
+              <span className="text-[10px] font-black uppercase tracking-widest">
+                Bloqueio somente nesta demonstração
+              </span>
             </div>
-            <button 
+            <button
               type="button"
               onClick={() => setIsBlocked(false)}
               className="text-[9px] font-black uppercase tracking-widest text-red-600 underline"
@@ -583,7 +616,7 @@ function ChatScreen() {
         )}
 
         <div className="flex items-center gap-3">
-          <button 
+          <button
             type="button"
             disabled={isBlocked}
             onClick={() => {
@@ -624,27 +657,39 @@ function ChatScreen() {
             <Send size={20} strokeWidth={2.5} aria-hidden="true" />
           </button>
         </div>
-        
+
         <div className="mt-4 flex justify-center">
-           <span className="text-[7px] text-slate-300 font-bold uppercase tracking-[0.2em]">
-             Histórico existe apenas neste navegador demonstrativo
-           </span>
+          <span className="text-[7px] text-slate-300 font-bold uppercase tracking-[0.2em]">
+            Histórico existe apenas neste navegador demonstrativo
+          </span>
         </div>
-      </footer >
+      </footer>
 
       {showProtectedCall && (
-        <div className="fixed inset-0 bg-navy/60 backdrop-blur-sm z-50 flex items-center justify-center p-6 animate-in fade-in duration-300" role="dialog" aria-modal="true" aria-labelledby="call-title">
+        <div
+          className="fixed inset-0 bg-navy/60 backdrop-blur-sm z-50 flex items-center justify-center p-6 animate-in fade-in duration-300"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="call-title"
+        >
           <div className="bg-white rounded-[40px] w-full max-w-sm p-10 flex flex-col items-center text-center gap-6 shadow-2xl animate-in zoom-in duration-300">
-            <div className="h-20 w-20 bg-blue-50 rounded-full flex items-center justify-center text-blue-600" aria-hidden="true">
+            <div
+              className="h-20 w-20 bg-blue-50 rounded-full flex items-center justify-center text-blue-600"
+              aria-hidden="true"
+            >
               <Phone size={40} strokeWidth={2} className="animate-pulse" />
             </div>
 
             <div className="space-y-2">
-              <h3 id="call-title" className="text-xl font-black italic tracking-tighter text-navy uppercase">
+              <h3
+                id="call-title"
+                className="text-xl font-black italic tracking-tighter text-navy uppercase"
+              >
                 Chamada protegida — simulação
               </h3>
               <p className="text-xs font-medium text-slate-500 leading-relaxed">
-                Esta é uma demonstração visual. Nenhuma ligação será realizada e nenhum número pessoal será exibido ou utilizado.
+                Esta é uma demonstração visual. Nenhuma ligação será realizada e nenhum número
+                pessoal será exibido ou utilizado.
               </p>
             </div>
 
