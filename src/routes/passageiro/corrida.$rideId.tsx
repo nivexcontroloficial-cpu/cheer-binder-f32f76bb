@@ -175,6 +175,8 @@ function ActiveRideScreen() {
   };
 
   const handleSimulate500m = () => {
+    if (hasArrived) return;
+
     setDistanceMeters(500);
     setProgress(80); // 80% de 2500m é onde começa os 500m
     setEta(1);
@@ -209,12 +211,6 @@ function ActiveRideScreen() {
 
   const handleReportDivergent = () => {
     navigate({ to: "/passageiro/denunciar/$rideId", params: { rideId: rideId || "" } });
-  };
-
-  const confirmReportDivergent = () => {
-    toast.warning("Denúncia enviada. Você será redirecionado para o cancelamento protegido.");
-    setIsDivergentVehicleAlertOpen(false);
-    navigate({ to: "/passageiro/cancelar/$rideId", params: { rideId: rideId || "" } });
   };
 
   const handleCall = () => {
@@ -390,7 +386,8 @@ function ActiveRideScreen() {
                 <p className="text-[11px] font-bold text-navy leading-tight">
                   Confirme piloto e veículo:{" "}
                   <span className="underline decoration-emerald-500 decoration-2 underline-offset-2 tracking-widest">
-                    {pilot.name}, {pilot.vehicle.model} {pilot.vehicle.color} ({pilot.vehicle.plate})
+                    {pilot.name}, {pilot.vehicle.model} {pilot.vehicle.color} ({pilot.vehicle.plate}
+                    )
                   </span>
                 </p>
                 <p className="text-[9px] text-slate-500 font-medium">
@@ -464,7 +461,8 @@ function ActiveRideScreen() {
               <button
                 type="button"
                 onClick={handleSimulate500m}
-                className="px-3 py-1.5 bg-white text-rovya-orange border border-orange-200 rounded-full text-[9px] font-black uppercase hover:bg-orange-50 transition-all"
+                disabled={hasArrived}
+                className="px-3 py-1.5 bg-white text-rovya-orange border border-orange-200 rounded-full text-[9px] font-black uppercase hover:bg-orange-50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Simular 500m
               </button>
@@ -536,7 +534,11 @@ function ActiveRideScreen() {
                     <span className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400">
                       PIN da Demonstração
                     </span>
-                    <div className="flex gap-3 my-1" role="img" aria-label={`PIN de segurança: ${pin}`}>
+                    <div
+                      className="flex gap-3 my-1"
+                      role="img"
+                      aria-label={`PIN de segurança: ${pin}`}
+                    >
                       {pin.split("").map((digit, i) => (
                         <div
                           key={i}
@@ -549,8 +551,8 @@ function ActiveRideScreen() {
                       ))}
                     </div>
                     <p className="text-[10px] text-slate-300 font-medium max-w-[200px] leading-relaxed">
-                      Confirme Carlos H., Honda CG 160 e placa {pilot.vehicle.plate} antes de informar
-                      o PIN ao piloto.
+                      Confirme Carlos H., Honda CG 160 e placa {pilot.vehicle.plate} antes de
+                      informar o PIN ao piloto.
                     </p>
                   </div>
                 </div>
@@ -717,7 +719,7 @@ function ActiveRideScreen() {
               >
                 <AlertTriangle size={18} className="text-amber-500" aria-hidden="true" />
                 <span className="text-[9px] font-black uppercase tracking-widest text-navy">
-                  Veículo Divergente
+                  Piloto ou veículo diferente
                 </span>
               </button>
               <button
