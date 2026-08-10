@@ -38,7 +38,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-export const Route = createFileRoute("/passageiro/corrida/")({
+export const Route = createFileRoute("/passageiro/corrida/$rideId")({
   component: ActiveRideScreen,
 });
 
@@ -226,7 +226,13 @@ function ActiveRideScreen() {
   };
 
   const handleSafety = () => {
-    navigate({ to: "/passageiro/seguranca" });
+    navigate({
+      to: "/passageiro/seguranca",
+      search: { rideId },
+    });
+      to: "/passageiro/seguranca",
+      search: { rideId },
+    });
   };
 
   const handleCancelRide = () => {
@@ -637,7 +643,12 @@ function ActiveRideScreen() {
                   </button>
                 </div>
                 <Button
-                  onClick={() =>
+                  onClick={() => {
+                    navigate({
+                      to: "/passageiro/corrida/$rideId/em-andamento",
+                      params: { rideId },
+                    });
+                  }}
                     navigate({
                       to: "/passageiro/corrida/$rideId/concluida",
                       params: { rideId: "RY-2026-00842" },
