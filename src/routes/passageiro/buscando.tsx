@@ -105,6 +105,7 @@ function SearchingRideScreen() {
       
       return () => clearTimeout(transitionTimer);
     }
+    return undefined;
   };
 
   return (
