@@ -38,7 +38,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-export const Route = createFileRoute("/passageiro/corrida/")({
+export const Route = createFileRoute("/passageiro/corrida/$rideId")({
   component: ActiveRideScreen,
 });
 
@@ -227,7 +227,7 @@ function ActiveRideScreen() {
 
   const handleSafety = () => {
     navigate({ to: "/passageiro/seguranca" });
-    navigate({ to: "/passageiro/seguranca", search: { rideId } });
+  };
 
   const handleCancelRide = () => {
     navigate({ to: "/passageiro/cancelar/$rideId", params: { rideId: rideId || "" } });
@@ -644,7 +644,13 @@ function ActiveRideScreen() {
                     })
                   }
                   className="w-full py-6 rounded-2xl bg-rovya-orange hover:bg-rovya-orange/90 text-white font-black italic uppercase tracking-widest shadow-lg active:scale-[0.98] transition-all"
-                  onClick={() => navigate({ to: "/passageiro/corrida/$rideId/em-andamento", params: { rideId } })}
+                >
+                  <Navigation size={18} className="mr-2 rotate-45" fill="currentColor" />
+                  Simular Início da Corrida
+                </Button>
+              </div>
+            )}
+
             {/* Veículo e Segurança */}
             <div className="grid grid-cols-2 gap-3">
               <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100">
