@@ -654,7 +654,7 @@ function ActiveRideScreen() {
                         key={badge}
                         className="px-3 py-1.5 bg-orange-50 text-rovya-orange rounded-lg text-[9px] font-black uppercase tracking-widest border border-orange-100 flex items-center gap-2"
                       >
-                        <Star size={12} fill="currentColor" />
+                        <Star size={12} fill="currentColor" aria-hidden="true" />
                         {badge}
                       </div>
                     ))}
