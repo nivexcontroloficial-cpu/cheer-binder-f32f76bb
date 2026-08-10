@@ -65,11 +65,9 @@ function ActiveRideScreen() {
   const [isWaitTimerActive, setIsWaitTimerActive] = useState(false);
   const [pin] = useState("4827");
   const [isDivergentVehicleAlertOpen, setIsDivergentVehicleAlertOpen] = useState(false);
-  const [lastUpdate, setLastUpdate] = useState("");
-
-  useEffect(() => {
-    setLastUpdate(new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }));
-  }, []);
+  const [lastUpdate, setLastUpdate] = useState(
+    new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }),
+  );
 
   // Dados Mock Obrigatórios do Piloto
   const pilot = {
