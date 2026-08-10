@@ -384,77 +384,69 @@ function ChatScreen() {
                   </span>
                 </button>
 
-                <button
-                  type="button"
-                  onClick={() => {
-                    if (!isBlocked) {
-                      setShowReportConfirm(false);
-                    }
-                  }}
-                >
-                  <AlertDialog>
-                    <AlertDialogTrigger asChild>
-                      <button
-                        type="button"
-                        className={`flex items-center gap-3 w-full p-4 rounded-2xl transition-colors text-left ${isBlocked ? "bg-emerald-50 text-emerald-600 hover:bg-emerald-100" : "bg-slate-50 text-navy hover:bg-slate-100"}`}
-                      >
-                        <Ban size={18} aria-hidden="true" />
-                        <span className="text-xs font-bold uppercase tracking-widest">
-                          {isBlocked ? "Desbloquear Piloto" : "Bloquear Piloto — simulado"}
-                        </span>
-                      </button>
-                    </AlertDialogTrigger>
-                    {!isBlocked && (
-                      <AlertDialogContent className="rounded-3xl max-w-[90vw] w-[320px]">
-                        <AlertDialogHeader>
-                          <AlertDialogTitle className="font-black italic tracking-tighter text-navy uppercase">
-                            Bloquear piloto?
-                          </AlertDialogTitle>
-                          <AlertDialogDescription className="text-xs font-medium text-slate-500">
-                            Esta ação é apenas local para demonstração e não afeta contas reais ou o serviço de transporte.
-                          </AlertDialogDescription>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter className="flex flex-col gap-2 mt-4 sm:flex-col">
-                          <AlertDialogAction
-                            onClick={() => {
-                              setIsBlocked(true);
-                              setIsTyping(false);
-                              toast.info("Piloto bloqueado localmente.");
-                            }}
-                            className="w-full bg-navy text-white rounded-2xl text-xs font-bold uppercase tracking-widest h-12"
-                          >
-                            Bloquear (Simulado)
-                          </AlertDialogAction>
-                          <AlertDialogCancel className="w-full rounded-2xl border-slate-200 text-xs font-bold uppercase tracking-widest h-12">
-                            Cancelar
-                          </AlertDialogCancel>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    )}
-                    {isBlocked && (
-                      <AlertDialogContent className="rounded-3xl max-w-[90vw] w-[320px]">
-                        <AlertDialogHeader>
-                          <AlertDialogTitle className="font-black italic tracking-tighter text-navy uppercase">
-                            Desbloquear piloto?
-                          </AlertDialogTitle>
-                        </AlertDialogHeader>
-                        <AlertDialogFooter className="flex flex-col gap-2 mt-4 sm:flex-col">
-                          <AlertDialogAction
-                            onClick={() => {
-                              setIsBlocked(false);
-                              toast.info("Piloto desbloqueado localmente.");
-                            }}
-                            className="w-full bg-navy text-white rounded-2xl text-xs font-bold uppercase tracking-widest h-12"
-                          >
-                            Desbloquear
-                          </AlertDialogAction>
-                          <AlertDialogCancel className="w-full rounded-2xl border-slate-200 text-xs font-bold uppercase tracking-widest h-12">
-                            Cancelar
-                          </AlertDialogCancel>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    )}
-                  </AlertDialog>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <button
+                      type="button"
+                      className={`flex items-center gap-3 w-full p-4 rounded-2xl transition-colors text-left ${isBlocked ? "bg-emerald-50 text-emerald-600 hover:bg-emerald-100" : "bg-slate-50 text-navy hover:bg-slate-100"}`}
+                    >
+                      <Ban size={18} aria-hidden="true" />
+                      <span className="text-xs font-bold uppercase tracking-widest">
+                        {isBlocked ? "Desbloquear Piloto" : "Bloquear Piloto — simulado"}
+                      </span>
+                    </button>
+                  </AlertDialogTrigger>
+                  {!isBlocked && (
+                    <AlertDialogContent className="rounded-3xl max-w-[90vw] w-[320px]">
+                      <AlertDialogHeader>
+                        <AlertDialogTitle className="font-black italic tracking-tighter text-navy uppercase">
+                          Bloquear piloto?
+                        </AlertDialogTitle>
+                        <AlertDialogDescription className="text-xs font-medium text-slate-500">
+                          Esta ação é apenas local para demonstração e não afeta contas reais ou o serviço de transporte.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter className="flex flex-col gap-2 mt-4 sm:flex-col">
+                        <AlertDialogAction
+                          onClick={() => {
+                            setIsBlocked(true);
+                            setIsTyping(false);
+                            toast.info("Piloto bloqueado localmente.");
+                          }}
+                          className="w-full bg-navy text-white rounded-2xl text-xs font-bold uppercase tracking-widest h-12"
+                        >
+                          Bloquear (Simulado)
+                        </AlertDialogAction>
+                        <AlertDialogCancel className="w-full rounded-2xl border-slate-200 text-xs font-bold uppercase tracking-widest h-12">
+                          Cancelar
+                        </AlertDialogCancel>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  )}
+                  {isBlocked && (
+                    <AlertDialogContent className="rounded-3xl max-w-[90vw] w-[320px]">
+                      <AlertDialogHeader>
+                        <AlertDialogTitle className="font-black italic tracking-tighter text-navy uppercase">
+                          Desbloquear piloto?
+                        </AlertDialogTitle>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter className="flex flex-col gap-2 mt-4 sm:flex-col">
+                        <AlertDialogAction
+                          onClick={() => {
+                            setIsBlocked(false);
+                            toast.info("Piloto desbloqueado localmente.");
+                          }}
+                          className="w-full bg-navy text-white rounded-2xl text-xs font-bold uppercase tracking-widest h-12"
+                        >
+                          Desbloquear
+                        </AlertDialogAction>
+                        <AlertDialogCancel className="w-full rounded-2xl border-slate-200 text-xs font-bold uppercase tracking-widest h-12">
+                          Cancelar
+                        </AlertDialogCancel>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  )}
+                </AlertDialog>
 
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
