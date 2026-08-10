@@ -177,8 +177,6 @@ function ConfirmRideScreen() {
             </div>
           </div>
 
-
-          {/* Seleção de Pagamento */}
           <section className="space-y-3" aria-labelledby="payment-title">
             <h2
               id="payment-title"
