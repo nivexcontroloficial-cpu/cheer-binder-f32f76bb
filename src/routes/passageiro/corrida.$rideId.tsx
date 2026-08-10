@@ -175,6 +175,8 @@ function ActiveRideScreen() {
   };
 
   const handleSimulate500m = () => {
+    if (hasArrived) return;
+
     setDistanceMeters(500);
     setProgress(80); // 80% de 2500m é onde começa os 500m
     setEta(1);
@@ -211,11 +213,6 @@ function ActiveRideScreen() {
     navigate({ to: "/passageiro/denunciar/$rideId", params: { rideId: rideId || "" } });
   };
 
-  const confirmReportDivergent = () => {
-    toast.warning("Denúncia enviada. Você será redirecionado para o cancelamento protegido.");
-    setIsDivergentVehicleAlertOpen(false);
-    navigate({ to: "/passageiro/cancelar/$rideId", params: { rideId: rideId || "" } });
-  };
 
   const handleCall = () => {
     toast.info("Chamada protegida simulada. Nenhuma ligação real foi iniciada.");
@@ -464,7 +461,8 @@ function ActiveRideScreen() {
               <button
                 type="button"
                 onClick={handleSimulate500m}
-                className="px-3 py-1.5 bg-white text-rovya-orange border border-orange-200 rounded-full text-[9px] font-black uppercase hover:bg-orange-50 transition-all"
+                disabled={hasArrived}
+                className="px-3 py-1.5 bg-white text-rovya-orange border border-orange-200 rounded-full text-[9px] font-black uppercase hover:bg-orange-50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 Simular 500m
               </button>
@@ -717,7 +715,7 @@ function ActiveRideScreen() {
               >
                 <AlertTriangle size={18} className="text-amber-500" aria-hidden="true" />
                 <span className="text-[9px] font-black uppercase tracking-widest text-navy">
-                  Veículo Divergente
+                  Piloto ou veículo diferente
                 </span>
               </button>
               <button
