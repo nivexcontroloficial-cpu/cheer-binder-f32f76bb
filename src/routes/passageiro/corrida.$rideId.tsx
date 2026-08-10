@@ -192,7 +192,7 @@ function ActiveRideScreen() {
   };
 
   const handleQuickMessage = (msg: string) => {
-    toast.success(`Mensagem enviada: "${msg}"`);
+    toast.success(`Simulação: "${msg}" adicionada apenas à demonstração local. Nada foi enviado.`);
   };
 
   const handleReportDivergent = () => {
@@ -206,19 +206,19 @@ function ActiveRideScreen() {
   };
 
   const handleCall = () => {
-    toast.info("Iniciando chamada protegida Rovya...");
+    toast.info("Chamada protegida simulada. Nenhuma ligação real foi iniciada.");
   };
 
   const handleChat = () => {
-    navigate({ to: "/passageiro/chat/$rideId", params: { rideId } });
+    navigate({ to: "/passageiro/chat/$rideId", params: { rideId: rideId || "" } });
   };
 
   const handleShare = () => {
-    toast.success("Link de rastreamento copiado para compartilhar!");
+    toast.success("Compartilhamento simulado. Nenhum link foi criado, copiado ou enviado.");
   };
 
   const handleSafety = () => {
-    toast.warning("Central de Segurança ativada. Monitorando sua rota.");
+    navigate({ to: "/passageiro/seguranca" });
   };
 
   const handleCancelRide = () => {
@@ -228,6 +228,12 @@ function ActiveRideScreen() {
   if (location.pathname.includes("/em-andamento")) {
     return <Outlet />;
   }
+
+  const rideSummary = {
+    price: "R$ 18,00",
+    method: "Dinheiro",
+    details: "Pagamento presencial demonstrativo",
+  };
 
   return (
     <div className="flex min-h-screen flex-col bg-porcelain font-sans text-navy overflow-hidden">
