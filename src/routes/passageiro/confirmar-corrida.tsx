@@ -201,7 +201,8 @@ function ConfirmRideScreen() {
               />
             </div>
             <p className="text-[9px] text-slate-400 font-medium italic px-1">
-              Nesta demonstração nenhuma cobrança acontece. No modelo planejado, o pagamento será feito diretamente ao piloto.
+              Nesta demonstração nenhuma cobrança acontece. No modelo planejado, o pagamento será
+              feito diretamente ao piloto.
             </p>
           </section>
 
@@ -287,7 +288,13 @@ function ConfirmRideScreen() {
               <DetailRow label="Distância (6,8km)" value={distance * pricePerKm} />
               <DetailRow label="Tempo (18min)" value={duration * pricePerMin} />
               <DetailRow label="Adicional noturno" value={nightSurcharge} />
-              <DetailRow label="Alta demanda" value={subtotal - (baseFare + distance * pricePerKm + duration * pricePerMin + nightSurcharge)} />
+              <DetailRow
+                label="Alta demanda"
+                value={
+                  subtotal -
+                  (baseFare + distance * pricePerKm + duration * pricePerMin + nightSurcharge)
+                }
+              />
               {isPromoApplied && <DetailRow label="Desconto ROVYA5" value={-5.0} highlight />}
               <div className="pt-2 border-t border-slate-200 mt-2 flex justify-between">
                 <span className="text-[9px] font-black uppercase text-navy">Total</span>
