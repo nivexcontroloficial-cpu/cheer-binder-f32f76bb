@@ -5,7 +5,7 @@ import {
   Outlet,
   useLocation,
 } from "@tanstack/react-router";
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect } from "react";
 import {
   ArrowLeft,
   MessageSquare,
@@ -19,15 +19,10 @@ import {
   SignalLow,
   WifiOff,
   Star,
-  ChevronUp,
-  ChevronDown,
   Info,
-  MapPin,
   X,
   CheckCircle2,
   Lock,
-  MessageCircle,
-  EyeOff,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -42,7 +37,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { Label } from "@/components/ui/label";
 
 export const Route = createFileRoute("/passageiro/corrida/$rideId")({
   component: ActiveRideScreen,
@@ -65,11 +59,9 @@ function ActiveRideScreen() {
   const [isWaitTimerActive, setIsWaitTimerActive] = useState(false);
   const [pin] = useState("4827");
   const [isDivergentVehicleAlertOpen, setIsDivergentVehicleAlertOpen] = useState(false);
-  const [lastUpdate, setLastUpdate] = useState("");
-
-  useEffect(() => {
-    setLastUpdate(new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }));
-  }, []);
+  const [lastUpdate, setLastUpdate] = useState(
+    new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }),
+  );
 
   // Dados Mock Obrigatórios do Piloto
   const pilot = {
@@ -109,7 +101,7 @@ function ActiveRideScreen() {
 
     const interval = setInterval(() => {
       // Movimento simulado
-      if (connection !== "reconnecting" && connection !== "stopped") {
+      if (connection === "stable" || connection === "unstable") {
         setProgress((prev) => {
           if (prev >= 100) return 100;
           return prev + 0.8;
@@ -120,6 +112,11 @@ function ActiveRideScreen() {
           const next = 2500 - progress * 25;
           return next < 0 ? 0 : next;
         });
+
+        // Atualiza horário sempre que houver movimento
+        setLastUpdate(
+          new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }),
+        );
 
         // Alerta de 500m
         if (distanceMeters <= 500 && distanceMeters > 450 && !isNearAlertVisible) {
@@ -141,13 +138,6 @@ function ActiveRideScreen() {
           handlePilotArrival();
         }
       }
-
-      // Simulação de oscilação de sinal (aleatória)
-      const rand = Math.random();
-      if (rand > 0.95) setConnection("reconnecting");
-      else if (rand > 0.9) setConnection("unstable");
-      else if (rand > 0.85) setConnection("stopped");
-      else if (rand < 0.2) setConnection("stable");
     }, 1500);
 
     return () => {
@@ -241,12 +231,17 @@ function ActiveRideScreen() {
       <div className="z-50 bg-amber-50 border-b border-amber-100 px-4 py-2 flex items-start gap-2 animate-in fade-in duration-700">
         <Info size={14} className="text-amber-600 mt-0.5 shrink-0" />
         <p className="text-[9px] font-bold text-amber-900 leading-tight">
-          Demonstração local: piloto, trajeto, localização e comunicação são simulados. Nenhum GPS real está ativo.
+          Demonstração local: piloto, trajeto, localização e comunicação são simulados. Nenhum GPS
+          real está ativo.
         </p>
       </div>
 
       {/* Mapa Esquemático de Fundo (Tela Cheia) */}
-      <div className="absolute inset-0 bg-slate-100 z-0" aria-label="Mapa esquemático da demonstração">
+      <div
+        className="absolute inset-0 bg-slate-100 z-0"
+        role="img"
+        aria-label="Mapa esquemático da demonstração"
+      >
         <div
           className="absolute inset-0 opacity-10"
           style={{
@@ -303,7 +298,7 @@ function ActiveRideScreen() {
         <div className="absolute top-24 left-6 right-6 flex flex-col gap-3">
           {/* Status de Conexão e Última Atualização */}
           <div className="flex flex-col gap-2 self-start">
-            <div 
+            <div
               className="bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full border border-slate-100 shadow-sm flex items-center gap-2"
               aria-live="polite"
             >
@@ -443,6 +438,9 @@ function ActiveRideScreen() {
             onClick={() => setIsDetailsOpen(!isDetailsOpen)}
             aria-expanded={isDetailsOpen}
             aria-controls="ride-details-panel"
+            aria-label={
+              isDetailsOpen ? "Recolher detalhes da corrida" : "Expandir detalhes da corrida"
+            }
             className="w-full flex justify-center py-4 cursor-pointer hover:bg-slate-50 transition-colors"
           >
             <div className="w-12 h-1.5 bg-slate-100 rounded-full"></div>
@@ -491,7 +489,10 @@ function ActiveRideScreen() {
                     alt="Foto fictícia do piloto Carlos H. para demonstração"
                     className="h-16 w-16 rounded-[22px] object-cover border-2 border-slate-50 shadow-sm"
                   />
-                  <div className="absolute -bottom-1 -right-1 bg-white p-1 rounded-lg shadow-sm border border-slate-100" aria-hidden="true">
+                  <div
+                    className="absolute -bottom-1 -right-1 bg-white p-1 rounded-lg shadow-sm border border-slate-100"
+                    aria-hidden="true"
+                  >
                     <Star size={10} fill="#F97316" className="text-rovya-orange" />
                   </div>
                 </div>
@@ -535,12 +536,14 @@ function ActiveRideScreen() {
               <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 space-y-3 pt-2">
                 <div className="flex gap-2">
                   <button
+                    type="button"
                     onClick={() => handleQuickMessage("Já estou saindo!")}
                     className="flex-1 py-3 px-4 bg-slate-50 border border-slate-100 rounded-2xl text-[10px] font-black uppercase tracking-widest text-navy hover:bg-slate-100 transition-all"
                   >
                     Já estou saindo
                   </button>
                   <button
+                    type="button"
                     onClick={() => handleQuickMessage("Estou no portão!")}
                     className="flex-1 py-3 px-4 bg-slate-50 border border-slate-100 rounded-2xl text-[10px] font-black uppercase tracking-widest text-navy hover:bg-slate-100 transition-all"
                   >
@@ -628,7 +631,11 @@ function ActiveRideScreen() {
                 onClick={handleCancelRide}
                 className="flex-1 flex flex-col items-center gap-2 py-3 bg-white border border-slate-100 rounded-2xl hover:bg-red-50 transition-colors group"
               >
-                <X size={18} className="text-slate-300 group-hover:text-red-500" aria-hidden="true" />
+                <X
+                  size={18}
+                  className="text-slate-300 group-hover:text-red-500"
+                  aria-hidden="true"
+                />
                 <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 group-hover:text-red-500">
                   Cancelar
                 </span>
@@ -649,12 +656,12 @@ function ActiveRideScreen() {
                         key={badge}
                         className="px-3 py-1.5 bg-orange-50 text-rovya-orange rounded-lg text-[9px] font-black uppercase tracking-widest border border-orange-100 flex items-center gap-2"
                       >
-                        <Star size={12} fill="currentColor" />
+                        <Star size={12} fill="currentColor" aria-hidden="true" />
                         {badge}
                       </div>
                     ))}
                     <div className="px-3 py-1.5 bg-blue-50 text-rovya-blue rounded-lg text-[9px] font-black uppercase tracking-widest border border-blue-100 flex items-center gap-2">
-                      <ShieldCheck size={12} fill="currentColor" />
+                      <ShieldCheck size={12} fill="currentColor" aria-hidden="true" />
                       Identidade Verificada
                     </div>
                   </div>
@@ -687,6 +694,12 @@ function ActiveRideScreen() {
                         {rideSummary.method}
                       </span>
                     </div>
+                    <div className="flex justify-between text-[10px] border-t border-slate-200 pt-2 mt-2">
+                      <span className="text-slate-400 font-bold uppercase tracking-widest">
+                        Detalhes
+                      </span>
+                      <span className="font-bold text-slate-500 italic">{rideSummary.details}</span>
+                    </div>
                   </div>
                   <div className="p-4 bg-white rounded-2xl border border-slate-100 flex gap-3">
                     <Info size={16} className="text-rovya-blue shrink-0" />
@@ -708,13 +721,12 @@ function ActiveRideScreen() {
         </div>
       </div>
 
-
       {/* Dialog de Veículo Divergente */}
       <AlertDialog open={isDivergentVehicleAlertOpen} onOpenChange={setIsDivergentVehicleAlertOpen}>
         <AlertDialogContent className="rounded-[32px] p-8 max-w-[90vw] sm:max-w-md">
           <AlertDialogHeader>
             <AlertDialogTitle className="text-xl font-black italic uppercase tracking-tight text-red-600 flex items-center gap-2">
-              <AlertTriangle size={24} />
+              <AlertTriangle size={24} aria-hidden="true" />
               Veículo Diferente?
             </AlertDialogTitle>
             <AlertDialogDescription className="text-xs text-slate-500 leading-relaxed pt-2">
@@ -724,7 +736,7 @@ function ActiveRideScreen() {
           </AlertDialogHeader>
           <div className="py-4 space-y-4">
             <div className="p-4 bg-red-50 rounded-2xl border border-red-100 flex gap-3">
-              <ShieldCheck size={18} className="text-red-600 shrink-0" />
+              <ShieldCheck size={18} className="text-red-600 shrink-0" aria-hidden="true" />
               <p className="text-[10px] text-red-700 font-bold leading-relaxed">
                 Reportar esta divergência cancelará a corrida imediatamente sem penalidades.
                 (Simulação de Segurança Rovya)
