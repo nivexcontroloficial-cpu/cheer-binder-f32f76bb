@@ -12,10 +12,7 @@ export const Route = createFileRoute("/passageiro/corrida/$rideId")({
 function ActiveRideScreen() {
   const { rideId } = useParams({ from: "/passageiro/corrida/$rideId" });
   const navigate = useNavigate();
-  const [hasArrived, setHasArrived] = useState(false);
   const [isDivergentVehicleAlertOpen, setIsDivergentVehicleAlertOpen] = useState(false);
-
-  const pilot = { name: "Carlos H.", vehicle: { model: "Honda CG 160", plate: "ABC1D23" } };
 
   const handleStartRide = () => navigate({ to: "/passageiro/corrida/$rideId/em-andamento", params: { rideId: rideId || "" } });
 
@@ -24,7 +21,7 @@ function ActiveRideScreen() {
       <header className="p-6 flex items-center justify-between">
         <Button variant="ghost" onClick={() => navigate({ to: "/passageiro/inicio" })}><ArrowLeft /></Button>
         <h1 className="font-black italic uppercase text-lg">Corrida</h1>
-        <Button variant="ghost" onClick={() => navigate({ to: "/passageiro/seguranca", search: { rideId } })}><ShieldCheck /></Button>
+        <Button variant="ghost" onClick={() => navigate({ to: "/passageiro/seguranca", search: { rideId: rideId || "" } })}><ShieldCheck /></Button>
       </header>
 
       <main className="flex-1 p-6 space-y-6">
@@ -42,7 +39,7 @@ function ActiveRideScreen() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancelar</AlertDialogCancel>
-            <AlertDialogAction onClick={() => navigate({ to: "/passageiro/denunciar/$rideId", params: { rideId: rideId || "" } })}>Reportar</AlertDialogFooter>
+            <AlertDialogAction onClick={() => navigate({ to: "/passageiro/denunciar/$rideId", params: { rideId: rideId || "" } })}>Reportar</AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
