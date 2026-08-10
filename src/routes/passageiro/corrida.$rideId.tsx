@@ -107,7 +107,7 @@ function ActiveRideScreen() {
 
     const interval = setInterval(() => {
       // Movimento simulado
-      if (connection !== "reconnecting" && connection !== "stopped") {
+      if (connection === "stable" || connection === "unstable") {
         setProgress((prev) => {
           if (prev >= 100) return 100;
           return prev + 0.8;
@@ -118,6 +118,11 @@ function ActiveRideScreen() {
           const next = 2500 - progress * 25;
           return next < 0 ? 0 : next;
         });
+
+        // Atualiza horário sempre que houver movimento
+        setLastUpdate(
+          new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }),
+        );
 
         // Alerta de 500m
         if (distanceMeters <= 500 && distanceMeters > 450 && !isNearAlertVisible) {
@@ -139,13 +144,6 @@ function ActiveRideScreen() {
           handlePilotArrival();
         }
       }
-
-      // Simulação de oscilação de sinal (aleatória)
-      const rand = Math.random();
-      if (rand > 0.95) setConnection("reconnecting");
-      else if (rand > 0.9) setConnection("unstable");
-      else if (rand > 0.85) setConnection("stopped");
-      else if (rand < 0.2) setConnection("stable");
     }, 1500);
 
     return () => {
