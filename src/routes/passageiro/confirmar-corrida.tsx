@@ -1,29 +1,23 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useMemo } from "react";
-import { 
-  ArrowLeft, 
-  MapPin, 
-  Clock, 
-  CreditCard, 
-  Banknote, 
-  QrCode, 
-  Info, 
-  ChevronRight, 
+import {
+  ArrowLeft,
+  MapPin,
+  Clock,
+  CreditCard,
+  Banknote,
+  QrCode,
+  Info,
+  ChevronRight,
   TicketPercent,
   ChevronDown,
   ChevronUp,
   ShieldCheck,
-  Check
+  Check,
+  AlertTriangle,
 } from "lucide-react";
-import { 
-  Sheet, 
-  SheetContent, 
-  SheetHeader, 
-  SheetTitle, 
-  SheetTrigger 
-} from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+
 
 export const Route = createFileRoute("/passageiro/confirmar-corrida")({
   component: ConfirmRideScreen,
