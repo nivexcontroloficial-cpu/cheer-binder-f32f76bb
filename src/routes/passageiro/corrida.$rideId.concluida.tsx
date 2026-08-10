@@ -97,6 +97,11 @@ function RideCompletedScreen() {
   };
 
   const handleFinish = () => {
+    if (!paymentConfirmed) {
+      setIsConfirmPaymentDialogOpen(true);
+      return;
+    }
+
     ensureRideInHistory();
     if (rating > 0) {
       toast.success("Avaliação simulada registrada apenas nesta demonstração.");
