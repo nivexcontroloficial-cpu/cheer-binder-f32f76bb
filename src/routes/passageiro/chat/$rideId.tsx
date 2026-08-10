@@ -100,6 +100,12 @@ function ChatScreen() {
   const [showReportConfirm, setShowReportConfirm] = useState(false);
   const [simulateFailure, setSimulateFailure] = useState(false);
   const [isBlocked, setIsBlocked] = useState(false);
+  const isBlockedRef = useRef(isBlocked);
+
+  useEffect(() => {
+    isBlockedRef.current = isBlocked;
+  }, [isBlocked]);
+
   const [lastActivity, setLastActivity] = useState<string>("agora");
 
   const [messages, setMessages] = useState<Message[]>(DEFAULT_MESSAGES);
@@ -234,10 +240,15 @@ function ChatScreen() {
             );
 
             // Resposta simulada após visualização
-            if (!isBlocked) {
+            if (!isBlockedRef.current) {
               addTimer(() => {
+                if (isBlockedRef.current) return;
                 setIsTyping(true);
                 addTimer(() => {
+                  if (isBlockedRef.current) {
+                    setIsTyping(false);
+                    return;
+                  }
                   setIsTyping(false);
                   const reply: Message = {
                     id: (Date.now() + 1).toString(),
@@ -268,10 +279,15 @@ function ChatScreen() {
         addTimer(() => {
           setMessages((prev) => prev.map((m) => (m.id === id ? { ...m, status: "read" } : m)));
 
-          if (!isBlocked) {
+          if (!isBlockedRef.current) {
             addTimer(() => {
+              if (isBlockedRef.current) return;
               setIsTyping(true);
               addTimer(() => {
+                if (isBlockedRef.current) {
+                  setIsTyping(false);
+                  return;
+                }
                 setIsTyping(false);
                 const reply: Message = {
                   id: (Date.now() + 1).toString(),
