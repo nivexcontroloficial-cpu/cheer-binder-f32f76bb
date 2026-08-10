@@ -604,28 +604,31 @@ function ActiveRideScreen() {
             {/* Ações Secundárias */}
             <div className="flex items-center justify-between gap-4 py-2">
               <button
+                type="button"
                 onClick={handleShare}
                 className="flex-1 flex flex-col items-center gap-2 py-3 bg-white border border-slate-100 rounded-2xl hover:bg-slate-50 transition-colors"
               >
-                <Share2 size={18} className="text-slate-400" />
+                <Share2 size={18} className="text-slate-400" aria-hidden="true" />
                 <span className="text-[9px] font-black uppercase tracking-widest text-slate-500">
                   Compartilhar
                 </span>
               </button>
               <button
+                type="button"
                 onClick={handleSafety}
                 className="flex-1 flex flex-col items-center gap-2 py-3 bg-white border border-slate-100 rounded-2xl hover:bg-slate-50 transition-colors"
               >
-                <ShieldCheck size={18} className="text-rovya-blue" />
+                <ShieldCheck size={18} className="text-rovya-blue" aria-hidden="true" />
                 <span className="text-[9px] font-black uppercase tracking-widest text-navy">
                   Segurança
                 </span>
               </button>
               <button
-                onClick={() => setIsCancelDialogOpen(true)}
+                type="button"
+                onClick={handleCancelRide}
                 className="flex-1 flex flex-col items-center gap-2 py-3 bg-white border border-slate-100 rounded-2xl hover:bg-red-50 transition-colors group"
               >
-                <X size={18} className="text-slate-300 group-hover:text-red-500" />
+                <X size={18} className="text-slate-300 group-hover:text-red-500" aria-hidden="true" />
                 <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 group-hover:text-red-500">
                   Cancelar
                 </span>
