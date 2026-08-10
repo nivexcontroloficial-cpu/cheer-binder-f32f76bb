@@ -727,7 +727,7 @@ function ActiveRideScreen() {
         <AlertDialogContent className="rounded-[32px] p-8 max-w-[90vw] sm:max-w-md">
           <AlertDialogHeader>
             <AlertDialogTitle className="text-xl font-black italic uppercase tracking-tight text-red-600 flex items-center gap-2">
-              <AlertTriangle size={24} />
+              <AlertTriangle size={24} aria-hidden="true" />
               Veículo Diferente?
             </AlertDialogTitle>
             <AlertDialogDescription className="text-xs text-slate-500 leading-relaxed pt-2">
