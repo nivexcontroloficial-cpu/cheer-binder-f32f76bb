@@ -437,27 +437,74 @@ function ActiveRideScreen() {
             <span className="w-full text-[8px] font-black text-slate-400 uppercase tracking-widest text-center mb-1">
               Controles locais da demonstração
             </span>
-            {[
-              { id: "stable", label: "Sinal Estável", icon: Signal },
-              { id: "unstable", label: "GPS Instável", icon: SignalLow },
-              { id: "stopped", label: "Piloto Parado", icon: AlertTriangle },
-              { id: "reconnecting", label: "Reconectando", icon: WifiOff },
-            ].map((btn) => (
+            <div className="w-full flex flex-wrap gap-2 justify-center mb-2">
+              {[
+                { id: "stable", label: "Sinal Estável", icon: Signal },
+                { id: "unstable", label: "GPS Instável", icon: SignalLow },
+                { id: "stopped", label: "Piloto Parado", icon: AlertTriangle },
+                { id: "reconnecting", label: "Reconectando", icon: WifiOff },
+              ].map((btn) => (
+                <button
+                  key={btn.id}
+                  type="button"
+                  onClick={() => setConnection(btn.id as ConnectionStatus)}
+                  aria-pressed={connection === btn.id}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[9px] font-bold uppercase transition-all ${
+                    connection === btn.id
+                      ? "bg-navy text-white shadow-md scale-105"
+                      : "bg-white text-slate-500 border border-slate-200 hover:border-slate-300"
+                  }`}
+                >
+                  <btn.icon size={10} aria-hidden="true" />
+                  {btn.label}
+                </button>
+              ))}
+            </div>
+            <div className="w-full flex flex-wrap gap-2 justify-center">
               <button
-                key={btn.id}
                 type="button"
-                onClick={() => setConnection(btn.id as ConnectionStatus)}
-                aria-pressed={connection === btn.id}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[9px] font-bold uppercase transition-all ${
-                  connection === btn.id
-                    ? "bg-navy text-white shadow-md scale-105"
-                    : "bg-white text-slate-500 border border-slate-200 hover:border-slate-300"
-                }`}
+                onClick={handleSimulate500m}
+                className="px-3 py-1.5 bg-white text-rovya-orange border border-orange-200 rounded-full text-[9px] font-black uppercase hover:bg-orange-50 transition-all"
               >
-                <btn.icon size={10} aria-hidden="true" />
-                {btn.label}
+                Simular 500m
               </button>
-            ))}
+              <button
+                type="button"
+                onClick={handlePilotArrival}
+                disabled={hasArrived}
+                className="px-3 py-1.5 bg-white text-emerald-600 border border-emerald-200 rounded-full text-[9px] font-black uppercase hover:bg-emerald-50 transition-all disabled:opacity-50"
+              >
+                Simular Chegada
+              </button>
+              {hasArrived && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => setIsWaitTimerActive(!isWaitTimerActive)}
+                    className="px-3 py-1.5 bg-white text-navy border border-slate-200 rounded-full text-[9px] font-black uppercase hover:bg-slate-50 transition-all"
+                  >
+                    {isWaitTimerActive ? "Pausar Espera" : "Retomar Espera"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setWaitTime(300);
+                      setIsWaitTimerActive(true);
+                    }}
+                    className="px-3 py-1.5 bg-white text-navy border border-slate-200 rounded-full text-[9px] font-black uppercase hover:bg-slate-50 transition-all"
+                  >
+                    Reiniciar Espera
+                  </button>
+                </>
+              )}
+              <button
+                type="button"
+                onClick={handleResetEmbark}
+                className="px-3 py-1.5 bg-white text-slate-400 border border-slate-200 rounded-full text-[9px] font-black uppercase hover:bg-slate-50 transition-all"
+              >
+                Resetar Embarque
+              </button>
+            </div>
           </div>
 
           {/* Handle de expansão */}
