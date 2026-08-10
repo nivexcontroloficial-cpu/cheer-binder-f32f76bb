@@ -20,7 +20,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { toast } from "sonner";
 
 export const Route = createFileRoute("/passageiro/corrida/$rideId/em-andamento")({
   component: InProgressRideScreen,
@@ -69,7 +68,7 @@ function InProgressRideScreen() {
   return (
     <div className="flex min-h-screen flex-col bg-white font-sans text-navy relative overflow-hidden">
       <div className="bg-amber-50 border-b border-amber-100 px-4 py-2 flex items-start gap-2 animate-in fade-in duration-700">
-        <Info size={14} className="text-amber-600 mt-0.5 shrink-0" />
+        <Info size={14} className="text-amber-600 mt-0.5 shrink-0" aria-hidden="true" />
         <p className="text-[9px] font-bold text-amber-900 leading-tight">
           Demonstração local: trajeto, GPS, preço e ações são simulados.
         </p>
