@@ -692,6 +692,14 @@ function ActiveRideScreen() {
                         {rideSummary.method}
                       </span>
                     </div>
+                    <div className="flex justify-between text-[10px] border-t border-slate-200 pt-2 mt-2">
+                      <span className="text-slate-400 font-bold uppercase tracking-widest">
+                        Detalhes
+                      </span>
+                      <span className="font-bold text-slate-500 italic">
+                        {rideSummary.details}
+                      </span>
+                    </div>
                   </div>
                   <div className="p-4 bg-white rounded-2xl border border-slate-100 flex gap-3">
                     <Info size={16} className="text-rovya-blue shrink-0" />
