@@ -211,28 +211,46 @@ function ConfirmRideScreen() {
 
           {/* Cupom de Desconto */}
           <section className="bg-white rounded-[28px] p-5 border border-slate-100 shadow-sm flex items-center gap-4">
-            <div className="h-10 w-10 bg-orange-50 rounded-xl flex items-center justify-center text-rovya-orange shrink-0">
+            <div
+              className="h-10 w-10 bg-orange-50 rounded-xl flex items-center justify-center text-rovya-orange shrink-0"
+              aria-hidden="true"
+            >
               <TicketPercent size={22} />
             </div>
-            <div className="flex-1 flex gap-2">
-              <input 
-                type="text"
-                placeholder="CUPOM (EX: ROVYA5)"
-                value={promoCode}
-                onChange={(e) => setPromoCode(e.target.value)}
-                disabled={isPromoApplied}
-                className="flex-1 bg-slate-50 border border-slate-100 rounded-xl px-3 text-[10px] font-black uppercase tracking-widest focus:outline-none focus:border-rovya-orange disabled:opacity-50"
-              />
-              <button 
-                onClick={handleApplyPromo}
-                disabled={isPromoApplied || !promoCode}
-                className="px-4 bg-navy text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-navy/90 transition-all disabled:opacity-20"
+            <div className="flex-1 flex flex-col gap-1">
+              <label
+                htmlFor="promo-input"
+                className="text-[9px] font-black uppercase tracking-widest text-slate-400 ml-1"
               >
-                {isPromoApplied ? <Check size={14} /> : "Aplicar"}
-              </button>
+                Cupom demonstrativo
+              </label>
+              <div className="flex gap-2">
+                <input
+                  id="promo-input"
+                  type="text"
+                  placeholder="DEMO5"
+                  value={promoCode}
+                  onChange={(e) => setPromoCode(e.target.value)}
+                  disabled={isPromoApplied}
+                  className="flex-1 bg-slate-50 border border-slate-100 rounded-xl px-3 text-[10px] font-black uppercase tracking-widest focus:outline-none focus:border-rovya-orange focus:ring-1 focus:ring-rovya-orange disabled:opacity-50"
+                />
+                <button
+                  type="button"
+                  onClick={handleApplyPromo}
+                  disabled={isPromoApplied || !promoCode}
+                  className="px-4 bg-navy text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-navy/90 transition-all disabled:opacity-20 focus-visible:ring-2 focus-visible:ring-rovya-orange outline-none"
+                >
+                  {isPromoApplied ? (
+                    <Check size={14} aria-hidden="true" />
+                  ) : (
+                    "Aplicar"
+                  )}
+                </button>
+              </div>
             </div>
           </section>
         </div>
+
 
         {/* Bottom Bar / Preço */}
         <div className="mt-auto bg-white border-t border-slate-100 p-8 rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] space-y-6">
