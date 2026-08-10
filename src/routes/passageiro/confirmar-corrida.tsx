@@ -18,7 +18,6 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 
-
 export const Route = createFileRoute("/passageiro/confirmar-corrida")({
   component: ConfirmRideScreen,
 });
@@ -95,8 +94,8 @@ function ConfirmRideScreen() {
             aria-hidden="true"
           />
           <p className="text-[10px] text-orange-800 font-medium leading-tight">
-            Demonstração local: preço, cupom, pagamento e solicitação de corrida
-            são apenas simulações.
+            Demonstração local: preço, cupom, pagamento e solicitação de corrida são apenas
+            simulações.
           </p>
         </div>
 
@@ -105,8 +104,7 @@ function ConfirmRideScreen() {
           <div
             className="absolute inset-0 opacity-10"
             style={{
-              backgroundImage:
-                "radial-gradient(#111827 1px, transparent 1px)",
+              backgroundImage: "radial-gradient(#111827 1px, transparent 1px)",
               backgroundSize: "24px 24px",
             }}
             aria-hidden="true"
@@ -157,20 +155,14 @@ function ConfirmRideScreen() {
                 className="w-2 h-2 rounded-full bg-rovya-orange shrink-0"
                 aria-hidden="true"
               ></div>
-              <p className="text-[10px] font-medium text-slate-500 truncate">
-                Centro, Jacarezinho
-              </p>
+              <p className="text-[10px] font-medium text-slate-500 truncate">Centro, Jacarezinho</p>
             </div>
             <div
               className="h-4 border-l-2 border-dashed border-slate-100 ml-1"
               aria-hidden="true"
             ></div>
             <div className="flex items-center gap-4">
-              <MapPin
-                size={14}
-                className="text-rovya-blue shrink-0"
-                aria-hidden="true"
-              />
+              <MapPin size={14} className="text-rovya-blue shrink-0" aria-hidden="true" />
               <p className="text-[10px] font-black uppercase tracking-widest text-navy truncate">
                 Centro, Jacarezinho
               </p>
@@ -239,11 +231,7 @@ function ConfirmRideScreen() {
                   disabled={isPromoApplied || !promoCode}
                   className="px-4 bg-navy text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-navy/90 transition-all disabled:opacity-20 focus-visible:ring-2 focus-visible:ring-rovya-orange outline-none"
                 >
-                  {isPromoApplied ? (
-                    <Check size={14} aria-hidden="true" />
-                  ) : (
-                    "Aplicar"
-                  )}
+                  {isPromoApplied ? <Check size={14} aria-hidden="true" /> : "Aplicar"}
                 </button>
               </div>
             </div>
@@ -292,29 +280,15 @@ function ConfirmRideScreen() {
               className="bg-slate-50 rounded-2xl p-4 space-y-2 animate-in slide-in-from-bottom-2 duration-300"
             >
               <DetailRow label="Tarifa Base" value={baseFare} />
-              <DetailRow
-                label="Distância (6,8km)"
-                value={distance * pricePerKm}
-              />
+              <DetailRow label="Distância (6,8km)" value={distance * pricePerKm} />
               <DetailRow label="Tempo (18min)" value={duration * pricePerMin} />
               <DetailRow
                 label="Alta Demanda (x1.2)"
-                value={
-                  subtotal -
-                  (baseFare + distance * pricePerKm + duration * pricePerMin)
-                }
+                value={subtotal - (baseFare + distance * pricePerKm + duration * pricePerMin)}
               />
-              {isPromoApplied && (
-                <DetailRow
-                  label="Desconto DEMO5"
-                  value={-5.0}
-                  highlight
-                />
-              )}
+              {isPromoApplied && <DetailRow label="Desconto DEMO5" value={-5.0} highlight />}
               <div className="pt-2 border-t border-slate-200 mt-2 flex justify-between">
-                <span className="text-[9px] font-black uppercase text-navy">
-                  Total
-                </span>
+                <span className="text-[9px] font-black uppercase text-navy">Total</span>
                 <span className="text-[10px] font-black text-navy">
                   {formatCurrency(finalPrice)}
                 </span>
@@ -355,7 +329,6 @@ function ConfirmRideScreen() {
     </div>
   );
 }
-
 
 function PaymentButton({
   active,
@@ -418,14 +391,9 @@ function DetailRow({
       <span className="text-[9px] font-medium text-slate-500 uppercase tracking-widest">
         {label}
       </span>
-      <span
-        className={`text-[9px] font-bold ${
-          highlight ? "text-rovya-orange" : "text-navy"
-        }`}
-      >
+      <span className={`text-[9px] font-bold ${highlight ? "text-rovya-orange" : "text-navy"}`}>
         {formatCurrency(value)}
       </span>
     </div>
   );
 }
-
