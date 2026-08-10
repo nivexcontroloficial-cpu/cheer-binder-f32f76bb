@@ -209,8 +209,6 @@ function ConfirmRideScreen() {
             </p>
           </section>
 
-
-          {/* Cupom de Desconto */}
           <section className="bg-white rounded-[28px] p-5 border border-slate-100 shadow-sm flex items-center gap-4">
             <div
               className="h-10 w-10 bg-orange-50 rounded-xl flex items-center justify-center text-rovya-orange shrink-0"
