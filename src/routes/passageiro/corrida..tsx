@@ -232,6 +232,13 @@ function ActiveRideScreen() {
     });
   };
 
+  const handleStartRide = () => {
+    navigate({
+      to: "/passageiro/corrida/$rideId/em-andamento",
+      params: { rideId },
+    });
+  };
+
   const handleCancelRide = () => {
     navigate({ to: "/passageiro/cancelar/$rideId", params: { rideId: rideId || "" } });
   };
@@ -640,13 +647,12 @@ function ActiveRideScreen() {
                   </button>
                 </div>
                 <Button
-                  onClick={() => {
+                  onClick={handleStartRide}
                     navigate({
-                      to: "/passageiro/corrida/$rideId/em-andamento",
-                      params: { rideId },
-                    });
-                  }}
-                    navigate({
+                      to: "/passageiro/corrida/$rideId/concluida",
+                      params: { rideId: "RY-2026-00842" },
+                    })
+                  }
                   className="w-full py-6 rounded-2xl bg-rovya-orange hover:bg-rovya-orange/90 text-white font-black italic uppercase tracking-widest shadow-lg active:scale-[0.98] transition-all"
                 >
                   <Navigation size={18} className="mr-2 rotate-45" fill="currentColor" />
