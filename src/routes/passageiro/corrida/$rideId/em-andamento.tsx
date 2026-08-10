@@ -158,10 +158,7 @@ function InProgressRideScreen() {
                   </span>
                   <span className="text-navy italic">{eta} min restantes</span>
                 </div>
-                <Progress
-                  value={progress}
-                  className="h-2 bg-slate-100"
-                />
+                <Progress value={progress} className="h-2 bg-slate-100" />
               </div>
             </div>
           </div>
@@ -289,7 +286,9 @@ function InProgressRideScreen() {
               variant="ghost"
               onClick={() => {
                 setIsDesvioOpen(false);
-                setDesvioResult("Atendimento simulado solicitado. Nenhuma equipe real foi acionada.");
+                setDesvioResult(
+                  "Atendimento simulado solicitado. Nenhuma equipe real foi acionada.",
+                );
               }}
               className="w-full py-6 rounded-2xl text-[11px] font-black uppercase tracking-widest text-red-500"
             >
