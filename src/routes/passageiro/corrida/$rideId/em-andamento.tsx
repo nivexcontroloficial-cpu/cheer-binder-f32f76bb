@@ -1,17 +1,6 @@
-import { createFileRoute, useNavigate, useParams, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import {
-  Shield,
-  ChevronRight,
-  Clock,
-  MapPin,
-  Navigation,
-  ShieldAlert,
-  AlertTriangle,
-  Star,
-  CheckCircle2,
-  Info,
-} from "lucide-react";
+import { Shield, MapPin, Navigation, AlertTriangle, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import {
@@ -31,7 +20,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { toast } from "sonner";
 
 export const Route = createFileRoute("/passageiro/corrida/$rideId/em-andamento")({
   component: InProgressRideScreen,
@@ -80,7 +68,7 @@ function InProgressRideScreen() {
   return (
     <div className="flex min-h-screen flex-col bg-white font-sans text-navy relative overflow-hidden">
       <div className="bg-amber-50 border-b border-amber-100 px-4 py-2 flex items-start gap-2 animate-in fade-in duration-700">
-        <Info size={14} className="text-amber-600 mt-0.5 shrink-0" />
+        <Info size={14} className="text-amber-600 mt-0.5 shrink-0" aria-hidden="true" />
         <p className="text-[9px] font-bold text-amber-900 leading-tight">
           Demonstração local: trajeto, GPS, preço e ações são simulados.
         </p>
@@ -170,10 +158,7 @@ function InProgressRideScreen() {
                   </span>
                   <span className="text-navy italic">{eta} min restantes</span>
                 </div>
-                <Progress
-                  value={progress}
-                  className="h-2 bg-slate-100"
-                />
+                <Progress value={progress} className="h-2 bg-slate-100" />
               </div>
             </div>
           </div>
@@ -221,6 +206,25 @@ function InProgressRideScreen() {
           </button>
         </div>
 
+        {desvioResult && (
+          <div
+            role="status"
+            aria-live="polite"
+            className="rounded-2xl border border-slate-100 bg-slate-50 p-4 space-y-3"
+          >
+            <p className="text-[11px] font-bold text-navy leading-snug">{desvioResult}</p>
+            {desvioResult.startsWith("Atendimento simulado") && (
+              <button
+                type="button"
+                onClick={() => navigate({ to: "/passageiro/seguranca", search: { rideId } })}
+                className="w-full h-11 bg-navy text-white rounded-2xl font-black uppercase text-[9px] focus:outline-none focus:ring-2 focus:ring-navy"
+              >
+                Ir para Central de Segurança
+              </button>
+            )}
+          </div>
+        )}
+
         <button
           type="button"
           onClick={() => setIsAltDestConfirmOpen(true)}
@@ -236,7 +240,7 @@ function InProgressRideScreen() {
             className="h-12 bg-slate-50 text-navy rounded-2xl font-black uppercase text-[9px] flex items-center justify-center gap-2 hover:bg-slate-100 transition-all focus:outline-none focus:ring-2 focus:ring-navy"
             aria-label="Central de Segurança"
           >
-            <Shield size={14} /> Segurança
+            <Shield size={14} aria-hidden="true" /> Segurança
           </button>
           <button
             type="button"
@@ -246,7 +250,7 @@ function InProgressRideScreen() {
             className="h-12 bg-slate-50 text-navy rounded-2xl font-black uppercase text-[9px] flex items-center justify-center gap-2 hover:bg-slate-100 transition-all focus:outline-none focus:ring-2 focus:ring-navy"
             aria-label="Reportar problema"
           >
-            <AlertTriangle size={14} /> Denunciar
+            <AlertTriangle size={14} aria-hidden="true" /> Denunciar
           </button>
         </div>
 
@@ -282,9 +286,10 @@ function InProgressRideScreen() {
               variant="ghost"
               onClick={() => {
                 setIsDesvioOpen(false);
-                setDesvioResult("Atendimento simulado solicitado. Nenhuma equipe real foi acionada. ");
-              }
-            }
+                setDesvioResult(
+                  "Atendimento simulado solicitado. Nenhuma equipe real foi acionada.",
+                );
+              }}
               className="w-full py-6 rounded-2xl text-[11px] font-black uppercase tracking-widest text-red-500"
             >
               Preciso de ajuda
