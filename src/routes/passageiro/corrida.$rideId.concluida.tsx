@@ -334,7 +334,12 @@ function RideCompletedScreen() {
                 Distância
               </span>
               <div className="flex items-center gap-2 text-navy">
-                <Navigation size={14} className="rotate-45" fill="currentColor" aria-hidden="true" />
+                <Navigation
+                  size={14}
+                  className="rotate-45"
+                  fill="currentColor"
+                  aria-hidden="true"
+                />
                 <span className="text-xs font-black italic">{RIDE_SUMMARY.distance}</span>
               </div>
             </div>
@@ -388,9 +393,7 @@ function RideCompletedScreen() {
 
           <button
             type="button"
-            onClick={() =>
-              navigate({ to: "/passageiro/denunciar/$rideId", params: { rideId } })
-            }
+            onClick={() => navigate({ to: "/passageiro/denunciar/$rideId", params: { rideId } })}
             className="w-full flex items-center justify-center gap-2 py-4 text-red-500 text-[10px] font-black uppercase tracking-widest focus:outline-none focus-visible:ring-2 focus-visible:ring-red-400 rounded-2xl"
           >
             <ShieldAlert size={16} aria-hidden="true" />
@@ -412,8 +415,8 @@ function RideCompletedScreen() {
                 {CURRENCY.format(RIDE_SUMMARY.fare)}
               </span>{" "}
               diretamente ao piloto {RIDE_SUMMARY.pilot.name} via {RIDE_SUMMARY.paymentMethod}. A
-              Rovya não processou dinheiro, o aplicativo não verificou a transação e esta confirmação
-              existe somente nesta demonstração.
+              Rovya não processou dinheiro, o aplicativo não verificou a transação e esta
+              confirmação existe somente nesta demonstração.
             </AlertDialogDescription>
           </AlertDialogHeader>
 
