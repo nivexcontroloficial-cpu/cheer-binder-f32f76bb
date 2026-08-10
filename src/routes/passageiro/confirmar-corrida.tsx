@@ -32,48 +32,69 @@ function ConfirmRideScreen() {
   const [isPromoApplied, setIsPromoApplied] = useState(false);
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
 
+  const formatCurrency = (value: number) => {
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(value);
+  };
+
   // Dados Mock Obrigatórios
   const distance = 6.8;
   const duration = 18;
-  const baseFare = 5.00;
-  const pricePerKm = 1.50;
-  const pricePerMin = 0.30;
+  const baseFare = 5.0;
+  const pricePerKm = 1.5;
+  const pricePerMin = 0.3;
   const demandSurge = 1.2; // 20% aumento
-  const nightSurcharge = 0; // 0 para o exemplo
 
   const subtotal = useMemo(() => {
-    const travelCost = (distance * pricePerKm) + (duration * pricePerMin);
+    const travelCost = distance * pricePerKm + duration * pricePerMin;
     return (baseFare + travelCost) * (demandSurge > 1 ? demandSurge : 1);
   }, [distance, duration]);
 
-  const discount = isPromoApplied ? 5.00 : 0;
-  const finalPrice = Math.max(10.00, subtotal - discount); // Tarifa mínima mock de R$ 10
+  const discount = isPromoApplied ? 5.0 : 0;
+  const finalPrice = Math.max(10.0, subtotal - discount); // Tarifa mínima mock de R$ 10
 
   const handleApplyPromo = () => {
-    if (promoCode.toUpperCase() === "ROVYA5") {
+    if (promoCode.toUpperCase() === "DEMO5") {
       setIsPromoApplied(true);
-      toast.success("Cupom ROVYA5 aplicado! Desconto de R$ 5,00.");
+      toast.success("Desconto aplicado apenas nesta demonstração.");
     } else {
-      toast.error("Cupom inválido ou expirado.");
+      toast.error("Código demonstrativo inválido.");
     }
   };
 
   const handleOrder = () => {
-    toast.success("Solicitando corrida...");
-    setTimeout(() => {
-      navigate({ to: "/passageiro/buscando" });
-    }, 1500);
+    toast.info("Solicitação simulada. Nenhuma corrida real foi pedida.");
+    navigate({ to: "/passageiro/buscando" });
   };
 
   return (
     <div className="flex min-h-screen flex-col bg-porcelain font-sans text-navy">
       {/* Header Fixo */}
       <header className="bg-white px-6 py-5 border-b border-slate-100 flex items-center gap-4 sticky top-0 z-50">
-        <button onClick={() => navigate({ to: "/passageiro/localizar" })} className="p-2 -ml-2 text-slate-400 hover:text-navy transition-colors">
-          <ArrowLeft size={24} />
+        <button
+          type="button"
+          aria-label="Voltar para localização"
+          onClick={() => navigate({ to: "/passageiro/localizar" })}
+          className="p-2 -ml-2 text-slate-400 hover:text-navy transition-colors focus-visible:ring-2 focus-visible:ring-rovya-orange outline-none rounded-lg"
+        >
+          <ArrowLeft size={24} aria-hidden="true" />
         </button>
-        <h1 className="text-[11px] font-black uppercase tracking-widest italic">Confirmar Corrida</h1>
+        <h1 className="text-[11px] font-black uppercase tracking-widest italic">
+          Confirmar Corrida
+        </h1>
       </header>
+
+      <main className="flex-1 flex flex-col">
+        {/* Aviso de Demonstração */}
+        <div className="bg-orange-50 border-b border-orange-100 px-6 py-3 flex items-start gap-3">
+          <AlertTriangle size={16} className="text-rovya-orange shrink-0 mt-0.5" aria-hidden="true" />
+          <p className="text-[10px] text-orange-800 font-medium leading-tight">
+            Demonstração local: preço, cupom, pagamento e solicitação de corrida são apenas simulações.
+          </p>
+        </div>
+
 
       <main className="flex-1 flex flex-col">
         {/* Mapa Esquemático Reduzido */}
