@@ -35,6 +35,8 @@ function SafetyScreen() {
   const navigate = useNavigate();
   const { rideId } = useSearch({ from: "/passageiro/seguranca" });
   const [isEmergencyConfirmOpen, setIsEmergencyConfirmOpen] = useState(false);
+  const [shareResult, setShareResult] = useState<string | null>(null);
+  const [emergencyConfirmed, setEmergencyConfirmed] = useState(false);
 
   const handleBack = () => {
     if (rideId) navigate({ to: "/passageiro/corrida/$rideId/em-andamento", params: { rideId } });
@@ -58,10 +60,11 @@ function SafetyScreen() {
         </p>
       </div>
 
-      <section className="space-y-4">
+      <div aria-live="polite" className="text-emerald-600 text-xs font-bold mb-2">{shareResult}</div>
+        <section className="space-y-4">
         <button
           type="button"
-          onClick={() => toast.success("Prévia simulada criada. Nada foi enviado.")}
+          onClick={() => setShareResult("Prévia simulada criada. Nada foi enviado.")}
           className="w-full bg-white p-5 rounded-3xl border border-slate-100 flex items-center justify-between"
         >
           <div className="flex items-center gap-4">
@@ -109,8 +112,25 @@ function SafetyScreen() {
           </div>
         </button>
       </section>
+      <section className="mt-8">
+        <h3 className="text-sm font-black italic uppercase">Contatos de confiança</h3>
+        <div className="bg-white p-4 rounded-3xl mt-2 border border-slate-100 flex items-center justify-between">
+          <span className="font-bold">Monica — Família (Mock)</span>
+        </div>
+      </section>
 
       <AlertDialog open={isEmergencyConfirmOpen} onOpenChange={setIsEmergencyConfirmOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Deseja executar a simulação de emergência?</AlertDialogTitle>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Não</AlertDialogCancel>
+            <AlertDialogAction onClick={() => { setIsEmergencyConfirmOpen(false); setEmergencyConfirmed(true); }}>Sim</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+      <AlertDialog open={emergencyConfirmed} onOpenChange={setEmergencyConfirmed}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Emergência simulada</AlertDialogTitle>

@@ -48,6 +48,7 @@ function InProgressRideScreen() {
   const [destination, setDestination] = useState("Vila Setti, Jacarezinho");
   const [price, setPrice] = useState(18.0);
   const [isEncerrarConfirmOpen, setIsEncerrarConfirmOpen] = useState(false);
+  const [desvioResult, setDesvioResult] = useState<string | null>(null);
 
   useEffect(() => {
     if (gpsStatus === "unstable") return;
@@ -271,7 +272,7 @@ function InProgressRideScreen() {
             <Button
               onClick={() => {
                 setIsDesvioOpen(false);
-                toast.success("Evento resolvido localmente.");
+                setDesvioResult("Evento de rota simulado marcado como seguro.");
               }}
               className="w-full py-6 rounded-2xl bg-navy text-white font-black italic uppercase tracking-widest text-[11px]"
             >
@@ -281,7 +282,8 @@ function InProgressRideScreen() {
               variant="ghost"
               onClick={() => {
                 setIsDesvioOpen(false);
-                toast.error("Atendimento simulado solicitado. Nenhuma equipe real foi acionada.");
+                setDesvioResult("Atendimento simulado solicitado. Nenhuma equipe real foi acionada. ");
+              }
               }}
               className="w-full py-6 rounded-2xl text-[11px] font-black uppercase tracking-widest text-red-500"
             >
