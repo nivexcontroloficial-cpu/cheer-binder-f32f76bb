@@ -242,7 +242,11 @@ function ActiveRideScreen() {
       </div>
 
       {/* Mapa Esquemático de Fundo (Tela Cheia) */}
-      <div className="absolute inset-0 bg-slate-100 z-0" aria-label="Mapa esquemático da demonstração">
+      <div
+        className="absolute inset-0 bg-slate-100 z-0"
+        role="img"
+        aria-label="Mapa esquemático da demonstração"
+      >
         <div
           className="absolute inset-0 opacity-10"
           style={{
