@@ -19,15 +19,10 @@ import {
   SignalLow,
   WifiOff,
   Star,
-  ChevronUp,
-  ChevronDown,
   Info,
-  MapPin,
   X,
   CheckCircle2,
   Lock,
-  MessageCircle,
-  EyeOff,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
