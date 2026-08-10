@@ -237,18 +237,27 @@ function ActiveRideScreen() {
 
   return (
     <div className="flex min-h-screen flex-col bg-porcelain font-sans text-navy overflow-hidden">
+      {/* Banner de Transparência */}
+      <div className="z-50 bg-amber-50 border-b border-amber-100 px-4 py-2 flex items-start gap-2 animate-in fade-in duration-700">
+        <Info size={14} className="text-amber-600 mt-0.5 shrink-0" />
+        <p className="text-[9px] font-bold text-amber-900 leading-tight">
+          Demonstração local: piloto, trajeto, localização e comunicação são simulados. Nenhum GPS real está ativo.
+        </p>
+      </div>
+
       {/* Mapa Esquemático de Fundo (Tela Cheia) */}
-      <div className="absolute inset-0 bg-slate-100 z-0">
+      <div className="absolute inset-0 bg-slate-100 z-0" aria-label="Mapa esquemático da demonstração">
         <div
           className="absolute inset-0 opacity-10"
           style={{
             backgroundImage: "radial-gradient(#111827 1px, transparent 1px)",
             backgroundSize: "32px 32px",
           }}
+          aria-hidden="true"
         ></div>
 
         {/* Rota Animada */}
-        <svg className="absolute inset-0 w-full h-full">
+        <svg className="absolute inset-0 w-full h-full" aria-hidden="true">
           <path
             d="M 100 200 L 250 400 L 400 300"
             fill="none"
@@ -291,28 +300,40 @@ function ActiveRideScreen() {
         </svg>
 
         {/* Indicadores Flutuantes no Mapa */}
-        <div className="absolute top-16 left-6 right-6 flex flex-col gap-3">
-          {/* Status de Conexão */}
-          <div className="self-start bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full border border-slate-100 shadow-sm flex items-center gap-2">
-            {connection === "stable" && <Signal size={12} className="text-emerald-500" />}
-            {connection === "unstable" && <SignalLow size={12} className="text-amber-500" />}
-            {connection === "stopped" && <AlertTriangle size={12} className="text-amber-500" />}
-            {connection === "reconnecting" && (
-              <WifiOff size={12} className="text-red-500 animate-pulse" />
+        <div className="absolute top-24 left-6 right-6 flex flex-col gap-3">
+          {/* Status de Conexão e Última Atualização */}
+          <div className="flex flex-col gap-2 self-start">
+            <div 
+              className="bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full border border-slate-100 shadow-sm flex items-center gap-2"
+              aria-live="polite"
+            >
+              {connection === "stable" && <Signal size={12} className="text-emerald-500" />}
+              {connection === "unstable" && <SignalLow size={12} className="text-amber-500" />}
+              {connection === "stopped" && <AlertTriangle size={12} className="text-amber-500" />}
+              {connection === "reconnecting" && (
+                <WifiOff size={12} className="text-red-500 animate-pulse" />
+              )}
+              <span className="text-[9px] font-black uppercase tracking-widest text-navy">
+                {connection === "stable" && "GPS simulado estável"}
+                {connection === "unstable" && "GPS simulado instável"}
+                {connection === "stopped" && "Piloto simulado parado"}
+                {connection === "reconnecting" && "Reconectando simulação..."}
+              </span>
+            </div>
+            {lastUpdate && (
+              <div className="bg-white/80 backdrop-blur-sm px-2 py-1 rounded-lg self-start border border-slate-50 shadow-sm">
+                <span className="text-[8px] font-bold text-slate-400 uppercase tracking-tight">
+                  Última atualização simulada: {lastUpdate}
+                </span>
+              </div>
             )}
-            <span className="text-[9px] font-black uppercase tracking-widest text-navy">
-              {connection === "stable" && "GPS estável"}
-              {connection === "unstable" && "GPS instável"}
-              {connection === "stopped" && "Piloto parado"}
-              {connection === "reconnecting" && "Reconectando..."}
-            </span>
           </div>
 
           {/* Banner de Proximidade (500m) */}
           {distanceMeters <= 500 && !hasArrived && (
             <div className="animate-in slide-in-from-top duration-500 bg-rovya-orange text-white px-4 py-3 rounded-2xl shadow-xl flex items-center gap-3 border border-white/20">
               <div className="bg-white/20 p-2 rounded-xl">
-                <Navigation size={18} className="animate-pulse" />
+                <Navigation size={18} className="animate-pulse" aria-hidden="true" />
               </div>
               <div className="flex flex-col">
                 <span className="text-[10px] font-black uppercase tracking-[0.1em]">
