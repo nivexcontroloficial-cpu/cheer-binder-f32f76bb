@@ -614,6 +614,13 @@ function ActiveRideScreen() {
                 <div className="flex gap-2">
                   <button
                     type="button"
+                    onClick={() => handleQuickMessage("Estou indo!")}
+                    className="flex-1 py-3 px-4 bg-slate-50 border border-slate-100 rounded-2xl text-[10px] font-black uppercase tracking-widest text-navy hover:bg-slate-100 transition-all"
+                  >
+                    Estou indo
+                  </button>
+                  <button
+                    type="button"
                     onClick={() => handleQuickMessage("Já estou saindo!")}
                     className="flex-1 py-3 px-4 bg-slate-50 border border-slate-100 rounded-2xl text-[10px] font-black uppercase tracking-widest text-navy hover:bg-slate-100 transition-all"
                   >
