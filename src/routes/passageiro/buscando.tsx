@@ -97,18 +97,25 @@ function SearchingRideScreen() {
     setStatus(newStatus);
     if (newStatus === "accepted") {
       toast.success("Carlos H. aceitou esta corrida simulada.");
+    }
+  };
 
-      const transitionTimer = setTimeout(() => {
+  useEffect(() => {
+    let transitionTimer: NodeJS.Timeout;
+
+    if (status === "accepted") {
+      transitionTimer = setTimeout(() => {
         navigate({
           to: "/passageiro/corrida/$rideId",
           params: { rideId: "ride-active-mock" },
         });
       }, 3000);
-
-      return () => clearTimeout(transitionTimer);
     }
-    return undefined;
-  };
+
+    return () => {
+      if (transitionTimer) clearTimeout(transitionTimer);
+    };
+  }, [status, navigate]);
 
   return (
     <div className="flex min-h-screen flex-col bg-porcelain font-sans text-navy">

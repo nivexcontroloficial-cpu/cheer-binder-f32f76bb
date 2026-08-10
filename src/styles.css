@@ -10,18 +10,18 @@
   --radius-lg: 20px;
   --radius-xl: 24px;
   --radius-2xl: 32px;
-  
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  
+
   --color-navy: #111827;
-  --color-graphite: #1F2937;
-  --color-porcelain: #F8FAFC;
-  --color-rovya-orange: #F97316;
-  --color-rovya-blue: #2F80ED;
-  --color-rovya-green: #10B981;
-  --color-rovya-amber: #F59E0B;
-  --color-rovya-red: #DC2626;
+  --color-graphite: #1f2937;
+  --color-porcelain: #f8fafc;
+  --color-rovya-orange: #f97316;
+  --color-rovya-blue: #2f80ed;
+  --color-rovya-green: #10b981;
+  --color-rovya-amber: #f59e0b;
+  --color-rovya-red: #dc2626;
 
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
@@ -41,22 +41,22 @@
 :root {
   --background: oklch(0.984 0.003 247.858); /* Porcelain #F8FAFC */
   --foreground: oklch(0.129 0.042 264.695); /* Navy #111827 */
-  
+
   --primary: oklch(0.667 0.21 44.4); /* Orange #F97316 */
   --primary-foreground: oklch(1 0 0);
-  
+
   --secondary: oklch(0.208 0.042 265.755); /* Graphite #1F2937 */
   --secondary-foreground: oklch(1 0 0);
-  
+
   --muted: oklch(0.929 0.013 255.508);
   --muted-foreground: oklch(0.554 0.046 257.417);
-  
+
   --accent: oklch(0.601 0.176 251.2); /* Blue #2F80ED */
   --accent-foreground: oklch(1 0 0);
-  
+
   --destructive: oklch(0.577 0.245 27.325); /* Red #DC2626 */
   --destructive-foreground: oklch(1 0 0);
-  
+
   --border: oklch(0.929 0.013 255.508);
   --input: oklch(0.929 0.013 255.508);
   --ring: oklch(0.667 0.21 44.4);
@@ -65,16 +65,16 @@
 .dark {
   --background: oklch(0.129 0.042 264.695); /* Navy #111827 */
   --foreground: oklch(0.984 0.003 247.858); /* Porcelain #F8FAFC */
-  
+
   --primary: oklch(0.667 0.21 44.4);
   --primary-foreground: oklch(1 0 0);
-  
+
   --secondary: oklch(0.984 0.003 247.858);
   --secondary-foreground: oklch(0.129 0.042 264.695);
-  
+
   --muted: oklch(0.208 0.042 265.755);
   --muted-foreground: oklch(0.704 0.04 256.788);
-  
+
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
 }
@@ -95,17 +95,16 @@
   .focus-ring {
     @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rovya-orange focus-visible:ring-offset-2;
   }
-  
+
   .rovya-shadow {
-    box-shadow: 0 4px 6px -1px rgb(17 24 39 / 0.05), 0 2px 4px -2px rgb(17 24 39 / 0.05);
+    box-shadow:
+      0 4px 6px -1px rgb(17 24 39 / 0.05),
+      0 2px 4px -2px rgb(17 24 39 / 0.05);
   }
-  
+
   .rovya-shadow-lg {
-    box-shadow: 0 10px 15px -3px rgb(17 24 39 / 0.08), 0 4px 6px -4px rgb(17 24 39 / 0.08);
+    box-shadow:
+      0 10px 15px -3px rgb(17 24 39 / 0.08),
+      0 4px 6px -4px rgb(17 24 39 / 0.08);
   }
 }
-
-#lovable-badge {
-  display: none !important;
-}
-
