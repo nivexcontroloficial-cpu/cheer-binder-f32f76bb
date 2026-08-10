@@ -673,16 +673,18 @@ function ActiveRideScreen() {
                   <div className="space-y-2">
                     <div className="flex justify-between text-[10px]">
                       <span className="text-slate-500 font-medium uppercase tracking-widest">
-                        Valor da Corrida
+                        Preço final simulado
                       </span>
-                      <span className="font-black text-navy tracking-tight italic">R$ 10,00</span>
+                      <span className="font-black text-navy tracking-tight italic">
+                        {rideSummary.price}
+                      </span>
                     </div>
                     <div className="flex justify-between text-[10px]">
                       <span className="text-slate-500 font-medium uppercase tracking-widest">
                         Forma Escolhida
                       </span>
                       <span className="font-black text-navy tracking-tight italic">
-                        PIX DIRETO AO PILOTO
+                        {rideSummary.method}
                       </span>
                     </div>
                   </div>
