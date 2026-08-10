@@ -236,7 +236,10 @@ function ActiveRideScreen() {
     navigate({ to: "/passageiro/cancelar/$rideId", params: { rideId: rideId || "" } });
   };
 
-  if (location.pathname.includes("/em-andamento")) {
+  const isNestedRideRoute =
+    location.pathname.endsWith("/em-andamento") || location.pathname.endsWith("/concluida");
+
+  if (isNestedRideRoute) {
     return <Outlet />;
   }
 
