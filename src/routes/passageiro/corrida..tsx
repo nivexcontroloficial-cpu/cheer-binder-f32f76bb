@@ -226,17 +226,7 @@ function ActiveRideScreen() {
   };
 
   const handleSafety = () => {
-    navigate({
-      to: "/passageiro/seguranca",
-      search: { rideId },
-    });
-  };
-
-  const handleStartRide = () => {
-    navigate({
-      to: "/passageiro/corrida/$rideId/em-andamento",
-      params: { rideId },
-    });
+    navigate({ to: "/passageiro/seguranca" });
   };
 
   const handleCancelRide = () => {
@@ -647,7 +637,7 @@ function ActiveRideScreen() {
                   </button>
                 </div>
                 <Button
-                  onClick={handleStartRide}
+                  onClick={() =>
                     navigate({
                       to: "/passageiro/corrida/$rideId/concluida",
                       params: { rideId: "RY-2026-00842" },

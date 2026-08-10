@@ -175,11 +175,12 @@ function ActiveRideScreen() {
   };
 
   const handleSafety = () => {
-    navigate({
+    navigate({ to: "/passageiro/seguranca", search: { rideId } });
       to: "/passageiro/seguranca",
       search: { rideId },
     });
   };
+  const handleStartRide = () => { navigate({ to: "/passageiro/corrida/$rideId/em-andamento", params: { rideId } }); };
 
   const handleStartRide = () => {
     navigate({
