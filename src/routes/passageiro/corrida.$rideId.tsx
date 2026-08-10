@@ -132,11 +132,6 @@ function ActiveRideScreen() {
         if (progress > 50 && eta === 3) setEta(2);
         if (progress > 75 && eta === 2) setEta(1);
         if (progress >= 95 && eta === 1) setEta(0);
-
-        // Auto-chegada se atingir 100%
-        if (progress >= 99 && !hasArrived) {
-          handlePilotArrival();
-        }
       }
     }, 1500);
 
@@ -155,9 +150,12 @@ function ActiveRideScreen() {
         setWaitTime((prev) => prev - 1);
       }, 1000);
     } else if (waitTime === 0 && isWaitTimerActive) {
-      toast.error("O piloto já pode cancelar por não comparecimento.", {
-        duration: 8000,
-      });
+      toast.error(
+        "Tempo esgotado. Nesta demonstração, o piloto pode cancelar por não comparecimento.",
+        {
+          duration: 8000,
+        },
+      );
       setIsWaitTimerActive(false); // Para o timer no zero
     }
     return () => clearInterval(timer);
@@ -168,11 +166,35 @@ function ActiveRideScreen() {
     setEta(0);
     setProgress(100);
     setDistanceMeters(0);
+    setWaitTime(300);
     setIsWaitTimerActive(true);
     toast.success("O piloto Carlos H. chegou ao local de embarque!", {
       duration: 5000,
       icon: <CheckCircle2 className="text-emerald-500" />,
     });
+  };
+
+  const handleSimulate500m = () => {
+    setDistanceMeters(500);
+    setProgress(80); // 80% de 2500m é onde começa os 500m
+    setEta(1);
+    if (!isNearAlertVisible) {
+      setIsNearAlertVisible(true);
+      toast.info("Simulação: Seu piloto está próximo!", {
+        icon: <Info size={16} className="text-blue-500" />,
+        duration: 5000,
+      });
+    }
+  };
+
+  const handleResetEmbark = () => {
+    setHasArrived(false);
+    setIsWaitTimerActive(false);
+    setWaitTime(300);
+    setProgress(0);
+    setDistanceMeters(2500);
+    setEta(4);
+    setIsNearAlertVisible(false);
   };
 
   const formatWaitTime = (seconds: number) => {
