@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import {
   ArrowLeft,
   Send,
@@ -13,6 +13,8 @@ import {
   AlertCircle,
   Clock,
   X,
+  Ban,
+  ImageIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -40,7 +42,7 @@ interface Message {
   sender: "passenger" | "driver";
   timestamp: Date;
   status: MessageStatus;
-  attachment?: string | undefined;
+  attachment?: boolean; // Agora é apenas um booleano para indicar prévia fictícia
 }
 
 const DEFAULT_MESSAGES: Message[] = [
@@ -64,11 +66,36 @@ function ChatScreen() {
   const { rideId } = useParams({ from: "/passageiro/chat/$rideId" });
   const navigate = useNavigate();
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Timers management
+  const timersRef = useRef<Set<ReturnType<typeof setTimeout>>>(new Set());
+
+  const addTimer = useCallback((callback: () => void, ms: number) => {
+    const timerId = setTimeout(() => {
+      timersRef.current.delete(timerId);
+      callback();
+    }, ms);
+    timersRef.current.add(timerId);
+    return timerId;
+  }, []);
+
+  const clearAllTimers = useCallback(() => {
+    timersRef.current.forEach(clearTimeout);
+    timersRef.current.clear();
+  }, []);
+
+  useEffect(() => {
+    return () => clearAllTimers();
+  }, [clearAllTimers]);
+
   const [inputText, setInputText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [showProtectedCall, setShowProtectedCall] = useState(false);
-  const [selectedFile, setSelectedFile] = useState<string | null>(null);
+  const [hasFakeAttachment, setHasFakeAttachment] = useState(false);
   const [showReportConfirm, setShowReportConfirm] = useState(false);
+  const [simulateFailure, setSimulateFailure] = useState(false);
+  const [isBlocked, setIsBlocked] = useState(false);
+  const [lastActivity, setLastActivity] = useState<string>("agora");
 
   const [messages, setMessages] = useState<Message[]>(DEFAULT_MESSAGES);
   const [hydratedRideId, setHydratedRideId] = useState<string | null>(null);
@@ -124,12 +151,10 @@ function ChatScreen() {
             setMessages(DEFAULT_MESSAGES);
           }
         } else {
-          // Not an array, discard
           localStorage.removeItem(storageKey);
           setMessages(DEFAULT_MESSAGES);
         }
       } else {
-        // No history saved, use default
         setMessages(DEFAULT_MESSAGES);
       }
     } catch (error) {
@@ -147,7 +172,7 @@ function ChatScreen() {
 
     const storageKey = `chat_history_${rideId}`;
     try {
-      // Remove attachments before saving
+      // Remove attachments (boolean flags) before saving
       const messagesToSave = messages.map(({ attachment, ...rest }) => rest);
       localStorage.setItem(storageKey, JSON.stringify(messagesToSave));
     } catch (error) {
@@ -159,72 +184,104 @@ function ChatScreen() {
     }
   }, [messages, rideId, hydratedRideId]);
 
-  const handleSendMessage = (text = inputText) => {
-    if (!text.trim() && !selectedFile) return;
+  const handleSendMessage = useCallback(
+    (text = inputText) => {
+      if ((!text.trim() && !hasFakeAttachment) || isBlocked) return;
 
-    const newMessage: Message = {
-      id: Date.now().toString(),
-      text: text.trim(),
-      sender: "passenger",
-      timestamp: new Date(),
-      status: "sending",
-      attachment: selectedFile || undefined,
-    };
-
-    setMessages((prev) => [...prev, newMessage]);
-    setInputText("");
-    setSelectedFile(null);
-
-    setTimeout(() => {
-      setMessages((prev) =>
-        prev.map((m) => (m.id === newMessage.id ? { ...m, status: "sent" } : m)),
-      );
-    }, 800);
-
-    setTimeout(() => {
-      setMessages((prev) =>
-        prev.map((m) => (m.id === newMessage.id ? { ...m, status: "delivered" } : m)),
-      );
-    }, 1500);
-
-    setTimeout(() => {
-      setMessages((prev) =>
-        prev.map((m) => (m.id === newMessage.id ? { ...m, status: "read" } : m)),
-      );
-
-      setTimeout(() => {
-        setIsTyping(true);
-        setTimeout(() => {
-          setIsTyping(false);
-          const reply: Message = {
-            id: (Date.now() + 1).toString(),
-            text: "Combinado! Já te vejo.",
-            sender: "driver",
-            timestamp: new Date(),
-            status: "read",
-          };
-          setMessages((prev) => [...prev, reply]);
-        }, 2000);
-      }, 1000);
-    }, 3000);
-  };
-
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setSelectedFile(reader.result as string);
-        toast.info("Foto anexada à mensagem.");
+      const newMessageId = Date.now().toString();
+      const newMessage: Message = {
+        id: newMessageId,
+        text: text.trim(),
+        sender: "passenger",
+        timestamp: new Date(),
+        status: "sending",
+        attachment: hasFakeAttachment,
       };
-      reader.readAsDataURL(file);
-    }
-  };
+
+      setMessages((prev) => [...prev, newMessage]);
+      setInputText("");
+      setHasFakeAttachment(false);
+
+      if (simulateFailure) {
+        setSimulateFailure(false);
+        addTimer(() => {
+          setMessages((prev) =>
+            prev.map((m) => (m.id === newMessageId ? { ...m, status: "failed" } : m)),
+          );
+        }, 1000);
+        return;
+      }
+
+      // Fluxo normal de estados
+      addTimer(() => {
+        setMessages((prev) =>
+          prev.map((m) => (m.id === newMessageId ? { ...m, status: "sent" } : m)),
+        );
+
+        addTimer(() => {
+          setMessages((prev) =>
+            prev.map((m) => (m.id === newMessageId ? { ...m, status: "delivered" } : m)),
+          );
+
+          addTimer(() => {
+            setMessages((prev) =>
+              prev.map((m) => (m.id === newMessageId ? { ...m, status: "read" } : m)),
+            );
+
+            // Resposta simulada após visualização
+            if (!isBlocked) {
+              addTimer(() => {
+                setIsTyping(true);
+                addTimer(() => {
+                  setIsTyping(false);
+                  const reply: Message = {
+                    id: (Date.now() + 1).toString(),
+                    text: "Perfeito, te aguardo no ponto de encontro combinado.",
+                    sender: "driver",
+                    timestamp: new Date(),
+                    status: "read",
+                  };
+                  setMessages((prev) => [...prev, reply]);
+                  setLastActivity("agora");
+                }, 2500);
+              }, 1000);
+            }
+          }, 1500);
+        }, 1000);
+      }, 800);
+    },
+    [inputText, hasFakeAttachment, isBlocked, simulateFailure, addTimer],
+  );
 
   const resendMessage = (id: string) => {
     setMessages((prev) => prev.map((m) => (m.id === id ? { ...m, status: "sending" } : m)));
-    setTimeout(() => {
+
+    addTimer(() => {
       setMessages((prev) => prev.map((m) => (m.id === id ? { ...m, status: "sent" } : m)));
+      addTimer(() => {
+        setMessages((prev) => prev.map((m) => (m.id === id ? { ...m, status: "delivered" } : m)));
+        addTimer(() => {
+          setMessages((prev) => prev.map((m) => (m.id === id ? { ...m, status: "read" } : m)));
+
+          if (!isBlocked) {
+            addTimer(() => {
+              setIsTyping(true);
+              addTimer(() => {
+                setIsTyping(false);
+                const reply: Message = {
+                  id: (Date.now() + 1).toString(),
+                  text: "Recebido. Estou a caminho.",
+                  sender: "driver",
+                  timestamp: new Date(),
+                  status: "read",
+                };
+                setMessages((prev) => [...prev, reply]);
+                setLastActivity("agora");
+              }, 2000);
+            }, 1000);
+          }
+        }, 1500);
+      }, 1000);
     }, 1000);
   };
 
@@ -240,30 +297,41 @@ function ChatScreen() {
       <header className="bg-white border-b border-slate-100 px-6 py-4 flex items-center justify-between z-10 shrink-0">
         <div className="flex items-center gap-4">
           <button
+            type="button"
             onClick={() => navigate({ to: "/passageiro/corrida/$rideId", params: { rideId } })}
             className="h-10 w-10 bg-slate-50 rounded-xl flex items-center justify-center text-navy active:scale-95 transition-all"
+            aria-label="Voltar para detalhes da corrida"
           >
             <ArrowLeft size={20} strokeWidth={2.5} />
           </button>
           <div className="flex items-center gap-3">
             <div className="relative">
-              <div className="h-10 w-10 rounded-xl bg-navy flex items-center justify-center border border-slate-100">
+              <div
+                className="h-10 w-10 rounded-xl bg-navy flex items-center justify-center border border-slate-100"
+                role="img"
+                aria-label="Avatar de Carlos H."
+              >
                 <span className="text-white font-black italic tracking-tighter text-sm uppercase">
                   CH
                 </span>
               </div>
-              <div className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-blue-500 border-2 border-white"></div>
+              <div
+                className="absolute -bottom-0.5 -right-0.5 h-3 w-3 rounded-full bg-blue-500 border-2 border-white"
+                aria-hidden="true"
+              ></div>
             </div>
             <div className="flex flex-col">
               <h2 className="text-sm font-black italic tracking-tighter text-navy uppercase leading-none">
                 Carlos H.
               </h2>
-              <div className="flex items-center gap-1.5 mt-0.5">
-                <span className="text-[9px] font-black text-blue-500 uppercase tracking-widest">
-                  Online simulado
-                </span>
-                <span className="text-[8px] text-slate-400 font-bold uppercase tracking-widest">
-                  • Status fictício da demonstração
+              <div className="flex flex-col mt-0.5" aria-live="polite">
+                <div className="flex items-center gap-1.5">
+                  <span className="text-[9px] font-black text-blue-500 uppercase tracking-widest">
+                    Online — simulado
+                  </span>
+                </div>
+                <span className="text-[7px] text-slate-400 font-bold uppercase tracking-widest mt-0.5">
+                  Última atividade simulada: {lastActivity}
                 </span>
               </div>
             </div>
@@ -272,15 +340,21 @@ function ChatScreen() {
 
         <div className="flex gap-2">
           <button
+            type="button"
             onClick={() => setShowProtectedCall(true)}
             className="h-10 w-10 bg-slate-50 text-navy rounded-xl flex items-center justify-center hover:bg-slate-100 active:scale-95 transition-all"
+            aria-label="Chamada protegida"
           >
             <Phone size={18} strokeWidth={2.5} />
           </button>
 
           <AlertDialog open={showReportConfirm} onOpenChange={setShowReportConfirm}>
             <AlertDialogTrigger asChild>
-              <button className="h-10 w-10 bg-slate-50 text-navy rounded-xl flex items-center justify-center hover:bg-slate-100 active:scale-95 transition-all">
+              <button
+                type="button"
+                className="h-10 w-10 bg-slate-50 text-navy rounded-xl flex items-center justify-center hover:bg-slate-100 active:scale-95 transition-all"
+                aria-label="Opções adicionais"
+              >
                 <MoreVertical size={18} strokeWidth={2.5} />
               </button>
             </AlertDialogTrigger>
@@ -295,20 +369,45 @@ function ChatScreen() {
               </AlertDialogHeader>
               <div className="flex flex-col gap-2 py-2">
                 <button
-                  onClick={() => {
-                    navigate({ to: "/passageiro/seguranca" });
-                  }}
+                  type="button"
+                  onClick={() => navigate({ to: "/passageiro/seguranca" })}
                   className="flex items-center gap-3 w-full p-4 rounded-2xl bg-slate-50 text-navy hover:bg-slate-100 transition-colors text-left"
                 >
-                  <Shield size={18} className="text-blue-500" />
+                  <Shield size={18} className="text-blue-500" aria-hidden="true" />
                   <span className="text-xs font-bold uppercase tracking-widest">
                     Central de Segurança
                   </span>
                 </button>
+
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsBlocked(!isBlocked);
+                    setShowReportConfirm(false);
+                    toast.info(
+                      isBlocked
+                        ? "Piloto desbloqueado localmente."
+                        : "Bloqueio somente nesta demonstração.",
+                      {
+                        description: isBlocked ? "" : "O piloto não poderá mais enviar mensagens.",
+                      },
+                    );
+                  }}
+                  className={`flex items-center gap-3 w-full p-4 rounded-2xl transition-colors text-left ${isBlocked ? "bg-emerald-50 text-emerald-600 hover:bg-emerald-100" : "bg-slate-50 text-navy hover:bg-slate-100"}`}
+                >
+                  <Ban size={18} aria-hidden="true" />
+                  <span className="text-xs font-bold uppercase tracking-widest">
+                    {isBlocked ? "Desbloquear Piloto" : "Bloquear Piloto — simulado"}
+                  </span>
+                </button>
+
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
-                    <button className="flex items-center gap-3 w-full p-4 rounded-2xl bg-red-50 text-red-600 hover:bg-red-100 transition-colors text-left">
-                      <Flag size={18} />
+                    <button
+                      type="button"
+                      className="flex items-center gap-3 w-full p-4 rounded-2xl bg-red-50 text-red-600 hover:bg-red-100 transition-colors text-left"
+                    >
+                      <Flag size={18} aria-hidden="true" />
                       <span className="text-xs font-bold uppercase tracking-widest">
                         Denunciar Conversa
                       </span>
@@ -321,6 +420,7 @@ function ChatScreen() {
                       </AlertDialogTitle>
                       <AlertDialogDescription className="text-xs font-medium text-slate-500">
                         Você será encaminhado para a tela de denúncia para relatar o ocorrido.
+                        Nenhuma denúncia real será enviada.
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter className="flex flex-col gap-2 mt-4 sm:flex-col">
@@ -336,9 +436,25 @@ function ChatScreen() {
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialog>
+
+                <div className="flex items-center gap-3 w-full p-4 rounded-2xl bg-slate-50 text-navy">
+                  <input
+                    type="checkbox"
+                    id="sim-fail"
+                    checked={simulateFailure}
+                    onChange={(e) => setSimulateFailure(e.target.checked)}
+                    className="w-4 h-4 rounded border-slate-300 text-navy focus:ring-navy"
+                  />
+                  <label
+                    htmlFor="sim-fail"
+                    className="text-[10px] font-bold uppercase tracking-widest cursor-pointer"
+                  >
+                    Simular falha no próximo envio
+                  </label>
+                </div>
               </div>
               <AlertDialogFooter>
-                <AlertDialogCancel className="rounded-2xl border-slate-200 text-xs font-bold uppercase tracking-widest">
+                <AlertDialogCancel className="rounded-2xl border-slate-200 text-xs font-bold uppercase tracking-widest h-10">
                   Fechar
                 </AlertDialogCancel>
               </AlertDialogFooter>
@@ -347,11 +463,15 @@ function ChatScreen() {
         </div>
       </header>
 
-      <div ref={scrollRef} className="flex-1 overflow-y-auto p-6 space-y-4 bg-porcelain/50">
+      <div
+        ref={scrollRef}
+        className="flex-1 overflow-y-auto p-6 space-y-4 bg-porcelain/50"
+        aria-live="polite"
+      >
         <div className="flex justify-center mb-6 text-center">
           <div className="bg-white/80 border border-slate-100 px-4 py-1.5 rounded-full shadow-sm max-w-[90%]">
-            <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">
-              Conversa simulada — nenhuma mensagem é enviada pela internet
+            <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">
+              Conversa simulada — Nenhuma mensagem utiliza internet ou telefone
             </span>
           </div>
         </div>
@@ -372,52 +492,75 @@ function ChatScreen() {
             `}
             >
               {msg.attachment && (
-                <div className="mb-2 rounded-xl overflow-hidden bg-slate-100">
-                  <img
-                    src={msg.attachment}
-                    alt="Anexo"
-                    className="w-full h-auto max-h-48 object-cover"
-                  />
+                <div className="mb-2 rounded-xl overflow-hidden bg-slate-200 p-8 flex flex-col items-center justify-center border border-slate-300/30">
+                  <ImageIcon size={32} className="text-slate-400 mb-2" aria-hidden="true" />
+                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">
+                    Prévia fictícia de imagem
+                  </span>
                 </div>
               )}
               <p className="text-[13px] font-medium leading-relaxed">{msg.text}</p>
 
-              <div className={`flex items-center gap-1.5 mt-2 justify-end`}>
-                <span className={`text-[9px] font-bold opacity-50 uppercase`}>
+              <div className="flex items-center gap-1.5 mt-2 justify-end">
+                <span
+                  className="text-[9px] font-bold opacity-50 uppercase"
+                  aria-label={`Enviada às ${msg.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`}
+                >
                   {msg.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                 </span>
 
                 {msg.sender === "passenger" && (
-                  <div className="flex items-center">
+                  <div className="flex items-center" aria-hidden="true">
                     {msg.status === "sending" && <Clock size={10} className="animate-pulse" />}
                     {msg.status === "sent" && <Check size={10} />}
                     {msg.status === "delivered" && <CheckCheck size={10} />}
                     {msg.status === "read" && <CheckCheck size={10} className="text-blue-400" />}
-                    {msg.status === "failed" && (
-                      <button onClick={() => resendMessage(msg.id)} className="text-red-400">
-                        <AlertCircle size={10} />
-                      </button>
-                    )}
+                    {msg.status === "failed" && <AlertCircle size={10} className="text-red-400" />}
                   </div>
+                )}
+
+                {msg.sender === "passenger" && (
+                  <span className="sr-only">
+                    Status:{" "}
+                    {msg.status === "sending"
+                      ? "Enviando"
+                      : msg.status === "sent"
+                        ? "Enviada"
+                        : msg.status === "delivered"
+                          ? "Entregue"
+                          : msg.status === "read"
+                            ? "Visualizada"
+                            : "Falha no envio"}
+                  </span>
                 )}
               </div>
             </div>
             {msg.status === "failed" && (
-              <span className="text-[8px] text-red-500 font-black uppercase mt-1 tracking-widest">
-                Falha no envio. Toque para tentar novamente.
-              </span>
+              <button
+                type="button"
+                onClick={() => resendMessage(msg.id)}
+                className="flex items-center gap-1.5 mt-1 hover:opacity-80"
+              >
+                <span className="text-[8px] text-red-500 font-black uppercase tracking-widest">
+                  Falha no envio. Reenviar mensagem
+                </span>
+                <AlertCircle size={10} className="text-red-500" />
+              </button>
             )}
           </div>
         ))}
 
         {isTyping && (
-          <div className="flex flex-col items-start">
-            <div className="bg-white border border-slate-100 rounded-2xl rounded-tl-none p-3 shadow-sm">
+          <div className="flex flex-col items-start" aria-live="polite">
+            <div className="bg-white border border-slate-100 rounded-2xl rounded-tl-none p-3 shadow-sm flex items-center gap-2">
               <div className="flex gap-1">
-                <div className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce"></div>
-                <div className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce delay-150"></div>
-                <div className="w-1.5 h-1.5 bg-slate-300 rounded-full animate-bounce delay-300"></div>
+                <div className="w-1 h-1 bg-slate-300 rounded-full animate-bounce"></div>
+                <div className="w-1 h-1 bg-slate-300 rounded-full animate-bounce delay-150"></div>
+                <div className="w-1 h-1 bg-slate-300 rounded-full animate-bounce delay-300"></div>
               </div>
+              <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">
+                Carlos H. está digitando — simulado
+              </span>
             </div>
           </div>
         )}
@@ -428,90 +571,145 @@ function ChatScreen() {
           {quickReplies.map((reply, i) => (
             <button
               key={i}
+              type="button"
+              disabled={isBlocked}
               onClick={() => handleSendMessage(reply)}
-              className="whitespace-nowrap px-4 py-2 bg-slate-50 border border-slate-100 rounded-full text-[10px] font-black uppercase tracking-widest text-slate-500 hover:bg-slate-100 transition-colors"
+              className="whitespace-nowrap px-4 py-2 bg-slate-50 border border-slate-100 rounded-full text-[10px] font-black uppercase tracking-widest text-slate-500 hover:bg-slate-100 transition-colors disabled:opacity-50 disabled:grayscale focus:ring-2 focus:ring-navy focus:outline-none"
             >
               {reply}
             </button>
           ))}
         </div>
 
-        {selectedFile && (
+        {hasFakeAttachment && (
           <div className="mb-4 relative inline-block">
-            <div className="h-16 w-16 rounded-xl overflow-hidden border-2 border-blue-500">
-              <img src={selectedFile} className="w-full h-full object-cover" alt="Preview" />
+            <div className="h-16 w-16 rounded-xl overflow-hidden border-2 border-blue-500 bg-slate-100 flex items-center justify-center">
+              <ImageIcon size={20} className="text-blue-500" aria-hidden="true" />
             </div>
             <button
-              onClick={() => setSelectedFile(null)}
-              className="absolute -top-2 -right-2 h-6 w-6 bg-red-500 text-white rounded-full flex items-center justify-center shadow-lg"
+              type="button"
+              onClick={() => setHasFakeAttachment(false)}
+              className="absolute -top-2 -right-2 h-6 w-6 bg-red-500 text-white rounded-full flex items-center justify-center shadow-lg active:scale-90 transition-transform"
+              aria-label="Remover prévia fictícia"
             >
-              <X size={14} />
+              <X size={14} aria-hidden="true" />
+            </button>
+          </div>
+        )}
+
+        {isBlocked && (
+          <div className="mb-4 p-3 bg-red-50 border border-red-100 rounded-2xl flex items-center justify-between">
+            <div className="flex items-center gap-2 text-red-600">
+              <Ban size={14} />
+              <span className="text-[10px] font-black uppercase tracking-widest">
+                Bloqueio somente nesta demonstração
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={() => setIsBlocked(false)}
+              className="text-[9px] font-black uppercase tracking-widest text-red-600 underline"
+            >
+              Desbloquear
             </button>
           </div>
         )}
 
         <div className="flex items-center gap-3">
-          <label className="h-12 w-12 bg-slate-50 text-navy rounded-2xl flex items-center justify-center cursor-pointer active:scale-95 transition-all">
-            <input type="file" className="hidden" accept="image/*" onChange={handleFileUpload} />
-            <Paperclip size={20} strokeWidth={2.5} />
-          </label>
+          <button
+            type="button"
+            disabled={isBlocked}
+            onClick={() => {
+              if (isBlocked) return;
+              setHasFakeAttachment(true);
+              toast.info("Prévia fictícia adicionada.");
+            }}
+            className="h-12 w-12 bg-slate-50 text-navy rounded-2xl flex items-center justify-center active:scale-95 transition-all disabled:opacity-50 disabled:grayscale focus:ring-2 focus:ring-navy focus:outline-none"
+            aria-label="Adicionar prévia fictícia"
+          >
+            <Paperclip size={20} strokeWidth={2.5} aria-hidden="true" />
+          </button>
 
-          <div className="flex-1 bg-slate-50 border border-slate-100 rounded-2xl px-4 py-2 flex items-center">
+          <div className="flex-1 bg-slate-50 border border-slate-100 rounded-2xl px-4 py-2 flex items-center focus-within:ring-2 focus-within:ring-navy transition-all">
             <input
               type="text"
+              id="chat-input"
               value={inputText}
+              disabled={isBlocked}
               onChange={(e) => setInputText(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
-              placeholder="Envie uma mensagem..."
-              className="w-full bg-transparent border-none focus:ring-0 text-sm font-medium placeholder:text-slate-400"
+              placeholder={isBlocked ? "Piloto bloqueado" : "Envie uma mensagem..."}
+              className="w-full bg-transparent border-none focus:ring-0 text-sm font-medium placeholder:text-slate-400 disabled:opacity-50"
+              aria-label="Campo de mensagem"
             />
           </div>
 
           <button
+            type="button"
             onClick={() => handleSendMessage()}
-            disabled={!inputText.trim() && !selectedFile}
+            disabled={(!inputText.trim() && !hasFakeAttachment) || isBlocked}
             className={`
-              h-12 w-12 rounded-2xl flex items-center justify-center transition-all active:scale-95
-              ${inputText.trim() || selectedFile ? "bg-navy text-white shadow-lg" : "bg-slate-100 text-slate-300"}
+              h-12 w-12 rounded-2xl flex items-center justify-center transition-all active:scale-95 focus:ring-2 focus:ring-navy focus:outline-none
+              ${(inputText.trim() || hasFakeAttachment) && !isBlocked ? "bg-navy text-white shadow-lg" : "bg-slate-100 text-slate-300"}
             `}
+            aria-label="Enviar mensagem"
           >
-            <Send size={20} strokeWidth={2.5} />
+            <Send size={20} strokeWidth={2.5} aria-hidden="true" />
           </button>
+        </div>
+
+        <div className="mt-4 flex justify-center">
+          <span className="text-[7px] text-slate-300 font-bold uppercase tracking-[0.2em]">
+            Histórico existe apenas neste navegador demonstrativo
+          </span>
         </div>
       </footer>
 
       {showProtectedCall && (
-        <div className="fixed inset-0 bg-navy/60 backdrop-blur-sm z-50 flex items-center justify-center p-6 animate-in fade-in duration-300">
+        <div
+          className="fixed inset-0 bg-navy/60 backdrop-blur-sm z-50 flex items-center justify-center p-6 animate-in fade-in duration-300"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="call-title"
+        >
           <div className="bg-white rounded-[40px] w-full max-w-sm p-10 flex flex-col items-center text-center gap-6 shadow-2xl animate-in zoom-in duration-300">
-            <div className="h-20 w-20 bg-blue-50 rounded-full flex items-center justify-center text-blue-600">
+            <div
+              className="h-20 w-20 bg-blue-50 rounded-full flex items-center justify-center text-blue-600"
+              aria-hidden="true"
+            >
               <Phone size={40} strokeWidth={2} className="animate-pulse" />
             </div>
 
             <div className="space-y-2">
-              <h3 className="text-xl font-black italic tracking-tighter text-navy uppercase">
-                Simulação de chamada
+              <h3
+                id="call-title"
+                className="text-xl font-black italic tracking-tighter text-navy uppercase"
+              >
+                Chamada protegida — simulação
               </h3>
               <p className="text-xs font-medium text-slate-500 leading-relaxed">
-                Esta é uma demonstração visual. Nenhuma ligação será realizada e nenhum número será
-                utilizado.
+                Esta é uma demonstração visual. Nenhuma ligação será realizada e nenhum número
+                pessoal será exibido ou utilizado.
               </p>
             </div>
 
             <div className="flex flex-col w-full gap-3 mt-4">
               <Button
+                type="button"
                 onClick={() => {
                   toast.success("Demonstração concluída: nenhuma ligação foi realizada.");
                   setShowProtectedCall(false);
                 }}
-                className="w-full bg-navy text-white h-14 rounded-2xl text-xs font-black uppercase tracking-widest"
+                className="w-full bg-navy text-white h-14 rounded-2xl text-xs font-black uppercase tracking-widest focus:ring-2 focus:ring-navy focus:outline-offset-2"
               >
-                Simular chamada
+                Encerrar demonstração
               </Button>
               <button
+                type="button"
                 onClick={() => setShowProtectedCall(false)}
-                className="text-xs font-bold text-slate-400 uppercase tracking-widest py-2"
+                className="text-xs font-bold text-slate-400 uppercase tracking-widest py-2 active:scale-95 transition-transform"
               >
-                Cancelar
+                Voltar
               </button>
             </div>
           </div>
