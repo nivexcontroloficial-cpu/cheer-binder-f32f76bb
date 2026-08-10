@@ -38,7 +38,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-export const Route = createFileRoute("/passageiro/corrida/$rideId")({
+export const Route = createFileRoute("/passageiro/corrida/")({
   component: ActiveRideScreen,
 });
 
