@@ -348,7 +348,10 @@ function ActiveRideScreen() {
 
           {/* Banner de Proximidade (500m) */}
           {distanceMeters <= 500 && !hasArrived && (
-            <div className="animate-in slide-in-from-top duration-500 bg-rovya-orange text-white px-4 py-3 rounded-2xl shadow-xl flex items-center gap-3 border border-white/20">
+            <div
+              className="animate-in slide-in-from-top duration-500 bg-rovya-orange text-white px-4 py-3 rounded-2xl shadow-xl flex items-center gap-3 border border-white/20"
+              aria-live="polite"
+            >
               <div className="bg-white/20 p-2 rounded-xl">
                 <Navigation size={18} className="animate-pulse" aria-hidden="true" />
               </div>
@@ -357,7 +360,7 @@ function ActiveRideScreen() {
                   Piloto Próximo
                 </span>
                 <span className="text-xs font-bold leading-tight">
-                  O Carlos H. está a menos de 500m.
+                  O Carlos H. está a menos de 500m. (Simulação)
                 </span>
               </div>
             </div>
