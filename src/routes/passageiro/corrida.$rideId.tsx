@@ -390,13 +390,13 @@ function ActiveRideScreen() {
                   {eta > 0 ? `${eta} min` : "Chegando!"}
                 </span>
               </div>
-              <div className="h-8 w-px bg-white/10"></div>
+              <div className="h-8 w-px bg-white/10" aria-hidden="true"></div>
               <div className="flex flex-col">
                 <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">
                   Ponto
                 </span>
                 <span className="text-[10px] font-black uppercase tracking-tight truncate max-w-[120px]">
-                  Av. Getúlio Vargas
+                  Centro, Jacarezinho
                 </span>
               </div>
             </div>
@@ -409,20 +409,51 @@ function ActiveRideScreen() {
         <div
           className={`bg-white rounded-t-[40px] shadow-[0_-20px_40px_rgba(0,0,0,0.1)] transition-all duration-500 border-t border-slate-100 ${isDetailsOpen ? "h-[80vh]" : "h-auto"}`}
         >
-          {/* Handle de expansão */}
-          <div
-            onClick={() => setIsDetailsOpen(!isDetailsOpen)}
-            className="w-full flex justify-center py-4 cursor-pointer"
-          >
-            <div className="w-12 h-1.5 bg-slate-100 rounded-full"></div>
+          {/* Controles da Simulação */}
+          <div className="px-6 py-4 flex flex-wrap gap-2 justify-center border-b border-slate-50 bg-slate-50/50">
+            <span className="w-full text-[8px] font-black text-slate-400 uppercase tracking-widest text-center mb-1">
+              Controles locais da demonstração
+            </span>
+            {[
+              { id: "stable", label: "Sinal Estável", icon: Signal },
+              { id: "unstable", label: "GPS Instável", icon: SignalLow },
+              { id: "stopped", label: "Piloto Parado", icon: AlertTriangle },
+              { id: "reconnecting", label: "Reconectando", icon: WifiOff },
+            ].map((btn) => (
+              <button
+                key={btn.id}
+                type="button"
+                onClick={() => setConnection(btn.id as ConnectionStatus)}
+                aria-pressed={connection === btn.id}
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[9px] font-bold uppercase transition-all ${
+                  connection === btn.id
+                    ? "bg-navy text-white shadow-md scale-105"
+                    : "bg-white text-slate-500 border border-slate-200 hover:border-slate-300"
+                }`}
+              >
+                <btn.icon size={10} aria-hidden="true" />
+                {btn.label}
+              </button>
+            ))}
           </div>
 
-          <div className="px-8 pb-8 space-y-6">
+          {/* Handle de expansão */}
+          <button
+            type="button"
+            onClick={() => setIsDetailsOpen(!isDetailsOpen)}
+            aria-expanded={isDetailsOpen}
+            aria-controls="ride-details-panel"
+            className="w-full flex justify-center py-4 cursor-pointer hover:bg-slate-50 transition-colors"
+          >
+            <div className="w-12 h-1.5 bg-slate-100 rounded-full"></div>
+          </button>
+
+          <div id="ride-details-panel" className="px-8 pb-8 space-y-6 overflow-y-auto">
             {/* PIN de Segurança (Aparece após chegada) */}
             {hasArrived && (
               <div className="animate-in fade-in slide-in-from-top-4 duration-700 pt-2">
                 <div className="bg-navy rounded-3xl p-6 text-white shadow-xl relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 p-4 opacity-10">
+                  <div className="absolute top-0 right-0 p-4 opacity-10" aria-hidden="true">
                     <Lock size={60} />
                   </div>
                   <div className="relative z-10 flex flex-col items-center text-center gap-2">
