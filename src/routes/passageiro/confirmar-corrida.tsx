@@ -360,27 +360,75 @@ function ConfirmRideScreen() {
 }
 
 
-function PaymentButton({ active, onClick, icon, label }: { active: boolean, onClick: () => void, icon: React.ReactNode, label: string }) {
+function PaymentButton({
+  active,
+  onClick,
+  icon,
+  label,
+}: {
+  active: boolean;
+  onClick: () => void;
+  icon: React.ReactNode;
+  label: string;
+}) {
   return (
-    <button 
+    <button
+      type="button"
+      aria-pressed={active}
       onClick={onClick}
-      className={`p-4 rounded-2xl border transition-all flex flex-col items-center gap-2 group ${active ? 'bg-white border-rovya-orange shadow-sm text-rovya-orange' : 'bg-slate-50 border-slate-100 text-slate-300 hover:border-slate-200 hover:text-navy'}`}
+      className={`p-4 rounded-2xl border transition-all flex flex-col items-center gap-2 group outline-none focus-visible:ring-2 focus-visible:ring-rovya-orange ${
+        active
+          ? "bg-white border-rovya-orange shadow-sm text-rovya-orange"
+          : "bg-slate-50 border-slate-100 text-slate-300 hover:border-slate-200 hover:text-navy"
+      }`}
     >
-      <div className={`transition-transform duration-300 ${active ? 'scale-110' : 'group-hover:scale-110'}`}>
+      <div
+        className={`transition-transform duration-300 ${
+          active ? "scale-110" : "group-hover:scale-110"
+        }`}
+      >
         {icon}
       </div>
-      <span className={`text-[9px] font-black uppercase tracking-widest ${active ? 'text-navy' : 'text-slate-400'}`}>{label}</span>
+      <span
+        className={`text-[9px] font-black uppercase tracking-widest ${
+          active ? "text-navy" : "text-slate-400"
+        }`}
+      >
+        {label}
+      </span>
     </button>
   );
 }
 
-function DetailRow({ label, value, highlight }: { label: string, value: number, highlight?: boolean }) {
+function DetailRow({
+  label,
+  value,
+  highlight,
+}: {
+  label: string;
+  value: number;
+  highlight?: boolean;
+}) {
+  const formatCurrency = (val: number) => {
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
+    }).format(val);
+  };
+
   return (
     <div className="flex justify-between items-center">
-      <span className="text-[9px] font-medium text-slate-500 uppercase tracking-widest">{label}</span>
-      <span className={`text-[9px] font-bold ${highlight ? 'text-rovya-orange' : 'text-navy'}`}>
-        {value < 0 ? '-' : ''} R$ {Math.abs(value).toFixed(2).replace('.', ',')}
+      <span className="text-[9px] font-medium text-slate-500 uppercase tracking-widest">
+        {label}
+      </span>
+      <span
+        className={`text-[9px] font-bold ${
+          highlight ? "text-rovya-orange" : "text-navy"
+        }`}
+      >
+        {formatCurrency(value)}
       </span>
     </div>
   );
 }
+
