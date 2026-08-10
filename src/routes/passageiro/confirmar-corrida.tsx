@@ -41,30 +41,34 @@ function ConfirmRideScreen() {
   // Dados Mock Obrigatórios
   const distance = 6.8;
   const duration = 18;
-  const baseFare = 5.0;
-  const pricePerKm = 1.5;
-  const pricePerMin = 0.3;
-  const demandSurge = 1.2; // 20% aumento
+  const baseFare = 4.0;
+  const pricePerKm = 1.0;
+  const pricePerMin = 0.4;
+  const nightSurcharge = 0.0;
+  const demandMultiplier = 1.0;
+  const minFare = 10.0;
 
   const subtotal = useMemo(() => {
     const travelCost = distance * pricePerKm + duration * pricePerMin;
-    return (baseFare + travelCost) * (demandSurge > 1 ? demandSurge : 1);
-  }, [distance, duration]);
+    const total = (baseFare + travelCost + nightSurcharge) * demandMultiplier;
+    return total;
+  }, [distance, duration, nightSurcharge, demandMultiplier]);
 
   const discount = isPromoApplied ? 5.0 : 0;
-  const finalPrice = Math.max(10.0, subtotal - discount); // Tarifa mínima mock de R$ 10
+  const finalPrice = Math.max(minFare, subtotal - discount);
 
   const handleApplyPromo = () => {
-    if (promoCode.toUpperCase() === "DEMO5") {
+    const cleaned = promoCode.trim().toUpperCase();
+    if (cleaned === "ROVYA5") {
       setIsPromoApplied(true);
-      toast.success("Desconto aplicado apenas nesta demonstração.");
+      toast.success("Cupom ROVYA5 aplicado somente nesta demonstração. Desconto de R$ 5,00.");
     } else {
-      toast.error("Código demonstrativo inválido.");
+      toast.error("Cupom demonstrativo inválido.");
     }
   };
 
   const handleOrder = () => {
-    toast.info("Solicitação simulada. Nenhuma corrida real foi pedida.");
+    toast.info("Pedido simulado. Nenhuma corrida real foi solicitada.");
     navigate({ to: "/passageiro/buscando" });
   };
 
@@ -164,7 +168,7 @@ function ConfirmRideScreen() {
             <div className="flex items-center gap-4">
               <MapPin size={14} className="text-rovya-blue shrink-0" aria-hidden="true" />
               <p className="text-[10px] font-black uppercase tracking-widest text-navy truncate">
-                Centro, Jacarezinho
+                Vila Setti, Jacarezinho
               </p>
             </div>
           </div>
@@ -174,7 +178,7 @@ function ConfirmRideScreen() {
               id="payment-title"
               className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1"
             >
-              Pagamento Demonstrativo
+              Pagamento presencial — simulado
             </h2>
             <div className="grid grid-cols-3 gap-2" role="group" aria-labelledby="payment-title">
               <PaymentButton
@@ -187,17 +191,18 @@ function ConfirmRideScreen() {
                 active={paymentMethod === "pix"}
                 onClick={() => setPaymentMethod("pix")}
                 icon={<QrCode size={18} aria-hidden="true" />}
-                label="Pix"
+                label="Pix direto ao piloto"
               />
               <PaymentButton
                 active={paymentMethod === "card"}
                 onClick={() => setPaymentMethod("card")}
                 icon={<CreditCard size={18} aria-hidden="true" />}
-                label="Cartão"
+                label="Cartão na máquina"
               />
             </div>
             <p className="text-[9px] text-slate-400 font-medium italic px-1">
-              * Demonstração: nenhuma transação, cobrança ou acesso a dados financeiros ocorre.
+              Nesta demonstração nenhuma cobrança acontece. No modelo planejado, o pagamento será
+              feito diretamente ao piloto.
             </p>
           </section>
 
@@ -219,7 +224,7 @@ function ConfirmRideScreen() {
                 <input
                   id="promo-input"
                   type="text"
-                  placeholder="DEMO5"
+                  placeholder="ROVYA5"
                   value={promoCode}
                   onChange={(e) => setPromoCode(e.target.value)}
                   disabled={isPromoApplied}
@@ -248,7 +253,7 @@ function ConfirmRideScreen() {
                 onClick={() => setIsDetailsOpen(!isDetailsOpen)}
                 className="flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-navy transition-colors focus-visible:ring-2 focus-visible:ring-rovya-orange outline-none rounded-sm px-1 -ml-1"
               >
-                Estimativa simulada
+                Preço final simulado
                 {isDetailsOpen ? (
                   <ChevronDown size={12} aria-hidden="true" />
                 ) : (
@@ -263,7 +268,7 @@ function ConfirmRideScreen() {
             <div className="flex flex-col items-end gap-1">
               <div className="flex items-center gap-1.5 px-3 py-1 bg-emerald-50 text-rovya-green rounded-lg text-[9px] font-black uppercase tracking-widest border border-emerald-100">
                 <ShieldCheck size={12} aria-hidden="true" />
-                Valor demonstrativo
+                Preço fixo nesta demonstração
               </div>
               {isPromoApplied && (
                 <span className="text-[9px] font-bold text-rovya-orange uppercase tracking-widest">
@@ -282,11 +287,15 @@ function ConfirmRideScreen() {
               <DetailRow label="Tarifa Base" value={baseFare} />
               <DetailRow label="Distância (6,8km)" value={distance * pricePerKm} />
               <DetailRow label="Tempo (18min)" value={duration * pricePerMin} />
+              <DetailRow label="Adicional noturno" value={nightSurcharge} />
               <DetailRow
-                label="Alta Demanda (x1.2)"
-                value={subtotal - (baseFare + distance * pricePerKm + duration * pricePerMin)}
+                label="Alta demanda"
+                value={
+                  subtotal -
+                  (baseFare + distance * pricePerKm + duration * pricePerMin + nightSurcharge)
+                }
               />
-              {isPromoApplied && <DetailRow label="Desconto DEMO5" value={-5.0} highlight />}
+              {isPromoApplied && <DetailRow label="Desconto ROVYA5" value={-5.0} highlight />}
               <div className="pt-2 border-t border-slate-200 mt-2 flex justify-between">
                 <span className="text-[9px] font-black uppercase text-navy">Total</span>
                 <span className="text-[10px] font-black text-navy">
@@ -308,8 +317,8 @@ function ConfirmRideScreen() {
                   {paymentMethod === "cash"
                     ? "Dinheiro"
                     : paymentMethod === "pix"
-                      ? "Pix"
-                      : "Cartão"}
+                      ? "Pix direto ao piloto"
+                      : "Cartão na máquina"}
                 </span>{" "}
                 (apenas demonstração). Nenhuma transação real ocorrerá.
               </p>
@@ -320,7 +329,7 @@ function ConfirmRideScreen() {
               onClick={handleOrder}
               className="w-full h-16 bg-navy text-white rounded-[24px] font-black uppercase tracking-widest text-[12px] flex items-center justify-center gap-3 hover:bg-navy/90 transition-all active:scale-95 rovya-shadow focus-visible:ring-4 focus-visible:ring-rovya-orange outline-none"
             >
-              Continuar para busca simulada
+              Pedir Rovya
               <ChevronRight size={20} strokeWidth={3} aria-hidden="true" />
             </button>
           </div>
