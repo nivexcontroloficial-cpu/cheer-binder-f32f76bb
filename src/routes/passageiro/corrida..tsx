@@ -38,7 +38,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-export const Route = createFileRoute("/passageiro/corrida/")({
+export const Route = createFileRoute("/passageiro/corrida/$rideId")({
   component: ActiveRideScreen,
 });
 
@@ -226,7 +226,10 @@ function ActiveRideScreen() {
   };
 
   const handleSafety = () => {
-    navigate({ to: "/passageiro/seguranca" });
+    navigate({
+      to: "/passageiro/seguranca",
+      search: { rideId },
+    });
   };
 
   const handleCancelRide = () => {
@@ -640,15 +643,12 @@ function ActiveRideScreen() {
                   onClick={() =>
                     navigate({
                       to: "/passageiro/corrida/$rideId/concluida",
-                      params: { rideId: "RY-2026-00842" },
+                  onClick={() =>
+                    navigate({
+                      to: "/passageiro/corrida/$rideId/em-andamento",
+                      params: { rideId },
                     })
                   }
-                  className="w-full py-6 rounded-2xl bg-rovya-orange hover:bg-rovya-orange/90 text-white font-black italic uppercase tracking-widest shadow-lg active:scale-[0.98] transition-all"
-                >
-                  <Navigation size={18} className="mr-2 rotate-45" fill="currentColor" />
-                  Simular Início da Corrida
-                </Button>
-              </div>
             )}
 
             {/* Veículo e Segurança */}
