@@ -42,7 +42,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 
 export const Route = createFileRoute("/passageiro/corrida/$rideId")({
@@ -60,14 +59,17 @@ function ActiveRideScreen() {
   const [eta, setEta] = useState(4);
   const [distanceMeters, setDistanceMeters] = useState(2500); // Começa com 2.5km
   const [progress, setProgress] = useState(0); // 0 a 100
-  const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
-  const [cancelReason, setCancelReason] = useState("");
   const [hasArrived, setHasArrived] = useState(false);
   const [isNearAlertVisible, setIsNearAlertVisible] = useState(false);
   const [waitTime, setWaitTime] = useState(300); // 5 minutos em segundos
   const [isWaitTimerActive, setIsWaitTimerActive] = useState(false);
   const [pin] = useState("4827");
   const [isDivergentVehicleAlertOpen, setIsDivergentVehicleAlertOpen] = useState(false);
+  const [lastUpdate, setLastUpdate] = useState("");
+
+  useEffect(() => {
+    setLastUpdate(new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }));
+  }, []);
 
   // Dados Mock Obrigatórios do Piloto
   const pilot = {
