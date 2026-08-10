@@ -171,7 +171,7 @@ function InProgressRideScreen() {
                   <span className="text-navy italic">{eta} min restantes</span>
                 </div>
                 <Progress
-                  value={gpsStatus === "unstable" ? undefined : progress}
+                  value={progress}
                   className="h-2 bg-slate-100"
                 />
               </div>
