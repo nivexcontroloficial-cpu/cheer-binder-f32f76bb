@@ -197,7 +197,7 @@ function ConfirmRideScreen() {
                 active={paymentMethod === "card"}
                 onClick={() => setPaymentMethod("card")}
                 icon={<CreditCard size={18} aria-hidden="true" />}
-                label="Cartão na máquina"
+                label="Cartão na máquina do piloto"
               />
             </div>
             <p className="text-[9px] text-slate-400 font-medium italic px-1">
@@ -318,7 +318,7 @@ function ConfirmRideScreen() {
                     ? "Dinheiro"
                     : paymentMethod === "pix"
                       ? "Pix direto ao piloto"
-                      : "Cartão na máquina"}
+                      : "Cartão na máquina do piloto"}
                 </span>{" "}
                 (apenas demonstração). Nenhuma transação real ocorrerá.
               </p>
