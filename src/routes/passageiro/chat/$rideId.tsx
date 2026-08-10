@@ -421,7 +421,8 @@ function ChatScreen() {
                           Bloquear piloto?
                         </AlertDialogTitle>
                         <AlertDialogDescription className="text-xs font-medium text-slate-500">
-                          Esta ação é apenas local para demonstração e não afeta contas reais ou o serviço de transporte.
+                          Esta ação é apenas local para demonstração e não afeta contas reais ou o
+                          serviço de transporte.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter className="flex flex-col gap-2 mt-4 sm:flex-col">
@@ -752,8 +753,8 @@ function ChatScreen() {
               Chamada protegida — simulação
             </DialogTitle>
             <DialogDescription className="text-xs font-medium text-slate-500 leading-relaxed">
-              Esta é uma demonstração visual. Nenhuma ligação será realizada e nenhum número
-              pessoal será exibido ou utilizado.
+              Esta é uma demonstração visual. Nenhuma ligação será realizada e nenhum número pessoal
+              será exibido ou utilizado.
             </DialogDescription>
           </div>
 
