@@ -176,32 +176,38 @@ function ConfirmRideScreen() {
 
 
           {/* Seleção de Pagamento */}
-          <section className="space-y-3">
-            <h2 className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1">Pagamento Presencial</h2>
-            <div className="grid grid-cols-3 gap-2">
-              <PaymentButton 
-                active={paymentMethod === "cash"} 
+          <section className="space-y-3" aria-labelledby="payment-title">
+            <h2
+              id="payment-title"
+              className="text-[10px] font-black uppercase tracking-widest text-slate-400 ml-1"
+            >
+              Pagamento Demonstrativo
+            </h2>
+            <div className="grid grid-cols-3 gap-2" role="group" aria-labelledby="payment-title">
+              <PaymentButton
+                active={paymentMethod === "cash"}
                 onClick={() => setPaymentMethod("cash")}
-                icon={<Banknote size={18} />}
+                icon={<Banknote size={18} aria-hidden="true" />}
                 label="Dinheiro"
               />
-              <PaymentButton 
-                active={paymentMethod === "pix"} 
+              <PaymentButton
+                active={paymentMethod === "pix"}
                 onClick={() => setPaymentMethod("pix")}
-                icon={<QrCode size={18} />}
+                icon={<QrCode size={18} aria-hidden="true" />}
                 label="Pix"
               />
-              <PaymentButton 
-                active={paymentMethod === "card"} 
+              <PaymentButton
+                active={paymentMethod === "card"}
                 onClick={() => setPaymentMethod("card")}
-                icon={<CreditCard size={18} />}
+                icon={<CreditCard size={18} aria-hidden="true" />}
                 label="Cartão"
               />
             </div>
             <p className="text-[9px] text-slate-400 font-medium italic px-1">
-              * O pagamento é feito diretamente ao piloto ao final da corrida.
+              * Demonstração: nenhuma transação, cobrança ou acesso a dados financeiros ocorre.
             </p>
           </section>
+
 
           {/* Cupom de Desconto */}
           <section className="bg-white rounded-[28px] p-5 border border-slate-100 shadow-sm flex items-center gap-4">
