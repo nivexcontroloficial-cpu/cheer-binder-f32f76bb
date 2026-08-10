@@ -33,6 +33,8 @@ import {
   Dialog,
   DialogContent,
   DialogClose,
+  DialogTitle,
+  DialogDescription,
 } from "@/components/ui/dialog";
 
 export const Route = createFileRoute("/passageiro/chat/$rideId")({
@@ -425,6 +427,7 @@ function ChatScreen() {
                       <AlertDialogFooter className="flex flex-col gap-2 mt-4 sm:flex-col">
                         <AlertDialogAction
                           onClick={() => {
+                            isBlockedRef.current = true;
                             setIsBlocked(true);
                             setIsTyping(false);
                             toast.info("Piloto bloqueado localmente.");
@@ -445,10 +448,14 @@ function ChatScreen() {
                         <AlertDialogTitle className="font-black italic tracking-tighter text-navy uppercase">
                           Desbloquear piloto?
                         </AlertDialogTitle>
+                        <AlertDialogDescription className="text-xs font-medium text-slate-500">
+                          Esta ação apenas desfaz o bloqueio local da demonstração.
+                        </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter className="flex flex-col gap-2 mt-4 sm:flex-col">
                         <AlertDialogAction
                           onClick={() => {
+                            isBlockedRef.current = false;
                             setIsBlocked(false);
                             toast.info("Piloto desbloqueado localmente.");
                           }}
@@ -670,7 +677,10 @@ function ChatScreen() {
             </div>
             <button
               type="button"
-              onClick={() => setIsBlocked(false)}
+              onClick={() => {
+                isBlockedRef.current = false;
+                setIsBlocked(false);
+              }}
               className="text-[9px] font-black uppercase tracking-widest text-red-600 underline"
             >
               Desbloquear
@@ -738,15 +748,13 @@ function ChatScreen() {
           </div>
 
           <div className="space-y-2">
-            <h3
-              className="text-xl font-black italic tracking-tighter text-navy uppercase"
-            >
+            <DialogTitle className="text-xl font-black italic tracking-tighter text-navy uppercase">
               Chamada protegida — simulação
-            </h3>
-            <p className="text-xs font-medium text-slate-500 leading-relaxed">
+            </DialogTitle>
+            <DialogDescription className="text-xs font-medium text-slate-500 leading-relaxed">
               Esta é uma demonstração visual. Nenhuma ligação será realizada e nenhum número
               pessoal será exibido ou utilizado.
-            </p>
+            </DialogDescription>
           </div>
 
           <div className="flex flex-col w-full gap-3 mt-4">
