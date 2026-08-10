@@ -712,6 +712,16 @@ function ActiveRideScreen() {
               </button>
               <button
                 type="button"
+                onClick={() => setIsDivergentVehicleAlertOpen(true)}
+                className="flex-1 flex flex-col items-center gap-2 py-3 bg-white border border-slate-100 rounded-2xl hover:bg-slate-50 transition-colors"
+              >
+                <AlertTriangle size={18} className="text-amber-500" aria-hidden="true" />
+                <span className="text-[9px] font-black uppercase tracking-widest text-navy">
+                  Veículo Divergente
+                </span>
+              </button>
+              <button
+                type="button"
                 onClick={handleCancelRide}
                 className="flex-1 flex flex-col items-center gap-2 py-3 bg-white border border-slate-100 rounded-2xl hover:bg-red-50 transition-colors group"
               >
