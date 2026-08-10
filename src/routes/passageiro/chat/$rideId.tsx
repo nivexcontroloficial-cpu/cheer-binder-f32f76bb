@@ -29,6 +29,11 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogClose,
+} from "@/components/ui/dialog";
 
 export const Route = createFileRoute("/passageiro/chat/$rideId")({
   component: ChatScreen,
@@ -95,6 +100,12 @@ function ChatScreen() {
   const [showReportConfirm, setShowReportConfirm] = useState(false);
   const [simulateFailure, setSimulateFailure] = useState(false);
   const [isBlocked, setIsBlocked] = useState(false);
+  const isBlockedRef = useRef(isBlocked);
+
+  useEffect(() => {
+    isBlockedRef.current = isBlocked;
+  }, [isBlocked]);
+
   const [lastActivity, setLastActivity] = useState<string>("agora");
 
   const [messages, setMessages] = useState<Message[]>(DEFAULT_MESSAGES);
@@ -229,10 +240,15 @@ function ChatScreen() {
             );
 
             // Resposta simulada após visualização
-            if (!isBlocked) {
+            if (!isBlockedRef.current) {
               addTimer(() => {
+                if (isBlockedRef.current) return;
                 setIsTyping(true);
                 addTimer(() => {
+                  if (isBlockedRef.current) {
+                    setIsTyping(false);
+                    return;
+                  }
                   setIsTyping(false);
                   const reply: Message = {
                     id: (Date.now() + 1).toString(),
@@ -263,10 +279,15 @@ function ChatScreen() {
         addTimer(() => {
           setMessages((prev) => prev.map((m) => (m.id === id ? { ...m, status: "read" } : m)));
 
-          if (!isBlocked) {
+          if (!isBlockedRef.current) {
             addTimer(() => {
+              if (isBlockedRef.current) return;
               setIsTyping(true);
               addTimer(() => {
+                if (isBlockedRef.current) {
+                  setIsTyping(false);
+                  return;
+                }
                 setIsTyping(false);
                 const reply: Message = {
                   id: (Date.now() + 1).toString(),
@@ -379,27 +400,69 @@ function ChatScreen() {
                   </span>
                 </button>
 
-                <button
-                  type="button"
-                  onClick={() => {
-                    setIsBlocked(!isBlocked);
-                    setShowReportConfirm(false);
-                    toast.info(
-                      isBlocked
-                        ? "Piloto desbloqueado localmente."
-                        : "Bloqueio somente nesta demonstração.",
-                      {
-                        description: isBlocked ? "" : "O piloto não poderá mais enviar mensagens.",
-                      },
-                    );
-                  }}
-                  className={`flex items-center gap-3 w-full p-4 rounded-2xl transition-colors text-left ${isBlocked ? "bg-emerald-50 text-emerald-600 hover:bg-emerald-100" : "bg-slate-50 text-navy hover:bg-slate-100"}`}
-                >
-                  <Ban size={18} aria-hidden="true" />
-                  <span className="text-xs font-bold uppercase tracking-widest">
-                    {isBlocked ? "Desbloquear Piloto" : "Bloquear Piloto — simulado"}
-                  </span>
-                </button>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <button
+                      type="button"
+                      className={`flex items-center gap-3 w-full p-4 rounded-2xl transition-colors text-left ${isBlocked ? "bg-emerald-50 text-emerald-600 hover:bg-emerald-100" : "bg-slate-50 text-navy hover:bg-slate-100"}`}
+                    >
+                      <Ban size={18} aria-hidden="true" />
+                      <span className="text-xs font-bold uppercase tracking-widest">
+                        {isBlocked ? "Desbloquear Piloto" : "Bloquear Piloto — simulado"}
+                      </span>
+                    </button>
+                  </AlertDialogTrigger>
+                  {!isBlocked && (
+                    <AlertDialogContent className="rounded-3xl max-w-[90vw] w-[320px]">
+                      <AlertDialogHeader>
+                        <AlertDialogTitle className="font-black italic tracking-tighter text-navy uppercase">
+                          Bloquear piloto?
+                        </AlertDialogTitle>
+                        <AlertDialogDescription className="text-xs font-medium text-slate-500">
+                          Esta ação é apenas local para demonstração e não afeta contas reais ou o serviço de transporte.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter className="flex flex-col gap-2 mt-4 sm:flex-col">
+                        <AlertDialogAction
+                          onClick={() => {
+                            setIsBlocked(true);
+                            setIsTyping(false);
+                            toast.info("Piloto bloqueado localmente.");
+                          }}
+                          className="w-full bg-navy text-white rounded-2xl text-xs font-bold uppercase tracking-widest h-12"
+                        >
+                          Bloquear (Simulado)
+                        </AlertDialogAction>
+                        <AlertDialogCancel className="w-full rounded-2xl border-slate-200 text-xs font-bold uppercase tracking-widest h-12">
+                          Cancelar
+                        </AlertDialogCancel>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  )}
+                  {isBlocked && (
+                    <AlertDialogContent className="rounded-3xl max-w-[90vw] w-[320px]">
+                      <AlertDialogHeader>
+                        <AlertDialogTitle className="font-black italic tracking-tighter text-navy uppercase">
+                          Desbloquear piloto?
+                        </AlertDialogTitle>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter className="flex flex-col gap-2 mt-4 sm:flex-col">
+                        <AlertDialogAction
+                          onClick={() => {
+                            setIsBlocked(false);
+                            toast.info("Piloto desbloqueado localmente.");
+                          }}
+                          className="w-full bg-navy text-white rounded-2xl text-xs font-bold uppercase tracking-widest h-12"
+                        >
+                          Desbloquear
+                        </AlertDialogAction>
+                        <AlertDialogCancel className="w-full rounded-2xl border-slate-200 text-xs font-bold uppercase tracking-widest h-12">
+                          Cancelar
+                        </AlertDialogCancel>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  )}
+                </AlertDialog>
 
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
@@ -665,56 +728,49 @@ function ChatScreen() {
         </div>
       </footer>
 
-      {showProtectedCall && (
-        <div
-          className="fixed inset-0 bg-navy/60 backdrop-blur-sm z-50 flex items-center justify-center p-6 animate-in fade-in duration-300"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="call-title"
-        >
-          <div className="bg-white rounded-[40px] w-full max-w-sm p-10 flex flex-col items-center text-center gap-6 shadow-2xl animate-in zoom-in duration-300">
-            <div
-              className="h-20 w-20 bg-blue-50 rounded-full flex items-center justify-center text-blue-600"
-              aria-hidden="true"
+      <Dialog open={showProtectedCall} onOpenChange={setShowProtectedCall}>
+        <DialogContent className="rounded-[40px] w-full max-w-sm p-10 flex flex-col items-center text-center gap-6 shadow-2xl">
+          <div
+            className="h-20 w-20 bg-blue-50 rounded-full flex items-center justify-center text-blue-600"
+            aria-hidden="true"
+          >
+            <Phone size={40} strokeWidth={2} className="animate-pulse" />
+          </div>
+
+          <div className="space-y-2">
+            <h3
+              className="text-xl font-black italic tracking-tighter text-navy uppercase"
             >
-              <Phone size={40} strokeWidth={2} className="animate-pulse" />
-            </div>
+              Chamada protegida — simulação
+            </h3>
+            <p className="text-xs font-medium text-slate-500 leading-relaxed">
+              Esta é uma demonstração visual. Nenhuma ligação será realizada e nenhum número
+              pessoal será exibido ou utilizado.
+            </p>
+          </div>
 
-            <div className="space-y-2">
-              <h3
-                id="call-title"
-                className="text-xl font-black italic tracking-tighter text-navy uppercase"
-              >
-                Chamada protegida — simulação
-              </h3>
-              <p className="text-xs font-medium text-slate-500 leading-relaxed">
-                Esta é uma demonstração visual. Nenhuma ligação será realizada e nenhum número
-                pessoal será exibido ou utilizado.
-              </p>
-            </div>
-
-            <div className="flex flex-col w-full gap-3 mt-4">
-              <Button
-                type="button"
-                onClick={() => {
-                  toast.success("Demonstração concluída: nenhuma ligação foi realizada.");
-                  setShowProtectedCall(false);
-                }}
-                className="w-full bg-navy text-white h-14 rounded-2xl text-xs font-black uppercase tracking-widest focus:ring-2 focus:ring-navy focus:outline-offset-2"
-              >
-                Encerrar demonstração
-              </Button>
+          <div className="flex flex-col w-full gap-3 mt-4">
+            <Button
+              type="button"
+              onClick={() => {
+                toast.success("Demonstração concluída: nenhuma ligação foi realizada.");
+                setShowProtectedCall(false);
+              }}
+              className="w-full bg-navy text-white h-14 rounded-2xl text-xs font-black uppercase tracking-widest focus:ring-2 focus:ring-navy focus:outline-offset-2"
+            >
+              Encerrar demonstração
+            </Button>
+            <DialogClose asChild>
               <button
                 type="button"
-                onClick={() => setShowProtectedCall(false)}
                 className="text-xs font-bold text-slate-400 uppercase tracking-widest py-2 active:scale-95 transition-transform"
               >
                 Voltar
               </button>
-            </div>
+            </DialogClose>
           </div>
-        </div>
-      )}
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
