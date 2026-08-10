@@ -108,3 +108,7 @@
       0 4px 6px -4px rgb(17 24 39 / 0.08);
   }
 }
+
+#lovable-badge {
+  display: none !important;
+}
