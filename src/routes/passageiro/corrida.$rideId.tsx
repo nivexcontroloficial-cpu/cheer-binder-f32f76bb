@@ -443,6 +443,9 @@ function ActiveRideScreen() {
             onClick={() => setIsDetailsOpen(!isDetailsOpen)}
             aria-expanded={isDetailsOpen}
             aria-controls="ride-details-panel"
+            aria-label={
+              isDetailsOpen ? "Recolher detalhes da corrida" : "Expandir detalhes da corrida"
+            }
             className="w-full flex justify-center py-4 cursor-pointer hover:bg-slate-50 transition-colors"
           >
             <div className="w-12 h-1.5 bg-slate-100 rounded-full"></div>
