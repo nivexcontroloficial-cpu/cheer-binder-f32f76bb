@@ -237,7 +237,8 @@ function ActiveRideScreen() {
       <div className="z-50 bg-amber-50 border-b border-amber-100 px-4 py-2 flex items-start gap-2 animate-in fade-in duration-700">
         <Info size={14} className="text-amber-600 mt-0.5 shrink-0" />
         <p className="text-[9px] font-bold text-amber-900 leading-tight">
-          Demonstração local: piloto, trajeto, localização e comunicação são simulados. Nenhum GPS real está ativo.
+          Demonstração local: piloto, trajeto, localização e comunicação são simulados. Nenhum GPS
+          real está ativo.
         </p>
       </div>
 
@@ -494,7 +495,10 @@ function ActiveRideScreen() {
                     alt="Foto fictícia do piloto Carlos H. para demonstração"
                     className="h-16 w-16 rounded-[22px] object-cover border-2 border-slate-50 shadow-sm"
                   />
-                  <div className="absolute -bottom-1 -right-1 bg-white p-1 rounded-lg shadow-sm border border-slate-100" aria-hidden="true">
+                  <div
+                    className="absolute -bottom-1 -right-1 bg-white p-1 rounded-lg shadow-sm border border-slate-100"
+                    aria-hidden="true"
+                  >
                     <Star size={10} fill="#F97316" className="text-rovya-orange" />
                   </div>
                 </div>
@@ -633,7 +637,11 @@ function ActiveRideScreen() {
                 onClick={handleCancelRide}
                 className="flex-1 flex flex-col items-center gap-2 py-3 bg-white border border-slate-100 rounded-2xl hover:bg-red-50 transition-colors group"
               >
-                <X size={18} className="text-slate-300 group-hover:text-red-500" aria-hidden="true" />
+                <X
+                  size={18}
+                  className="text-slate-300 group-hover:text-red-500"
+                  aria-hidden="true"
+                />
                 <span className="text-[9px] font-black uppercase tracking-widest text-slate-400 group-hover:text-red-500">
                   Cancelar
                 </span>
@@ -696,9 +704,7 @@ function ActiveRideScreen() {
                       <span className="text-slate-400 font-bold uppercase tracking-widest">
                         Detalhes
                       </span>
-                      <span className="font-bold text-slate-500 italic">
-                        {rideSummary.details}
-                      </span>
+                      <span className="font-bold text-slate-500 italic">{rideSummary.details}</span>
                     </div>
                   </div>
                   <div className="p-4 bg-white rounded-2xl border border-slate-100 flex gap-3">
@@ -720,7 +726,6 @@ function ActiveRideScreen() {
           </div>
         </div>
       </div>
-
 
       {/* Dialog de Veículo Divergente */}
       <AlertDialog open={isDivergentVehicleAlertOpen} onOpenChange={setIsDivergentVehicleAlertOpen}>
