@@ -99,30 +99,48 @@ function ConfirmRideScreen() {
       <main className="flex-1 flex flex-col">
         {/* Mapa Esquemático Reduzido */}
         <div className="h-48 bg-slate-200 relative overflow-hidden shrink-0 border-b border-slate-100">
-          <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(#111827 1px, transparent 1px)', backgroundSize: '24px 24px' }}></div>
-          
+          <div
+            className="absolute inset-0 opacity-10"
+            style={{
+              backgroundImage:
+                "radial-gradient(#111827 1px, transparent 1px)",
+              backgroundSize: "24px 24px",
+            }}
+            aria-hidden="true"
+          ></div>
+
           {/* Rota Mock (Linha pontilhada) */}
-          <svg className="absolute inset-0 w-full h-full">
-            <path 
-              d="M 50 150 Q 200 50 350 150" 
-              fill="none" 
-              stroke="#F97316" 
-              strokeWidth="4" 
-              strokeDasharray="8,8" 
+          <svg className="absolute inset-0 w-full h-full" aria-hidden="true">
+            <path
+              d="M 50 150 Q 200 50 350 150"
+              fill="none"
+              stroke="#F97316"
+              strokeWidth="4"
+              strokeDasharray="8,8"
               className="animate-[dash_20s_linear_infinite]"
             />
             <circle cx="50" cy="150" r="6" fill="#F97316" />
             <circle cx="350" cy="150" r="6" fill="#2F80ED" />
           </svg>
 
+          <div className="absolute top-2 right-6">
+            <span className="text-[8px] font-bold uppercase tracking-widest text-slate-500 bg-white/80 px-2 py-1 rounded-full">
+              Trajeto ilustrativo — nenhum GPS foi acessado
+            </span>
+          </div>
+
           <div className="absolute bottom-4 left-6 right-6 flex justify-between">
             <div className="bg-white/90 backdrop-blur px-3 py-1.5 rounded-xl border border-slate-100 shadow-sm flex items-center gap-2">
-              <Clock size={12} className="text-rovya-orange" />
-              <span className="text-[10px] font-black uppercase tracking-widest">{duration} min</span>
+              <Clock size={12} className="text-rovya-orange" aria-hidden="true" />
+              <span className="text-[10px] font-black uppercase tracking-widest">
+                {duration} min
+              </span>
             </div>
             <div className="bg-white/90 backdrop-blur px-3 py-1.5 rounded-xl border border-slate-100 shadow-sm flex items-center gap-2">
-              <MapPin size={12} className="text-rovya-blue" />
-              <span className="text-[10px] font-black uppercase tracking-widest">{distance} km</span>
+              <MapPin size={12} className="text-rovya-blue" aria-hidden="true" />
+              <span className="text-[10px] font-black uppercase tracking-widest">
+                {distance} km
+              </span>
             </div>
           </div>
         </div>
@@ -132,15 +150,30 @@ function ConfirmRideScreen() {
           {/* Resumo de Endereços */}
           <div className="bg-white rounded-[32px] p-6 border border-slate-100 shadow-sm space-y-4">
             <div className="flex items-center gap-4">
-              <div className="w-2 h-2 rounded-full bg-rovya-orange shrink-0"></div>
-              <p className="text-[10px] font-medium text-slate-500 truncate">Av. Getúlio Vargas, 890 - Centro</p>
+              <div
+                className="w-2 h-2 rounded-full bg-rovya-orange shrink-0"
+                aria-hidden="true"
+              ></div>
+              <p className="text-[10px] font-medium text-slate-500 truncate">
+                Centro, Jacarezinho
+              </p>
             </div>
-            <div className="h-4 border-l-2 border-dashed border-slate-100 ml-1"></div>
+            <div
+              className="h-4 border-l-2 border-dashed border-slate-100 ml-1"
+              aria-hidden="true"
+            ></div>
             <div className="flex items-center gap-4">
-              <MapPin size={14} className="text-rovya-blue shrink-0" />
-              <p className="text-[10px] font-black uppercase tracking-widest text-navy truncate">Shopping Jacarezinho</p>
+              <MapPin
+                size={14}
+                className="text-rovya-blue shrink-0"
+                aria-hidden="true"
+              />
+              <p className="text-[10px] font-black uppercase tracking-widest text-navy truncate">
+                Centro, Jacarezinho
+              </p>
             </div>
           </div>
+
 
           {/* Seleção de Pagamento */}
           <section className="space-y-3">
