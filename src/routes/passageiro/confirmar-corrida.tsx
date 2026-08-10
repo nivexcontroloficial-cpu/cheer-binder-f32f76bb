@@ -250,8 +250,6 @@ function ConfirmRideScreen() {
           </section>
         </div>
 
-
-        {/* Bottom Bar / Preço */}
         <div className="mt-auto bg-white border-t border-slate-100 p-8 rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] space-y-6">
           <div className="flex items-end justify-between">
             <div className="space-y-1">
