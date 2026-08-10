@@ -89,14 +89,17 @@ function ConfirmRideScreen() {
       <main className="flex-1 flex flex-col">
         {/* Aviso de Demonstração */}
         <div className="bg-orange-50 border-b border-orange-100 px-6 py-3 flex items-start gap-3">
-          <AlertTriangle size={16} className="text-rovya-orange shrink-0 mt-0.5" aria-hidden="true" />
+          <AlertTriangle
+            size={16}
+            className="text-rovya-orange shrink-0 mt-0.5"
+            aria-hidden="true"
+          />
           <p className="text-[10px] text-orange-800 font-medium leading-tight">
-            Demonstração local: preço, cupom, pagamento e solicitação de corrida são apenas simulações.
+            Demonstração local: preço, cupom, pagamento e solicitação de corrida
+            são apenas simulações.
           </p>
         </div>
 
-
-      <main className="flex-1 flex flex-col">
         {/* Mapa Esquemático Reduzido */}
         <div className="h-48 bg-slate-200 relative overflow-hidden shrink-0 border-b border-slate-100">
           <div
