@@ -365,7 +365,10 @@ function ActiveRideScreen() {
 
           {/* Estado de Chegada / Espera */}
           {hasArrived && (
-            <div className="animate-in zoom-in duration-500 bg-white border-2 border-emerald-500 px-5 py-4 rounded-3xl shadow-2xl flex flex-col gap-3">
+            <div
+              className="animate-in zoom-in duration-500 bg-white border-2 border-emerald-500 px-5 py-4 rounded-3xl shadow-2xl flex flex-col gap-3"
+              aria-live="polite"
+            >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="h-2 w-2 rounded-full bg-emerald-500 animate-ping"></div>
@@ -382,15 +385,15 @@ function ActiveRideScreen() {
               </div>
               <div className="space-y-1">
                 <p className="text-[11px] font-bold text-navy leading-tight">
-                  Identifique o piloto pela placa{" "}
+                  Confirme piloto e veículo:{" "}
                   <span className="underline decoration-emerald-500 decoration-2 underline-offset-2 tracking-widest">
-                    {pilot.vehicle.plate}
+                    {pilot.name}, {pilot.vehicle.model} {pilot.vehicle.color} ({pilot.vehicle.plate})
                   </span>
                 </p>
                 <p className="text-[9px] text-slate-500 font-medium">
                   {waitTime > 0
                     ? "O tempo de espera cortesia está correndo."
-                    : "Tempo esgotado. O piloto pode cancelar a qualquer momento."}
+                    : "Tempo esgotado. Nesta demonstração, o piloto pode cancelar por não comparecimento."}
                 </p>
               </div>
             </div>
