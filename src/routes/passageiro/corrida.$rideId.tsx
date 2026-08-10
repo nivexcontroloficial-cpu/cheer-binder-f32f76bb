@@ -132,11 +132,6 @@ function ActiveRideScreen() {
         if (progress > 50 && eta === 3) setEta(2);
         if (progress > 75 && eta === 2) setEta(1);
         if (progress >= 95 && eta === 1) setEta(0);
-
-        // Auto-chegada se atingir 100%
-        if (progress >= 99 && !hasArrived) {
-          handlePilotArrival();
-        }
       }
     }, 1500);
 
@@ -155,9 +150,12 @@ function ActiveRideScreen() {
         setWaitTime((prev) => prev - 1);
       }, 1000);
     } else if (waitTime === 0 && isWaitTimerActive) {
-      toast.error("O piloto já pode cancelar por não comparecimento.", {
-        duration: 8000,
-      });
+      toast.error(
+        "Tempo esgotado. Nesta demonstração, o piloto pode cancelar por não comparecimento.",
+        {
+          duration: 8000,
+        },
+      );
       setIsWaitTimerActive(false); // Para o timer no zero
     }
     return () => clearInterval(timer);
@@ -168,11 +166,35 @@ function ActiveRideScreen() {
     setEta(0);
     setProgress(100);
     setDistanceMeters(0);
+    setWaitTime(300);
     setIsWaitTimerActive(true);
     toast.success("O piloto Carlos H. chegou ao local de embarque!", {
       duration: 5000,
       icon: <CheckCircle2 className="text-emerald-500" />,
     });
+  };
+
+  const handleSimulate500m = () => {
+    setDistanceMeters(500);
+    setProgress(80); // 80% de 2500m é onde começa os 500m
+    setEta(1);
+    if (!isNearAlertVisible) {
+      setIsNearAlertVisible(true);
+      toast.info("Simulação: Seu piloto está próximo!", {
+        icon: <Info size={16} className="text-blue-500" />,
+        duration: 5000,
+      });
+    }
+  };
+
+  const handleResetEmbark = () => {
+    setHasArrived(false);
+    setIsWaitTimerActive(false);
+    setWaitTime(300);
+    setProgress(0);
+    setDistanceMeters(2500);
+    setEta(4);
+    setIsNearAlertVisible(false);
   };
 
   const formatWaitTime = (seconds: number) => {
@@ -326,7 +348,10 @@ function ActiveRideScreen() {
 
           {/* Banner de Proximidade (500m) */}
           {distanceMeters <= 500 && !hasArrived && (
-            <div className="animate-in slide-in-from-top duration-500 bg-rovya-orange text-white px-4 py-3 rounded-2xl shadow-xl flex items-center gap-3 border border-white/20">
+            <div
+              className="animate-in slide-in-from-top duration-500 bg-rovya-orange text-white px-4 py-3 rounded-2xl shadow-xl flex items-center gap-3 border border-white/20"
+              aria-live="polite"
+            >
               <div className="bg-white/20 p-2 rounded-xl">
                 <Navigation size={18} className="animate-pulse" aria-hidden="true" />
               </div>
@@ -335,7 +360,7 @@ function ActiveRideScreen() {
                   Piloto Próximo
                 </span>
                 <span className="text-xs font-bold leading-tight">
-                  O Carlos H. está a menos de 500m.
+                  O Carlos H. está a menos de 500m. (Simulação)
                 </span>
               </div>
             </div>
@@ -343,7 +368,10 @@ function ActiveRideScreen() {
 
           {/* Estado de Chegada / Espera */}
           {hasArrived && (
-            <div className="animate-in zoom-in duration-500 bg-white border-2 border-emerald-500 px-5 py-4 rounded-3xl shadow-2xl flex flex-col gap-3">
+            <div
+              className="animate-in zoom-in duration-500 bg-white border-2 border-emerald-500 px-5 py-4 rounded-3xl shadow-2xl flex flex-col gap-3"
+              aria-live="polite"
+            >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   <div className="h-2 w-2 rounded-full bg-emerald-500 animate-ping"></div>
@@ -360,15 +388,15 @@ function ActiveRideScreen() {
               </div>
               <div className="space-y-1">
                 <p className="text-[11px] font-bold text-navy leading-tight">
-                  Identifique o piloto pela placa{" "}
+                  Confirme piloto e veículo:{" "}
                   <span className="underline decoration-emerald-500 decoration-2 underline-offset-2 tracking-widest">
-                    {pilot.vehicle.plate}
+                    {pilot.name}, {pilot.vehicle.model} {pilot.vehicle.color} ({pilot.vehicle.plate})
                   </span>
                 </p>
                 <p className="text-[9px] text-slate-500 font-medium">
                   {waitTime > 0
                     ? "O tempo de espera cortesia está correndo."
-                    : "Tempo esgotado. O piloto pode cancelar a qualquer momento."}
+                    : "Tempo esgotado. Nesta demonstração, o piloto pode cancelar por não comparecimento."}
                 </p>
               </div>
             </div>
@@ -409,27 +437,74 @@ function ActiveRideScreen() {
             <span className="w-full text-[8px] font-black text-slate-400 uppercase tracking-widest text-center mb-1">
               Controles locais da demonstração
             </span>
-            {[
-              { id: "stable", label: "Sinal Estável", icon: Signal },
-              { id: "unstable", label: "GPS Instável", icon: SignalLow },
-              { id: "stopped", label: "Piloto Parado", icon: AlertTriangle },
-              { id: "reconnecting", label: "Reconectando", icon: WifiOff },
-            ].map((btn) => (
+            <div className="w-full flex flex-wrap gap-2 justify-center mb-2">
+              {[
+                { id: "stable", label: "Sinal Estável", icon: Signal },
+                { id: "unstable", label: "GPS Instável", icon: SignalLow },
+                { id: "stopped", label: "Piloto Parado", icon: AlertTriangle },
+                { id: "reconnecting", label: "Reconectando", icon: WifiOff },
+              ].map((btn) => (
+                <button
+                  key={btn.id}
+                  type="button"
+                  onClick={() => setConnection(btn.id as ConnectionStatus)}
+                  aria-pressed={connection === btn.id}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[9px] font-bold uppercase transition-all ${
+                    connection === btn.id
+                      ? "bg-navy text-white shadow-md scale-105"
+                      : "bg-white text-slate-500 border border-slate-200 hover:border-slate-300"
+                  }`}
+                >
+                  <btn.icon size={10} aria-hidden="true" />
+                  {btn.label}
+                </button>
+              ))}
+            </div>
+            <div className="w-full flex flex-wrap gap-2 justify-center">
               <button
-                key={btn.id}
                 type="button"
-                onClick={() => setConnection(btn.id as ConnectionStatus)}
-                aria-pressed={connection === btn.id}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[9px] font-bold uppercase transition-all ${
-                  connection === btn.id
-                    ? "bg-navy text-white shadow-md scale-105"
-                    : "bg-white text-slate-500 border border-slate-200 hover:border-slate-300"
-                }`}
+                onClick={handleSimulate500m}
+                className="px-3 py-1.5 bg-white text-rovya-orange border border-orange-200 rounded-full text-[9px] font-black uppercase hover:bg-orange-50 transition-all"
               >
-                <btn.icon size={10} aria-hidden="true" />
-                {btn.label}
+                Simular 500m
               </button>
-            ))}
+              <button
+                type="button"
+                onClick={handlePilotArrival}
+                disabled={hasArrived}
+                className="px-3 py-1.5 bg-white text-emerald-600 border border-emerald-200 rounded-full text-[9px] font-black uppercase hover:bg-emerald-50 transition-all disabled:opacity-50"
+              >
+                Simular Chegada
+              </button>
+              {hasArrived && (
+                <>
+                  <button
+                    type="button"
+                    onClick={() => setIsWaitTimerActive(!isWaitTimerActive)}
+                    className="px-3 py-1.5 bg-white text-navy border border-slate-200 rounded-full text-[9px] font-black uppercase hover:bg-slate-50 transition-all"
+                  >
+                    {isWaitTimerActive ? "Pausar Espera" : "Retomar Espera"}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setWaitTime(300);
+                      setIsWaitTimerActive(true);
+                    }}
+                    className="px-3 py-1.5 bg-white text-navy border border-slate-200 rounded-full text-[9px] font-black uppercase hover:bg-slate-50 transition-all"
+                  >
+                    Reiniciar Espera
+                  </button>
+                </>
+              )}
+              <button
+                type="button"
+                onClick={handleResetEmbark}
+                className="px-3 py-1.5 bg-white text-slate-400 border border-slate-200 rounded-full text-[9px] font-black uppercase hover:bg-slate-50 transition-all"
+              >
+                Resetar Embarque
+              </button>
+            </div>
           </div>
 
           {/* Handle de expansão */}
@@ -449,16 +524,19 @@ function ActiveRideScreen() {
           <div id="ride-details-panel" className="px-8 pb-8 space-y-6 overflow-y-auto">
             {/* PIN de Segurança (Aparece após chegada) */}
             {hasArrived && (
-              <div className="animate-in fade-in slide-in-from-top-4 duration-700 pt-2">
+              <div
+                className="animate-in fade-in slide-in-from-top-4 duration-700 pt-2"
+                aria-live="polite"
+              >
                 <div className="bg-navy rounded-3xl p-6 text-white shadow-xl relative overflow-hidden group">
                   <div className="absolute top-0 right-0 p-4 opacity-10" aria-hidden="true">
                     <Lock size={60} />
                   </div>
                   <div className="relative z-10 flex flex-col items-center text-center gap-2">
                     <span className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400">
-                      PIN de Segurança
+                      PIN da Demonstração
                     </span>
-                    <div className="flex gap-3 my-1">
+                    <div className="flex gap-3 my-1" role="img" aria-label={`PIN de segurança: ${pin}`}>
                       {pin.split("").map((digit, i) => (
                         <div
                           key={i}
@@ -471,9 +549,8 @@ function ActiveRideScreen() {
                       ))}
                     </div>
                     <p className="text-[10px] text-slate-300 font-medium max-w-[200px] leading-relaxed">
-                      Informe este código ao piloto{" "}
-                      <span className="text-white font-bold italic underline">após</span> subir no
-                      veículo.
+                      Confirme Carlos H., Honda CG 160 e placa {pilot.vehicle.plate} antes de informar
+                      o PIN ao piloto.
                     </p>
                   </div>
                 </div>
@@ -535,6 +612,13 @@ function ActiveRideScreen() {
             {hasArrived && (
               <div className="animate-in fade-in slide-in-from-bottom-2 duration-500 space-y-3 pt-2">
                 <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => handleQuickMessage("Estou indo!")}
+                    className="flex-1 py-3 px-4 bg-slate-50 border border-slate-100 rounded-2xl text-[10px] font-black uppercase tracking-widest text-navy hover:bg-slate-100 transition-all"
+                  >
+                    Estou indo
+                  </button>
                   <button
                     type="button"
                     onClick={() => handleQuickMessage("Já estou saindo!")}
@@ -624,6 +708,16 @@ function ActiveRideScreen() {
                 <ShieldCheck size={18} className="text-rovya-blue" aria-hidden="true" />
                 <span className="text-[9px] font-black uppercase tracking-widest text-navy">
                   Segurança
+                </span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsDivergentVehicleAlertOpen(true)}
+                className="flex-1 flex flex-col items-center gap-2 py-3 bg-white border border-slate-100 rounded-2xl hover:bg-slate-50 transition-colors"
+              >
+                <AlertTriangle size={18} className="text-amber-500" aria-hidden="true" />
+                <span className="text-[9px] font-black uppercase tracking-widest text-navy">
+                  Veículo Divergente
                 </span>
               </button>
               <button
@@ -727,7 +821,7 @@ function ActiveRideScreen() {
           <AlertDialogHeader>
             <AlertDialogTitle className="text-xl font-black italic uppercase tracking-tight text-red-600 flex items-center gap-2">
               <AlertTriangle size={24} aria-hidden="true" />
-              Veículo Diferente?
+              Piloto ou Veículo Diferente?
             </AlertDialogTitle>
             <AlertDialogDescription className="text-xs text-slate-500 leading-relaxed pt-2">
               Por sua segurança, nunca embarque em um veículo com placa ou modelo diferente do que
@@ -738,17 +832,17 @@ function ActiveRideScreen() {
             <div className="p-4 bg-red-50 rounded-2xl border border-red-100 flex gap-3">
               <ShieldCheck size={18} className="text-red-600 shrink-0" aria-hidden="true" />
               <p className="text-[10px] text-red-700 font-bold leading-relaxed">
-                Reportar esta divergência cancelará a corrida imediatamente sem penalidades.
-                (Simulação de Segurança Rovya)
+                Este motivo não penaliza o passageiro. Nenhuma denúncia real foi enviada nesta
+                demonstração.
               </p>
             </div>
           </div>
           <AlertDialogFooter className="flex-col gap-2">
             <AlertDialogAction
-              onClick={confirmReportDivergent}
+              onClick={handleReportDivergent}
               className="w-full py-6 rounded-2xl bg-red-600 hover:bg-red-700 text-white font-black italic uppercase tracking-widest border-none"
             >
-              Reportar e Cancelar
+              Reportar Problema
             </AlertDialogAction>
             <AlertDialogCancel className="w-full py-6 rounded-2xl border-slate-100 text-[10px] font-black uppercase tracking-widest text-slate-400">
               Voltar
