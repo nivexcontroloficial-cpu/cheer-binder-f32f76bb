@@ -5,7 +5,7 @@ import {
   Outlet,
   useLocation,
 } from "@tanstack/react-router";
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect } from "react";
 import {
   ArrowLeft,
   MessageSquare,
