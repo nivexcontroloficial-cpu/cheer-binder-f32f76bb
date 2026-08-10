@@ -205,7 +205,13 @@ function ActiveRideScreen() {
 
       <div className="flex-1 relative">
          <div className="p-6">
-           <Button onClick={handleStartRide}>Simular Início da Corrida</Button>
+                <Button
+                  onClick={handleStartRide}
+                  className="w-full py-6 rounded-2xl bg-rovya-orange hover:bg-rovya-orange/90 text-white font-black italic uppercase tracking-widest shadow-lg active:scale-[0.98] transition-all"
+                >
+                  <Navigation size={18} className="mr-2 rotate-45" fill="currentColor" />
+                  Simular Início da Corrida
+                </Button>
            <Button onClick={handleSafety}>Segurança</Button>
          </div>
       </div>
