@@ -213,7 +213,6 @@ function ActiveRideScreen() {
     navigate({ to: "/passageiro/denunciar/$rideId", params: { rideId: rideId || "" } });
   };
 
-
   const handleCall = () => {
     toast.info("Chamada protegida simulada. Nenhuma ligação real foi iniciada.");
   };
@@ -387,7 +386,8 @@ function ActiveRideScreen() {
                 <p className="text-[11px] font-bold text-navy leading-tight">
                   Confirme piloto e veículo:{" "}
                   <span className="underline decoration-emerald-500 decoration-2 underline-offset-2 tracking-widest">
-                    {pilot.name}, {pilot.vehicle.model} {pilot.vehicle.color} ({pilot.vehicle.plate})
+                    {pilot.name}, {pilot.vehicle.model} {pilot.vehicle.color} ({pilot.vehicle.plate}
+                    )
                   </span>
                 </p>
                 <p className="text-[9px] text-slate-500 font-medium">
@@ -534,7 +534,11 @@ function ActiveRideScreen() {
                     <span className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400">
                       PIN da Demonstração
                     </span>
-                    <div className="flex gap-3 my-1" role="img" aria-label={`PIN de segurança: ${pin}`}>
+                    <div
+                      className="flex gap-3 my-1"
+                      role="img"
+                      aria-label={`PIN de segurança: ${pin}`}
+                    >
                       {pin.split("").map((digit, i) => (
                         <div
                           key={i}
@@ -547,8 +551,8 @@ function ActiveRideScreen() {
                       ))}
                     </div>
                     <p className="text-[10px] text-slate-300 font-medium max-w-[200px] leading-relaxed">
-                      Confirme Carlos H., Honda CG 160 e placa {pilot.vehicle.plate} antes de informar
-                      o PIN ao piloto.
+                      Confirme Carlos H., Honda CG 160 e placa {pilot.vehicle.plate} antes de
+                      informar o PIN ao piloto.
                     </p>
                   </div>
                 </div>
