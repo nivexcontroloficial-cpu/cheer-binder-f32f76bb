@@ -1,17 +1,6 @@
-import { createFileRoute, useNavigate, useParams, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
-import {
-  Shield,
-  ChevronRight,
-  Clock,
-  MapPin,
-  Navigation,
-  ShieldAlert,
-  AlertTriangle,
-  Star,
-  CheckCircle2,
-  Info,
-} from "lucide-react";
+import { Shield, MapPin, Navigation, AlertTriangle, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import {
