@@ -524,16 +524,19 @@ function ActiveRideScreen() {
           <div id="ride-details-panel" className="px-8 pb-8 space-y-6 overflow-y-auto">
             {/* PIN de Segurança (Aparece após chegada) */}
             {hasArrived && (
-              <div className="animate-in fade-in slide-in-from-top-4 duration-700 pt-2">
+              <div
+                className="animate-in fade-in slide-in-from-top-4 duration-700 pt-2"
+                aria-live="polite"
+              >
                 <div className="bg-navy rounded-3xl p-6 text-white shadow-xl relative overflow-hidden group">
                   <div className="absolute top-0 right-0 p-4 opacity-10" aria-hidden="true">
                     <Lock size={60} />
                   </div>
                   <div className="relative z-10 flex flex-col items-center text-center gap-2">
                     <span className="text-[9px] font-black uppercase tracking-[0.2em] text-slate-400">
-                      PIN de Segurança
+                      PIN da Demonstração
                     </span>
-                    <div className="flex gap-3 my-1">
+                    <div className="flex gap-3 my-1" role="img" aria-label={`PIN de segurança: ${pin}`}>
                       {pin.split("").map((digit, i) => (
                         <div
                           key={i}
@@ -546,9 +549,8 @@ function ActiveRideScreen() {
                       ))}
                     </div>
                     <p className="text-[10px] text-slate-300 font-medium max-w-[200px] leading-relaxed">
-                      Informe este código ao piloto{" "}
-                      <span className="text-white font-bold italic underline">após</span> subir no
-                      veículo.
+                      Confirme Carlos H., Honda CG 160 e placa {pilot.vehicle.plate} antes de informar
+                      o PIN ao piloto.
                     </p>
                   </div>
                 </div>
