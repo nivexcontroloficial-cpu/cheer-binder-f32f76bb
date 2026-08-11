@@ -398,7 +398,7 @@ function ChatScreen() {
             className="h-11 w-11 bg-slate-50 rounded-xl flex items-center justify-center text-navy active:scale-95 transition-all focus:ring-2 focus:ring-navy focus:outline-none"
             aria-label="Voltar para detalhes da corrida"
           >
-            <ArrowLeft size={20} strokeWidth={2.5} />
+            <ArrowLeft size={20} strokeWidth={2.5} aria-hidden="true" />
           </button>
           <div className="flex items-center gap-3">
             <div className="relative">
