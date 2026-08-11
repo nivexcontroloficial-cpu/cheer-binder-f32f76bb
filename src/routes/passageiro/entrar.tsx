@@ -182,6 +182,7 @@ function LoginScreen() {
       onSubmit={handlePhoneSubmit}
       className="flex flex-col gap-6 w-full animate-in fade-in slide-in-from-left-4 duration-500"
     >
+      <h1 className="sr-only">Entrada com telefone fictício</h1>
       <div className="space-y-2">
         <label
           htmlFor="phone-input"
@@ -221,8 +222,16 @@ function LoginScreen() {
         type="submit"
         disabled={isLoading}
         className="w-full bg-navy text-white h-14 rounded-2xl font-black uppercase tracking-widest text-[11px] flex items-center justify-center gap-2 hover:bg-navy/90 transition-all active:scale-95 disabled:opacity-50 rovya-shadow"
+        aria-busy={isLoading}
       >
-        {isLoading ? <Loader2 size={18} className="animate-spin" /> : "Enviar Código"}
+        {isLoading ? (
+          <>
+            <Loader2 size={18} className="animate-spin" aria-hidden="true" />
+            <span className="sr-only">Enviando código simulado</span>
+          </>
+        ) : (
+          "Enviar Código"
+        )}
         {!isLoading && <ArrowRight size={18} strokeWidth={2.5} aria-hidden="true" />}
       </button>
 
@@ -241,6 +250,7 @@ function LoginScreen() {
       onSubmit={handleOtpSubmit}
       className="flex flex-col gap-6 w-full animate-in fade-in slide-in-from-right-4 duration-500"
     >
+      <h1 className="sr-only">Verificação de código simulada</h1>
       <div className="space-y-2 text-center">
         <div className="h-14 w-14 bg-rovya-orange/10 rounded-2xl flex items-center justify-center text-rovya-orange mx-auto mb-4">
           <CheckCircle2 size={24} strokeWidth={2.5} aria-hidden="true" />
@@ -283,8 +293,16 @@ function LoginScreen() {
           type="submit"
           disabled={isLoading || otp.length < 6}
           className="w-full bg-navy text-white h-14 rounded-2xl font-black uppercase tracking-widest text-[11px] flex items-center justify-center gap-2 hover:bg-navy/90 transition-all active:scale-95 disabled:opacity-50 rovya-shadow"
+          aria-busy={isLoading}
         >
-          {isLoading ? <Loader2 size={18} className="animate-spin" /> : "Verificar Código"}
+          {isLoading ? (
+            <>
+              <Loader2 size={18} className="animate-spin" aria-hidden="true" />
+              <span className="sr-only">Verificando código simulado</span>
+            </>
+          ) : (
+            "Verificar Código"
+          )}
         </button>
 
         <button
