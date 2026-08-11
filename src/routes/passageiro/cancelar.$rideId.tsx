@@ -1,6 +1,6 @@
-import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
+import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import { useState } from "react";
-import { ChevronLeft, Info } from "lucide-react";
+import { ChevronLeft, Info, AlertCircle } from "lucide-react";
 import { calculateCancellationConsequence } from "@/services/mock/account-health";
 import {
   AlertDialog,
@@ -21,7 +21,6 @@ export const Route = createFileRoute("/passageiro/cancelar/$rideId")({
 
 function CancelarCorrida() {
   const { rideId } = useParams({ from: "/passageiro/cancelar/$rideId" });
-  const navigate = useNavigate();
   const [selectedReason, setSelectedReason] = useState<string | null>(null);
 
   const isValidRide = rideId === "ride-active-mock";
@@ -35,9 +34,10 @@ function CancelarCorrida() {
     { id: "pagamento", label: "Divergência de pagamento" },
   ];
 
-  const consequence = selectedReason && isValidRide
-    ? calculateCancellationConsequence("arrived", selectedReason)
-    : null;
+  const consequence =
+    selectedReason && isValidRide
+      ? calculateCancellationConsequence("arrived", selectedReason)
+      : null;
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat("pt-BR", {
@@ -46,30 +46,41 @@ function CancelarCorrida() {
     }).format(value);
   };
 
-  const handleConfirmCancel = () => {
-    toast.info("Cancelamento simulado: nenhuma corrida real foi cancelada.");
-    navigate({ to: "/passageiro/inicio" });
-  };
-
   if (!isValidRide) {
     return (
-      <div className="flex min-h-screen flex-col bg-white p-6 items-center text-center justify-center">
-        <div className="h-20 w-20 bg-slate-50 rounded-[32px] flex items-center justify-center mb-6">
-          <Info size={40} className="text-slate-300" />
+      <div className="flex min-h-screen flex-col bg-white p-6 items-center text-center justify-center font-sans">
+        <div className="mb-6 p-4 bg-amber-50 border border-amber-100 rounded-2xl flex gap-3 items-center max-w-sm">
+          <Info size={18} className="text-amber-600 shrink-0" aria-hidden="true" />
+          <p className="text-[10px] text-amber-700 font-black uppercase tracking-wider text-left">
+            Aviso: Demonstração local do sistema Rovya.
+          </p>
         </div>
+
+        <div className="h-20 w-20 bg-slate-50 rounded-[32px] flex items-center justify-center mb-6">
+          <AlertCircle size={40} className="text-slate-300" aria-hidden="true" />
+        </div>
+
         <h1 className="text-2xl font-black italic uppercase tracking-tighter text-navy mb-4">
-          ID Inválido
+          Corrida simulada não encontrada
         </h1>
+
         <p className="text-slate-500 text-sm leading-relaxed mb-8 max-w-[280px]">
-          Não foi possível localizar os dados desta corrida para cancelamento na simulação local.
+          Nenhuma corrida real foi consultada. Este identificador não corresponde à corrida ativa da demo.
         </p>
-        <div className="w-full space-y-3">
-          <button
-            onClick={() => navigate({ to: "/passageiro/inicio" })}
-            className="w-full bg-navy text-white h-14 rounded-2xl font-black uppercase italic tracking-widest focus-visible:ring-2 focus-visible:ring-emerald-500 outline-none"
+
+        <div className="w-full space-y-3 max-w-xs">
+          <Link
+            to="/passageiro/corridas"
+            className="w-full flex items-center justify-center bg-navy text-white h-14 rounded-2xl font-black uppercase italic tracking-widest focus-visible:ring-2 focus-visible:ring-emerald-500 outline-none transition-all hover:bg-navy/90 min-h-[44px]"
           >
-            Voltar ao início
-          </button>
+            Ver Corridas
+          </Link>
+          <Link
+            to="/passageiro/inicio"
+            className="w-full flex items-center justify-center bg-white border border-slate-200 text-slate-500 h-14 rounded-2xl font-black uppercase italic tracking-widest focus-visible:ring-2 focus-visible:ring-emerald-500 outline-none transition-all hover:bg-slate-50 min-h-[44px]"
+          >
+            Voltar ao Início
+          </Link>
         </div>
       </div>
     );
@@ -190,8 +201,11 @@ function CancelarCorrida() {
               </AlertDialogCancel>
               <AlertDialogAction
                 type="button"
-                onClick={handleConfirmCancel}
-                className="rounded-xl bg-rovya-red text-white font-black uppercase hover:bg-red-700"
+                onClick={() => {
+                  toast.info("Cancelamento simulado: nenhuma corrida real foi cancelada.");
+                  window.location.href = "/passageiro/inicio";
+                }}
+                className="rounded-xl bg-rovya-red text-white font-black uppercase hover:bg-red-700 focus-visible:ring-2 focus-visible:ring-emerald-500 outline-none"
               >
                 Confirmar simulação
               </AlertDialogAction>
