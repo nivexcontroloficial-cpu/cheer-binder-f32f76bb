@@ -96,32 +96,49 @@ function VerificationScreen() {
 
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    setErrors({ ...errors, photo: "" });
+    setErrors((prev) => ({ ...prev, photo: "" }));
 
     if (file) {
       if (!file.type.startsWith("image/")) {
-        setErrors({ ...errors, photo: "Por favor, selecione apenas arquivos de imagem." });
+        setErrors((prev) => ({
+          ...prev,
+          photo: "Por favor, selecione apenas arquivos de imagem.",
+        }));
         if (fileInputRef.current) fileInputRef.current.value = "";
         return;
       }
 
       const maxSize = 5 * 1024 * 1024; // 5MB
       if (file.size > maxSize) {
-        setErrors({ ...errors, photo: "A imagem deve ter no máximo 5MB." });
+        setErrors((prev) => ({ ...prev, photo: "A imagem deve ter no máximo 5MB." }));
         if (fileInputRef.current) fileInputRef.current.value = "";
         return;
       }
 
+      // Cancel previous read if any
+      if (readerRef.current) {
+        const prevReader = readerRef.current;
+        prevReader.onload = null;
+        prevReader.onerror = null;
+        prevReader.onabort = null;
+        if (prevReader.readyState === FileReader.LOADING) {
+          prevReader.abort();
+        }
+      }
+
       const reader = new FileReader();
       readerRef.current = reader;
-      reader.onloadend = () => {
-        setFormData({ ...formData, photo: reader.result as string });
+
+      reader.onload = () => {
+        setFormData((prev) => ({ ...prev, photo: reader.result as string }));
         readerRef.current = null;
       };
+
       reader.onerror = () => {
-        toast.error("Erro ao ler o arquivo.");
+        setErrors((prev) => ({ ...prev, photo: "Erro ao ler o arquivo localmente." }));
         readerRef.current = null;
       };
+
       reader.readAsDataURL(file);
     }
   };
