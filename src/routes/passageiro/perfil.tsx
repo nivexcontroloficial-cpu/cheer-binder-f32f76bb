@@ -136,8 +136,7 @@ function ProfilePage() {
               </div>
             </div>
             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest flex items-center justify-center gap-2">
-              <Star size={10} className="fill-rovya-orange text-rovya-orange" aria-hidden="true" />
-              4.9 • Nível 4 (Exemplo)
+              Perfil Fictício — Demonstração
             </p>
             <button
               type="button"
