@@ -1,26 +1,38 @@
-# Plano de Ação - Chat Determinístico e Resiliente (Etapa 20.8G.1)
+# Plan - Etapa 20.8I.C.1: Contrato de Preço, Cupom e Pagamento
 
-Refatoração do sistema de chat simulado para garantir mensagens determinísticas, sem duplicidade, remoção de anexos e conformidade com SSR/Acessibilidade.
+Este plano implementa a centralização da lógica de cotação e pagamento para o fluxo do passageiro, garantindo que cupons (ROVYA5) e métodos de pagamento sejam preservados via Search Params em todas as telas, eliminando duplicações de dados.
 
-## Alterações Técnicas
+## User Review Required
 
-### 1. Chat do Passageiro (`src/routes/passageiro/chat/$rideId.tsx`)
-- **Estado Inicial**: Remover `localStorage` e `useEffect` de hidratação. Usar um estado volátil inicializado com as 3 mensagens canônicas.
-- **Mensagens Determinísticas**:
-  - Piloto (10:30): "Olá Rafael, estou chegando ao local de embarque." (ID: "m1")
-  - Passageiro (10:31): "Estou saindo!" (ID: "m2")
-  - Piloto (10:31): "Perfeito, te aguardo no ponto de encontro combinado." (ID: "m3")
-- **IDs e Horários**: Usar IDs fixos para o início. Novas mensagens usam contador `ref`. Horários iniciais são strings fixas ou datas estáticas para evitar mismatch de hidratação.
-- **Remoção de Anexos**: Excluir `Paperclip`, `hasFakeAttachment`, UI de anexo e handlers relacionados.
-- **Segurança e Timers**: Garantir que a resposta automática do piloto (se mantida) use `refs` para evitar disparos duplicados ou em rotas inválidas.
-- **Acessibilidade**: Manter áreas de toque de 44px e nomes acessíveis.
+> [!IMPORTANT]
+> A navegação agora dependerá de Search Params (`promoCode`, `paymentMethod`). Se o usuário recarregar a página, as informações serão mantidas. Links externos que não contenham esses parâmetros resetarão para os valores padrão (R$ 18,00 e Dinheiro).
 
-### 2. Lista de Mensagens (`src/routes/passageiro/mensagens.tsx`)
-- Atualizar a prévia da mensagem para a nova mensagem canônica: "Olá Rafael, estou chegando ao local de embarque."
-- Manter horário determinístico ("10:30" ou "Agora").
+## Proposed Changes
 
-## Verificação e Testes
-- **Resiliência**: Recarregar a página e entrar/sair da rota para confirmar que a lista de mensagens não acumula.
-- **SSR**: Validar que não há `Hydration Mismatch` removendo cálculos de datas dinâmicas no corpo do componente.
-- **RideId Inválido**: Confirmar que a tela de erro é exibida sem mensagens ou timers ativos.
-- **Tipagem**: Executar `tsc --noEmit` para validar a integridade técnica.
+### Centralização e Tipagem
+- [x] Criado `src/lib/passenger-demo-ride-quote.ts` com tipos, labels e lógica de cálculo.
+- [ ] Integrar `rideQuoteSearchSchema` em todas as rotas relevantes.
+
+### Refatoração de Dados (Fixtures)
+- [x] Modificar `src/mocks/fixtures.ts` para importar `COMPLETED_PASSENGER_DEMO_RIDE` de `src/data/passenger-demo-rides.ts`, eliminando a duplicação do ID `RY-2026-00842`.
+
+### Fluxo do Passageiro (Refatoração de Telas)
+- **Confirmar Corrida**: Atualizar para injetar os parâmetros na navegação para "Buscando".
+- **Buscando**: Preservar e repassar os parâmetros para a "Corrida Ativa".
+- **Corrida Ativa / Em Andamento / Concluída**: Exibir preço e pagamento baseados no contrato central.
+- **Histórico e Detalhes**: Ajustar para refletir a cotação da sessão atual quando acessado via fluxo.
+- **Rotas Auxiliares (Chat, Segurança, etc.)**: Garantir que o retorno à corrida preserve a cotação.
+
+### Validação e Qualidade
+- Verificar estabilidade do `routeTree.gen.ts`.
+- Executar testes de fumaça via Playwright para os cenários com e sem cupom.
+
+## Technical Details
+
+- **Módulo Central**: `src/lib/passenger-demo-ride-quote.ts` define `calculateRideFare` e `getQuoteParams`.
+- **TanStack Router**: Uso de `validateSearch` com `rideQuoteSearchSchema` em múltiplas rotas.
+- **Fixtures**: Mapeamento dinâmico da `DemoRide` para `Ride` no `ALL_RIDES`.
+- **Preservação**: A cotação é "viva" nos Search Params, não persistida no banco ou localStorage (conforme requisito).
+
+## Scalability
+Este padrão permite adicionar novos cupons ou métodos de pagamento alterando apenas o arquivo de configuração central.
