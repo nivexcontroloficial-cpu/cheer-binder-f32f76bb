@@ -107,7 +107,7 @@ function PassengerHomeScreen() {
               </div>
               <div className="w-full h-14 bg-slate-50 border border-slate-100 rounded-2xl pl-10 pr-4 flex items-center">
                 <span className="text-[10px] font-black uppercase tracking-widest text-navy">
-                  Minha localização atual
+                  Localização atual simulada
                 </span>
               </div>
               <div
