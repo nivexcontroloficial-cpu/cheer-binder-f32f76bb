@@ -7,7 +7,6 @@ import {
   CheckCircle2,
   AlertCircle,
   ArrowRight,
-  Loader2,
   Lightbulb,
   UserCheck,
   X,
@@ -30,7 +29,6 @@ function VerificationScreen() {
     birthDate: "",
     photo: "",
   });
-  const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const readerRef = useRef<FileReader | null>(null);
   const navigate = useNavigate();
@@ -38,7 +36,14 @@ function VerificationScreen() {
   useEffect(() => {
     return () => {
       if (readerRef.current) {
-        readerRef.current.abort();
+        const reader = readerRef.current;
+        reader.onload = null;
+        reader.onerror = null;
+        reader.onabort = null;
+        if (reader.readyState === FileReader.LOADING) {
+          reader.abort();
+        }
+        readerRef.current = null;
       }
     };
   }, []);
@@ -79,46 +84,61 @@ function VerificationScreen() {
       }
     } else if (step === 2) {
       if (!formData.photo) {
-        setErrors({ ...errors, photo: "A foto de perfil é obrigatória para a simulação." });
+        setErrors((prev) => ({
+          ...prev,
+          photo: "A foto de perfil é obrigatória para a simulação.",
+        }));
         return;
       }
-      setIsLoading(true);
-      // Simulate local processing
-      setTimeout(() => {
-        setIsLoading(false);
-        setStep(3);
-      }, 1500);
+      setStep(3);
     }
   };
 
   const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    setErrors({ ...errors, photo: "" });
+    setErrors((prev) => ({ ...prev, photo: "" }));
 
     if (file) {
       if (!file.type.startsWith("image/")) {
-        setErrors({ ...errors, photo: "Por favor, selecione apenas arquivos de imagem." });
+        setErrors((prev) => ({
+          ...prev,
+          photo: "Por favor, selecione apenas arquivos de imagem.",
+        }));
         if (fileInputRef.current) fileInputRef.current.value = "";
         return;
       }
 
       const maxSize = 5 * 1024 * 1024; // 5MB
       if (file.size > maxSize) {
-        setErrors({ ...errors, photo: "A imagem deve ter no máximo 5MB." });
+        setErrors((prev) => ({ ...prev, photo: "A imagem deve ter no máximo 5MB." }));
         if (fileInputRef.current) fileInputRef.current.value = "";
         return;
       }
 
+      // Cancel previous read if any
+      if (readerRef.current) {
+        const prevReader = readerRef.current;
+        prevReader.onload = null;
+        prevReader.onerror = null;
+        prevReader.onabort = null;
+        if (prevReader.readyState === FileReader.LOADING) {
+          prevReader.abort();
+        }
+      }
+
       const reader = new FileReader();
       readerRef.current = reader;
-      reader.onloadend = () => {
-        setFormData({ ...formData, photo: reader.result as string });
+
+      reader.onload = () => {
+        setFormData((prev) => ({ ...prev, photo: reader.result as string }));
         readerRef.current = null;
       };
+
       reader.onerror = () => {
-        toast.error("Erro ao ler o arquivo.");
+        setErrors((prev) => ({ ...prev, photo: "Erro ao ler o arquivo localmente." }));
         readerRef.current = null;
       };
+
       reader.readAsDataURL(file);
     }
   };
@@ -297,7 +317,10 @@ function VerificationScreen() {
               ) : (
                 <button
                   type="button"
+                  id="photo-button"
                   onClick={() => fileInputRef.current?.click()}
+                  aria-invalid={!!errors.photo}
+                  aria-describedby={errors.photo ? "photo-error" : undefined}
                   aria-label="Tirar foto ou selecionar arquivo de imagem para demonstração local"
                   className={`w-full h-full rounded-[40px] bg-slate-50 border-2 border-dashed ${errors.photo ? "border-red-500" : "border-slate-200"} flex flex-col items-center justify-center gap-4 text-slate-400 hover:border-rovya-orange hover:bg-white transition-all group`}
                 >
@@ -305,21 +328,24 @@ function VerificationScreen() {
                     <Camera size={32} strokeWidth={1.5} aria-hidden="true" />
                   </div>
                   <span className="text-[10px] font-black uppercase tracking-widest">
-                    Tirar Foto
+                    Usar câmera ou escolher imagem
                   </span>
                 </button>
               )}
               <input
+                id="photo-input"
                 type="file"
                 ref={fileInputRef}
                 className="hidden"
                 accept="image/*"
+                capture="user"
                 onChange={handlePhotoUpload}
               />
             </div>
 
             {errors.photo && (
               <p
+                id="photo-error"
                 role="alert"
                 className="text-[10px] text-red-500 font-bold uppercase tracking-wider"
               >
@@ -351,7 +377,7 @@ function VerificationScreen() {
         {step === 3 && (
           <div className="flex flex-col gap-8 w-full animate-in zoom-in duration-500 text-center items-center">
             <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mb-2">
-              <UserCheck size={40} className="text-rovya-green" />
+              <UserCheck size={40} className="text-rovya-green" aria-hidden="true" />
             </div>
 
             <div className="space-y-4">
@@ -363,7 +389,7 @@ function VerificationScreen() {
                   Demonstração concluída. Esta tela simulou o processo de validação de segurança.
                 </p>
                 <div className="flex items-start gap-3 text-slate-400">
-                  <CheckCircle2 size={16} className="shrink-0 mt-0.5" />
+                  <CheckCircle2 size={16} className="shrink-0 mt-0.5" aria-hidden="true" />
                   <p className="text-[10px] uppercase tracking-wider font-bold">
                     Nenhuma verificação real, biometria ou análise foi realizada.
                   </p>
@@ -379,24 +405,13 @@ function VerificationScreen() {
               <button
                 type="button"
                 onClick={handleNextStep}
-                disabled={isLoading}
                 aria-label={
-                  isLoading
-                    ? "Processando localmente"
-                    : step === 1
-                      ? "Prosseguir para a foto"
-                      : "Finalizar verificação simulada"
+                  step === 1 ? "Prosseguir para a foto" : "Finalizar verificação simulada"
                 }
-                className="w-full bg-navy text-white h-14 rounded-2xl font-black uppercase tracking-widest text-[11px] flex items-center justify-center gap-2 hover:bg-navy/90 transition-all active:scale-95 disabled:opacity-50 rovya-shadow"
+                className="w-full bg-navy text-white h-14 rounded-2xl font-black uppercase tracking-widest text-[11px] flex items-center justify-center gap-2 hover:bg-navy/90 transition-all active:scale-95 rovya-shadow"
               >
-                {isLoading ? (
-                  <Loader2 size={18} className="animate-spin" />
-                ) : step === 1 ? (
-                  "Prosseguir"
-                ) : (
-                  "Finalizar Verificação"
-                )}
-                {!isLoading && <ArrowRight size={18} strokeWidth={2.5} aria-hidden="true" />}
+                {step === 1 ? "Prosseguir" : "Finalizar Verificação"}
+                <ArrowRight size={18} strokeWidth={2.5} aria-hidden="true" />
               </button>
 
               <div className="flex justify-center">
