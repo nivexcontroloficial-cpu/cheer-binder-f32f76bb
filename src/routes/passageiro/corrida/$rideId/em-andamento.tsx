@@ -171,7 +171,9 @@ function InProgressRideScreen() {
                   <span className="block text-[10px] font-black uppercase tracking-widest text-slate-400">
                     Origem
                   </span>
-                  <span className="text-sm font-bold text-navy italic">{ACTIVE_PASSENGER_DEMO_RIDE.origin.address}</span>
+                  <span className="text-sm font-bold text-navy italic">
+                    {ACTIVE_PASSENGER_DEMO_RIDE.origin.address}
+                  </span>
                 </div>
               </div>
               <div className="flex items-start gap-3">
@@ -339,12 +341,24 @@ function InProgressRideScreen() {
               Alterar Destino?
             </AlertDialogTitle>
             <AlertDialogDescription className="text-xs text-slate-500 font-medium pt-2">
-              <span className="block mb-2">Destino atual: {ACTIVE_PASSENGER_DEMO_RIDE.destination.address}</span>
+              <span className="block mb-2">
+                Destino atual: {ACTIVE_PASSENGER_DEMO_RIDE.destination.address}
+              </span>
               <span className="block font-bold text-navy italic">
                 Novo destino: Shopping Jacarezinho — Centro, Jacarezinho
               </span>
-              <span className="block mt-2">Valor atual: {new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(ACTIVE_PASSENGER_DEMO_RIDE.fare)}</span>
-              <span className="block font-bold text-emerald-600 italic">Novo valor: {new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(21.0)}</span>
+              <span className="block mt-2">
+                Valor atual:{" "}
+                {new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(
+                  ACTIVE_PASSENGER_DEMO_RIDE.fare,
+                )}
+              </span>
+              <span className="block font-bold text-emerald-600 italic">
+                Novo valor:{" "}
+                {new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(
+                  21.0,
+                )}
+              </span>
               <span className="block mt-4 text-[9px] uppercase tracking-widest">
                 Nenhuma solicitação real foi enviada.
               </span>
