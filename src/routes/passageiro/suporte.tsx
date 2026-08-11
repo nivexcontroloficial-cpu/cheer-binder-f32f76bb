@@ -77,7 +77,11 @@ function SupportCenter() {
           <label htmlFor="faq-search" className="sr-only">
             Buscar perguntas frequentes
           </label>
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" size={18} aria-hidden="true" />
+          <Search
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-300"
+            size={18}
+            aria-hidden="true"
+          />
           <input
             id="faq-search"
             type="text"
@@ -87,13 +91,8 @@ function SupportCenter() {
             aria-describedby="faq-result-status"
             className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 text-sm focus:ring-2 focus:ring-navy outline-none transition-all focus-visible:ring-rovya-orange min-h-[44px]"
           />
-          <p
-            id="faq-result-status"
-            role="status"
-            aria-live="polite"
-            className="sr-only"
-          >
-            {filteredFaqs.length > 0 
+          <p id="faq-result-status" role="status" aria-live="polite" className="sr-only">
+            {filteredFaqs.length > 0
               ? `${filteredFaqs.length} dúvidas simuladas encontradas.`
               : "Nenhuma dúvida simulada encontrada."}
           </p>
@@ -164,7 +163,10 @@ function SupportCenter() {
                 </details>
               ))
             ) : (
-              <div id="empty-faq-results" className="bg-white border border-slate-100 rounded-2xl p-8 text-center space-y-2">
+              <div
+                id="empty-faq-results"
+                className="bg-white border border-slate-100 rounded-2xl p-8 text-center space-y-2"
+              >
                 <p className="text-sm font-bold text-navy">
                   Nenhuma dúvida encontrada nesta demonstração.
                 </p>
