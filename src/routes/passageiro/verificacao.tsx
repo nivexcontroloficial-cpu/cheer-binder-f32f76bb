@@ -364,7 +364,9 @@ function VerificationScreen() {
                 type="button"
                 onClick={handleNextStep}
                 aria-label={
-                  step === 1 ? "Prosseguir para a simulação de avatar" : "Finalizar verificação simulada"
+                  step === 1
+                    ? "Prosseguir para a simulação de avatar"
+                    : "Finalizar verificação simulada"
                 }
                 className="w-full bg-navy text-white h-14 rounded-2xl font-black uppercase tracking-widest text-[11px] flex items-center justify-center gap-2 hover:bg-navy/90 transition-all active:scale-95 rovya-shadow focus-visible:ring-2 focus-visible:ring-rovya-orange outline-none min-h-14"
               >
