@@ -158,7 +158,11 @@ function DestinationScreen() {
       <span aria-label={text}>
         {parts.map((part, i) =>
           part.toLowerCase() === term.toLowerCase() ? (
-            <span key={i} className="text-rovya-blue bg-rovya-blue/5 px-0.5 rounded" aria-hidden="true">
+            <span
+              key={i}
+              className="text-rovya-blue bg-rovya-blue/5 px-0.5 rounded"
+              aria-hidden="true"
+            >
               {part}
             </span>
           ) : (
