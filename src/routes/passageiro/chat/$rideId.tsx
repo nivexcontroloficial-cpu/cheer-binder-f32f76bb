@@ -51,22 +51,28 @@ interface Message {
   sender: "passenger" | "driver";
   timestamp: Date;
   status: MessageStatus;
-  attachment?: boolean; // Agora é apenas um booleano para indicar prévia fictícia
 }
 
 const DEFAULT_MESSAGES: Message[] = [
   {
-    id: "1",
+    id: "m1",
     text: "Olá Rafael, estou chegando ao local de embarque.",
     sender: "driver",
-    timestamp: new Date("2026-08-11T14:00:00Z"),
+    timestamp: new Date("2026-08-11T10:30:00Z"),
     status: "read",
   },
   {
-    id: "2",
-    text: `Estou em uma ${ACTIVE_PASSENGER_DEMO_RIDE.vehicle.model} ${ACTIVE_PASSENGER_DEMO_RIDE.vehicle.color}.`,
+    id: "m2",
+    text: "Estou saindo!",
+    sender: "passenger",
+    timestamp: new Date("2026-08-11T10:31:00Z"),
+    status: "read",
+  },
+  {
+    id: "m3",
+    text: "Perfeito, te aguardo no ponto de encontro combinado.",
     sender: "driver",
-    timestamp: new Date("2026-08-11T14:01:00Z"),
+    timestamp: new Date("2026-08-11T10:31:00Z"),
     status: "read",
   },
 ];
@@ -114,11 +120,11 @@ function ChatScreen() {
   const [inputText, setInputText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [showProtectedCall, setShowProtectedCall] = useState(false);
-  const [hasFakeAttachment, setHasFakeAttachment] = useState(false);
   const [showReportConfirm, setShowReportConfirm] = useState(false);
   const [simulateFailure, setSimulateFailure] = useState(false);
   const [isBlocked, setIsBlocked] = useState(false);
   const isBlockedRef = useRef(isBlocked);
+  const messageCounterRef = useRef(4); // Inicia após m1, m2, m3
 
   useEffect(() => {
     isBlockedRef.current = isBlocked;
@@ -129,108 +135,34 @@ function ChatScreen() {
   const [messages, setMessages] = useState<Message[]>(DEFAULT_MESSAGES);
   const [hydratedRideId, setHydratedRideId] = useState<string | null>(null);
 
-  // Read from localStorage on client only
+  // Removido localStorage e hidratação variável para garantir chat determinístico e volátil
   useEffect(() => {
-    if (!isValidRide) return;
-    const storageKey = `chat_history_${rideId}`;
-    try {
-      const saved = localStorage.getItem(storageKey);
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) {
-          let allValid = true;
-          const validMessages: Message[] = [];
+    setMessages(DEFAULT_MESSAGES);
+    messageCounterRef.current = 4;
+  }, [rideId]);
 
-          for (const m of parsed) {
-            if (!m || typeof m !== "object") {
-              allValid = false;
-              break;
-            }
-            const msg = m as Record<string, unknown>;
-
-            // Strict validation
-            const hasId = typeof msg["id"] === "string";
-            const hasText = typeof msg["text"] === "string";
-            const hasSender = msg["sender"] === "passenger" || msg["sender"] === "driver";
-            const hasStatus = ["sending", "sent", "delivered", "read", "failed"].includes(
-              msg["status"] as string,
-            );
-            const timestamp = new Date(msg["timestamp"] as string);
-            const hasValidDate = !isNaN(timestamp.getTime());
-
-            if (!hasId || !hasText || !hasSender || !hasStatus || !hasValidDate) {
-              allValid = false;
-              break;
-            }
-
-            validMessages.push({
-              id: msg["id"] as string,
-              text: msg["text"] as string,
-              sender: msg["sender"] as "passenger" | "driver",
-              timestamp,
-              status: msg["status"] as MessageStatus,
-              // Do NOT restore attachments
-            });
-          }
-
-          if (allValid) {
-            setMessages(validMessages);
-          } else {
-            console.warn(`Corrupted chat history for ${rideId}. Discarding entire array.`);
-            localStorage.removeItem(storageKey);
-            setMessages(DEFAULT_MESSAGES);
-          }
-        } else {
-          localStorage.removeItem(storageKey);
-          setMessages(DEFAULT_MESSAGES);
-        }
-      } else {
-        setMessages(DEFAULT_MESSAGES);
-      }
-    } catch (error) {
-      console.error("Error parsing chat history:", error);
-      localStorage.removeItem(storageKey);
-      setMessages(DEFAULT_MESSAGES);
-    } finally {
-      setHydratedRideId(rideId);
-    }
-  }, [rideId, isValidRide]);
-
-  // Save to localStorage only after hydration and only for current rideId
   useEffect(() => {
-    if (hydratedRideId !== rideId || !isValidRide) return;
-
-    const storageKey = `chat_history_${rideId}`;
-    try {
-      // Remove attachments (boolean flags) before saving
-      const messagesToSave = messages.map(({ attachment, ...rest }) => rest);
-      localStorage.setItem(storageKey, JSON.stringify(messagesToSave));
-    } catch (error) {
-      console.error("Error saving chat history:", error);
-    }
-
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [messages, rideId, hydratedRideId, isValidRide]);
+  }, [messages]);
 
   const handleSendMessage = useCallback(
     (text = inputText) => {
-      if ((!text.trim() && !hasFakeAttachment) || isBlocked || !isValidRide) return;
+      const trimmedText = text.trim();
+      if (!trimmedText || isBlocked || !isValidRide) return;
 
-      const newMessageId = Date.now().toString();
+      const newMessageId = `m${messageCounterRef.current++}`;
       const newMessage: Message = {
         id: newMessageId,
-        text: text.trim(),
+        text: trimmedText,
         sender: "passenger",
         timestamp: new Date(),
         status: "sending",
-        attachment: hasFakeAttachment,
       };
 
       setMessages((prev) => [...prev, newMessage]);
       setInputText("");
-      setHasFakeAttachment(false);
 
       if (simulateFailure) {
         setSimulateFailure(false);
@@ -270,8 +202,8 @@ function ChatScreen() {
                   }
                   setIsTyping(false);
                   const reply: Message = {
-                    id: (Date.now() + 1).toString(),
-                    text: "Perfeito, te aguardo no ponto de encontro combinado.",
+                    id: `m${messageCounterRef.current++}`,
+                    text: "Recebido. Te aguardo no local.",
                     sender: "driver",
                     timestamp: new Date(),
                     status: "read",
@@ -285,7 +217,7 @@ function ChatScreen() {
         }, 1000);
       }, 800);
     },
-    [inputText, hasFakeAttachment, isBlocked, simulateFailure, addTimer, isValidRide],
+    [inputText, isBlocked, simulateFailure, addTimer, isValidRide],
   );
 
   const resendMessage = (id: string) => {
@@ -310,8 +242,8 @@ function ChatScreen() {
                 }
                 setIsTyping(false);
                 const reply: Message = {
-                  id: (Date.now() + 1).toString(),
-                  text: "Recebido. Estou a caminho.",
+                id: `m${messageCounterRef.current++}`,
+                text: "Certo, estou chegando.",
                   sender: "driver",
                   timestamp: new Date(),
                   status: "read",
@@ -636,14 +568,6 @@ function ChatScreen() {
               }
             `}
             >
-              {msg.attachment && (
-                <div className="mb-2 rounded-xl overflow-hidden bg-slate-200 p-8 flex flex-col items-center justify-center border border-slate-300/30">
-                  <ImageIcon size={32} className="text-slate-400 mb-2" aria-hidden="true" />
-                  <span className="text-[10px] font-black uppercase tracking-widest text-slate-500">
-                    Prévia fictícia de imagem
-                  </span>
-                </div>
-              )}
               <p className="text-[13px] font-medium leading-relaxed">{msg.text}</p>
 
               <div className="flex items-center gap-1.5 mt-2 justify-end">
@@ -742,25 +666,6 @@ function ChatScreen() {
           ))}
         </div>
 
-        {hasFakeAttachment && (
-          <div className="mb-4 relative inline-block">
-            <div className="h-16 w-16 rounded-xl overflow-hidden border-2 border-blue-500 bg-slate-100 flex items-center justify-center">
-              <ImageIcon size={20} className="text-blue-500" aria-hidden="true" />
-            </div>
-            <button
-              type="button"
-              onClick={() => setHasFakeAttachment(false)}
-              className="absolute -top-2 -right-2 h-11 w-11 bg-red-500 text-white rounded-full flex items-center justify-center shadow-lg active:scale-90 transition-transform focus:ring-2 focus:ring-red-500 focus:outline-none"
-              aria-label="Remover prévia fictícia"
-            >
-              <X
-                size={14}
-                className="h-6 w-6 flex items-center justify-center"
-                aria-hidden="true"
-              />
-            </button>
-          </div>
-        )}
 
         {isBlocked && (
           <div className="mb-4 p-3 bg-red-50 border border-red-100 rounded-2xl flex items-center justify-between">
@@ -784,19 +689,7 @@ function ChatScreen() {
         )}
 
         <div className="flex items-center gap-3">
-          <button
-            type="button"
-            disabled={isBlocked}
-            onClick={() => {
-              if (isBlocked) return;
-              setHasFakeAttachment(true);
-              toast.info("Prévia fictícia adicionada.");
-            }}
-            className="h-12 w-12 bg-slate-50 text-navy rounded-2xl flex items-center justify-center active:scale-95 transition-all disabled:opacity-50 disabled:grayscale focus:ring-2 focus:ring-navy focus:outline-none"
-            aria-label="Adicionar prévia fictícia"
-          >
-            <Paperclip size={20} strokeWidth={2.5} aria-hidden="true" />
-          </button>
+
 
           <div className="flex-1 bg-slate-50 border border-slate-100 rounded-2xl px-4 py-2 flex items-center focus-within:ring-2 focus-within:ring-navy transition-all">
             <input
@@ -815,10 +708,10 @@ function ChatScreen() {
           <button
             type="button"
             onClick={() => handleSendMessage()}
-            disabled={(!inputText.trim() && !hasFakeAttachment) || isBlocked}
+            disabled={!inputText.trim() || isBlocked}
             className={`
               h-12 w-12 rounded-2xl flex items-center justify-center transition-all active:scale-95 focus:ring-2 focus:ring-navy focus:outline-none
-              ${(inputText.trim() || hasFakeAttachment) && !isBlocked ? "bg-navy text-white shadow-lg" : "bg-slate-100 text-slate-300"}
+              ${inputText.trim() && !isBlocked ? "bg-navy text-white shadow-lg" : "bg-slate-100 text-slate-300"}
             `}
             aria-label="Enviar mensagem"
           >

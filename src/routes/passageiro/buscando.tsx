@@ -135,6 +135,7 @@ function SearchingRideScreen() {
         navigate({
           to: "/passageiro/corrida/$rideId",
           params: { rideId: ACTIVE_PASSENGER_DEMO_RIDE.id },
+          search: { technical: false },
         });
       }, 3000);
     }

@@ -217,6 +217,7 @@ function RidesHistoryPage() {
                   key={ride.id}
                   to="/passageiro/corrida/$rideId/concluida"
                   params={{ rideId: ride.id }}
+                  search={{ technical: false }}
                   className="block"
                 >
                   {CardContent}

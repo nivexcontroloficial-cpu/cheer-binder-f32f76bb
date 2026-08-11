@@ -26,9 +26,9 @@ function MensagensScreen() {
       id: ACTIVE_PASSENGER_DEMO_RIDE.id,
       initials: "CH",
       name: ACTIVE_PASSENGER_DEMO_RIDE.driver.name,
-      rideId: COMPLETED_PASSENGER_DEMO_RIDE.id,
+      rideId: ACTIVE_PASSENGER_DEMO_RIDE.id,
       preview: "Olá Rafael, estou chegando ao local de embarque.",
-      time: "Agora",
+      time: "10:30",
       isSimulated: true,
     },
   ]);
