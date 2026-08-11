@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useMemo } from "react";
+import { ACTIVE_PASSENGER_DEMO_RIDE } from "@/data/passenger-demo-rides";
 import {
   ArrowLeft,
   MapPin,
@@ -58,8 +59,8 @@ function ConfirmRideScreen() {
   };
 
   // Dados Mock Obrigatórios
-  const distance = 6.8;
-  const duration = 18;
+  const distance = ACTIVE_PASSENGER_DEMO_RIDE.distance;
+  const duration = ACTIVE_PASSENGER_DEMO_RIDE.duration;
   const baseFare = 4.0;
   const pricePerKm = 1.0;
   const pricePerMin = 0.4;
@@ -190,7 +191,7 @@ function ConfirmRideScreen() {
                   aria-hidden="true"
                 ></div>
                 <p className="text-[10px] font-medium text-slate-500 break-words">
-                  {search.origin || "Centro, Jacarezinho"}
+                  {search.origin || ACTIVE_PASSENGER_DEMO_RIDE.origin.address}
                 </p>
               </div>
               {search.reference && (
@@ -212,7 +213,7 @@ function ConfirmRideScreen() {
                   ? search.destinationRegion
                     ? `${search.destination} — ${search.destinationRegion}`
                     : search.destination
-                  : "Vila Setti, Jacarezinho"}
+                  : ACTIVE_PASSENGER_DEMO_RIDE.destination.address}
               </p>
             </div>
           </div>
