@@ -73,11 +73,31 @@ function SignupScreen() {
 
   const handleNext = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validateStep()) return;
 
-    if (step < 2) {
-      setStep(step + 1);
+    if (step === 1) {
+      const trimmedName = formData.name.trim();
+      const trimmedEmail = formData.email.trim();
+      setFormData((prev) => ({
+        ...prev,
+        name: trimmedName,
+        email: trimmedEmail,
+      }));
+
+      const newErrors: typeof errors = {};
+      if (!trimmedName) newErrors.name = "O nome é obrigatório";
+      if (!trimmedEmail) newErrors.email = "O e-mail é obrigatório";
+      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+        newErrors.email = "E-mail inválido";
+      }
+
+      if (Object.keys(newErrors).length > 0) {
+        setErrors(newErrors);
+        return;
+      }
+      setErrors({});
+      setStep(2);
     } else {
+      if (!validateStep()) return;
       setIsLoading(true);
       timerRef.current = setTimeout(() => {
         setIsLoading(false);
@@ -98,7 +118,7 @@ function SignupScreen() {
               className="p-2 hover:bg-slate-50 rounded-full transition-colors text-slate-400 hover:text-navy z-10"
               aria-label={step === 1 ? "Voltar para entrar" : "Voltar para primeira etapa"}
             >
-              <ChevronLeft size={24} />
+              <ChevronLeft size={24} aria-hidden="true" />
             </button>
             <RovyaBrand className="scale-90 absolute left-1/2 -translate-x-1/2" />
             <div className="w-8" />
@@ -106,6 +126,8 @@ function SignupScreen() {
           <div
             className="w-full flex gap-2"
             role="progressbar"
+            aria-label="Progresso do cadastro simulado"
+            aria-valuetext={`Etapa ${step} de 2`}
             aria-valuenow={step}
             aria-valuemin={1}
             aria-valuemax={2}
@@ -168,6 +190,8 @@ function SignupScreen() {
                       required
                       type="text"
                       maxLength={50}
+                      aria-invalid={!!errors.name}
+                      aria-describedby={errors.name ? "name-error" : undefined}
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       placeholder="Ex: Rafael Silva"
@@ -175,7 +199,7 @@ function SignupScreen() {
                     />
                   </div>
                   {errors.name && (
-                    <p className="text-[10px] text-red-500 font-bold" role="alert">
+                    <p id="name-error" className="text-[10px] text-red-500 font-bold" role="alert">
                       {errors.name}
                     </p>
                   )}
@@ -200,6 +224,8 @@ function SignupScreen() {
                       required
                       type="email"
                       maxLength={100}
+                      aria-invalid={!!errors.email}
+                      aria-describedby={errors.email ? "email-error" : undefined}
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       placeholder="rafael@email.com"
@@ -207,7 +233,7 @@ function SignupScreen() {
                     />
                   </div>
                   {errors.email && (
-                    <p className="text-[10px] text-red-500 font-bold" role="alert">
+                    <p id="email-error" className="text-[10px] text-red-500 font-bold" role="alert">
                       {errors.email}
                     </p>
                   )}
@@ -234,6 +260,8 @@ function SignupScreen() {
                       required
                       type="text"
                       inputMode="numeric"
+                      aria-invalid={!!errors.cpf}
+                      aria-describedby={errors.cpf ? "cpf-error" : undefined}
                       value={formData.cpf}
                       onChange={(e) => setFormData({ ...formData, cpf: formatCPF(e.target.value) })}
                       placeholder="000.000.000-00"
@@ -241,7 +269,7 @@ function SignupScreen() {
                     />
                   </div>
                   {errors.cpf && (
-                    <p className="text-[10px] text-red-500 font-bold" role="alert">
+                    <p id="cpf-error" className="text-[10px] text-red-500 font-bold" role="alert">
                       {errors.cpf}
                     </p>
                   )}
@@ -254,6 +282,8 @@ function SignupScreen() {
                       id="terms-checkbox"
                       checked={acceptedTerms}
                       onChange={(e) => setAcceptedTerms(e.target.checked)}
+                      aria-invalid={!!errors.terms}
+                      aria-describedby={errors.terms ? "terms-error" : undefined}
                       className="w-4 h-4 rounded border-slate-300 text-rovya-orange focus:ring-rovya-orange transition-all cursor-pointer"
                     />
                   </div>
@@ -279,7 +309,7 @@ function SignupScreen() {
                   </label>
                 </div>
                 {errors.terms && (
-                  <p className="text-[10px] text-red-500 font-bold" role="alert">
+                  <p id="terms-error" className="text-[10px] text-red-500 font-bold" role="alert">
                     {errors.terms}
                   </p>
                 )}
@@ -302,7 +332,10 @@ function SignupScreen() {
               className="w-full bg-navy text-white h-14 rounded-2xl font-black uppercase tracking-widest text-[11px] flex items-center justify-center gap-2 hover:bg-navy/90 transition-all active:scale-95 disabled:opacity-50 rovya-shadow"
             >
               {isLoading ? (
-                <Loader2 size={18} className="animate-spin" />
+                <>
+                  <Loader2 size={18} className="animate-spin" aria-hidden="true" />
+                  <span>Finalizando simulação</span>
+                </>
               ) : step === 1 ? (
                 "Continuar"
               ) : (
@@ -330,7 +363,7 @@ function SignupScreen() {
           aria-hidden="true"
         >
           <CheckCircle2 size={12} className="text-rovya-green" />
-          Ambiente Seguro de Demonstração
+          Ambiente local de demonstração
         </div>
       </footer>
     </div>
