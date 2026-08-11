@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useParams, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useParams, useNavigate, useSearch } from "@tanstack/react-router";
 import { useState } from "react";
 import {
   ArrowLeft,
@@ -18,15 +18,21 @@ import {
   ACTIVE_PASSENGER_DEMO_RIDE,
   COMPLETED_PASSENGER_DEMO_RIDE,
 } from "@/data/passenger-demo-rides";
+import {
+  rideQuoteSearchSchema,
+  getQuoteParams,
+} from "@/lib/passenger-demo-ride-quote";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/passageiro/denunciar/$rideId")({
+  validateSearch: (search) => rideQuoteSearchSchema.parse(search),
   component: DenunciarScreen,
 });
 
 function DenunciarScreen() {
   const { rideId } = useParams({ from: "/passageiro/denunciar/$rideId" });
+  const search = useSearch({ from: "/passageiro/denunciar/$rideId" });
   const navigate = useNavigate();
   const [step, setStep] = useState<"category" | "details" | "success">("category");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -166,9 +172,9 @@ function DenunciarScreen() {
             step === "details"
               ? setStep("category")
               : navigate({
-                  to: "/passageiro/corrida/$rideId/em-andamento",
+                  to: "/passageiro/corrida/$rideId",
                   params: { rideId },
-                  search: { technical: false },
+                  search: (prev: any) => getQuoteParams(prev),
                 })
           }
           className="h-11 w-11 bg-slate-50 rounded-xl flex items-center justify-center text-navy hover:bg-slate-100 transition-colors focus-visible:ring-2 focus-visible:ring-emerald-500 outline-none"

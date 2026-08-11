@@ -2,6 +2,10 @@ import { createFileRoute, useNavigate, useSearch } from "@tanstack/react-router"
 import { useState } from "react";
 import { Share2, ShieldAlert, HeadphonesIcon } from "lucide-react";
 import {
+  rideQuoteSearchSchema,
+  getQuoteParams,
+} from "@/lib/passenger-demo-ride-quote";
+import {
   AlertDialog,
   AlertDialogAction,
   AlertDialogCancel,
@@ -14,7 +18,7 @@ import {
 import { z } from "zod";
 
 export const Route = createFileRoute("/passageiro/seguranca")({
-  validateSearch: z.object({ rideId: z.string().optional() }),
+  validateSearch: (search) => rideQuoteSearchSchema.parse(search),
   component: SafetyScreen,
 });
 
@@ -26,7 +30,7 @@ function SafetyScreen() {
   const [emergencyResult, setEmergencyResult] = useState<string | null>(null);
 
   const handleBack = () => {
-    if (rideId) navigate({ to: "/passageiro/corrida/$rideId/em-andamento", params: { rideId }, search: { technical: false } });
+    if (rideId) navigate({ to: "/passageiro/corrida/$rideId", params: { rideId }, search: (prev: any) => getQuoteParams(prev) });
     else navigate({ to: "/passageiro/inicio" });
   };
 

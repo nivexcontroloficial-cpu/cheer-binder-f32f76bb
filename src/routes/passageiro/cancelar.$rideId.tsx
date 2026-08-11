@@ -1,8 +1,12 @@
-import { createFileRoute, Link, useParams, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Link, useParams, useNavigate, useSearch } from "@tanstack/react-router";
 import { useState } from "react";
 import { ChevronLeft, Info, AlertCircle } from "lucide-react";
 import { calculateCancellationConsequence } from "@/services/mock/account-health";
 import { ACTIVE_PASSENGER_DEMO_RIDE } from "@/data/passenger-demo-rides";
+import {
+  rideQuoteSearchSchema,
+  getQuoteParams,
+} from "@/lib/passenger-demo-ride-quote";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,11 +21,13 @@ import {
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/passageiro/cancelar/$rideId")({
+  validateSearch: (search) => rideQuoteSearchSchema.parse(search),
   component: CancelarCorrida,
 });
 
 function CancelarCorrida() {
   const { rideId } = useParams({ from: "/passageiro/cancelar/$rideId" });
+  const search = useSearch({ from: "/passageiro/cancelar/$rideId" });
   const navigate = useNavigate();
   const [selectedReason, setSelectedReason] = useState<string | null>(null);
 
@@ -102,9 +108,9 @@ function CancelarCorrida() {
           aria-label="Voltar para a corrida"
           onClick={() =>
             navigate({
-              to: "/passageiro/corrida/$rideId/em-andamento",
+              to: "/passageiro/corrida/$rideId",
               params: { rideId },
-              search: { technical: false },
+              search: (prev: any) => getQuoteParams(prev),
             })
           }
           className="w-11 h-11 -ml-2 text-slate-400 hover:bg-slate-50 rounded-full transition-colors flex items-center justify-center focus-visible:ring-2 focus-visible:ring-emerald-500 outline-none"
