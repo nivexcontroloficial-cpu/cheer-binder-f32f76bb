@@ -17,7 +17,12 @@ function SignupScreen() {
   });
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [errors, setErrors] = useState<{
+    name?: string;
+    email?: string;
+    cpf?: string;
+    terms?: string;
+  }>({});
   const navigate = useNavigate();
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -37,7 +42,7 @@ function SignupScreen() {
   };
 
   const validateStep = () => {
-    const newErrors: { [key: string]: string } = {};
+    const newErrors: typeof errors = {};
     if (step === 1) {
       if (!formData.name.trim()) newErrors.name = "O nome é obrigatório";
       if (!formData.email.trim()) newErrors.email = "O e-mail é obrigatório";
