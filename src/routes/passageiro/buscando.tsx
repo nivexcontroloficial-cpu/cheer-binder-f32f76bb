@@ -36,13 +36,7 @@ export const Route = createFileRoute("/passageiro/buscando")({
   component: SearchingRideScreen,
 });
 
-type SearchStatus =
-  | "searching"
-  | "expanding"
-  | "few_drivers"
-  | "no_drivers"
-  | "error"
-  | "accepted";
+type SearchStatus = "searching" | "expanding" | "few_drivers" | "no_drivers" | "error" | "accepted";
 
 function SearchingRideScreen() {
   const navigate = useNavigate();
@@ -87,9 +81,7 @@ function SearchingRideScreen() {
     if (status === "searching") {
       autoAcceptTimerRef.current = setTimeout(() => {
         setStatus("accepted");
-        toast.success(
-          `${ACTIVE_PASSENGER_DEMO_RIDE.driver.name} aceitou esta corrida simulada.`,
-        );
+        toast.success(`${ACTIVE_PASSENGER_DEMO_RIDE.driver.name} aceitou esta corrida simulada.`);
       }, 15000); // Aceite automático em 15s para a demo
     }
 
@@ -131,9 +123,7 @@ function SearchingRideScreen() {
 
     setStatus(newStatus);
     if (newStatus === "accepted") {
-      toast.success(
-        `${ACTIVE_PASSENGER_DEMO_RIDE.driver.name} aceitou esta corrida simulada.`,
-      );
+      toast.success(`${ACTIVE_PASSENGER_DEMO_RIDE.driver.name} aceitou esta corrida simulada.`);
     }
   };
 
@@ -385,11 +375,7 @@ function SearchingRideScreen() {
 
         {/* Mensagem de Segurança */}
         <div className="bg-blue-50 border border-blue-100 rounded-2xl p-4 flex gap-3">
-          <ShieldCheck
-            size={18}
-            className="text-rovya-blue shrink-0"
-            aria-hidden="true"
-          />
+          <ShieldCheck size={18} className="text-rovya-blue shrink-0" aria-hidden="true" />
           <p className="text-[9px] text-blue-800 font-medium leading-relaxed">
             Demonstração de segurança: nenhum acompanhamento ou contato real está ativo.
           </p>
