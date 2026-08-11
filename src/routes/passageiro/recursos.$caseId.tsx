@@ -1,6 +1,15 @@
 import { createFileRoute, Link, useParams } from "@tanstack/react-router";
 import { useState } from "react";
-import { ChevronLeft, Scale, Calendar, FileText, AlertCircle, CheckCircle2, Send, Info } from "lucide-react";
+import {
+  ChevronLeft,
+  Scale,
+  Calendar,
+  FileText,
+  AlertCircle,
+  CheckCircle2,
+  Send,
+  Info,
+} from "lucide-react";
 import { MOCK_ACCOUNT_HEALTH } from "@/services/mock/account-health";
 import { toast } from "sonner";
 
@@ -49,7 +58,8 @@ function RecursoOcorrencia() {
           Ocorrência simulada não encontrada
         </h1>
         <p className="text-slate-500 text-sm leading-relaxed mb-8">
-          Nenhuma consulta real foi realizada. Os IDs válidos para esta demonstração são "occ-1" e "occ-2".
+          Nenhuma consulta real foi realizada. Os IDs válidos para esta demonstração são "occ-1" e
+          "occ-2".
         </p>
         <Link
           to="/passageiro/saude-da-conta"
@@ -63,7 +73,10 @@ function RecursoOcorrencia() {
 
   if (isSubmitted) {
     return (
-      <div className="max-w-lg mx-auto py-12 px-6 flex flex-col items-center text-center" role="status">
+      <div
+        className="max-w-lg mx-auto py-12 px-6 flex flex-col items-center text-center"
+        role="status"
+      >
         <DemoBanner />
         <div className="h-20 w-20 rounded-[32px] bg-emerald-50 flex items-center justify-center mb-6">
           <CheckCircle2 className="text-emerald-500 h-10 w-10" aria-hidden="true" />
@@ -72,7 +85,8 @@ function RecursoOcorrencia() {
           Recurso simulado registrado
         </h1>
         <p className="text-slate-500 text-sm leading-relaxed mb-8">
-          O texto foi mantido somente no estado desta tela. Nada foi enviado e nenhuma análise real será realizada.
+          O texto foi mantido somente no estado desta tela. Nada foi enviado e nenhuma análise real
+          será realizada.
         </p>
         <Link
           to="/passageiro/saude-da-conta"
@@ -153,8 +167,8 @@ function RecursoOcorrencia() {
             <div className="flex gap-3">
               <Info className="h-4 w-4 text-blue-500 shrink-0 mt-0.5" aria-hidden="true" />
               <p className="text-[11px] font-bold text-blue-800 leading-relaxed uppercase tracking-tight">
-                Instrução demonstrativa: descreva o motivo. Motivos de segurança ou operacionais
-                são exemplos fictícios nesta tela.
+                Instrução demonstrativa: descreva o motivo. Motivos de segurança ou operacionais são
+                exemplos fictícios nesta tela.
               </p>
             </div>
           </div>
@@ -184,7 +198,11 @@ function RecursoOcorrencia() {
                 {trimmedReason.length} de 500 caracteres
               </div>
               {error && (
-                <p id="reason-error" role="alert" className="text-[10px] font-bold text-red-500 uppercase">
+                <p
+                  id="reason-error"
+                  role="alert"
+                  className="text-[10px] font-bold text-red-500 uppercase"
+                >
                   {error}
                 </p>
               )}
@@ -208,4 +226,3 @@ function RecursoOcorrencia() {
     </div>
   );
 }
-
