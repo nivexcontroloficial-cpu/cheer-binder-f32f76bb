@@ -1,10 +1,7 @@
 import { createFileRoute, useNavigate, useParams, Link, useSearch } from "@tanstack/react-router";
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { ACTIVE_PASSENGER_DEMO_RIDE } from "@/data/passenger-demo-rides";
-import {
-  rideQuoteSearchSchema,
-  getQuoteParams,
-} from "@/lib/passenger-demo-ride-quote";
+import { rideQuoteSearchSchema, getQuoteParams } from "@/lib/passenger-demo-ride-quote";
 import {
   ArrowLeft,
   Send,

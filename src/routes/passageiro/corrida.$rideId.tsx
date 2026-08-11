@@ -56,15 +56,9 @@ function ActiveRideScreen() {
   const timerArrivalRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const autoPinConfirmRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
-  const { finalFare } = useMemo(
-    () => calculateRideFare(search.promoCode),
-    [search.promoCode]
-  );
+  const { finalFare } = useMemo(() => calculateRideFare(search.promoCode), [search.promoCode]);
 
-  const paymentLabel = useMemo(
-    () => getPaymentLabel(search.paymentMethod),
-    [search.paymentMethod]
-  );
+  const paymentLabel = useMemo(() => getPaymentLabel(search.paymentMethod), [search.paymentMethod]);
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat("pt-BR", {
@@ -160,11 +154,11 @@ function ActiveRideScreen() {
       </div>
 
       <div className="flex-1 relative bg-slate-100 overflow-hidden">
-        <div 
+        <div
           className="absolute inset-0 opacity-10"
           style={{
             backgroundImage: "radial-gradient(#111827 1px, transparent 1px)",
-            backgroundSize: "24px 24px"
+            backgroundSize: "24px 24px",
           }}
         />
         <svg className="absolute inset-0 w-full h-full" aria-hidden="true">
@@ -187,7 +181,8 @@ function ActiveRideScreen() {
               </h2>
               <p className="text-[10px] text-slate-600">
                 Informe o PIN{" "}
-                <span className="font-bold text-navy">{ACTIVE_PASSENGER_DEMO_RIDE.pin}</span> ao piloto.
+                <span className="font-bold text-navy">{ACTIVE_PASSENGER_DEMO_RIDE.pin}</span> ao
+                piloto.
               </p>
               <p className="text-[10px] font-bold text-navy">
                 Confirme: {pilot.name}, {pilot.vehicle.model} {pilot.vehicle.plate}
@@ -285,7 +280,11 @@ function ActiveRideScreen() {
             Ferramentas técnicas
           </h2>
           <div className="grid grid-cols-2 gap-3">
-            <Button onClick={() => handlePilotArrival()} variant="outline" className="h-11 bg-white/5 border-white/10 text-white hover:bg-white/10">
+            <Button
+              onClick={() => handlePilotArrival()}
+              variant="outline"
+              className="h-11 bg-white/5 border-white/10 text-white hover:bg-white/10"
+            >
               Simular Chegada
             </Button>
             <Button
