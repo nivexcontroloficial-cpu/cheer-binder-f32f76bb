@@ -336,7 +336,7 @@ function ConfirmRideScreen() {
                 )}
               </button>
               <div className="text-3xl font-black text-navy tracking-tighter italic">
-                {formatCurrency(finalPrice)}
+                {formatCurrency(finalFare)}
               </div>
             </div>
 
@@ -347,7 +347,7 @@ function ConfirmRideScreen() {
               </div>
               {isPromoApplied && (
                 <span className="text-[9px] font-bold text-rovya-orange uppercase tracking-widest">
-                  - {formatCurrency(5.0)} cupom
+                  - {formatCurrency(PROMO_CONFIG.DISCOUNT)} cupom
                 </span>
               )}
             </div>
@@ -359,22 +359,28 @@ function ConfirmRideScreen() {
               id="fare-details"
               className="bg-slate-50 rounded-2xl p-4 space-y-2 animate-in slide-in-from-bottom-2 duration-300"
             >
-              <DetailRow label="Tarifa Base" value={baseFare} />
+              <DetailRow label="Tarifa Base" value={baseFareValue} />
               <DetailRow label="Distância (6,8km)" value={distance * pricePerKm} />
               <DetailRow label="Tempo (18min)" value={duration * pricePerMin} />
               <DetailRow label="Adicional noturno" value={nightSurcharge} />
               <DetailRow
                 label="Alta demanda"
                 value={
-                  subtotal -
-                  (baseFare + distance * pricePerKm + duration * pricePerMin + nightSurcharge)
+                  subtotalValue -
+                  (baseFareValue + distance * pricePerKm + duration * pricePerMin + nightSurcharge)
                 }
               />
-              {isPromoApplied && <DetailRow label="Desconto ROVYA5" value={-5.0} highlight />}
+              {isPromoApplied && (
+                <DetailRow
+                  label={`Desconto ${PROMO_CONFIG.CODE}`}
+                  value={-PROMO_CONFIG.DISCOUNT}
+                  highlight
+                />
+              )}
               <div className="pt-2 border-t border-slate-200 mt-2 flex justify-between">
                 <span className="text-[9px] font-black uppercase text-navy">Total</span>
                 <span className="text-[10px] font-black text-navy">
-                  {formatCurrency(finalPrice)}
+                  {formatCurrency(finalFare)}
                 </span>
               </div>
               <p className="text-[8px] text-slate-400 italic text-center mt-2">
