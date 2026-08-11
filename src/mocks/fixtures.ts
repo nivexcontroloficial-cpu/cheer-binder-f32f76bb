@@ -96,20 +96,27 @@ export const ALL_DRIVERS: Driver[] = [
   }
 ];
 
+import { COMPLETED_PASSENGER_DEMO_RIDE } from "../data/passenger-demo-rides";
+
+/**
+ * Adapta a DemoRide canônica para o formato Ride da fixture.
+ */
+const mapDemoRideToRide = (demo: any): Ride => ({
+  id: demo.id,
+  passengerId: demo.passengerId,
+  driverId: demo.driver.id,
+  origin: demo.origin,
+  destination: demo.destination,
+  status: demo.status as any,
+  fare: demo.fare,
+  distance: demo.distance,
+  duration: demo.duration,
+  requestedAt: demo.requestedAt,
+  completedAt: demo.completedAt,
+});
+
 export const ALL_RIDES: Ride[] = [
-  {
-    id: "RY-2026-00842",
-    passengerId: "p1",
-    driverId: "d1",
-    origin: { address: "Centro, Jacarezinho", lat: -23.1614, lng: -49.9733 },
-    destination: { address: "Shopping Jacarezinho — Centro, Jacarezinho", lat: -23.17, lng: -49.98 },
-    status: "completed",
-    fare: 18.00,
-    distance: 6.8,
-    duration: 18,
-    requestedAt: "2026-08-11T10:00:00Z",
-    completedAt: "2026-08-11T10:23:00Z"
-  },
+  mapDemoRideToRide(COMPLETED_PASSENGER_DEMO_RIDE),
   {
     id: "RY-2026-00712",
     passengerId: "p1",
