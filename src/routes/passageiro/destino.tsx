@@ -11,8 +11,17 @@ import {
   Info,
   RefreshCw,
 } from "lucide-react";
+import { z } from "zod";
+
+const searchSchema = z.object({
+  origin: z.string().trim().max(80).optional().catch(undefined),
+  destination: z.string().trim().max(80).optional().catch(undefined),
+  destinationRegion: z.string().trim().max(80).optional().catch(undefined),
+  reference: z.string().trim().max(60).optional().catch(undefined),
+});
 
 export const Route = createFileRoute("/passageiro/destino")({
+  validateSearch: (search) => searchSchema.parse(search),
   component: DestinationScreen,
 });
 
@@ -51,8 +60,9 @@ const MOCK_SUGGESTIONS: Suggestion[] = [
 ];
 
 function DestinationScreen() {
-  const [origin, setOrigin] = useState("Minha localização atual — simulação");
-  const [destination, setDestination] = useState("");
+  const search = Route.useSearch();
+  const [origin, setOrigin] = useState(search.origin || "Minha localização atual — simulação");
+  const [destination, setDestination] = useState(search.destination || "");
   const [suggestions, setSuggestions] = useState<Suggestion[]>(MOCK_SUGGESTIONS);
   const [isSearching, setIsSearching] = useState(false);
   const [simulationError, setSimulationError] = useState(false);
@@ -132,8 +142,14 @@ function DestinationScreen() {
     const selectedName = item.name.trim();
 
     if (validateInputs(trimmedOrigin, selectedName)) {
-      setDestination(item.name);
-      navigate({ to: "/passageiro/localizar" });
+      navigate({
+        to: "/passageiro/localizar",
+        search: {
+          origin: trimmedOrigin,
+          destination: selectedName,
+          destinationRegion: item.region.trim(),
+        },
+      });
     }
   };
 
@@ -432,7 +448,12 @@ function DestinationScreen() {
             <ShortcutButton
               icon={<MapPinned size={18} aria-hidden="true" />}
               label="Ver no Mapa"
-              onClick={() => navigate({ to: "/passageiro/localizar" })}
+              onClick={() =>
+                navigate({
+                  to: "/passageiro/localizar",
+                  search: { origin: origin.trim() },
+                })
+              }
             />
           </section>
         )}
