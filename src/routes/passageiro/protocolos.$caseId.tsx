@@ -45,7 +45,7 @@ function ProtocolDetailScreen() {
         <AlertCircle size={48} className="text-slate-300 mb-4" />
         <h1 className="text-xl font-black uppercase italic text-navy">
           Protocolo simulado não encontrado
-        </h2>
+        </h1>
         <p className="text-xs text-slate-500 mt-2 mb-6">
           Demonstração local: nenhum protocolo real foi consultado.
         </p>
@@ -53,7 +53,7 @@ function ProtocolDetailScreen() {
           type="button"
           onClick={() => navigate({ to: "/passageiro/saude-da-conta" })}
           variant="ghost"
-          className="uppercase text-[10px] font-black tracking-widest"
+          className="uppercase text-[10px] font-black tracking-widest min-h-[44px]"
           aria-label="Voltar para saúde da conta"
         >
           Voltar

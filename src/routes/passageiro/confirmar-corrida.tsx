@@ -224,7 +224,7 @@ function ConfirmRideScreen() {
             >
               Pagamento presencial — simulado
             </h2>
-            <div className="grid grid-cols-3 gap-2" role="group" aria-labelledby="payment-title">
+            <div className="grid grid-cols-3 gap-2" role="radiogroup" aria-labelledby="payment-title">
               <PaymentButton
                 active={paymentMethod === "cash"}
                 onClick={() => setPaymentMethod("cash")}
