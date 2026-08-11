@@ -86,9 +86,9 @@ function LoginScreen() {
         </p>
       </div>
 
-      <h2 className="text-xl font-black uppercase tracking-tight italic mb-2 text-navy">
+      <h1 className="text-xl font-black uppercase tracking-tight italic mb-2 text-navy">
         Como deseja entrar?
-      </h2>
+      </h1>
 
       <div className="flex items-start gap-3 mb-4 p-4 bg-slate-50 rounded-2xl border border-slate-100 group transition-all focus-within:border-rovya-orange/30">
         <div className="flex items-center h-5">

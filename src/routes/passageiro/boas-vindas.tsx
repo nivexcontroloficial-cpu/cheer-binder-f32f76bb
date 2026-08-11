@@ -90,7 +90,7 @@ function WelcomeScreen() {
             ))}
           </div>
 
-          <h1 className="text-3xl font-black tracking-tighter uppercase italic leading-tight mb-4 max-w-xs transition-all duration-500">
+          <h1 className="text-3xl font-black tracking-tighter uppercase italic leading-tight mb-4 max-w-xs transition-all duration-500 focus-visible:ring-2 focus-visible:ring-rovya-orange rounded-lg outline-none" tabIndex={0}>
             {currentStep.title}
           </h1>
           <p className="text-slate-500 text-sm leading-relaxed mb-6 max-w-xs transition-all duration-500">

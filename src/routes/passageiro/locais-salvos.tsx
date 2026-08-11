@@ -204,7 +204,7 @@ function SavedPlacesPage() {
                   id="place-type"
                   value={newType}
                   onChange={(e) => setNewType(e.target.value as "home" | "work" | "other")}
-                  className="w-full h-12 px-4 bg-slate-50 border-none rounded-2xl text-sm font-bold text-navy focus:ring-2 focus:ring-navy/10 transition-all appearance-none"
+                  className="w-full h-12 px-4 bg-slate-50 border-none rounded-2xl text-sm font-bold text-navy focus:ring-2 focus:ring-navy/10 transition-all appearance-none focus-visible:ring-rovya-orange"
                 >
                   <option value="home">Casa</option>
                   <option value="work">Trabalho</option>

@@ -131,7 +131,7 @@ function MockMapScreen() {
               className="h-10 w-10 bg-slate-50 rounded-xl flex items-center justify-center text-rovya-orange shrink-0"
               aria-hidden="true"
             >
-              <MapPin size={20} />
+              <MapPin size={20} aria-hidden="true" />
             </div>
             <div className="flex-1 overflow-hidden">
               <h3 className="text-[10px] font-black uppercase tracking-widest text-navy">
@@ -151,7 +151,7 @@ function MockMapScreen() {
                 className="h-10 w-10 bg-slate-50 rounded-xl flex items-center justify-center text-rovya-blue shrink-0"
                 aria-hidden="true"
               >
-                <MapPin size={20} />
+                <MapPin size={20} aria-hidden="true" />
               </div>
               <div className="flex-1 overflow-hidden">
                 <h3 className="text-[10px] font-black uppercase tracking-widest text-navy">

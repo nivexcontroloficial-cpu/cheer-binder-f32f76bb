@@ -47,7 +47,7 @@ function PermissionsScreen() {
         <div className="space-y-4">
           <PermissionSection
             id="location"
-            icon={<MapPin size={22} />}
+            icon={<MapPin size={22} aria-hidden="true" />}
             title="Localização"
             description="Simula a localização durante o uso para demonstrar a escolha de origem e o acompanhamento da corrida."
             state={location}
@@ -59,7 +59,7 @@ function PermissionsScreen() {
 
           <PermissionSection
             id="camera"
-            icon={<Camera size={22} />}
+            icon={<Camera size={22} aria-hidden="true" />}
             title="Câmera"
             description="Simula a permissão de câmera usada no preview local da foto."
             state={camera}
@@ -71,7 +71,7 @@ function PermissionsScreen() {
 
           <PermissionSection
             id="notifications"
-            icon={<Bell size={22} />}
+            icon={<Bell size={22} aria-hidden="true" />}
             title="Notificações"
             description="Simula avisos sobre chegada do piloto e atualizações da corrida."
             state={notifications}
