@@ -1,4 +1,3 @@
-// PROMPT ROVYA 020.5C — VALIDAÇÃO DE RIDEID EM CANCELAMENTO E DENÚNCIA
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { RovyaBrand } from "@/components/RovyaBrand";
 import {

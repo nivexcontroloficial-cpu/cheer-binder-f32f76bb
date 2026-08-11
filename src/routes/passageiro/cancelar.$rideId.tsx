@@ -100,16 +100,16 @@ function CancelarCorrida() {
               params: { rideId },
             })
           }
-          className="p-2 -ml-2 text-slate-400 hover:bg-slate-50 rounded-full transition-colors"
+          className="w-10 h-10 -ml-2 text-slate-400 hover:bg-slate-50 rounded-full transition-colors flex items-center justify-center focus-visible:ring-2 focus-visible:ring-emerald-500 outline-none"
         >
-          <ChevronLeft size={24} />
+          <ChevronLeft size={24} aria-hidden="true" />
         </button>
         <h1 className="text-xl font-black uppercase tracking-tighter">Cancelar Corrida</h1>
       </header>
 
       <div className="mb-6 p-3 bg-rovya-navy/5 border border-rovya-navy/10 rounded-xl">
         <p className="text-xs font-bold text-rovya-navy flex items-center gap-2">
-          <Info size={14} />
+          <Info size={14} aria-hidden="true" />
           Cenário simulado: piloto no local
         </p>
       </div>
@@ -152,6 +152,7 @@ function CancelarCorrida() {
               className={`h-5 w-5 shrink-0 ${
                 consequence.impact === "high" ? "text-red-500" : "text-blue-500"
               }`}
+              aria-hidden="true"
             />
             <div>
               <p
@@ -205,7 +206,7 @@ function CancelarCorrida() {
                 type="button"
                 onClick={() => {
                   toast.info("Cancelamento simulado: nenhuma corrida real foi cancelada.");
-                  window.location.href = "/passageiro/inicio";
+                  navigate({ to: "/passageiro/inicio" });
                 }}
                 className="rounded-xl bg-rovya-red text-white font-black uppercase hover:bg-red-700 focus-visible:ring-2 focus-visible:ring-emerald-500 outline-none"
               >
