@@ -119,7 +119,7 @@ function SignupScreen() {
               className="p-2 hover:bg-slate-50 rounded-full transition-colors text-slate-400 hover:text-navy z-10"
               aria-label={step === 1 ? "Voltar para entrar" : "Voltar para primeira etapa"}
             >
-              <ChevronLeft size={24} />
+              <ChevronLeft size={24} aria-hidden="true" />
             </button>
             <RovyaBrand className="scale-90 absolute left-1/2 -translate-x-1/2" />
             <div className="w-8" />
@@ -127,6 +127,8 @@ function SignupScreen() {
           <div
             className="w-full flex gap-2"
             role="progressbar"
+            aria-label="Progresso do cadastro simulado"
+            aria-valuetext={`Etapa ${step} de 2`}
             aria-valuenow={step}
             aria-valuemin={1}
             aria-valuemax={2}
