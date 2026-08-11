@@ -224,7 +224,11 @@ function ConfirmRideScreen() {
             >
               Pagamento presencial — simulado
             </h2>
-            <div className="grid grid-cols-3 gap-2" role="radiogroup" aria-labelledby="payment-title">
+            <div
+              className="grid grid-cols-3 gap-2"
+              role="radiogroup"
+              aria-labelledby="payment-title"
+            >
               <PaymentButton
                 active={paymentMethod === "cash"}
                 onClick={() => setPaymentMethod("cash")}
@@ -397,7 +401,8 @@ function PaymentButton({
   return (
     <button
       type="button"
-      aria-pressed={active}
+      role="radio"
+      aria-checked={active}
       onClick={onClick}
       className={`p-4 rounded-2xl border transition-all flex flex-col items-center gap-2 group outline-none focus-visible:ring-2 focus-visible:ring-rovya-orange ${
         active

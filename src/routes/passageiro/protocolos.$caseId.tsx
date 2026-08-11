@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, useParams, Link } from "@tanstack/react-router";
 import {
   ArrowLeft,
   Clock,
@@ -11,7 +11,6 @@ import {
 } from "lucide-react";
 import { MOCK_PROTOCOLS, getStatusLabel, getUrgencyColor } from "@/services/mock/support";
 import { useState, useMemo } from "react";
-import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/passageiro/protocolos/$caseId")({
@@ -42,22 +41,27 @@ function ProtocolDetailScreen() {
   if (!protocol) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-6 text-center bg-porcelain">
-        <AlertCircle size={48} className="text-slate-300 mb-4" />
+        <AlertCircle size={48} className="text-slate-300 mb-4" aria-hidden="true" />
         <h1 className="text-xl font-black uppercase italic text-navy">
           Protocolo simulado não encontrado
         </h1>
         <p className="text-xs text-slate-500 mt-2 mb-6">
           Demonstração local: nenhum protocolo real foi consultado.
         </p>
-        <Button
-          type="button"
-          onClick={() => navigate({ to: "/passageiro/saude-da-conta" })}
-          variant="ghost"
-          className="uppercase text-[10px] font-black tracking-widest min-h-[44px]"
-          aria-label="Voltar para saúde da conta"
-        >
-          Voltar
-        </Button>
+        <div className="flex flex-col gap-3 w-full max-w-xs">
+          <Link
+            to="/passageiro/saude-da-conta"
+            className="flex items-center justify-center px-4 py-3 bg-white border border-slate-200 rounded-xl text-[10px] font-black uppercase tracking-widest text-navy hover:bg-slate-50 focus-visible:ring-2 focus-visible:ring-rovya-orange outline-none min-h-[44px] min-w-[44px]"
+          >
+            Voltar para saúde da conta
+          </Link>
+          <Link
+            to="/passageiro/suporte"
+            className="flex items-center justify-center px-4 py-3 bg-navy text-white rounded-xl text-[10px] font-black uppercase tracking-widest hover:bg-navy/90 focus-visible:ring-2 focus-visible:ring-rovya-orange outline-none min-h-[44px] min-w-[44px]"
+          >
+            Ir para suporte simulado
+          </Link>
+        </div>
       </div>
     );
   }
@@ -85,10 +89,10 @@ function ProtocolDetailScreen() {
           <button
             type="button"
             onClick={() => navigate({ to: "/passageiro/saude-da-conta" })}
-            className="h-10 w-10 bg-slate-50 rounded-xl flex items-center justify-center text-navy"
+            className="h-11 w-11 bg-slate-50 rounded-xl flex items-center justify-center text-navy focus-visible:ring-2 focus-visible:ring-rovya-orange outline-none"
             aria-label="Voltar para saúde da conta"
           >
-            <ArrowLeft size={20} strokeWidth={2.5} />
+            <ArrowLeft size={20} strokeWidth={2.5} aria-hidden="true" />
           </button>
           <div className="flex flex-col">
             <h1 className="text-xl font-black italic tracking-tighter uppercase leading-none">
@@ -148,9 +152,9 @@ function ProtocolDetailScreen() {
 
         {/* Timeline */}
         <section className="space-y-4">
-          <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-400 px-2">
+          <h2 className="text-[10px] font-black uppercase tracking-widest text-slate-400 px-2">
             Linha do Tempo (Fictícia)
-          </h3>
+          </h2>
           <div className="space-y-6 relative before:absolute before:left-5 before:top-2 before:bottom-2 before:w-px before:bg-slate-100">
             {timelineEvents.map((event, idx) => {
               const isLast = idx === timelineEvents.length - 1;
@@ -214,7 +218,7 @@ function ProtocolDetailScreen() {
             <div className="bg-navy rounded-[32px] p-6 text-white">
               <div className="flex items-center gap-3 mb-4">
                 <MessageSquare className="text-blue-400" size={18} />
-                <h3 className="text-[10px] font-black uppercase tracking-widest">Canal simulado</h3>
+                <h2 className="text-[10px] font-black uppercase tracking-widest">Canal simulado</h2>
               </div>
               <p className="text-[11px] text-slate-400 leading-relaxed mb-4">
                 Esta é uma demonstração local. Nenhuma mensagem é enviada à equipe de atendimento.
