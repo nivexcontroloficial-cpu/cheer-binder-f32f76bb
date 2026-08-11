@@ -439,9 +439,9 @@ function ChatScreen() {
             type="button"
             onClick={() => setShowProtectedCall(true)}
             className="h-11 w-11 bg-slate-50 text-navy rounded-xl flex items-center justify-center hover:bg-slate-100 active:scale-95 transition-all focus:ring-2 focus:ring-navy focus:outline-none"
-            aria-label="Chamada protegida"
+            aria-label="Abrir simulação de chamada"
           >
-            <Phone size={18} strokeWidth={2.5} />
+            <Phone size={18} strokeWidth={2.5} aria-hidden="true" />
           </button>
 
           <AlertDialog open={showReportConfirm} onOpenChange={setShowReportConfirm}>
@@ -451,7 +451,7 @@ function ChatScreen() {
                 className="h-11 w-11 bg-slate-50 text-navy rounded-xl flex items-center justify-center hover:bg-slate-100 active:scale-95 transition-all focus:ring-2 focus:ring-navy focus:outline-none"
                 aria-label="Opções adicionais"
               >
-                <MoreVertical size={18} strokeWidth={2.5} />
+                <MoreVertical size={18} strokeWidth={2.5} aria-hidden="true" />
               </button>
             </AlertDialogTrigger>
             <AlertDialogContent className="rounded-3xl max-w-[90vw] w-[320px]">
