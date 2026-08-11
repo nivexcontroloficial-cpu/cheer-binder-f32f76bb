@@ -4,7 +4,6 @@ import { ACTIVE_PASSENGER_DEMO_RIDE } from "@/data/passenger-demo-rides";
 import {
   ArrowLeft,
   Send,
-  Paperclip,
   MoreVertical,
   Shield,
   Flag,
@@ -15,7 +14,6 @@ import {
   Clock,
   X,
   Ban,
-  ImageIcon,
   MessageSquareX,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
