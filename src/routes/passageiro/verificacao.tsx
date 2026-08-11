@@ -1,14 +1,14 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { RovyaBrand } from "@/components/RovyaBrand";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useLayoutEffect } from "react";
 import {
-  Camera,
   RefreshCw,
   CheckCircle2,
   AlertCircle,
   ArrowRight,
   Lightbulb,
   UserCheck,
+  User,
 } from "lucide-react";
 
 export const Route = createFileRoute("/passageiro/verificacao")({
@@ -27,24 +27,18 @@ function VerificationScreen() {
     birthDate: "",
     photo: "",
   });
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const readerRef = useRef<FileReader | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    return () => {
-      if (readerRef.current) {
-        const reader = readerRef.current;
-        reader.onload = null;
-        reader.onerror = null;
-        reader.onabort = null;
-        if (reader.readyState === FileReader.LOADING) {
-          reader.abort();
-        }
-        readerRef.current = null;
+  // Restauração de scroll a cada mudança de etapa
+  useLayoutEffect(() => {
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      if (containerRef.current) {
+        containerRef.current.scrollTop = 0;
       }
-    };
-  }, []);
+    }
+  }, [step]);
 
   const validateStep1 = () => {
     let valid = true;
@@ -92,61 +86,15 @@ function VerificationScreen() {
     }
   };
 
-  const handlePhotoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
+  const handleSimulatePhoto = () => {
     setErrors((prev) => ({ ...prev, photo: "" }));
-
-    if (file) {
-      if (!file.type.startsWith("image/")) {
-        setErrors((prev) => ({
-          ...prev,
-          photo: "Por favor, selecione apenas arquivos de imagem.",
-        }));
-        if (fileInputRef.current) fileInputRef.current.value = "";
-        return;
-      }
-
-      const maxSize = 5 * 1024 * 1024; // 5MB
-      if (file.size > maxSize) {
-        setErrors((prev) => ({ ...prev, photo: "A imagem deve ter no máximo 5MB." }));
-        if (fileInputRef.current) fileInputRef.current.value = "";
-        return;
-      }
-
-      // Cancel previous read if any
-      if (readerRef.current) {
-        const prevReader = readerRef.current;
-        prevReader.onload = null;
-        prevReader.onerror = null;
-        prevReader.onabort = null;
-        if (prevReader.readyState === FileReader.LOADING) {
-          prevReader.abort();
-        }
-      }
-
-      const reader = new FileReader();
-      readerRef.current = reader;
-
-      reader.onload = () => {
-        setFormData((prev) => ({ ...prev, photo: reader.result as string }));
-        readerRef.current = null;
-      };
-
-      reader.onerror = () => {
-        setErrors((prev) => ({ ...prev, photo: "Erro ao ler o arquivo localmente." }));
-        if (fileInputRef.current) fileInputRef.current.value = "";
-        readerRef.current = null;
-      };
-
-      reader.readAsDataURL(file);
-    }
+    // Avatar CSS/SVG determinístico para simulação
+    const simulatedAvatar = `data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23F1F5F9"/><circle cx="50" cy="40" r="20" fill="%23CBD5E1"/><path d="M20 90c0-15 10-25 30-25s30 10 30 25" fill="%23CBD5E1"/></svg>`;
+    setFormData((prev) => ({ ...prev, photo: simulatedAvatar }));
   };
 
   const removePhoto = () => {
     setFormData({ ...formData, photo: null });
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
   };
 
   const progress = step === 1 ? 33 : step === 2 ? 66 : 100;
@@ -158,7 +106,10 @@ function VerificationScreen() {
         : "Verificação Concluída";
 
   return (
-    <div className="flex min-h-screen flex-col bg-white font-sans text-navy selection:bg-rovya-orange/20">
+    <div
+      ref={containerRef}
+      className="flex min-h-screen flex-col bg-white font-sans text-navy selection:bg-rovya-orange/20 overflow-y-auto"
+    >
       <header className="p-8 pb-4">
         <div className="flex flex-col items-center gap-6">
           <RovyaBrand className="scale-90" aria-hidden="true" />
@@ -185,8 +136,8 @@ function VerificationScreen() {
       <div className="px-8 py-3 bg-rovya-orange/10 border-y border-rovya-orange/20 flex items-start gap-3">
         <AlertCircle size={16} className="text-rovya-orange shrink-0 mt-0.5" aria-hidden="true" />
         <p className="text-[10px] font-bold text-rovya-orange leading-tight uppercase tracking-wider">
-          Demonstração local: os dados e a foto permanecem somente nesta tela e não são enviados,
-          armazenados ou analisados.
+          DEMONSTRAÇÃO LOCAL: OS DADOS E O AVATAR FICTÍCIO PERMANECEM SOMENTE NESTA TELA E NÃO SÃO
+          ENVIADOS, ARMAZENADOS OU ANALISADOS.
         </p>
       </div>
 
@@ -236,24 +187,32 @@ function VerificationScreen() {
               </div>
 
               <div className="space-y-2">
-                <label
-                  htmlFor="birthDate"
-                  className="text-[10px] font-black uppercase tracking-widest text-slate-400"
-                >
-                  Data de Nascimento
-                </label>
-                <input
-                  id="birthDate"
-                  type="date"
-                  value={formData.birthDate}
-                  onChange={(e) => {
-                    setFormData({ ...formData, birthDate: e.target.value });
-                    if (errors.birthDate) setErrors({ ...errors, birthDate: "" });
-                  }}
-                  aria-invalid={!!errors.birthDate}
-                  aria-describedby={errors.birthDate ? "birthDate-error" : undefined}
-                  className={`w-full h-14 px-4 bg-slate-50 border ${errors.birthDate ? "border-red-500" : "border-slate-100"} rounded-2xl text-navy font-bold focus:outline-none focus:border-rovya-orange focus:bg-white transition-all`}
-                />
+                <div className="flex flex-col gap-2">
+                  <label
+                    htmlFor="birthDate"
+                    className="text-[10px] font-black uppercase tracking-widest text-slate-400"
+                  >
+                    Data de Nascimento
+                  </label>
+                  <div className="space-y-2">
+                    <input
+                      id="birthDate"
+                      type="date"
+                      value={formData.birthDate}
+                      inputMode="numeric"
+                      onChange={(e) => {
+                        setFormData({ ...formData, birthDate: e.target.value });
+                        if (errors.birthDate) setErrors({ ...errors, birthDate: "" });
+                      }}
+                      aria-invalid={!!errors.birthDate}
+                      aria-describedby={errors.birthDate ? "birthDate-error" : undefined}
+                      className={`w-full h-14 px-4 bg-slate-50 border ${errors.birthDate ? "border-red-500" : "border-slate-100"} rounded-2xl text-navy font-bold focus:outline-none focus:border-rovya-orange focus:bg-white transition-all min-h-11`}
+                    />
+                    <p className="text-[10px] text-slate-400 font-medium italic">
+                      Formato: DD/MM/AAAA — use uma data fictícia.
+                    </p>
+                  </div>
+                </div>
                 {errors.birthDate && (
                   <p
                     id="birthDate-error"
@@ -289,26 +248,30 @@ function VerificationScreen() {
           <div className="flex flex-col gap-8 w-full animate-in fade-in slide-in-from-right-4 duration-500 text-center">
             <div className="space-y-2">
               <h1 className="text-2xl font-black uppercase tracking-tight italic text-navy leading-tight">
-                Foto de Perfil Local
+                SIMULAR FOTO DE PERFIL
               </h1>
               <p className="text-sm text-slate-500">
-                A foto ajuda a simular como o piloto te identificaria no embarque.
+                A simulação de avatar ajuda a ilustrar a identificação visual pelo piloto.
               </p>
             </div>
 
             <div className="relative aspect-square w-full max-w-[240px] mx-auto group">
               {formData.photo ? (
-                <div className="w-full h-full rounded-[40px] overflow-hidden border-4 border-rovya-orange rovya-shadow-lg relative">
+                <div
+                  className="w-full h-full rounded-[40px] overflow-hidden border-4 border-rovya-orange rovya-shadow-lg relative"
+                  role="status"
+                  aria-live="polite"
+                >
                   <img
                     src={formData.photo}
-                    alt="Preview da foto de perfil para simulação"
+                    alt="Avatar fictício gerado para a simulação"
                     className="w-full h-full object-cover"
                   />
                   <button
                     type="button"
                     onClick={removePhoto}
-                    aria-label="Remover foto e tirar outra"
-                    className="absolute bottom-4 right-4 p-3 bg-white text-navy rounded-full shadow-lg hover:bg-slate-50 transition-all active:scale-95"
+                    aria-label="Remover avatar e simular outro"
+                    className="absolute bottom-4 right-4 p-3 bg-white text-navy rounded-full shadow-lg hover:bg-slate-50 transition-all active:scale-95 min-h-11 min-w-11 flex items-center justify-center focus-visible:ring-2 focus-visible:ring-rovya-orange outline-none"
                   >
                     <RefreshCw size={20} aria-hidden="true" />
                   </button>
@@ -317,29 +280,25 @@ function VerificationScreen() {
                 <button
                   type="button"
                   id="photo-button"
-                  onClick={() => fileInputRef.current?.click()}
+                  onClick={handleSimulatePhoto}
                   aria-invalid={!!errors.photo}
                   aria-describedby={errors.photo ? "photo-error" : undefined}
-                  aria-label="Tirar foto ou selecionar arquivo de imagem para demonstração local"
-                  className={`w-full h-full rounded-[40px] bg-slate-50 border-2 border-dashed ${errors.photo ? "border-red-500" : "border-slate-200"} flex flex-col items-center justify-center gap-4 text-slate-400 hover:border-rovya-orange hover:bg-white transition-all group`}
+                  aria-label="Simular avatar de perfil para demonstração local"
+                  className={`w-full h-full rounded-[40px] bg-slate-50 border-2 border-dashed ${errors.photo ? "border-red-500" : "border-slate-200"} flex flex-col items-center justify-center gap-4 text-slate-400 hover:border-rovya-orange hover:bg-white transition-all group min-h-[240px] focus-visible:ring-2 focus-visible:ring-rovya-orange outline-none`}
                 >
                   <div className="p-5 bg-white rounded-3xl shadow-sm group-hover:scale-110 transition-transform">
-                    <Camera size={32} strokeWidth={1.5} aria-hidden="true" />
+                    <User size={32} strokeWidth={1.5} aria-hidden="true" />
                   </div>
-                  <span className="text-[10px] font-black uppercase tracking-widest">
-                    Usar câmera ou escolher imagem
-                  </span>
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[10px] font-black uppercase tracking-widest">
+                      SIMULAR FOTO DE PERFIL
+                    </span>
+                    <span className="text-[9px] text-slate-400 font-medium lowercase italic px-4">
+                      Nenhuma câmera, galeria, biometria ou análise facial será utilizada.
+                    </span>
+                  </div>
                 </button>
               )}
-              <input
-                id="photo-input"
-                type="file"
-                ref={fileInputRef}
-                className="hidden"
-                accept="image/*"
-                capture="user"
-                onChange={handlePhotoUpload}
-              />
             </div>
 
             {errors.photo && (
@@ -367,7 +326,7 @@ function VerificationScreen() {
 
               <div className="flex items-center gap-2 justify-center text-[9px] text-slate-400 font-bold uppercase tracking-[0.2em]">
                 <AlertCircle size={12} aria-hidden="true" />
-                Nenhuma biometria ou análise facial é realizada
+                Nenhuma câmera, galeria, biometria ou análise facial será utilizada.
               </div>
             </div>
           </div>
@@ -405,11 +364,13 @@ function VerificationScreen() {
                 type="button"
                 onClick={handleNextStep}
                 aria-label={
-                  step === 1 ? "Prosseguir para a foto" : "Finalizar verificação simulada"
+                  step === 1
+                    ? "Prosseguir para a simulação de avatar"
+                    : "Finalizar verificação simulada"
                 }
-                className="w-full bg-navy text-white h-14 rounded-2xl font-black uppercase tracking-widest text-[11px] flex items-center justify-center gap-2 hover:bg-navy/90 transition-all active:scale-95 rovya-shadow"
+                className="w-full bg-navy text-white h-14 rounded-2xl font-black uppercase tracking-widest text-[11px] flex items-center justify-center gap-2 hover:bg-navy/90 transition-all active:scale-95 rovya-shadow focus-visible:ring-2 focus-visible:ring-rovya-orange outline-none min-h-14"
               >
-                {step === 1 ? "Prosseguir" : "Finalizar Verificação"}
+                {step === 1 ? "Prosseguir" : "Finalizar Verificação Simulada"}
                 <ArrowRight size={18} strokeWidth={2.5} aria-hidden="true" />
               </button>
 
