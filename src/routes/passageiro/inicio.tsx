@@ -15,13 +15,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 
 export const Route = createFileRoute("/passageiro/inicio")({
   component: PassengerHomeScreen,
@@ -63,7 +57,8 @@ function PassengerHomeScreen() {
         <div className="flex items-start gap-2 p-3 bg-blue-50/50 border border-blue-100 rounded-2xl">
           <Info size={14} className="text-blue-500 mt-0.5 shrink-0" aria-hidden="true" />
           <p className="text-[9px] text-blue-700 font-medium italic leading-relaxed">
-            Demonstração local: destinos, localização, conta, preços e promoções utilizam dados fictícios.
+            Demonstração local: destinos, localização, conta, preços e promoções utilizam dados
+            fictícios.
           </p>
         </div>
 
@@ -155,7 +150,12 @@ function PassengerHomeScreen() {
                   className="min-h-11 flex items-center gap-2 px-4 py-2 bg-slate-50 rounded-xl border border-slate-100 text-navy hover:bg-white hover:border-rovya-orange transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rovya-orange"
                   aria-label={`Mudar forma de pagamento. Atual: ${paymentMethod}`}
                 >
-                  <CreditCard size={14} strokeWidth={2} className="text-slate-400" aria-hidden="true" />
+                  <CreditCard
+                    size={14}
+                    strokeWidth={2}
+                    className="text-slate-400"
+                    aria-hidden="true"
+                  />
                   <span className="text-[9px] font-black uppercase tracking-widest">
                     {paymentMethod}
                   </span>
@@ -363,4 +363,3 @@ function RecentItem({
     </button>
   );
 }
-
