@@ -129,7 +129,7 @@ function SearchingRideScreen() {
 
       {/* Header com resumo */}
       <header className="bg-white px-6 py-5 border-b border-slate-100 flex items-center justify-between sticky top-0 z-50">
-        <div className="flex flex-col" aria-live="polite">
+        <div className="flex flex-col" role="status" aria-live="polite">
           <h1 className="text-[11px] font-black uppercase tracking-widest italic text-rovya-blue">
             Buscando Piloto
           </h1>
@@ -245,6 +245,7 @@ function SearchingRideScreen() {
           <div className="absolute bottom-6 left-6 right-6">
             <div
               className="bg-white/90 backdrop-blur-md p-4 rounded-3xl border border-white shadow-lg flex items-center gap-4"
+              role="status"
               aria-live="polite"
             >
               <div
@@ -268,14 +269,14 @@ function SearchingRideScreen() {
                 {status === "accepted" && <CheckCircle2 size={20} aria-hidden="true" />}
               </div>
               <div className="flex-1">
-                <h3 className="text-[11px] font-black uppercase tracking-tight">
+                <h2 className="text-[11px] font-black uppercase tracking-tight">
                   {status === "searching" && "Procurando pilotos"}
                   {status === "expanding" && "Ampliando busca simulada"}
                   {status === "few_drivers" && "Poucos pilotos disponíveis"}
                   {status === "no_drivers" && "Nenhum piloto encontrado"}
                   {status === "error" && "Falha simulada de conexão"}
                   {status === "accepted" && "Piloto aceitou"}
-                </h3>
+                </h2>
                 <p className="text-[9px] font-bold text-slate-400 uppercase tracking-wider">
                   {status === "searching" && "Buscando o melhor piloto para você"}
                   {status === "expanding" && "Verificando pilotos em bairros vizinhos"}

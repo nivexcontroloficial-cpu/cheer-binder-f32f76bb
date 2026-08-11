@@ -43,7 +43,7 @@ function ProtocolDetailScreen() {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-6 text-center bg-porcelain">
         <AlertCircle size={48} className="text-slate-300 mb-4" />
-        <h2 className="text-xl font-black uppercase italic text-navy">
+        <h1 className="text-xl font-black uppercase italic text-navy">
           Protocolo simulado não encontrado
         </h2>
         <p className="text-xs text-slate-500 mt-2 mb-6">
@@ -149,7 +149,7 @@ function ProtocolDetailScreen() {
         {/* Timeline */}
         <section className="space-y-4">
           <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-400 px-2">
-            Linha do Tempo
+            Linha do Tempo (Fictícia)
           </h3>
           <div className="space-y-6 relative before:absolute before:left-5 before:top-2 before:bottom-2 before:w-px before:bg-slate-100">
             {timelineEvents.map((event, idx) => {
@@ -229,7 +229,7 @@ function ProtocolDetailScreen() {
                   value={newMessage}
                   onChange={(e) => setNewMessage(e.target.value)}
                   placeholder="Digite aqui..."
-                  className="w-full bg-white/10 border border-white/20 rounded-2xl py-3 pl-4 pr-12 text-sm text-white placeholder:text-slate-500 outline-none focus:ring-1 focus:ring-blue-400 transition-all"
+                  className="w-full bg-white/10 border border-white/20 rounded-2xl py-3 pl-4 pr-12 text-sm text-white placeholder:text-slate-500 outline-none focus:ring-1 focus:ring-blue-400 focus-visible:ring-rovya-orange transition-all min-h-[44px]"
                 />
                 <button
                   type="submit"

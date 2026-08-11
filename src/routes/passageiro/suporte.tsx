@@ -84,7 +84,8 @@ function SupportCenter() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             placeholder="Como podemos ajudar?"
-            className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 text-sm focus:ring-2 focus:ring-navy outline-none transition-all"
+            aria-describedby={filteredFaqs.length === 0 ? "empty-faq-results" : undefined}
+            className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-12 pr-4 text-sm focus:ring-2 focus:ring-navy outline-none transition-all focus-visible:ring-rovya-orange min-h-[44px]"
           />
         </div>
       </header>
@@ -132,7 +133,7 @@ function SupportCenter() {
             Dúvidas Frequentes
           </h3>
 
-          <div className="space-y-2" aria-live="polite">
+          <div className="space-y-2" role="status" aria-live="polite">
             {filteredFaqs.length > 0 ? (
               filteredFaqs.map((faq) => (
                 <details
@@ -152,7 +153,7 @@ function SupportCenter() {
                 </details>
               ))
             ) : (
-              <div className="bg-white border border-slate-100 rounded-2xl p-8 text-center space-y-2">
+              <div id="empty-faq-results" className="bg-white border border-slate-100 rounded-2xl p-8 text-center space-y-2">
                 <p className="text-sm font-bold text-navy">
                   Nenhuma dúvida encontrada nesta demonstração.
                 </p>
@@ -173,7 +174,7 @@ function SupportCenter() {
             <button
               type="button"
               onClick={() => navigate({ to: "/passageiro/termos" })}
-              className="w-full flex items-center justify-between p-5 border-b border-slate-50 hover:bg-slate-50 focus:bg-slate-50 outline-none"
+              className="w-full flex items-center justify-between p-5 border-b border-slate-50 hover:bg-slate-50 focus:bg-slate-50 outline-none focus-visible:ring-2 focus-visible:ring-rovya-orange min-h-[44px]"
             >
               <div className="flex items-center gap-3 text-slate-400">
                 <BookOpen size={18} />
@@ -184,7 +185,7 @@ function SupportCenter() {
             <button
               type="button"
               onClick={() => navigate({ to: "/passageiro/privacidade" })}
-              className="w-full flex items-center justify-between p-5 hover:bg-slate-50 focus:bg-slate-50 outline-none"
+              className="w-full flex items-center justify-between p-5 hover:bg-slate-50 focus:bg-slate-50 outline-none focus-visible:ring-2 focus-visible:ring-rovya-orange min-h-[44px]"
             >
               <div className="flex items-center gap-3 text-slate-400">
                 <ShieldAlert size={18} />
