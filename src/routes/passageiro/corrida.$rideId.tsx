@@ -56,7 +56,7 @@ function ActiveRideScreen() {
   const [isWaitTimerActive, setIsWaitTimerActive] = useState(false);
   const [lastUpdate, setLastUpdate] = useState("10:00");
   
-  const timerRef = useRef<NodeJS.Timeout>();
+  const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
   const pilot = {
     name: ACTIVE_PASSENGER_DEMO_RIDE.driver.name,
