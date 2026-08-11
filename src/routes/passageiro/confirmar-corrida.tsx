@@ -19,11 +19,20 @@ import {
 import { toast } from "sonner";
 import { z } from "zod";
 
+const optionalSearchString = (maxLength: number) =>
+  z
+    .preprocess((value) => {
+      if (typeof value !== "string") return undefined;
+      const trimmed = value.trim();
+      return trimmed ? trimmed : undefined;
+    }, z.string().max(maxLength).optional())
+    .catch(undefined);
+
 const searchSchema = z.object({
-  origin: z.string().trim().max(80).optional().catch(undefined),
-  destination: z.string().trim().max(80).optional().catch(undefined),
-  destinationRegion: z.string().trim().max(80).optional().catch(undefined),
-  reference: z.string().trim().max(60).optional().catch(undefined),
+  origin: optionalSearchString(80),
+  destination: optionalSearchString(80),
+  destinationRegion: optionalSearchString(80),
+  reference: optionalSearchString(60),
 });
 
 export const Route = createFileRoute("/passageiro/confirmar-corrida")({
@@ -199,8 +208,11 @@ function ConfirmRideScreen() {
             <div className="flex items-center gap-4">
               <MapPin size={14} className="text-rovya-blue shrink-0" aria-hidden="true" />
               <p className="text-[10px] font-black uppercase tracking-widest text-navy break-words">
-                {search.destination || "Vila Setti, Jacarezinho"}
-                {search.destinationRegion && ` — ${search.destinationRegion}`}
+                {search.destination
+                  ? search.destinationRegion
+                    ? `${search.destination} — ${search.destinationRegion}`
+                    : search.destination
+                  : "Vila Setti, Jacarezinho"}
               </p>
             </div>
           </div>

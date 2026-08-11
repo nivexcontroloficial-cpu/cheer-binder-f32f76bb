@@ -3,11 +3,20 @@ import { useState } from "react";
 import { ArrowLeft, MapPin, Check, Info } from "lucide-react";
 import { z } from "zod";
 
+const optionalSearchString = (maxLength: number) =>
+  z
+    .preprocess((value) => {
+      if (typeof value !== "string") return undefined;
+      const trimmed = value.trim();
+      return trimmed ? trimmed : undefined;
+    }, z.string().max(maxLength).optional())
+    .catch(undefined);
+
 const searchSchema = z.object({
-  origin: z.string().trim().max(80).optional().catch(undefined),
-  destination: z.string().trim().max(80).optional().catch(undefined),
-  destinationRegion: z.string().trim().max(80).optional().catch(undefined),
-  reference: z.string().trim().max(60).optional().catch(undefined),
+  origin: optionalSearchString(80),
+  destination: optionalSearchString(80),
+  destinationRegion: optionalSearchString(80),
+  reference: optionalSearchString(60),
 });
 
 export const Route = createFileRoute("/passageiro/localizar")({
@@ -26,11 +35,14 @@ function MockMapScreen() {
       : search.origin || "Centro, Jacarezinho";
 
   const handleConfirm = () => {
-    const trimmedRef = reference.trim();
+    const trimmedRef = reference.trim() || undefined;
     if (!search.destination) {
       navigate({
         to: "/passageiro/destino",
-        search: { origin: normalizedOrigin },
+        search: {
+          origin: normalizedOrigin,
+          reference: trimmedRef,
+        },
       });
     } else {
       navigate({
@@ -39,7 +51,7 @@ function MockMapScreen() {
           origin: normalizedOrigin,
           destination: search.destination,
           destinationRegion: search.destinationRegion,
-          reference: trimmedRef || undefined,
+          reference: trimmedRef,
         },
       });
     }
@@ -65,7 +77,7 @@ function MockMapScreen() {
                 origin: search.origin,
                 destination: search.destination,
                 destinationRegion: search.destinationRegion,
-                reference: search.reference,
+                reference: reference.trim() || undefined,
               },
             })
           }

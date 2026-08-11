@@ -13,11 +13,20 @@ import {
 } from "lucide-react";
 import { z } from "zod";
 
+const optionalSearchString = (maxLength: number) =>
+  z
+    .preprocess((value) => {
+      if (typeof value !== "string") return undefined;
+      const trimmed = value.trim();
+      return trimmed ? trimmed : undefined;
+    }, z.string().max(maxLength).optional())
+    .catch(undefined);
+
 const searchSchema = z.object({
-  origin: z.string().trim().max(80).optional().catch(undefined),
-  destination: z.string().trim().max(80).optional().catch(undefined),
-  destinationRegion: z.string().trim().max(80).optional().catch(undefined),
-  reference: z.string().trim().max(60).optional().catch(undefined),
+  origin: optionalSearchString(80),
+  destination: optionalSearchString(80),
+  destinationRegion: optionalSearchString(80),
+  reference: optionalSearchString(60),
 });
 
 export const Route = createFileRoute("/passageiro/destino")({
@@ -148,6 +157,7 @@ function DestinationScreen() {
           origin: trimmedOrigin,
           destination: selectedName,
           destinationRegion: item.region.trim(),
+          reference: search.reference,
         },
       });
     }
