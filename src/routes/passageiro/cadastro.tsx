@@ -191,6 +191,8 @@ function SignupScreen() {
                       required
                       type="text"
                       maxLength={50}
+                      aria-invalid={!!errors.name}
+                      aria-describedby={errors.name ? "name-error" : undefined}
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       placeholder="Ex: Rafael Silva"
@@ -198,7 +200,7 @@ function SignupScreen() {
                     />
                   </div>
                   {errors.name && (
-                    <p className="text-[10px] text-red-500 font-bold" role="alert">
+                    <p id="name-error" className="text-[10px] text-red-500 font-bold" role="alert">
                       {errors.name}
                     </p>
                   )}
