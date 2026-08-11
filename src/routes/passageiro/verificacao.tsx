@@ -1,7 +1,17 @@
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import { RovyaBrand } from "@/components/RovyaBrand";
 import { useState, useRef, useEffect } from "react";
-import { Camera, RefreshCw, CheckCircle2, AlertCircle, ArrowRight, Loader2, Lightbulb, UserCheck, X } from "lucide-react";
+import {
+  Camera,
+  RefreshCw,
+  CheckCircle2,
+  AlertCircle,
+  ArrowRight,
+  Loader2,
+  Lightbulb,
+  UserCheck,
+  X,
+} from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/passageiro/verificacao")({
@@ -121,14 +131,19 @@ function VerificationScreen() {
   };
 
   const progress = step === 1 ? 33 : step === 2 ? 66 : 100;
-  const progressText = step === 1 ? "Etapa 1: Dados Pessoais" : step === 2 ? "Etapa 2: Foto de Perfil" : "Verificação Concluída";
+  const progressText =
+    step === 1
+      ? "Etapa 1: Dados Pessoais"
+      : step === 2
+        ? "Etapa 2: Foto de Perfil"
+        : "Verificação Concluída";
 
   return (
     <div className="flex min-h-screen flex-col bg-white font-sans text-navy selection:bg-rovya-orange/20">
       <header className="p-8 pb-4">
         <div className="flex flex-col items-center gap-6">
           <RovyaBrand className="scale-90" aria-hidden="true" />
-          <div 
+          <div
             role="progressbar"
             aria-label="Progresso da verificação simulada"
             aria-valuenow={progress}
@@ -138,9 +153,9 @@ function VerificationScreen() {
             className="w-full flex gap-2"
           >
             {[1, 2, 3].map((i) => (
-              <div 
-                key={i} 
-                className={`h-1 flex-1 rounded-full transition-all duration-500 ${i <= step ? 'bg-rovya-orange' : 'bg-slate-100'}`}
+              <div
+                key={i}
+                className={`h-1 flex-1 rounded-full transition-all duration-500 ${i <= step ? "bg-rovya-orange" : "bg-slate-100"}`}
               />
             ))}
           </div>
@@ -151,7 +166,8 @@ function VerificationScreen() {
       <div className="px-8 py-3 bg-rovya-orange/10 border-y border-rovya-orange/20 flex items-start gap-3">
         <AlertCircle size={16} className="text-rovya-orange shrink-0 mt-0.5" aria-hidden="true" />
         <p className="text-[10px] font-bold text-rovya-orange leading-tight uppercase tracking-wider">
-          Demonstração local: os dados e a foto permanecem somente nesta tela e não são enviados, armazenados ou analisados.
+          Demonstração local: os dados e a foto permanecem somente nesta tela e não são enviados,
+          armazenados ou analisados.
         </p>
       </div>
 
@@ -169,53 +185,82 @@ function VerificationScreen() {
 
             <div className="space-y-6">
               <div className="space-y-2">
-                <label htmlFor="fullName" className="text-[10px] font-black uppercase tracking-widest text-slate-400">Nome Completo (Use nomes fictícios)</label>
-                <input 
+                <label
+                  htmlFor="fullName"
+                  className="text-[10px] font-black uppercase tracking-widest text-slate-400"
+                >
+                  Nome Completo (Use nomes fictícios)
+                </label>
+                <input
                   id="fullName"
                   type="text"
                   maxLength={60}
                   value={formData.fullName}
                   onChange={(e) => {
-                    setFormData({...formData, fullName: e.target.value});
-                    if (errors.fullName) setErrors({...errors, fullName: ""});
+                    setFormData({ ...formData, fullName: e.target.value });
+                    if (errors.fullName) setErrors({ ...errors, fullName: "" });
                   }}
                   placeholder="Ex: João da Silva"
                   aria-invalid={!!errors.fullName}
                   aria-describedby={errors.fullName ? "fullName-error" : undefined}
-                  className={`w-full h-14 px-4 bg-slate-50 border ${errors.fullName ? 'border-red-500' : 'border-slate-100'} rounded-2xl text-navy font-bold focus:outline-none focus:border-rovya-orange focus:bg-white transition-all`}
+                  className={`w-full h-14 px-4 bg-slate-50 border ${errors.fullName ? "border-red-500" : "border-slate-100"} rounded-2xl text-navy font-bold focus:outline-none focus:border-rovya-orange focus:bg-white transition-all`}
                 />
                 {errors.fullName && (
-                  <p id="fullName-error" role="alert" className="text-[10px] text-red-500 font-bold uppercase tracking-wider">{errors.fullName}</p>
+                  <p
+                    id="fullName-error"
+                    role="alert"
+                    className="text-[10px] text-red-500 font-bold uppercase tracking-wider"
+                  >
+                    {errors.fullName}
+                  </p>
                 )}
               </div>
 
               <div className="space-y-2">
-                <label htmlFor="birthDate" className="text-[10px] font-black uppercase tracking-widest text-slate-400">Data de Nascimento</label>
-                <input 
+                <label
+                  htmlFor="birthDate"
+                  className="text-[10px] font-black uppercase tracking-widest text-slate-400"
+                >
+                  Data de Nascimento
+                </label>
+                <input
                   id="birthDate"
                   type="date"
                   value={formData.birthDate}
                   onChange={(e) => {
-                    setFormData({...formData, birthDate: e.target.value});
-                    if (errors.birthDate) setErrors({...errors, birthDate: ""});
+                    setFormData({ ...formData, birthDate: e.target.value });
+                    if (errors.birthDate) setErrors({ ...errors, birthDate: "" });
                   }}
                   aria-invalid={!!errors.birthDate}
                   aria-describedby={errors.birthDate ? "birthDate-error" : undefined}
-                  className={`w-full h-14 px-4 bg-slate-50 border ${errors.birthDate ? 'border-red-500' : 'border-slate-100'} rounded-2xl text-navy font-bold focus:outline-none focus:border-rovya-orange focus:bg-white transition-all`}
+                  className={`w-full h-14 px-4 bg-slate-50 border ${errors.birthDate ? "border-red-500" : "border-slate-100"} rounded-2xl text-navy font-bold focus:outline-none focus:border-rovya-orange focus:bg-white transition-all`}
                 />
                 {errors.birthDate && (
-                  <p id="birthDate-error" role="alert" className="text-[10px] text-red-500 font-bold uppercase tracking-wider">{errors.birthDate}</p>
+                  <p
+                    id="birthDate-error"
+                    role="alert"
+                    className="text-[10px] text-red-500 font-bold uppercase tracking-wider"
+                  >
+                    {errors.birthDate}
+                  </p>
                 )}
               </div>
 
               <div className="p-4 bg-emerald-50 border border-emerald-100 rounded-2xl flex flex-col gap-2">
                 <div className="flex gap-3">
-                  <CheckCircle2 size={18} className="text-rovya-green shrink-0 mt-0.5" aria-hidden="true" />
+                  <CheckCircle2
+                    size={18}
+                    className="text-rovya-green shrink-0 mt-0.5"
+                    aria-hidden="true"
+                  />
                   <p className="text-[10px] text-emerald-800 font-medium leading-relaxed">
-                    Telefone fictício verificado na demonstração: <span className="font-bold text-navy">(43) 999**-**12</span>
+                    Telefone fictício verificado na demonstração:{" "}
+                    <span className="font-bold text-navy">(43) 999**-**12</span>
                   </p>
                 </div>
-                <p className="text-[9px] text-emerald-600 italic">Este dado é apenas ilustrativo para o ambiente de teste.</p>
+                <p className="text-[9px] text-emerald-600 italic">
+                  Este dado é apenas ilustrativo para o ambiente de teste.
+                </p>
               </div>
             </div>
           </div>
@@ -235,8 +280,12 @@ function VerificationScreen() {
             <div className="relative aspect-square w-full max-w-[240px] mx-auto group">
               {formData.photo ? (
                 <div className="w-full h-full rounded-[40px] overflow-hidden border-4 border-rovya-orange rovya-shadow-lg relative">
-                  <img src={formData.photo} alt="Preview da foto de perfil para simulação" className="w-full h-full object-cover" />
-                  <button 
+                  <img
+                    src={formData.photo}
+                    alt="Preview da foto de perfil para simulação"
+                    className="w-full h-full object-cover"
+                  />
+                  <button
                     type="button"
                     onClick={removePhoto}
                     aria-label="Remover foto e tirar outra"
@@ -246,36 +295,45 @@ function VerificationScreen() {
                   </button>
                 </div>
               ) : (
-                <button 
+                <button
                   type="button"
                   onClick={() => fileInputRef.current?.click()}
                   aria-label="Tirar foto ou selecionar arquivo de imagem para demonstração local"
-                  className={`w-full h-full rounded-[40px] bg-slate-50 border-2 border-dashed ${errors.photo ? 'border-red-500' : 'border-slate-200'} flex flex-col items-center justify-center gap-4 text-slate-400 hover:border-rovya-orange hover:bg-white transition-all group`}
+                  className={`w-full h-full rounded-[40px] bg-slate-50 border-2 border-dashed ${errors.photo ? "border-red-500" : "border-slate-200"} flex flex-col items-center justify-center gap-4 text-slate-400 hover:border-rovya-orange hover:bg-white transition-all group`}
                 >
                   <div className="p-5 bg-white rounded-3xl shadow-sm group-hover:scale-110 transition-transform">
                     <Camera size={32} strokeWidth={1.5} aria-hidden="true" />
                   </div>
-                  <span className="text-[10px] font-black uppercase tracking-widest">Tirar Foto</span>
+                  <span className="text-[10px] font-black uppercase tracking-widest">
+                    Tirar Foto
+                  </span>
                 </button>
               )}
-              <input 
-                type="file" 
-                ref={fileInputRef} 
-                className="hidden" 
-                accept="image/*" 
+              <input
+                type="file"
+                ref={fileInputRef}
+                className="hidden"
+                accept="image/*"
                 onChange={handlePhotoUpload}
               />
             </div>
-            
+
             {errors.photo && (
-              <p role="alert" className="text-[10px] text-red-500 font-bold uppercase tracking-wider">{errors.photo}</p>
+              <p
+                role="alert"
+                className="text-[10px] text-red-500 font-bold uppercase tracking-wider"
+              >
+                {errors.photo}
+              </p>
             )}
 
             <div className="space-y-4">
               <div className="flex items-start gap-3 p-4 bg-blue-50 border border-blue-100 rounded-2xl text-left">
                 <Lightbulb size={18} className="text-blue-500 shrink-0 mt-0.5" aria-hidden="true" />
                 <div className="space-y-1">
-                  <p className="text-[10px] font-bold text-blue-900 uppercase tracking-widest">Dica de Iluminação</p>
+                  <p className="text-[10px] font-bold text-blue-900 uppercase tracking-widest">
+                    Dica de Iluminação
+                  </p>
                   <p className="text-[10px] text-blue-700 leading-relaxed font-medium">
                     Em uma situação real, uma boa luz ajudaria na identificação visual pelo piloto.
                   </p>
@@ -295,7 +353,7 @@ function VerificationScreen() {
             <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mb-2">
               <UserCheck size={40} className="text-rovya-green" />
             </div>
-            
+
             <div className="space-y-4">
               <h1 className="text-2xl font-black uppercase tracking-tight italic text-navy leading-tight">
                 Identidade verificada — simulação
@@ -318,27 +376,39 @@ function VerificationScreen() {
         <div className="mt-auto pt-8 flex flex-col gap-4">
           {step < 3 ? (
             <>
-              <button 
+              <button
                 type="button"
                 onClick={handleNextStep}
                 disabled={isLoading}
-                aria-label={isLoading ? "Processando localmente" : step === 1 ? "Prosseguir para a foto" : "Finalizar verificação simulada"}
+                aria-label={
+                  isLoading
+                    ? "Processando localmente"
+                    : step === 1
+                      ? "Prosseguir para a foto"
+                      : "Finalizar verificação simulada"
+                }
                 className="w-full bg-navy text-white h-14 rounded-2xl font-black uppercase tracking-widest text-[11px] flex items-center justify-center gap-2 hover:bg-navy/90 transition-all active:scale-95 disabled:opacity-50 rovya-shadow"
               >
-                {isLoading ? <Loader2 size={18} className="animate-spin" /> : step === 1 ? "Prosseguir" : "Finalizar Verificação"}
+                {isLoading ? (
+                  <Loader2 size={18} className="animate-spin" />
+                ) : step === 1 ? (
+                  "Prosseguir"
+                ) : (
+                  "Finalizar Verificação"
+                )}
                 {!isLoading && <ArrowRight size={18} strokeWidth={2.5} aria-hidden="true" />}
               </button>
-              
+
               <div className="flex justify-center">
                 {step === 1 ? (
-                  <Link 
+                  <Link
                     to="/passageiro/cadastro"
                     className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-navy transition-colors flex items-center gap-1"
                   >
                     Voltar ao Cadastro
                   </Link>
                 ) : (
-                  <button 
+                  <button
                     type="button"
                     onClick={() => {
                       setStep(1);
@@ -352,7 +422,7 @@ function VerificationScreen() {
               </div>
             </>
           ) : (
-            <button 
+            <button
               type="button"
               onClick={() => navigate({ to: "/passageiro/permissoes" })}
               className="w-full bg-rovya-orange text-white h-14 rounded-2xl font-black uppercase tracking-widest text-[11px] flex items-center justify-center gap-2 hover:bg-rovya-orange/90 transition-all active:scale-95 rovya-shadow"
