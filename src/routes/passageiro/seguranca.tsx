@@ -35,13 +35,14 @@ function SafetyScreen() {
       <button
         type="button"
         onClick={handleBack}
-        className="mb-6 flex items-center gap-2 text-sm font-black uppercase text-navy"
+        className="mb-6 flex items-center gap-2 text-sm font-black uppercase text-navy min-w-[44px] min-h-[44px] focus-visible:ring-2 focus-visible:ring-rovya-orange outline-none rounded-xl"
+        aria-label="Voltar para a tela anterior"
       >
         Voltar
       </button>
 
       <div className="bg-navy rounded-[32px] p-8 text-white shadow-2xl mb-8">
-        <h2 className="text-2xl font-black italic uppercase">Central de Segurança</h2>
+        <h1 className="text-2xl font-black italic uppercase">Central de Segurança</h1>
         <p className="text-xs text-slate-400 mt-2">
           Demonstração local — nenhum rastreamento real está ativo.
         </p>
@@ -71,7 +72,7 @@ function SafetyScreen() {
         <button
           type="button"
           onClick={() => setShareResult("Prévia simulada criada. Nada foi enviado.")}
-          className="w-full bg-white p-5 rounded-3xl border border-slate-100 flex items-center justify-between"
+          className="w-full bg-white p-5 rounded-3xl border border-slate-100 flex items-center justify-between min-h-[44px] focus-visible:ring-2 focus-visible:ring-rovya-orange focus-visible:ring-offset-2 outline-none"
         >
           <div className="flex items-center gap-4">
             <div className="bg-blue-50 p-3 rounded-2xl text-blue-600">
@@ -91,7 +92,7 @@ function SafetyScreen() {
         <button
           type="button"
           onClick={() => navigate({ to: "/passageiro/suporte" })}
-          className="w-full bg-white p-5 rounded-3xl border border-slate-100 flex items-center gap-4"
+          className="w-full bg-white p-5 rounded-3xl border border-slate-100 flex items-center gap-4 min-h-[44px] focus-visible:ring-2 focus-visible:ring-rovya-orange focus-visible:ring-offset-2 outline-none text-left"
         >
           <div className="bg-emerald-50 p-3 rounded-2xl text-emerald-600">
             <HeadphonesIcon size={24} aria-hidden="true" />
@@ -105,7 +106,7 @@ function SafetyScreen() {
         <button
           type="button"
           onClick={() => setIsEmergencyConfirmOpen(true)}
-          className="w-full bg-red-50 p-5 rounded-3xl border border-red-100 flex items-center gap-4"
+          className="w-full bg-red-50 p-5 rounded-3xl border border-red-100 flex items-center gap-4 min-h-[44px] focus-visible:ring-2 focus-visible:ring-rovya-orange focus-visible:ring-offset-2 outline-none text-left"
         >
           <div className="bg-red-100 p-3 rounded-2xl text-red-600">
             <ShieldAlert size={24} aria-hidden="true" />

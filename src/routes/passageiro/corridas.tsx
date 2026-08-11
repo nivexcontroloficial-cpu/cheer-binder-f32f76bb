@@ -64,13 +64,16 @@ function RidesHistoryPage() {
       </div>
 
       <div className="flex items-center gap-3 mb-6">
-        <div className="h-10 w-10 rounded-2xl bg-navy/5 flex items-center justify-center text-navy">
+        <div
+          className="h-10 w-10 rounded-2xl bg-navy/5 flex items-center justify-center text-navy"
+          aria-hidden="true"
+        >
           <History size={20} strokeWidth={2} />
         </div>
         <div>
           <h1 className="text-xl font-black tracking-tight text-navy uppercase">Histórico</h1>
           <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
-            Suas viagens recentes
+            Suas viagens recentes — demonstração
           </p>
         </div>
       </div>
@@ -255,7 +258,7 @@ function FilterButton({
       type="button"
       onClick={onClick}
       aria-pressed={active}
-      className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap ${
+      className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap min-h-[44px] min-w-[44px] focus-visible:ring-2 focus-visible:ring-rovya-orange focus-visible:ring-offset-2 outline-none ${
         active
           ? "bg-navy text-white shadow-md"
           : "bg-white border border-slate-100 text-slate-400 hover:border-slate-200"

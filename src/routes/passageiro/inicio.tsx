@@ -39,7 +39,7 @@ function PassengerHomeScreen() {
 
   return (
     <div className="flex flex-col min-h-screen bg-[#F8FAFC] font-sans text-navy">
-      <h1 className="sr-only">Início do passageiro</h1>
+      <h1 className="sr-only">Rovya Passageiro - Início</h1>
 
       <div className="flex-1 space-y-6 pb-32 px-4 pt-4">
         {/* Localização Atual Contexto */}
@@ -127,7 +127,7 @@ function PassengerHomeScreen() {
                 id="destination-trigger"
                 type="button"
                 onClick={() => navigate({ to: "/passageiro/destino" })}
-                className="w-full min-h-[44px] h-16 bg-white border-2 border-slate-100 rounded-2xl pl-10 pr-4 text-[11px] font-black uppercase tracking-[0.2em] text-navy text-left flex items-center hover:border-rovya-orange focus:outline-none focus:border-rovya-orange focus-visible:ring-2 focus-visible:ring-rovya-orange transition-all shadow-sm"
+                className="w-full min-h-[44px] h-16 bg-white border-2 border-slate-100 rounded-2xl pl-10 pr-4 text-[11px] font-black uppercase tracking-[0.2em] text-navy text-left flex items-center hover:border-rovya-orange focus:outline-none focus:border-rovya-orange focus-visible:ring-2 focus-visible:ring-rovya-orange transition-all shadow-sm outline-none"
                 aria-label="Escolher destino simulado"
               >
                 PARA ONDE VAMOS?
@@ -140,8 +140,8 @@ function PassengerHomeScreen() {
               <SheetTrigger asChild>
                 <button
                   type="button"
-                  className="min-h-11 flex items-center gap-2 px-4 py-2 bg-slate-50 rounded-xl border border-slate-100 text-navy hover:bg-white hover:border-rovya-orange transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rovya-orange"
-                  aria-label={`Mudar forma de pagamento. Atual: ${currentPaymentMethod.label}`}
+                  className="min-h-11 min-w-[44px] flex items-center gap-2 px-4 py-2 bg-slate-50 rounded-xl border border-slate-100 text-navy hover:bg-white hover:border-rovya-orange transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rovya-orange outline-none"
+                  aria-label={`Mudar forma de pagamento. Atual: ${currentPaymentMethod.label} - demonstração`}
                 >
                   <CreditCard
                     size={14}
@@ -192,7 +192,7 @@ function PassengerHomeScreen() {
             <button
               type="button"
               onClick={() => toast.info("Demonstração: funcionalidade de agendamento simulada.")}
-              className="min-h-11 flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-slate-400 hover:text-navy transition-colors focus-visible:outline-none focus-visible:underline decoration-rovya-orange underline-offset-4"
+              className="min-h-11 min-w-[44px] flex items-center gap-2 text-[9px] font-black uppercase tracking-widest text-slate-400 hover:text-navy transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rovya-orange outline-none rounded-lg px-2"
             >
               <Plus size={14} strokeWidth={2.5} className="text-rovya-orange" aria-hidden="true" />
               Agendar
@@ -290,7 +290,7 @@ function FavoriteButton({
     <button
       type="button"
       onClick={onClick}
-      className="min-h-11 p-5 bg-white rounded-[28px] border border-slate-100 text-left hover:border-rovya-orange transition-all shadow-sm group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rovya-orange"
+      className="min-h-[44px] min-w-[44px] p-5 bg-white rounded-[28px] border border-slate-100 text-left hover:border-rovya-orange transition-all shadow-sm group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rovya-orange outline-none"
     >
       <div
         className="h-10 w-10 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400 group-hover:text-rovya-orange transition-colors mb-3"
@@ -321,7 +321,7 @@ function RecentItem({
     <button
       type="button"
       onClick={onClick}
-      className={`w-full min-h-11 p-4 flex items-center gap-4 hover:bg-slate-50 transition-colors focus-visible:outline-none focus-visible:bg-slate-50 ${
+      className={`w-full min-h-[44px] p-4 flex items-center gap-4 hover:bg-slate-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rovya-orange outline-none ${
         !last ? "border-b border-slate-50" : ""
       }`}
     >

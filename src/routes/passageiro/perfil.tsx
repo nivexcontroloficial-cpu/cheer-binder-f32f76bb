@@ -156,7 +156,10 @@ function ProfilePage() {
               <h1 className="text-2xl font-black tracking-tight text-navy uppercase italic">
                 {name}
               </h1>
-              <div className="flex items-center gap-1 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100">
+              <div
+                className="flex items-center gap-1 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100"
+                aria-label="Perfil verificado somente para simulação"
+              >
                 <CheckCircle2 size={12} className="text-blue-500" aria-hidden="true" />
                 <span className="text-[9px] font-black text-blue-600 uppercase tracking-tighter">
                   Simulação
@@ -173,7 +176,7 @@ function ProfilePage() {
                 setTempName(name);
                 setIsEditing(true);
               }}
-              className="mt-2 text-[9px] font-black text-blue-500 uppercase tracking-widest hover:underline focus-visible:ring-2 focus-visible:ring-blue-500 outline-none rounded-sm px-1"
+              className="mt-2 text-[9px] font-black text-blue-500 uppercase tracking-widest hover:underline focus-visible:ring-2 focus-visible:ring-rovya-orange outline-none rounded-sm px-1 min-h-[44px] min-w-[44px]"
             >
               Editar Nome
             </button>
@@ -260,7 +263,7 @@ function ProfilePage() {
             <button
               type="button"
               onClick={() => toast.info("Simulação local: nenhuma conta foi excluída.")}
-              className="w-full flex items-center justify-between p-5 hover:bg-red-50 transition-colors focus-visible:bg-red-50 outline-none"
+              className="w-full flex items-center justify-between p-5 hover:bg-red-50 transition-colors focus-visible:ring-2 focus-visible:ring-rovya-orange outline-none min-h-[44px]"
             >
               <div className="flex items-center gap-4 text-red-400">
                 <AlertCircle size={18} aria-hidden="true" />

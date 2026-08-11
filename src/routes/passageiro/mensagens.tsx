@@ -32,8 +32,8 @@ function MensagensScreen() {
   if (conversas.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[50vh] text-center p-6 text-slate-400">
-        <MessageSquare size={48} className="mb-4" />
-        <h2 className="text-sm font-black uppercase text-navy">Mensagens</h2>
+        <MessageSquare size={48} className="mb-4" aria-hidden="true" />
+        <h1 className="text-sm font-black uppercase text-navy">Mensagens</h1>
         <p className="text-[10px] font-bold uppercase mt-2">Nenhuma conversa ativa no momento.</p>
       </div>
     );
@@ -42,7 +42,7 @@ function MensagensScreen() {
   return (
     <div className="flex flex-col gap-2">
       <h1 className="text-xs font-black uppercase tracking-widest text-navy mb-4 px-2">
-        Conversas
+        Conversas Recentes
       </h1>
 
       {conversas.map((chat) => (
@@ -50,7 +50,7 @@ function MensagensScreen() {
           key={chat.id}
           to="/passageiro/chat/$rideId"
           params={{ rideId: chat.id }}
-          className="flex items-center gap-4 p-4 bg-white rounded-3xl border border-slate-100 hover:border-rovya-orange/30 transition-all active:scale-[0.98]"
+          className="flex items-center gap-4 p-4 bg-white rounded-3xl border border-slate-100 hover:border-rovya-orange/30 transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-rovya-orange focus-visible:ring-offset-2 outline-none"
         >
           {/* Avatar CSS */}
           <div className="h-14 w-14 rounded-2xl bg-navy flex items-center justify-center text-white font-black text-lg shrink-0">
