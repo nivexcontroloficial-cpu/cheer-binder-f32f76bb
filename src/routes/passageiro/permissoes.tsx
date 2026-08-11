@@ -1,7 +1,7 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { RovyaBrand } from "@/components/RovyaBrand";
-import { useState, useRef, useEffect } from "react";
-import { MapPin, Camera, Bell, ShieldCheck, Check, X, ArrowRight, AlertCircle } from "lucide-react";
+import { useState } from "react";
+import { MapPin, Camera, Bell, ShieldCheck, ArrowRight, AlertCircle } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/passageiro/permissoes")({
@@ -77,7 +77,7 @@ function PermissionsScreen() {
             state={notifications}
             onAllow={() => setNotifications("allowed")}
             onDeny={() => setNotifications("denied")}
-            allowedText="Estado simulado: notificações permitidas. Nenhuma notificação do aparelho foi enviada."
+            allowedText="Estado simulado: notifications permitidas. Nenhuma notificação do aparelho foi enviada."
             deniedText="Os avisos continuarão aparecendo somente dentro das telas da demonstração."
           />
         </div>
@@ -169,13 +169,13 @@ function PermissionSection({
           <div
             role="group"
             aria-label={`Controles de simulação para ${title}`}
-            className="flex gap-2"
+            className="grid grid-cols-1 gap-2"
           >
             <button
               type="button"
               onClick={onAllow}
               aria-pressed={state === "allowed"}
-              className={`px-3 py-2 rounded-xl text-[9px] font-bold uppercase tracking-widest transition-all focus-visible:ring-2 focus-visible:ring-rovya-orange focus-visible:outline-none ${state === "allowed" ? "bg-rovya-orange text-white" : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"}`}
+              className={`w-full min-h-11 whitespace-normal px-3 py-2 rounded-xl text-[9px] font-bold uppercase tracking-widest transition-all focus-visible:ring-2 focus-visible:ring-rovya-orange focus-visible:outline-none ${state === "allowed" ? "bg-rovya-orange text-white" : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"}`}
             >
               Permitir na demonstração
             </button>
@@ -183,7 +183,7 @@ function PermissionSection({
               type="button"
               onClick={onDeny}
               aria-pressed={state === "denied"}
-              className={`px-3 py-2 rounded-xl text-[9px] font-bold uppercase tracking-widest transition-all focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:outline-none ${state === "denied" ? "bg-slate-900 text-white" : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"}`}
+              className={`w-full min-h-11 whitespace-normal px-3 py-2 rounded-xl text-[9px] font-bold uppercase tracking-widest transition-all focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:outline-none ${state === "denied" ? "bg-slate-900 text-white" : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"}`}
             >
               Agora não
             </button>
