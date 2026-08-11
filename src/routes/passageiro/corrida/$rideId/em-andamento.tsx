@@ -24,7 +24,7 @@ import {
 import { z } from "zod";
 
 const searchSchema = z.object({
-  technical: z.boolean().default(false),
+  technical: z.boolean().catch(false).default(false),
 });
 
 export const Route = createFileRoute("/passageiro/corrida/$rideId/em-andamento")({
@@ -112,21 +112,27 @@ function InProgressRideScreen() {
         </div>
 
         {technical && (
-          <div className="grid grid-cols-2 gap-2">
-            <button
-              type="button"
-              onClick={() => setGpsStatus((s) => (s === "stable" ? "unstable" : "stable"))}
-              className="bg-slate-900 text-white rounded-2xl p-3 font-black text-[9px] uppercase"
-            >
-              {gpsStatus === "stable" ? "Simular GPS Instável" : "Restaurar sinal"}
-            </button>
-            <button
-              type="button"
-              onClick={() => setIsDesvioOpen(true)}
-              className="bg-slate-900 text-white rounded-2xl p-3 font-black text-[9px] uppercase"
-            >
-              Simular desvio
-            </button>
+          <div className="p-6 bg-slate-900/95 backdrop-blur-sm rounded-[32px] border border-white/10 shadow-xl animate-in fade-in duration-500">
+            <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-amber-500 mb-4 flex items-center gap-2">
+              <Shield size={12} strokeWidth={2.5} />
+              Ferramentas técnicas da demonstração
+            </h2>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() => setGpsStatus((s) => (s === "stable" ? "unstable" : "stable"))}
+                className="bg-white/5 border border-white/10 text-white rounded-2xl h-12 font-black text-[9px] uppercase tracking-widest hover:bg-white/10 transition-colors"
+              >
+                {gpsStatus === "stable" ? "Simular GPS Instável" : "Restaurar sinal"}
+              </button>
+              <button
+                type="button"
+                onClick={() => setIsDesvioOpen(true)}
+                className="bg-white/5 border border-white/10 text-white rounded-2xl h-12 font-black text-[9px] uppercase tracking-widest hover:bg-white/10 transition-colors"
+              >
+                Simular desvio
+              </button>
+            </div>
           </div>
         )}
 
