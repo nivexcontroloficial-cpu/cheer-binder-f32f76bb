@@ -4,6 +4,7 @@ import { Share2, ShieldAlert, HeadphonesIcon } from "lucide-react";
 import {
   rideQuoteSearchSchema,
   getQuoteParams,
+  RideQuoteSearch,
 } from "@/lib/passenger-demo-ride-quote";
 import {
   AlertDialog,
@@ -17,8 +18,14 @@ import {
 } from "@/components/ui/alert-dialog";
 import { z } from "zod";
 
+export const securitySearchSchema = rideQuoteSearchSchema.extend({
+  rideId: z.string().optional().catch(undefined),
+});
+
+export type SecuritySearch = z.infer<typeof securitySearchSchema>;
+
 export const Route = createFileRoute("/passageiro/seguranca")({
-  validateSearch: (search) => rideQuoteSearchSchema.parse(search),
+  validateSearch: (search) => securitySearchSchema.parse(search),
   component: SafetyScreen,
 });
 
@@ -30,8 +37,18 @@ function SafetyScreen() {
   const [emergencyResult, setEmergencyResult] = useState<string | null>(null);
 
   const handleBack = () => {
-    if (rideId) navigate({ to: "/passageiro/corrida/$rideId", params: { rideId }, search: (prev: any) => getQuoteParams(prev) });
-    else navigate({ to: "/passageiro/inicio" });
+    if (rideId) {
+      navigate({
+        to: "/passageiro/corrida/$rideId",
+        params: { rideId },
+        search: (prev: SecuritySearch) => {
+          const quote = getQuoteParams(prev);
+          return { ...quote, technical: false };
+        },
+      });
+    } else {
+      navigate({ to: "/passageiro/inicio" });
+    }
   };
 
   return (

@@ -258,7 +258,11 @@ function ActiveRideScreen() {
               </Link>
               <Link
                 to="/passageiro/seguranca"
-                search={getQuoteParams(search)}
+                search={(prev) => ({
+                  ...getQuoteParams(prev),
+                  rideId,
+                  technical: false,
+                })}
                 className="bg-rovya-blue/5 text-rovya-blue py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 hover:bg-rovya-blue/10 transition-colors border border-rovya-blue/10"
               >
                 <Shield size={16} />
