@@ -319,7 +319,10 @@ function SignupScreen() {
               className="w-full bg-navy text-white h-14 rounded-2xl font-black uppercase tracking-widest text-[11px] flex items-center justify-center gap-2 hover:bg-navy/90 transition-all active:scale-95 disabled:opacity-50 rovya-shadow"
             >
               {isLoading ? (
-                <Loader2 size={18} className="animate-spin" />
+                <>
+                  <Loader2 size={18} className="animate-spin" aria-hidden="true" />
+                  <span>Finalizando simulação</span>
+                </>
               ) : step === 1 ? (
                 "Continuar"
               ) : (
