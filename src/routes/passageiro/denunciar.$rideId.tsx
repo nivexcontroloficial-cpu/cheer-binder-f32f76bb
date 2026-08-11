@@ -240,6 +240,7 @@ function DenunciarScreen() {
                     className={`text-[10px] font-bold uppercase tracking-widest ${
                       description.length >= 500 ? "text-red-500" : "text-slate-400"
                     }`}
+                    id="description-counter"
                     role="status"
                     aria-live="polite"
                   >
@@ -253,7 +254,7 @@ function DenunciarScreen() {
                   onBlur={handleBlur}
                   maxLength={500}
                   aria-invalid={!!validationError}
-                  aria-describedby={validationError ? "description-error" : undefined}
+                  aria-describedby={`description-counter${validationError ? " description-error" : ""}`}
                   placeholder="Descreva o que aconteceu para fins de demonstração..."
                   className={`w-full min-h-[150px] p-4 bg-slate-50 border rounded-2xl text-sm focus-visible:ring-2 focus-visible:ring-emerald-500 outline-none transition-all ${
                     validationError ? "border-red-500" : "border-slate-100"

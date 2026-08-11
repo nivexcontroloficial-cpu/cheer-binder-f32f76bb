@@ -24,6 +24,11 @@ function CancelarCorrida() {
   const navigate = useNavigate();
   const [selectedReason, setSelectedReason] = useState<string | null>(null);
 
+  const handleConfirmCancel = () => {
+    toast.info("Cancelamento simulado: nenhuma corrida real foi cancelada.");
+    navigate({ to: "/passageiro/inicio" });
+  };
+
   const isValidRide = rideId === "ride-active-mock";
 
   const reasons = [
@@ -100,7 +105,7 @@ function CancelarCorrida() {
               params: { rideId },
             })
           }
-          className="w-10 h-10 -ml-2 text-slate-400 hover:bg-slate-50 rounded-full transition-colors flex items-center justify-center focus-visible:ring-2 focus-visible:ring-emerald-500 outline-none"
+          className="w-11 h-11 -ml-2 text-slate-400 hover:bg-slate-50 rounded-full transition-colors flex items-center justify-center focus-visible:ring-2 focus-visible:ring-emerald-500 outline-none"
         >
           <ChevronLeft size={24} aria-hidden="true" />
         </button>
@@ -204,10 +209,7 @@ function CancelarCorrida() {
               </AlertDialogCancel>
               <AlertDialogAction
                 type="button"
-                onClick={() => {
-                  toast.info("Cancelamento simulado: nenhuma corrida real foi cancelada.");
-                  navigate({ to: "/passageiro/inicio" });
-                }}
+                onClick={handleConfirmCancel}
                 className="rounded-xl bg-rovya-red text-white font-black uppercase hover:bg-red-700 focus-visible:ring-2 focus-visible:ring-emerald-500 outline-none"
               >
                 Confirmar simulação
