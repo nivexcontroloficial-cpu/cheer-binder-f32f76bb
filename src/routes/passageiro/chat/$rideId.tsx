@@ -704,7 +704,7 @@ function ChatScreen() {
                 <span className="text-[8px] text-red-500 font-black uppercase tracking-widest">
                   Falha no envio. Reenviar mensagem
                 </span>
-                <AlertCircle size={10} className="text-red-500" />
+                <AlertCircle size={10} className="text-red-500" aria-hidden="true" />
               </button>
             )}
           </div>
