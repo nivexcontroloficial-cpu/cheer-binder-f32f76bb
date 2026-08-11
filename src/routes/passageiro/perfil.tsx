@@ -31,11 +31,16 @@ function ProfilePage() {
 
   const initials = useMemo(() => {
     const trimmed = name.trim();
-    if (!trimmed) return "P";
     const parts = trimmed.split(/\s+/).filter(Boolean);
-    if (parts.length === 0) return "P";
-    if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
-    return (parts[0][0] + parts[1][0]).toUpperCase();
+    const [first = "", second = ""] = parts;
+
+    if (!first) return "P";
+
+    if (!second) {
+      return first.slice(0, 2).toUpperCase();
+    }
+
+    return (first[0] + second[0]).toUpperCase();
   }, [name]);
 
   const handleLogout = () => {
