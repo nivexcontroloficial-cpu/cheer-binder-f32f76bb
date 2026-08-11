@@ -9,28 +9,28 @@ export const Route = createFileRoute("/passageiro/boas-vindas")({
 
 const ONBOARDING_STEPS = [
   {
-    title: "Vá a qualquer lugar com segurança",
+    title: "VÁ A QUALQUER LUGAR COM SEGURANÇA",
     description:
-      "Pilotos verificados e monitoramento em tempo real para sua tranquilidade em cada trajeto de mototáxi.",
+      "Simulação de pilotos verificados e monitoramento demonstrativo para sua tranquilidade em cada trajeto.",
     image:
       "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&q=80&w=800",
-    alt: "Piloto de motocicleta com capacete em ambiente urbano, representando segurança.",
+    alt: "",
   },
   {
-    title: "Economia e transparência",
+    title: "ECONOMIA E TRANSPARÊNCIA",
     description:
-      "Preços justos e pagamento direto ao piloto, sem taxas ocultas ou surpresas no final da corrida.",
+      "Preços justos e simulação de pagamento direto ao piloto, sem taxas ocultas ou surpresas.",
     image:
       "https://images.unsplash.com/photo-1591637333184-19aa84b3e01f?auto=format&fit=crop&q=80&w=800",
-    alt: "Detalhe de painel de motocicleta ou piloto em operação, focando em transparência e agilidade.",
+    alt: "",
   },
   {
-    title: "Mobilidade na palma da sua mão",
+    title: "MOBILIDADE NA PALMA DA SUA MÃO",
     description:
-      "Solicite seu mototáxi em segundos e acompanhe a chegada do piloto pelo mapa em tempo real.",
+      "Simulação de chamada em segundos e acompanhamento fictício em tempo real pelo aplicativo.",
     image:
       "https://images.unsplash.com/photo-1610647752706-3bb12232b3ab?auto=format&fit=crop&q=80&w=800",
-    alt: "Pessoa utilizando smartphone com contexto de motocicleta ao fundo.",
+    alt: "",
   },
 ];
 
