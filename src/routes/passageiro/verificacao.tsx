@@ -417,7 +417,7 @@ function VerificationScreen() {
                 {step === 1 ? (
                   <Link
                     to="/passageiro/cadastro"
-                    className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-navy transition-colors flex items-center gap-1"
+                    className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-navy transition-colors flex items-center gap-1 min-h-11 px-4 rounded-xl focus-visible:ring-2 focus-visible:ring-navy outline-none"
                   >
                     Voltar ao Cadastro
                   </Link>
@@ -428,7 +428,7 @@ function VerificationScreen() {
                       setStep(1);
                       setErrors({ fullName: "", birthDate: "", photo: "" });
                     }}
-                    className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-navy transition-colors"
+                    className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-navy transition-colors min-h-11 px-4 rounded-xl focus-visible:ring-2 focus-visible:ring-navy outline-none"
                   >
                     Voltar aos Dados
                   </button>

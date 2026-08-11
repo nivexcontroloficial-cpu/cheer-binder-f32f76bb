@@ -90,7 +90,7 @@ function WelcomeScreen() {
             ))}
           </div>
 
-          <h1 className="text-3xl font-black tracking-tighter uppercase italic leading-tight mb-4 max-w-xs transition-all duration-500 focus-visible:ring-2 focus-visible:ring-rovya-orange rounded-lg outline-none" tabIndex={0}>
+          <h1 className="text-3xl font-black tracking-tighter uppercase italic leading-tight mb-4 max-w-xs transition-all duration-500 focus-visible:ring-2 focus-visible:ring-rovya-orange rounded-lg outline-none" tabIndex={0} aria-label={currentStep.title}>
             {currentStep.title}
           </h1>
           <p className="text-slate-500 text-sm leading-relaxed mb-6 max-w-xs transition-all duration-500">
@@ -117,7 +117,7 @@ function WelcomeScreen() {
           <button
             type="button"
             onClick={() => navigate({ to: "/passageiro/cadastro" })}
-            className="w-full h-14 rounded-2xl font-black uppercase tracking-widest text-[11px] text-rovya-orange hover:bg-rovya-orange/5 transition-all border-2 border-dashed border-rovya-orange/20"
+            className="w-full h-14 rounded-2xl font-black uppercase tracking-widest text-[11px] text-rovya-orange hover:bg-rovya-orange/5 transition-all border-2 border-dashed border-rovya-orange/20 min-h-11 focus-visible:ring-2 focus-visible:ring-rovya-orange outline-none"
           >
             Criar conta simulada
           </button>
@@ -125,7 +125,7 @@ function WelcomeScreen() {
           <button
             type="button"
             onClick={() => navigate({ to: "/passageiro/entrar" })}
-            className="w-full h-14 rounded-2xl font-black uppercase tracking-widest text-[11px] text-slate-400 hover:bg-slate-50 transition-all"
+            className="w-full h-14 rounded-2xl font-black uppercase tracking-widest text-[11px] text-slate-400 hover:bg-slate-50 transition-all min-h-11 focus-visible:ring-2 focus-visible:ring-slate-400 outline-none"
           >
             Pular Introdução
           </button>

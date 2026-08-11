@@ -183,7 +183,7 @@ function PermissionSection({
               type="button"
               onClick={onDeny}
               aria-pressed={state === "denied"}
-              className={`w-full min-h-11 whitespace-normal px-3 py-2 rounded-xl text-[9px] font-bold uppercase tracking-widest transition-all focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:outline-none ${state === "denied" ? "bg-slate-900 text-white" : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"}`}
+              className={`w-full min-h-11 whitespace-normal px-3 py-2 rounded-xl text-[9px] font-bold uppercase tracking-widest transition-all focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:outline-none ${state === "denied" ? "bg-slate-900 text-white" : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"}`}
             >
               Agora não
             </button>

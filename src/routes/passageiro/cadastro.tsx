@@ -115,7 +115,7 @@ function SignupScreen() {
             <button
               type="button"
               onClick={() => (step === 1 ? navigate({ to: "/passageiro/entrar" }) : setStep(1))}
-              className="p-2 hover:bg-slate-50 rounded-full transition-colors text-slate-400 hover:text-navy z-10"
+              className="p-2 hover:bg-slate-50 rounded-full transition-colors text-slate-400 hover:text-navy z-10 min-w-11 min-h-11 flex items-center justify-center focus-visible:ring-2 focus-visible:ring-rovya-orange outline-none"
               aria-label={step === 1 ? "Voltar para entrar" : "Voltar para primeira etapa"}
             >
               <ChevronLeft size={24} aria-hidden="true" />
@@ -353,7 +353,7 @@ function SignupScreen() {
               <button
                 type="button"
                 onClick={() => setStep(1)}
-                className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-navy transition-colors self-center py-2"
+                className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-navy transition-colors self-center py-2 min-h-11 px-4 rounded-xl focus-visible:ring-2 focus-visible:ring-navy outline-none"
               >
                 Corrigir dados anteriores
               </button>
