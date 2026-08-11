@@ -71,27 +71,19 @@ function ConfirmRideScreen() {
   // Dados Mock Obrigatórios
   const distance = ACTIVE_PASSENGER_DEMO_RIDE.distance;
   const duration = ACTIVE_PASSENGER_DEMO_RIDE.duration;
-  const baseFare = 4.0;
-  const pricePerKm = 1.0;
-  const pricePerMin = 0.4;
-  const nightSurcharge = 0.0;
-  const demandMultiplier = 1.0;
-  const minFare = 10.0;
 
-  const subtotal = useMemo(() => {
-    const travelCost = distance * pricePerKm + duration * pricePerMin;
-    const total = (baseFare + travelCost + nightSurcharge) * demandMultiplier;
-    return total;
-  }, [distance, duration, nightSurcharge, demandMultiplier]);
-
-  const discount = isPromoApplied ? 5.0 : 0;
-  const finalPrice = Math.max(minFare, subtotal - discount);
+  const { finalFare, discount, isApplied } = useMemo(
+    () => calculateRideFare(isPromoApplied ? PROMO_CONFIG.CODE : undefined),
+    [isPromoApplied],
+  );
 
   const handleApplyPromo = () => {
     const cleaned = promoCode.trim().toUpperCase();
-    if (cleaned === "ROVYA5") {
+    if (cleaned === PROMO_CONFIG.CODE) {
       setIsPromoApplied(true);
-      toast.success("Cupom ROVYA5 aplicado somente nesta demonstração. Desconto de R$ 5,00.");
+      toast.success(
+        `Cupom ${PROMO_CONFIG.CODE} aplicado somente nesta demonstração. Desconto de R$ ${PROMO_CONFIG.DISCOUNT.toFixed(2).replace(".", ",")}.`,
+      );
     } else {
       toast.error("Cupom demonstrativo inválido.");
     }
@@ -99,7 +91,17 @@ function ConfirmRideScreen() {
 
   const handleOrder = () => {
     toast.info("Pedido simulado. Nenhuma corrida real foi solicitada.");
-    navigate({ to: "/passageiro/buscando" });
+    navigate({
+      to: "/passageiro/buscando",
+      search: (prev) => ({
+        ...getQuoteParams({
+          ...prev,
+          promoCode: isPromoApplied ? PROMO_CONFIG.CODE : undefined,
+          paymentMethod,
+          technical: search.technical,
+        }),
+      }),
+    });
   };
 
   return (
