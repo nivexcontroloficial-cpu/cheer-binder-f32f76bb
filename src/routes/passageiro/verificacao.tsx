@@ -29,7 +29,6 @@ function VerificationScreen() {
     birthDate: "",
     photo: "",
   });
-  const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const readerRef = useRef<FileReader | null>(null);
   const navigate = useNavigate();
@@ -37,7 +36,14 @@ function VerificationScreen() {
   useEffect(() => {
     return () => {
       if (readerRef.current) {
-        readerRef.current.abort();
+        const reader = readerRef.current;
+        reader.onload = null;
+        reader.onerror = null;
+        reader.onabort = null;
+        if (reader.readyState === FileReader.LOADING) {
+          reader.abort();
+        }
+        readerRef.current = null;
       }
     };
   }, []);
