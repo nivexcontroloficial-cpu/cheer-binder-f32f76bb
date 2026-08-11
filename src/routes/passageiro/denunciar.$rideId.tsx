@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useParams } from "@tanstack/react-router";
+import { createFileRoute, Link, useParams, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import {
   ArrowLeft,
@@ -23,6 +23,7 @@ export const Route = createFileRoute("/passageiro/denunciar/$rideId")({
 
 function DenunciarScreen() {
   const { rideId } = useParams({ from: "/passageiro/denunciar/$rideId" });
+  const navigate = useNavigate();
   const [step, setStep] = useState<"category" | "details" | "success">("category");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [description, setDescription] = useState("");
