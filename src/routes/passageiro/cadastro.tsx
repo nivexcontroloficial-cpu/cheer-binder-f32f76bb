@@ -225,6 +225,8 @@ function SignupScreen() {
                       required
                       type="email"
                       maxLength={100}
+                      aria-invalid={!!errors.email}
+                      aria-describedby={errors.email ? "email-error" : undefined}
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       placeholder="rafael@email.com"
@@ -232,7 +234,7 @@ function SignupScreen() {
                     />
                   </div>
                   {errors.email && (
-                    <p className="text-[10px] text-red-500 font-bold" role="alert">
+                    <p id="email-error" className="text-[10px] text-red-500 font-bold" role="alert">
                       {errors.email}
                     </p>
                   )}
