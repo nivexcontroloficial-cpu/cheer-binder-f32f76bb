@@ -228,19 +228,19 @@ function ConfirmRideScreen() {
               <PaymentButton
                 active={paymentMethod === "cash"}
                 onClick={() => setPaymentMethod("cash")}
-                icon={<Banknote size={18} aria-hidden="true"} />}
+                icon={<Banknote size={18} aria-hidden="true" />}
                 label="Dinheiro"
               />
               <PaymentButton
                 active={paymentMethod === "pix"}
                 onClick={() => setPaymentMethod("pix")}
-                icon={<QrCode size={18} aria-hidden="true"} />}
+                icon={<QrCode size={18} aria-hidden="true" />}
                 label="Pix direto ao piloto"
               />
               <PaymentButton
                 active={paymentMethod === "card"}
                 onClick={() => setPaymentMethod("card")}
-                icon={<CreditCard size={18} aria-hidden="true"} />}
+                icon={<CreditCard size={18} aria-hidden="true" />}
                 label="Cartão na máquina do piloto"
               />
             </div>
