@@ -11,23 +11,26 @@ const ONBOARDING_STEPS = [
   {
     title: "Vá a qualquer lugar com segurança",
     description:
-      "Simulação de pilotos verificados e monitoramento demonstrativo para sua tranquilidade em cada trajeto.",
+      "Pilotos verificados e monitoramento em tempo real para sua tranquilidade em cada trajeto de mototáxi.",
     image:
-      "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&q=80&w=800",
+    alt: "Piloto de motocicleta com capacete em ambiente urbano, representando segurança.",
   },
   {
     title: "Economia e transparência",
     description:
-      "Preços justos e simulação de pagamento direto ao piloto, sem taxas ocultas ou surpresas.",
+      "Preços justos e pagamento direto ao piloto, sem taxas ocultas ou surpresas no final da corrida.",
     image:
-      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1591637333184-19aa84b3e01f?auto=format&fit=crop&q=80&w=800",
+    alt: "Detalhe de painel de motocicleta ou piloto em operação, focando em transparência e agilidade.",
   },
   {
     title: "Mobilidade na palma da sua mão",
     description:
-      "Simulação de chamada em segundos e acompanhamento fictício em tempo real pelo aplicativo.",
+      "Solicite seu mototáxi em segundos e acompanhe a chegada do piloto pelo mapa em tempo real.",
     image:
-      "https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&q=80&w=800",
+      "https://images.unsplash.com/photo-1610647752706-3bb12232b3ab?auto=format&fit=crop&q=80&w=800",
+    alt: "Pessoa utilizando smartphone com contexto de motocicleta ao fundo.",
   },
 ];
 
@@ -73,7 +76,7 @@ function WelcomeScreen() {
         <div className="h-[55vh] w-full overflow-hidden relative">
           <img
             src={currentStep.image}
-            alt="Onboarding"
+            alt={currentStep.alt || "Onboarding"}
             className="h-full w-full object-cover transition-all duration-700 scale-105"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-white via-white/20 to-transparent" />

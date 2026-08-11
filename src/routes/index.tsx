@@ -37,12 +37,12 @@ function DemoSelector() {
     <div className="flex flex-col min-h-screen bg-[#F8FAFC] font-sans text-[#111827]">
       <main className="flex-1 flex flex-col items-center justify-center p-6 text-center max-w-5xl mx-auto w-full">
         <div className="mb-12 flex flex-col items-center">
-          <RovyaBrand className="mb-6" />
-          <h1 className="text-4xl md:text-5xl font-black tracking-tighter mb-4 uppercase italic">
-            SELETOR DE <span className="text-[#F97316]">DEMO</span>
+          <RovyaBrand className="mb-6 opacity-20 grayscale" />
+          <h1 className="text-4xl md:text-5xl font-black tracking-tighter mb-4 uppercase italic text-slate-300">
+            SELETOR DE <span className="text-slate-400">DEMO</span>
           </h1>
-          <p className="text-slate-500 max-w-md mx-auto">
-            Selecione uma das experiências abaixo para explorar o protótipo funcional da plataforma.
+          <p className="text-slate-400 max-w-md mx-auto text-[10px] font-bold uppercase tracking-widest">
+            Ambiente Técnico de Desenvolvimento
           </p>
         </div>
 
