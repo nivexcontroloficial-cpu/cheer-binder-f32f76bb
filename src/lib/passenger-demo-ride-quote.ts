@@ -26,7 +26,6 @@ export const rideQuoteSearchSchema = z.object({
     .optional()
     .catch("cash" as const),
   technical: z.boolean().optional().catch(false),
-  rideId: z.string().optional(),
 });
 
 export type RideQuoteSearch = z.infer<typeof rideQuoteSearchSchema>;
@@ -72,10 +71,6 @@ export const getQuoteParams = (search: RideQuoteSearch) => {
 
   if (search.technical) {
     params.technical = true;
-  }
-
-  if (search.rideId) {
-    params.rideId = search.rideId;
   }
 
   return params;
