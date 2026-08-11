@@ -17,8 +17,17 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { toast } from "sonner";
+import { z } from "zod";
+
+const searchSchema = z.object({
+  origin: z.string().trim().max(80).optional().catch(undefined),
+  destination: z.string().trim().max(80).optional().catch(undefined),
+  destinationRegion: z.string().trim().max(80).optional().catch(undefined),
+  reference: z.string().trim().max(60).optional().catch(undefined),
+});
 
 export const Route = createFileRoute("/passageiro/confirmar-corrida")({
+  validateSearch: (search) => searchSchema.parse(search),
   component: ConfirmRideScreen,
 });
 
@@ -26,6 +35,7 @@ type PaymentMethod = "cash" | "pix" | "card";
 
 function ConfirmRideScreen() {
   const navigate = useNavigate();
+  const search = Route.useSearch();
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("cash");
   const [promoCode, setPromoCode] = useState("");
   const [isPromoApplied, setIsPromoApplied] = useState(false);
@@ -79,8 +89,18 @@ function ConfirmRideScreen() {
         <button
           type="button"
           aria-label="Voltar para localização"
-          onClick={() => navigate({ to: "/passageiro/localizar" })}
-          className="p-2 -ml-2 text-slate-400 hover:text-navy transition-colors focus-visible:ring-2 focus-visible:ring-rovya-orange outline-none rounded-lg"
+          onClick={() =>
+            navigate({
+              to: "/passageiro/localizar",
+              search: {
+                origin: search.origin,
+                destination: search.destination,
+                destinationRegion: search.destinationRegion,
+                reference: search.reference,
+              },
+            })
+          }
+          className="p-2 -ml-2 text-slate-400 hover:text-navy transition-colors focus-visible:ring-2 focus-visible:ring-rovya-orange outline-none rounded-lg min-h-11 min-w-11 flex items-center justify-center"
         >
           <ArrowLeft size={24} aria-hidden="true" />
         </button>
@@ -154,12 +174,23 @@ function ConfirmRideScreen() {
         <div className="p-6 space-y-6">
           {/* Resumo de Endereços */}
           <div className="bg-white rounded-[32px] p-6 border border-slate-100 shadow-sm space-y-4">
-            <div className="flex items-center gap-4">
-              <div
-                className="w-2 h-2 rounded-full bg-rovya-orange shrink-0"
-                aria-hidden="true"
-              ></div>
-              <p className="text-[10px] font-medium text-slate-500 truncate">Centro, Jacarezinho</p>
+            <div className="flex flex-col gap-1">
+              <div className="flex items-center gap-4">
+                <div
+                  className="w-2 h-2 rounded-full bg-rovya-orange shrink-0"
+                  aria-hidden="true"
+                ></div>
+                <p className="text-[10px] font-medium text-slate-500 break-words">
+                  {search.origin || "Centro, Jacarezinho"}
+                </p>
+              </div>
+              {search.reference && (
+                <div className="ml-6">
+                  <p className="text-[9px] font-bold text-rovya-orange uppercase tracking-widest italic">
+                    Referência fictícia: {search.reference}
+                  </p>
+                </div>
+              )}
             </div>
             <div
               className="h-4 border-l-2 border-dashed border-slate-100 ml-1"
@@ -167,8 +198,9 @@ function ConfirmRideScreen() {
             ></div>
             <div className="flex items-center gap-4">
               <MapPin size={14} className="text-rovya-blue shrink-0" aria-hidden="true" />
-              <p className="text-[10px] font-black uppercase tracking-widest text-navy truncate">
-                Vila Setti, Jacarezinho
+              <p className="text-[10px] font-black uppercase tracking-widest text-navy break-words">
+                {search.destination || "Vila Setti, Jacarezinho"}
+                {search.destinationRegion && ` — ${search.destinationRegion}`}
               </p>
             </div>
           </div>
