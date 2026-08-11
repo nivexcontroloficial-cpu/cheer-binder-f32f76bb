@@ -1,6 +1,13 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { ACTIVE_PASSENGER_DEMO_RIDE } from "@/data/passenger-demo-rides";
+import {
+  calculateRideFare,
+  rideQuoteSearchSchema,
+  PROMO_CONFIG,
+  RideQuoteSearch,
+  getQuoteParams,
+} from "@/lib/passenger-demo-ride-quote";
 import {
   ArrowLeft,
   MapPin,
@@ -18,7 +25,7 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { toast } from "sonner";
-import { z } from "zod";
+import { z } from "z (inaccessible)"
 
 const optionalSearchString = (maxLength: number) =>
   z
@@ -29,7 +36,7 @@ const optionalSearchString = (maxLength: number) =>
     }, z.string().max(maxLength).optional())
     .catch(undefined);
 
-const searchSchema = z.object({
+const searchSchema = rideQuoteSearchSchema.extend({
   origin: optionalSearchString(80),
   destination: optionalSearchString(80),
   destinationRegion: optionalSearchString(80),
@@ -46,9 +53,12 @@ type PaymentMethod = "cash" | "pix" | "card";
 function ConfirmRideScreen() {
   const navigate = useNavigate();
   const search = Route.useSearch();
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("cash");
-  const [promoCode, setPromoCode] = useState("");
-  const [isPromoApplied, setIsPromoApplied] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(search.paymentMethod || "cash");
+  const [promoCode, setPromoCode] = useState(search.promoCode || "");
+  const [isPromoApplied, setIsPromoApplied] = useState(
+    search.promoCode?.trim().toUpperCase() === PROMO_CONFIG.CODE,
+  );
+
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
 
   const formatCurrency = (value: number) => {
