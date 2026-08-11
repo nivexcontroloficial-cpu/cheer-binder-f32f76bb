@@ -86,9 +86,9 @@ function LoginScreen() {
         </p>
       </div>
 
-      <h2 className="text-xl font-black uppercase tracking-tight italic mb-2 text-navy">
+      <h1 className="text-xl font-black uppercase tracking-tight italic mb-2 text-navy">
         Como deseja entrar?
-      </h2>
+      </h1>
 
       <div className="flex items-start gap-3 mb-4 p-4 bg-slate-50 rounded-2xl border border-slate-100 group transition-all focus-within:border-rovya-orange/30">
         <div className="flex items-center h-5">
@@ -168,7 +168,7 @@ function LoginScreen() {
         <button
           type="button"
           onClick={() => navigate({ to: "/passageiro/cadastro" })}
-          className="text-[11px] font-black uppercase tracking-widest text-rovya-orange hover:opacity-80 transition-opacity flex items-center gap-2"
+          className="text-[11px] font-black uppercase tracking-widest text-rovya-orange hover:opacity-80 transition-opacity flex items-center gap-2 min-h-11 px-4 rounded-xl focus-visible:ring-2 focus-visible:ring-rovya-orange outline-none"
         >
           Criar conta simulada
           <ArrowRight size={14} strokeWidth={3} aria-hidden="true" />
@@ -229,7 +229,7 @@ function LoginScreen() {
       <button
         type="button"
         onClick={() => setMode("options")}
-        className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-navy transition-colors self-center"
+        className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-navy transition-colors self-center min-h-11 px-4 rounded-xl focus-visible:ring-2 focus-visible:ring-navy outline-none"
       >
         Voltar para opções
       </button>
@@ -293,7 +293,7 @@ function LoginScreen() {
             setOtp("");
             toast.info("Simulação local: nenhum SMS foi reenviado. Use 123456.");
           }}
-          className="text-[10px] font-black uppercase tracking-widest text-rovya-orange hover:opacity-80 transition-opacity self-center"
+          className="text-[10px] font-black uppercase tracking-widest text-rovya-orange hover:opacity-80 transition-opacity self-center min-h-11 px-4 rounded-xl focus-visible:ring-2 focus-visible:ring-rovya-orange outline-none"
         >
           Não recebi o código. Reenviar.
         </button>
@@ -302,7 +302,7 @@ function LoginScreen() {
       <button
         type="button"
         onClick={() => setMode("phone")}
-        className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-navy transition-colors self-center mt-4"
+        className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-navy transition-colors self-center mt-4 min-h-11 px-4 rounded-xl focus-visible:ring-2 focus-visible:ring-navy outline-none"
       >
         Alterar número de telefone
       </button>
@@ -319,7 +319,7 @@ function LoginScreen() {
             onClick={() =>
               mode === "options" ? navigate({ to: "/passageiro/boas-vindas" }) : setMode("options")
             }
-            className="p-2 -ml-2 hover:bg-slate-50 rounded-xl transition-colors text-slate-400 focus:outline-none focus:ring-2 focus:ring-rovya-orange"
+            className="p-2 -ml-2 hover:bg-slate-50 rounded-xl transition-colors text-slate-400 focus:outline-none focus:ring-2 focus:ring-rovya-orange min-w-11 min-h-11 flex items-center justify-center"
           >
             <ChevronLeft size={24} strokeWidth={2.5} aria-hidden="true" />
           </button>

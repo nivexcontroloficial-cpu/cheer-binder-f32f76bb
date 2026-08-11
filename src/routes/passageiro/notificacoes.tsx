@@ -128,7 +128,7 @@ function NotificationsPage() {
               aria-label="Opções de notificações"
               type="button"
             >
-              <MoreVertical size={20} className="text-slate-400" />
+              <MoreVertical size={20} className="text-slate-400" aria-hidden="true" />
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="rounded-2xl border-slate-100 w-48 p-2">
