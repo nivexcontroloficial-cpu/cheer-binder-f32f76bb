@@ -101,7 +101,7 @@ function ActiveRideScreen() {
 
   const handleAutoPinConfirm = useCallback(() => {
     if (autoPinConfirmRef.current) return;
-    
+
     autoPinConfirmRef.current = setTimeout(() => {
       setPinConfirmed(true);
       toast.success("PIN confirmado pelo piloto — simulação.");

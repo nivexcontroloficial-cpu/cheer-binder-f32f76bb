@@ -21,7 +21,10 @@ export const PROMO_CONFIG = {
 
 export const rideQuoteSearchSchema = z.object({
   promoCode: z.string().optional().catch(undefined),
-  paymentMethod: z.enum(["cash", "pix", "card"]).optional().catch("cash" as const),
+  paymentMethod: z
+    .enum(["cash", "pix", "card"])
+    .optional()
+    .catch("cash" as const),
   technical: z.boolean().optional().catch(false),
   rideId: z.string().optional(),
 });
@@ -36,7 +39,7 @@ export const calculateRideFare = (promoCode?: string) => {
   const baseFare = ACTIVE_PASSENGER_DEMO_RIDE.fare;
   const isApplied = promoCode?.trim().toUpperCase() === PROMO_CONFIG.CODE;
   const discount = isApplied ? PROMO_CONFIG.DISCOUNT : 0;
-  
+
   return {
     baseFare,
     discount,
@@ -58,15 +61,15 @@ export const getPaymentLabel = (method?: string) => {
  */
 export const getQuoteParams = (search: RideQuoteSearch) => {
   const params: RideQuoteSearch = {};
-  
+
   if (search.promoCode?.trim().toUpperCase() === PROMO_CONFIG.CODE) {
     params.promoCode = PROMO_CONFIG.CODE;
   }
-  
+
   if (search.paymentMethod && search.paymentMethod !== "cash") {
     params.paymentMethod = search.paymentMethod;
   }
-  
+
   if (search.technical) {
     params.technical = true;
   }
@@ -74,6 +77,6 @@ export const getQuoteParams = (search: RideQuoteSearch) => {
   if (search.rideId) {
     params.rideId = search.rideId;
   }
-  
+
   return params;
 };
