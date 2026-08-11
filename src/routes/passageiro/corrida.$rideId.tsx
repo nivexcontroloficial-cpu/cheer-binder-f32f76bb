@@ -4,8 +4,9 @@ import {
   useParams,
   Outlet,
   useLocation,
+  Link,
 } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import {
   ArrowLeft,
   MessageSquare,
@@ -48,6 +49,9 @@ function ActiveRideScreen() {
   const { rideId } = useParams({ from: "/passageiro/corrida/$rideId" });
   const navigate = useNavigate();
   const location = useLocation();
+
+  const isValidRide = useMemo(() => rideId === "ride-active-mock", [rideId]);
+
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [connection, setConnection] = useState<ConnectionStatus>("stable");
   const [eta, setEta] = useState(4);
@@ -59,9 +63,7 @@ function ActiveRideScreen() {
   const [isWaitTimerActive, setIsWaitTimerActive] = useState(false);
   const [pin] = useState("4827");
   const [isDivergentVehicleAlertOpen, setIsDivergentVehicleAlertOpen] = useState(false);
-  const [lastUpdate, setLastUpdate] = useState(
-    new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }),
-  );
+  const [lastUpdate, setLastUpdate] = useState("10:00");
 
   // Dados Mock Obrigatórios do Piloto
   const pilot = {
@@ -80,6 +82,8 @@ function ActiveRideScreen() {
 
   // Simulação de movimento e conexão
   useEffect(() => {
+    if (!isValidRide) return;
+
     // Listeners do Simulador
     const handleSimulateArrival = () => {
       handlePilotArrival();
@@ -115,7 +119,12 @@ function ActiveRideScreen() {
 
         // Atualiza horário sempre que houver movimento
         setLastUpdate(
-          new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" }),
+          new Date().toLocaleTimeString("pt-BR", {
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: false,
+            timeZone: "America/Sao_Paulo",
+          }),
         );
 
         // Alerta de 500m
@@ -140,10 +149,12 @@ function ActiveRideScreen() {
       window.removeEventListener("simular-chegada", handleSimulateArrival);
       window.removeEventListener("simular-tempo-esgotado", handleSimulateTimeOut);
     };
-  }, [progress, connection, eta, distanceMeters, hasArrived, isNearAlertVisible]);
+  }, [progress, connection, eta, distanceMeters, hasArrived, isNearAlertVisible, isValidRide]);
 
   // Cronômetro de espera
   useEffect(() => {
+    if (!isValidRide) return;
+
     let timer: ReturnType<typeof setInterval> | undefined;
     if (isWaitTimerActive && waitTime > 0) {
       timer = setInterval(() => {
@@ -159,7 +170,7 @@ function ActiveRideScreen() {
       setIsWaitTimerActive(false); // Para o timer no zero
     }
     return () => clearInterval(timer);
-  }, [isWaitTimerActive, waitTime]);
+  }, [isWaitTimerActive, waitTime, isValidRide]);
 
   const handlePilotArrival = () => {
     setHasArrived(true);
@@ -241,6 +252,36 @@ function ActiveRideScreen() {
 
   if (isNestedRideRoute) {
     return <Outlet />;
+  }
+
+  if (!isValidRide) {
+    return (
+      <div className="flex min-h-screen flex-col bg-porcelain font-sans text-navy p-8 items-center justify-center text-center">
+        <div className="bg-amber-50 border border-amber-100 p-6 rounded-[32px] shadow-sm max-w-sm">
+          <Info size={32} className="text-amber-600 mx-auto mb-4" aria-hidden="true" />
+          <h1 className="text-xl font-black italic uppercase tracking-tight mb-2">
+            Corrida simulada não encontrada
+          </h1>
+          <p className="text-xs text-slate-500 font-medium leading-relaxed mb-6">
+            Aviso de demonstração local: nenhuma corrida real foi consultada.
+          </p>
+          <div className="flex flex-col gap-3">
+            <Link
+              to="/passageiro/corridas"
+              className="w-full h-11 flex items-center justify-center bg-navy text-white rounded-2xl font-black uppercase text-[9px] tracking-widest min-h-[44px]"
+            >
+              Ver histórico simulado
+            </Link>
+            <Link
+              to="/passageiro/inicio"
+              className="w-full h-11 flex items-center justify-center bg-white border border-slate-200 text-navy rounded-2xl font-black uppercase text-[9px] tracking-widest min-h-[44px]"
+            >
+              Voltar ao início
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const rideSummary = {
