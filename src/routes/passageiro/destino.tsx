@@ -461,7 +461,11 @@ function DestinationScreen() {
               onClick={() =>
                 navigate({
                   to: "/passageiro/localizar",
-                  search: { origin: origin.trim() },
+                  search: {
+                    origin: origin.trim(),
+                    destination: destination.trim() || undefined,
+                    reference: search.reference,
+                  },
                 })
               }
             />
