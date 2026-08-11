@@ -649,20 +649,38 @@ function ChatScreen() {
               <div className="flex items-center gap-1.5 mt-2 justify-end">
                 <span
                   className="text-[9px] font-bold opacity-50 uppercase"
-                  aria-label={`Enviada às ${msg.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`}
+                  aria-label={`Enviada às ${formatMessageTime(msg.timestamp)}`}
                 >
-                  {msg.timestamp.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
+                  {formatMessageTime(msg.timestamp)}
                 </span>
 
+
                 {msg.sender === "passenger" && (
-                  <div className="flex items-center" aria-hidden="true">
-                    {msg.status === "sending" && <Clock size={10} className="animate-pulse" />}
-                    {msg.status === "sent" && <Check size={10} />}
-                    {msg.status === "delivered" && <CheckCheck size={10} />}
-                    {msg.status === "read" && <CheckCheck size={10} className="text-blue-400" />}
-                    {msg.status === "failed" && <AlertCircle size={10} className="text-red-400" />}
+                  <div
+                    className="flex items-center"
+                    aria-label={`Status: ${msg.status}. Horário: ${formatMessageTime(msg.timestamp)}`}
+                  >
+                    {msg.status === "sending" && (
+                      <Clock size={10} className="animate-pulse" aria-hidden="true" />
+                    )}
+                    {msg.status === "sent" && <Check size={10} aria-hidden="true" />}
+                    {msg.status === "delivered" && <CheckCheck size={10} aria-hidden="true" />}
+                    {msg.status === "read" && (
+                      <CheckCheck size={10} className="text-blue-400" aria-hidden="true" />
+                    )}
+                    {msg.status === "failed" && (
+                      <AlertCircle size={10} className="text-red-400" aria-hidden="true" />
+                    )}
                   </div>
                 )}
+
+                {msg.sender === "driver" && (
+                  <div
+                    className="flex items-center"
+                    aria-label={`Horário: ${formatMessageTime(msg.timestamp)}`}
+                  />
+                )}
+
 
                 {msg.sender === "passenger" && (
                   <span className="sr-only">
