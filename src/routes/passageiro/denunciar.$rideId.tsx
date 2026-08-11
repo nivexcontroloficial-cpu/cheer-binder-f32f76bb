@@ -64,7 +64,8 @@ function DenunciarScreen() {
         </h1>
 
         <p className="text-slate-500 text-sm leading-relaxed mb-8 max-w-[280px]">
-          Nenhuma corrida real foi consultada. Este identificador não corresponde a uma corrida válida para denúncia na demo.
+          Nenhuma corrida real foi consultada. Este identificador não corresponde a uma corrida
+          válida para denúncia na demo.
         </p>
 
         <div className="w-full space-y-3 max-w-xs">
