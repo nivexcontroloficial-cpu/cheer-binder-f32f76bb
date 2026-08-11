@@ -227,7 +227,7 @@ function RecursoOcorrencia() {
               <div id="reason-counter" className="text-[10px] font-bold text-slate-400 uppercase">
                 {trimmedReason.length} de 500 caracteres
               </div>
-              {error && (
+              {error && touched && (
                 <p
                   id="reason-error"
                   role="alert"
