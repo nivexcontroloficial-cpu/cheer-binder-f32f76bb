@@ -201,12 +201,12 @@ function DemoCard({ to, title, description, icon, color, bg }: {
   to: string; 
   title: string; 
   description: string; 
-  icon: React.ReactNode; 
-  color: string; 
-  bg: string; 
+  icon: React.ReactNode;
+  color: string;
+  bg: string;
 }) {
   return (
-    <Link 
+    <Link
       to={to}
       className={`group p-8 bg-white border rounded-[32px] transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl flex flex-col items-center text-center ${color}`}
     >
