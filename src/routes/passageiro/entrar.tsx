@@ -54,9 +54,7 @@ function LoginScreen() {
     const timer = setTimeout(() => {
       setIsLoading(false);
       setMode("otp");
-      toast.success(
-        "Simulação local: nenhum SMS foi enviado. Use o código 123456."
-      );
+      toast.success("Simulação local: nenhum SMS foi enviado. Use o código 123456.");
     }, 1500);
     addTimer(timer);
   };
@@ -83,8 +81,8 @@ function LoginScreen() {
     <div className="flex flex-col gap-4 w-full animate-in fade-in slide-in-from-bottom-4 duration-500">
       <div className="mb-4 p-4 bg-rovya-orange/5 border border-rovya-orange/10 rounded-2xl">
         <p className="text-[10px] font-bold text-rovya-orange uppercase tracking-widest text-center leading-relaxed">
-          Demonstração local: nenhum SMS, login social ou autenticação real será
-          realizado. Use somente dados fictícios.
+          Demonstração local: nenhum SMS, login social ou autenticação real será realizado. Use
+          somente dados fictícios.
         </p>
       </div>
 
@@ -136,9 +134,7 @@ function LoginScreen() {
 
       <div className="flex items-center gap-4 my-2">
         <div className="h-px flex-1 bg-slate-100" />
-        <span className="text-[10px] font-bold text-slate-300 uppercase tracking-widest">
-          ou
-        </span>
+        <span className="text-[10px] font-bold text-slate-300 uppercase tracking-widest">ou</span>
         <div className="h-px flex-1 bg-slate-100" />
       </div>
 
@@ -182,7 +178,10 @@ function LoginScreen() {
   );
 
   const renderPhoneForm = () => (
-    <form onSubmit={handlePhoneSubmit} className="flex flex-col gap-6 w-full animate-in fade-in slide-in-from-left-4 duration-500">
+    <form
+      onSubmit={handlePhoneSubmit}
+      className="flex flex-col gap-6 w-full animate-in fade-in slide-in-from-left-4 duration-500"
+    >
       <div className="space-y-2">
         <label
           htmlFor="phone-input"
@@ -190,9 +189,7 @@ function LoginScreen() {
         >
           Seu número fictício
         </label>
-        <p className="text-sm text-slate-500">
-          Utilize um número fictício para esta demonstração.
-        </p>
+        <p className="text-sm text-slate-500">Utilize um número fictício para esta demonstração.</p>
       </div>
 
       <div className="relative">
@@ -220,18 +217,16 @@ function LoginScreen() {
         </div>
       )}
 
-      <button 
+      <button
         type="submit"
         disabled={isLoading}
         className="w-full bg-navy text-white h-14 rounded-2xl font-black uppercase tracking-widest text-[11px] flex items-center justify-center gap-2 hover:bg-navy/90 transition-all active:scale-95 disabled:opacity-50 rovya-shadow"
       >
         {isLoading ? <Loader2 size={18} className="animate-spin" /> : "Enviar Código"}
-        {!isLoading && (
-          <ArrowRight size={18} strokeWidth={2.5} aria-hidden="true" />
-        )}
+        {!isLoading && <ArrowRight size={18} strokeWidth={2.5} aria-hidden="true" />}
       </button>
 
-      <button 
+      <button
         type="button"
         onClick={() => setMode("options")}
         className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-navy transition-colors self-center"
@@ -242,7 +237,10 @@ function LoginScreen() {
   );
 
   const renderOtpForm = () => (
-    <form onSubmit={handleOtpSubmit} className="flex flex-col gap-6 w-full animate-in fade-in slide-in-from-right-4 duration-500">
+    <form
+      onSubmit={handleOtpSubmit}
+      className="flex flex-col gap-6 w-full animate-in fade-in slide-in-from-right-4 duration-500"
+    >
       <div className="space-y-2 text-center">
         <div className="h-14 w-14 bg-rovya-orange/10 rounded-2xl flex items-center justify-center text-rovya-orange mx-auto mb-4">
           <CheckCircle2 size={24} strokeWidth={2.5} aria-hidden="true" />
@@ -281,7 +279,7 @@ function LoginScreen() {
       )}
 
       <div className="flex flex-col gap-4">
-        <button 
+        <button
           type="submit"
           disabled={isLoading || otp.length < 6}
           className="w-full bg-navy text-white h-14 rounded-2xl font-black uppercase tracking-widest text-[11px] flex items-center justify-center gap-2 hover:bg-navy/90 transition-all active:scale-95 disabled:opacity-50 rovya-shadow"
@@ -289,13 +287,11 @@ function LoginScreen() {
           {isLoading ? <Loader2 size={18} className="animate-spin" /> : "Verificar Código"}
         </button>
 
-        <button 
+        <button
           type="button"
           onClick={() => {
             setOtp("");
-            toast.info(
-              "Simulação local: nenhum SMS foi reenviado. Use 123456."
-            );
+            toast.info("Simulação local: nenhum SMS foi reenviado. Use 123456.");
           }}
           className="text-[10px] font-black uppercase tracking-widest text-rovya-orange hover:opacity-80 transition-opacity self-center"
         >
@@ -303,7 +299,7 @@ function LoginScreen() {
         </button>
       </div>
 
-      <button 
+      <button
         type="button"
         onClick={() => setMode("phone")}
         className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-navy transition-colors self-center mt-4"
@@ -321,9 +317,7 @@ function LoginScreen() {
             type="button"
             aria-label="Voltar"
             onClick={() =>
-              mode === "options"
-                ? navigate({ to: "/passageiro/boas-vindas" })
-                : setMode("options")
+              mode === "options" ? navigate({ to: "/passageiro/boas-vindas" }) : setMode("options")
             }
             className="p-2 -ml-2 hover:bg-slate-50 rounded-xl transition-colors text-slate-400 focus:outline-none focus:ring-2 focus:ring-rovya-orange"
           >

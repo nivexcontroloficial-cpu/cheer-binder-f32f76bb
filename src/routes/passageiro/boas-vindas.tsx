@@ -71,9 +71,9 @@ function WelcomeScreen() {
       <div className="relative flex-1 overflow-hidden">
         {/* Top Image */}
         <div className="h-[55vh] w-full overflow-hidden relative">
-          <img 
-            src={currentStep.image} 
-            alt="Onboarding" 
+          <img
+            src={currentStep.image}
+            alt="Onboarding"
             className="h-full w-full object-cover transition-all duration-700 scale-105"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-white via-white/20 to-transparent" />
@@ -83,9 +83,9 @@ function WelcomeScreen() {
         <div className="absolute inset-x-0 bottom-0 p-8 pt-0 flex flex-col items-center text-center">
           <div className="flex gap-2 mb-8">
             {ONBOARDING_STEPS.map((_, i) => (
-              <div 
-                key={i} 
-                className={`h-1.5 transition-all duration-300 rounded-full ${i === step ? 'w-8 bg-rovya-orange' : 'w-1.5 bg-slate-200'}`}
+              <div
+                key={i}
+                className={`h-1.5 transition-all duration-300 rounded-full ${i === step ? "w-8 bg-rovya-orange" : "w-1.5 bg-slate-200"}`}
               />
             ))}
           </div>
@@ -97,8 +97,7 @@ function WelcomeScreen() {
             {currentStep.description}
           </p>
           <p className="text-[10px] font-bold text-rovya-orange uppercase tracking-widest mb-12 animate-pulse">
-            Demonstração local: os recursos apresentados neste onboarding utilizam
-            dados fictícios.
+            Demonstração local: os recursos apresentados neste onboarding utilizam dados fictícios.
           </p>
         </div>
       </div>
@@ -110,9 +109,7 @@ function WelcomeScreen() {
           onClick={handleNext}
           className="w-full bg-navy text-white h-14 rounded-2xl font-black uppercase tracking-widest text-[11px] flex items-center justify-center gap-2 hover:bg-navy/90 transition-all active:scale-95 rovya-shadow"
         >
-          {step === ONBOARDING_STEPS.length - 1
-            ? "Entrar na demonstração"
-            : "Próximo"}
+          {step === ONBOARDING_STEPS.length - 1 ? "Entrar na demonstração" : "Próximo"}
           <ChevronRight size={16} strokeWidth={2.5} aria-hidden="true" />
         </button>
 
