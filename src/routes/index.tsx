@@ -1,4 +1,243 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+/*
+ETAPA 20.2D — PERMISSÕES LOCAIS TRANSPARENTES E ACESSÍVEIS
+
+Base obrigatória:
+2e3fbd84a082b3d09c2a287612f3364c31390ac8
+
+Corrija exclusivamente:
+src/routes/passageiro/permissoes.tsx
+
+src/routeTree.gen.ts somente poderá aparecer se for atualizado automaticamente pelo build e deverá terminar no hash obrigatório.
+
+Não alterar qualquer outro arquivo.
+
+OBJETIVO
+
+Transformar a tela de permissões em uma demonstração inteiramente local, acessível e transparente, sem solicitar permissões reais do aparelho.
+
+PRESERVAR
+
+- Identidade visual da Rovya.
+- As três categorias:
+  - localização;
+  - câmera;
+  - notificações.
+- Selo de identidade, identificado como simulado.
+- Navegação final para /passageiro/inicio.
+- Funcionamento em telas pequenas.
+
+TRANSPARÊNCIA
+
+Adicionar banner visível:
+
+“Demonstração local: estes controles não solicitam permissões reais do aparelho.”
+
+Substituir alegações que sugiram:
+
+- GPS ou monitoramento real;
+- câmera ativa;
+- QR Code real;
+- notificações reais;
+- segurança garantida;
+- identidade realmente verificada.
+
+O selo deve aparecer como:
+
+“Identidade verificada — simulação”
+
+E explicar:
+
+“Nenhuma verificação real foi realizada.”
+
+ESTADOS LOCAIS
+
+Cada permissão deve possuir três estados locais:
+
+- pendente;
+- permitida na demonstração;
+- negada na demonstração.
+
+Utilizar um tipo explícito em TypeScript, por exemplo:
+
+type SimulatedPermission = "pending" | "allowed" | "denied";
+
+Os estados devem existir somente na memória da tela.
+
+Não usar localStorage.
+
+Não chamar:
+
+- navigator.geolocation;
+- navigator.permissions;
+- Notification.requestPermission;
+- navigator.mediaDevices;
+- câmera do aparelho;
+- qualquer API do navegador ou serviço externo.
+
+CONTROLES
+
+Cada cartão deve ser semanticamente acessível.
+
+Não usar div com onClick.
+
+Em cada cartão, disponibilizar dois botões:
+
+- “Permitir na demonstração”
+- “Agora não”
+
+Os botões devem:
+
+- usar type="button";
+- possuir aria-pressed;
+- ter foco visível;
+- funcionar por teclado;
+- atualizar somente o estado local.
+
+Não criar botões aninhados.
+
+TEXTOS E ALTERNATIVAS
+
+Localização:
+
+Descrição:
+
+“Simula a localização durante o uso para demonstrar a escolha de origem e o acompanhamento da corrida.”
+
+Se permitida:
+
+“Estado simulado: localização permitida durante o uso. Nenhum GPS foi acessado.”
+
+Se negada:
+
+“Você poderá informar origem e destino manualmente nesta demonstração.”
+
+Câmera:
+
+Descrição:
+
+“Simula a permissão de câmera usada no preview local da foto.”
+
+Se permitida:
+
+“Estado simulado: câmera permitida. A câmera não foi aberta nesta tela.”
+
+Se negada:
+
+“Você poderá continuar sem capturar uma nova foto.”
+
+Notificações:
+
+Descrição:
+
+“Simula avisos sobre chegada do piloto e atualizações da corrida.”
+
+Se permitida:
+
+“Estado simulado: notificações permitidas. Nenhuma notificação do aparelho foi enviada.”
+
+Se negada:
+
+“Os avisos continuarão aparecendo somente dentro das telas da demonstração.”
+
+Estado pendente:
+
+“Nenhuma decisão simulada foi selecionada.”
+
+CONCLUSÃO
+
+- Remover isLoading, Loader2 e o setTimeout.
+- Não criar novo timer.
+- Não tornar localização obrigatória.
+- Permitir concluir mesmo com permissões negadas ou pendentes.
+- Ao concluir, exibir toast:
+  “Preferências simuladas concluídas. Nenhuma permissão real foi solicitada.”
+- Navegar imediatamente para /passageiro/inicio.
+- Não salvar as escolhas.
+- Ao atualizar a página, os estados devem voltar para pendente.
+
+ACESSIBILIDADE
+
+- Manter um único h1.
+- Usar section ou article para cada permissão.
+- Usar heading coerente para o título de cada cartão.
+- Agrupar os dois botões com role="group" e aria-label contextual.
+- Usar aria-live="polite" para anunciar mudanças de estado.
+- Marcar ícones decorativos with aria-hidden="true".
+- Todos os botões devem ter type="button".
+- Garantir foco visível e área de toque adequada.
+- Não esconder informações essenciais apenas por cor.
+- Não usar elementos clicáveis sem semântica.
+
+PROIBIDO
+
+- Permissões reais do navegador ou aparelho.
+- GPS, câmera ou notificações reais.
+- Backend, banco, Supabase ou Lovable Cloud.
+- Autenticação ou pagamento real.
+- Persistência das escolhas.
+- Alterar verificação, cadastro ou tela inicial.
+- Alterar Piloto ou Administrativo.
+- Alterar CSS global, dependências ou configurações.
+- Inventar novas permissões.
+
+ROUTETREE
+
+Após a alteração:
+
+1. Execute npm run build.
+2. Confirme o bloco Register.
+3. Confirme o hash:
+   b4c2182230f995137cc73fe9f586cd7f1d707a08806b7a0579b3af59b8fd7d49
+4. Execute um segundo build.
+5. Confirme que não houve nova diferença.
+6. Confirme também:
+
+git show HEAD:src/routeTree.gen.ts | sha256sum
+
+Não publicar o hash c44f003e….
+
+VALIDAÇÕES
+
+npx prettier --check src/routes/passageiro/permissoes.tsx src/routeTree.gen.ts
+npx eslint src/routes/passageiro/permissoes.tsx src/routeTree.gen.ts
+npx tsc --noEmit
+npm run build
+npm run build
+git diff --check
+git status --short
+sha256sum src/routeTree.gen.ts
+git show HEAD:src/routeTree.gen.ts | sha256sum
+
+TESTAR
+
+- acesso direto e F5 em /passageiro/permissoes;
+- três estados de cada permissão;
+- alternativas após negar;
+- aria-pressed;
+- navegação por teclado;
+- conclusão com tudo pendente;
+- conclusão com tudo negado;
+- conclusão com combinações diferentes;
+- navegação para /passageiro/inicio;
+- atualização da página restaurando estados pendentes;
+- ausência de qualquer solicitação real do aparelho.
+
+RELATÓRIO FINAL
+
+Informar:
+
+- commit publicado;
+- arquivos realmente alterados;
+- estados testados;
+- resultado das validações;
+- hashes antes e depois dos builds;
+- confirmação de que nenhuma API real foi chamada.
+
+Não avance para origem ou destino.
+
+“Nenhum backend, banco, autenticação real, pagamento real, GPS real ou notificação real foi conectado nesta etapa.”
+*/
 import { RovyaBrand } from "@/components/RovyaBrand";
 import { User, ShieldCheck, PlayCircle, Bike, Palette, RotateCcw, ArrowRight, MessageSquare, Navigation as NavigationIcon, CheckCircle2, HeartPulse, Clock } from "lucide-react";
 import { useDemo } from "@/state/DemoContext";
