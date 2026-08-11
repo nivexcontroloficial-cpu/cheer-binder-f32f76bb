@@ -725,7 +725,11 @@ function ChatScreen() {
               className="absolute -top-2 -right-2 h-11 w-11 bg-red-500 text-white rounded-full flex items-center justify-center shadow-lg active:scale-90 transition-transform focus:ring-2 focus:ring-red-500 focus:outline-none"
               aria-label="Remover prévia fictícia"
             >
-              <X size={14} className="h-6 w-6 flex items-center justify-center" aria-hidden="true" />
+              <X
+                size={14}
+                className="h-6 w-6 flex items-center justify-center"
+                aria-hidden="true"
+              />
             </button>
           </div>
         )}
