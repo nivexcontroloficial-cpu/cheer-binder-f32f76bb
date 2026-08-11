@@ -14,6 +14,7 @@ import {
   getPaymentLabel,
   rideQuoteSearchSchema,
   getQuoteParams,
+  RideQuoteSearch,
 } from "@/lib/passenger-demo-ride-quote";
 import {
   Info,
