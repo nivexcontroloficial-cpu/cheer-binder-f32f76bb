@@ -35,7 +35,7 @@ function PermissionsScreen() {
           <h1 className="text-2xl font-black uppercase tracking-tight italic text-navy leading-tight">
             Transparência e Controle
           </h1>
-          
+
           <div className="p-4 bg-blue-50 border border-blue-100 rounded-2xl flex gap-3 items-start">
             <AlertCircle size={18} className="text-blue-500 shrink-0 mt-0.5" aria-hidden="true" />
             <p className="text-[10px] text-blue-700 font-bold leading-relaxed uppercase tracking-wider">
@@ -83,15 +83,22 @@ function PermissionsScreen() {
         </div>
 
         <div className="mt-auto pt-10 flex flex-col gap-6">
-          <div className="flex items-center gap-3 p-4 bg-emerald-50 border border-emerald-100 rounded-2xl" role="status">
+          <div
+            className="flex items-center gap-3 p-4 bg-emerald-50 border border-emerald-100 rounded-2xl"
+            role="status"
+          >
             <ShieldCheck size={20} className="text-rovya-green shrink-0" aria-hidden="true" />
             <div className="space-y-0.5">
-              <p className="text-[10px] font-bold text-emerald-900 uppercase tracking-widest">Identidade verificada — simulação</p>
-              <p className="text-[9px] text-emerald-700 font-medium italic">Nenhuma verificação real foi realizada.</p>
+              <p className="text-[10px] font-bold text-emerald-900 uppercase tracking-widest">
+                Identidade verificada — simulação
+              </p>
+              <p className="text-[9px] text-emerald-700 font-medium italic">
+                Nenhuma verificação real foi realizada.
+              </p>
             </div>
           </div>
 
-          <button 
+          <button
             type="button"
             onClick={handleFinish}
             className="w-full bg-navy text-white h-14 rounded-2xl font-black uppercase tracking-widest text-[11px] flex items-center justify-center gap-2 hover:bg-navy/90 transition-all active:scale-95 rovya-shadow"
@@ -117,41 +124,50 @@ interface PermissionSectionProps {
   deniedText: string;
 }
 
-function PermissionSection({ 
-  id, 
-  icon, 
-  title, 
-  description, 
-  state, 
-  onAllow, 
-  onDeny, 
-  allowedText, 
-  deniedText 
+function PermissionSection({
+  id,
+  icon,
+  title,
+  description,
+  state,
+  onAllow,
+  onDeny,
+  allowedText,
+  deniedText,
 }: PermissionSectionProps) {
-  const statusText = state === "allowed" ? allowedText : state === "denied" ? deniedText : "Nenhuma decisão simulada foi selecionada.";
-  
+  const statusText =
+    state === "allowed"
+      ? allowedText
+      : state === "denied"
+        ? deniedText
+        : "Nenhuma decisão simulada foi selecionada.";
+
   return (
-    <section 
+    <section
       aria-labelledby={`${id}-title`}
-      className={`p-5 rounded-[24px] border transition-all flex gap-4 ${state === 'allowed' ? 'bg-white border-rovya-orange shadow-sm' : state === 'denied' ? 'bg-slate-50 border-slate-200' : 'bg-slate-50 border-slate-100'}`}
+      className={`p-5 rounded-[24px] border transition-all flex gap-4 ${state === "allowed" ? "bg-white border-rovya-orange shadow-sm" : state === "denied" ? "bg-slate-50 border-slate-200" : "bg-slate-50 border-slate-100"}`}
     >
-      <div className={`h-12 w-12 shrink-0 rounded-2xl flex items-center justify-center transition-colors ${state === 'allowed' ? 'bg-rovya-orange text-white' : 'bg-white text-slate-300 shadow-sm'}`} aria-hidden="true">
+      <div
+        className={`h-12 w-12 shrink-0 rounded-2xl flex items-center justify-center transition-colors ${state === "allowed" ? "bg-rovya-orange text-white" : "bg-white text-slate-300 shadow-sm"}`}
+        aria-hidden="true"
+      >
         {icon}
       </div>
-      
+
       <div className="flex-1 space-y-3">
         <div className="space-y-1">
-          <h2 id={`${id}-title`} className="text-[11px] font-black uppercase tracking-wider text-navy">
+          <h2
+            id={`${id}-title`}
+            className="text-[11px] font-black uppercase tracking-wider text-navy"
+          >
             {title}
           </h2>
-          <p className="text-[10px] text-slate-500 leading-relaxed font-medium">
-            {description}
-          </p>
+          <p className="text-[10px] text-slate-500 leading-relaxed font-medium">{description}</p>
         </div>
 
         <div className="space-y-3">
-          <div 
-            role="group" 
+          <div
+            role="group"
             aria-label={`Controles de simulação para ${title}`}
             className="flex gap-2"
           >
@@ -159,7 +175,7 @@ function PermissionSection({
               type="button"
               onClick={onAllow}
               aria-pressed={state === "allowed"}
-              className={`px-3 py-2 rounded-xl text-[9px] font-bold uppercase tracking-widest transition-all focus-visible:ring-2 focus-visible:ring-rovya-orange focus-visible:outline-none ${state === "allowed" ? 'bg-rovya-orange text-white' : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'}`}
+              className={`px-3 py-2 rounded-xl text-[9px] font-bold uppercase tracking-widest transition-all focus-visible:ring-2 focus-visible:ring-rovya-orange focus-visible:outline-none ${state === "allowed" ? "bg-rovya-orange text-white" : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"}`}
             >
               Permitir na demonstração
             </button>
@@ -167,15 +183,15 @@ function PermissionSection({
               type="button"
               onClick={onDeny}
               aria-pressed={state === "denied"}
-              className={`px-3 py-2 rounded-xl text-[9px] font-bold uppercase tracking-widest transition-all focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:outline-none ${state === "denied" ? 'bg-slate-900 text-white' : 'bg-white border border-slate-200 text-slate-600 hover:bg-slate-50'}`}
+              className={`px-3 py-2 rounded-xl text-[9px] font-bold uppercase tracking-widest transition-all focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:outline-none ${state === "denied" ? "bg-slate-900 text-white" : "bg-white border border-slate-200 text-slate-600 hover:bg-slate-50"}`}
             >
               Agora não
             </button>
           </div>
 
-          <div 
-            aria-live="polite" 
-            className={`text-[9px] font-bold italic leading-tight ${state === 'allowed' ? 'text-rovya-orange' : state === 'denied' ? 'text-slate-500' : 'text-slate-400'}`}
+          <div
+            aria-live="polite"
+            className={`text-[9px] font-bold italic leading-tight ${state === "allowed" ? "text-rovya-orange" : state === "denied" ? "text-slate-500" : "text-slate-400"}`}
           >
             {statusText}
           </div>
