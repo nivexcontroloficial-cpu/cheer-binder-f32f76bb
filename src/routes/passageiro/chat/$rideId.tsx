@@ -183,7 +183,7 @@ function ChatScreen() {
     } finally {
       setHydratedRideId(rideId);
     }
-  }, [rideId]);
+  }, [rideId, isValidRide]);
 
   // Save to localStorage only after hydration and only for current rideId
   useEffect(() => {
@@ -201,7 +201,7 @@ function ChatScreen() {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [messages, rideId, hydratedRideId]);
+  }, [messages, rideId, hydratedRideId, isValidRide]);
 
   const handleSendMessage = useCallback(
     (text = inputText) => {
