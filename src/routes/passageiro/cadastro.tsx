@@ -261,6 +261,8 @@ function SignupScreen() {
                       required
                       type="text"
                       inputMode="numeric"
+                      aria-invalid={!!errors.cpf}
+                      aria-describedby={errors.cpf ? "cpf-error" : undefined}
                       value={formData.cpf}
                       onChange={(e) => setFormData({ ...formData, cpf: formatCPF(e.target.value) })}
                       placeholder="000.000.000-00"
@@ -268,7 +270,7 @@ function SignupScreen() {
                     />
                   </div>
                   {errors.cpf && (
-                    <p className="text-[10px] text-red-500 font-bold" role="alert">
+                    <p id="cpf-error" className="text-[10px] text-red-500 font-bold" role="alert">
                       {errors.cpf}
                     </p>
                   )}
