@@ -28,8 +28,39 @@ function DenunciarScreen() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [description, setDescription] = useState("");
   const [hasEvidence, setHasEvidence] = useState(false);
+  const [touched, setTouched] = useState(false);
+  const [validationError, setValidationError] = useState<string | null>(null);
 
   const isValidRide = rideId === "ride-active-mock" || rideId === "RY-2026-00842";
+
+  const validateDescription = (value: string) => {
+    const trimmed = value.trim();
+    if (trimmed.length === 0) {
+      return "Descreva o ocorrido para continuar.";
+    }
+    if (trimmed.length < 10) {
+      return "O relato deve possuir pelo menos 10 caracteres úteis.";
+    }
+    if (trimmed.length > 500) {
+      return "O relato não deve exceder 500 caracteres.";
+    }
+    return null;
+  };
+
+  const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newVal = e.target.value;
+    if (newVal.length <= 500) {
+      setDescription(newVal);
+      if (touched) {
+        setValidationError(validateDescription(newVal));
+      }
+    }
+  };
+
+  const handleBlur = () => {
+    setTouched(true);
+    setValidationError(validateDescription(description));
+  };
 
   const handleCategorySelect = (id: string) => {
     setSelectedCategory(id);
@@ -38,8 +69,11 @@ function DenunciarScreen() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (description.trim().length < 10) {
-      toast.error("Por favor, detalhe melhor o ocorrido (mínimo 10 caracteres).");
+    const error = validateDescription(description);
+    if (error) {
+      setTouched(true);
+      setValidationError(error);
+      toast.error(error);
       return;
     }
     setStep("success");
@@ -126,14 +160,17 @@ function DenunciarScreen() {
           onClick={() =>
             step === "details"
               ? setStep("category")
-              : navigate({ to: `/passageiro/corrida/${rideId}/em-andamento` })
+              : navigate({
+                  to: "/passageiro/corrida/$rideId/em-andamento",
+                  params: { rideId },
+                })
           }
-          className="h-10 w-10 bg-slate-50 rounded-xl flex items-center justify-center text-navy hover:bg-slate-100 transition-colors focus:ring-2 focus:ring-navy outline-none"
+          className="h-11 w-11 bg-slate-50 rounded-xl flex items-center justify-center text-navy hover:bg-slate-100 transition-colors focus-visible:ring-2 focus-visible:ring-emerald-500 outline-none"
           aria-label={
             step === "details" ? "Voltar para seleção de categoria" : "Voltar para a corrida"
           }
         >
-          <ArrowLeft size={20} strokeWidth={2.5} />
+          <ArrowLeft size={20} strokeWidth={2.5} aria-hidden="true" />
         </button>
         <h1 className="text-xl font-black italic tracking-tighter uppercase">
           {step === "category" ? "Denunciar" : "Detalhes"}
@@ -142,7 +179,7 @@ function DenunciarScreen() {
 
       <main className="flex-1 p-6 overflow-y-auto">
         <div className="mb-6 p-4 bg-amber-50 border border-amber-100 rounded-2xl flex gap-3 items-center">
-          <Info size={18} className="text-amber-600 shrink-0" />
+          <Info size={18} className="text-amber-600 shrink-0" aria-hidden="true" />
           <p className="text-[10px] text-amber-700 font-black uppercase tracking-wider">
             Demonstração local: nenhuma denúncia real será enviada.
           </p>
@@ -151,7 +188,7 @@ function DenunciarScreen() {
         {step === "category" ? (
           <div className="space-y-4">
             <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100 flex gap-3 mb-2">
-              <EyeOff size={18} className="text-slate-400 shrink-0" />
+              <EyeOff size={18} className="text-slate-400 shrink-0" aria-hidden="true" />
               <p className="text-[10px] text-slate-500 font-bold leading-relaxed italic">
                 Simulação de privacidade: em um ambiente real, seus dados seriam protegidos.
               </p>
@@ -166,10 +203,10 @@ function DenunciarScreen() {
                   type="button"
                   key={cat.id}
                   onClick={() => handleCategorySelect(cat.id)}
-                  className="w-full bg-white p-5 rounded-2xl border border-slate-100 flex items-center justify-between group active:scale-[0.98] transition-all hover:border-navy focus:ring-2 focus:ring-navy outline-none"
+                  className="w-full bg-white p-5 rounded-2xl border border-slate-100 flex items-center justify-between group active:scale-[0.98] transition-all hover:border-navy focus-visible:ring-2 focus-visible:ring-emerald-500 outline-none"
                 >
                   <span className="text-sm font-bold text-navy">{cat.label}</span>
-                  <ChevronRight size={18} className="text-slate-200" />
+                  <ChevronRight size={18} className="text-slate-200" aria-hidden="true" />
                 </button>
               ))}
             </div>
@@ -179,7 +216,7 @@ function DenunciarScreen() {
             <div className="bg-white p-6 rounded-[32px] border border-slate-100 shadow-sm space-y-4">
               <div className="flex items-center gap-3">
                 <div className="h-10 w-10 bg-slate-50 rounded-xl flex items-center justify-center text-slate-400">
-                  <FileText size={20} />
+                  <FileText size={20} aria-hidden="true" />
                 </div>
                 <div>
                   <span className="block text-[10px] font-black uppercase tracking-widest text-slate-400">
@@ -192,19 +229,45 @@ function DenunciarScreen() {
               </div>
 
               <div className="space-y-2">
-                <label
-                  htmlFor="description-input"
-                  className="text-[10px] font-black uppercase tracking-widest text-slate-400"
-                >
-                  Relato detalhado (Mínimo 10 caracteres)
-                </label>
+                <div className="flex justify-between items-end">
+                  <label
+                    htmlFor="description-input"
+                    className="text-[10px] font-black uppercase tracking-widest text-slate-400"
+                  >
+                    Relato detalhado (Mínimo 10 caracteres)
+                  </label>
+                  <span
+                    className={`text-[10px] font-bold uppercase tracking-widest ${
+                      description.length >= 500 ? "text-red-500" : "text-slate-400"
+                    }`}
+                    role="status"
+                    aria-live="polite"
+                  >
+                    {description.length}/500 caracteres
+                  </span>
+                </div>
                 <textarea
                   id="description-input"
                   value={description}
-                  onChange={(e) => setDescription(e.target.value)}
+                  onChange={handleDescriptionChange}
+                  onBlur={handleBlur}
+                  maxLength={500}
+                  aria-invalid={!!validationError}
+                  aria-describedby={validationError ? "description-error" : undefined}
                   placeholder="Descreva o que aconteceu para fins de demonstração..."
-                  className="w-full min-h-[150px] p-4 bg-slate-50 border border-slate-100 rounded-2xl text-sm focus:ring-2 focus:ring-navy outline-none"
+                  className={`w-full min-h-[150px] p-4 bg-slate-50 border rounded-2xl text-sm focus-visible:ring-2 focus-visible:ring-emerald-500 outline-none transition-all ${
+                    validationError ? "border-red-500" : "border-slate-100"
+                  }`}
                 />
+                {validationError && (
+                  <p
+                    id="description-error"
+                    className="text-[10px] font-black text-red-500 uppercase tracking-widest"
+                    role="alert"
+                  >
+                    {validationError}
+                  </p>
+                )}
               </div>
 
               <div className="space-y-3">
@@ -217,10 +280,10 @@ function DenunciarScreen() {
                     setHasEvidence(true);
                     toast.info("Demonstração: Nenhum arquivo foi acessado ou enviado.");
                   }}
-                  className="w-full h-24 border-2 border-dashed border-slate-100 rounded-2xl flex flex-col items-center justify-center gap-1 cursor-pointer hover:bg-slate-50 transition-colors focus:ring-2 focus:ring-navy outline-none"
+                  className="w-full h-24 border-2 border-dashed border-slate-100 rounded-2xl flex flex-col items-center justify-center gap-1 cursor-pointer hover:bg-slate-50 transition-colors focus-visible:ring-2 focus-visible:ring-emerald-500 outline-none"
                   aria-label="Simular anexo de foto ou vídeo"
                 >
-                  <Camera size={24} className="text-slate-300" />
+                  <Camera size={24} className="text-slate-300" aria-hidden="true" />
                   <span className="text-[10px] font-bold text-slate-400 uppercase">
                     Foto ou Vídeo (Simulado)
                   </span>
@@ -228,7 +291,7 @@ function DenunciarScreen() {
                 {hasEvidence && (
                   <div className="flex items-center gap-2 p-2 bg-blue-50 border border-blue-100 rounded-xl">
                     <div className="h-10 w-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                      <Camera size={16} className="text-blue-400" />
+                      <Camera size={16} className="text-blue-400" aria-hidden="true" />
                     </div>
                     <span className="text-[10px] font-bold text-blue-600 uppercase">
                       Evidência simulada (não armazenada)
@@ -239,7 +302,7 @@ function DenunciarScreen() {
             </div>
 
             <div className="p-4 bg-blue-50 rounded-2xl border border-blue-100 flex gap-3">
-              <Lock size={16} className="text-blue-600 shrink-0" />
+              <Lock size={16} className="text-blue-600 shrink-0" aria-hidden="true" />
               <p className="text-[10px] text-blue-800 font-medium leading-relaxed italic">
                 Nota: Esta interface demonstra como relatos seriam tratados. Nesta versão local,
                 nada é enviado.
@@ -248,9 +311,10 @@ function DenunciarScreen() {
 
             <Button
               type="submit"
-              className="w-full bg-navy text-white h-14 rounded-2xl font-black uppercase italic tracking-widest flex items-center justify-center gap-2"
+              disabled={!!validateDescription(description)}
+              className="w-full bg-navy text-white h-14 rounded-2xl font-black uppercase italic tracking-widest flex items-center justify-center gap-2 focus-visible:ring-2 focus-visible:ring-emerald-500 outline-none"
             >
-              <Send size={18} />
+              <Send size={18} aria-hidden="true" />
               Finalizar Simulação
             </Button>
           </form>
