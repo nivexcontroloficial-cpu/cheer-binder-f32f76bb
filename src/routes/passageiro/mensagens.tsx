@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { MessageSquare } from "lucide-react";
 import { useState } from "react";
+import { ACTIVE_PASSENGER_DEMO_RIDE, COMPLETED_PASSENGER_DEMO_RIDE } from "@/data/passenger-demo-rides";
 
 export const Route = createFileRoute("/passageiro/mensagens")({
   component: MensagensScreen,
@@ -19,10 +20,10 @@ interface ChatPreview {
 function MensagensScreen() {
   const [conversas] = useState<ChatPreview[]>([
     {
-      id: "ride-active-mock",
+      id: ACTIVE_PASSENGER_DEMO_RIDE.id,
       initials: "CH",
-      name: "Carlos H.",
-      rideId: "RY-2026-00842",
+      name: ACTIVE_PASSENGER_DEMO_RIDE.driver.name,
+      rideId: COMPLETED_PASSENGER_DEMO_RIDE.id,
       preview: "Olá Rafael, estou chegando ao local de embarque.",
       time: "Agora",
       isSimulated: true,

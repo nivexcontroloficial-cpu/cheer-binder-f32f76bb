@@ -2,6 +2,7 @@ import { createFileRoute, Link, useParams, useNavigate } from "@tanstack/react-r
 import { useState } from "react";
 import { ChevronLeft, Info, AlertCircle } from "lucide-react";
 import { calculateCancellationConsequence } from "@/services/mock/account-health";
+import { ACTIVE_PASSENGER_DEMO_RIDE } from "@/data/passenger-demo-rides";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -29,7 +30,7 @@ function CancelarCorrida() {
     navigate({ to: "/passageiro/inicio" });
   };
 
-  const isValidRide = rideId === "ride-active-mock";
+  const isValidRide = rideId === ACTIVE_PASSENGER_DEMO_RIDE.id;
 
   const reasons = [
     { id: "desistencia", label: "Desisti da corrida" },
