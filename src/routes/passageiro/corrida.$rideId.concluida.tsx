@@ -64,30 +64,27 @@ function RideCompletedScreen() {
 
   const isValidRide = useMemo(() => rideId === COMPLETED_PASSENGER_DEMO_RIDE.id, [rideId]);
 
-  const { finalFare } = useMemo(
-    () => calculateRideFare(search.promoCode),
-    [search.promoCode]
-  );
+  const { finalFare } = useMemo(() => calculateRideFare(search.promoCode), [search.promoCode]);
 
-  const paymentLabel = useMemo(
-    () => getPaymentLabel(search.paymentMethod),
-    [search.paymentMethod]
-  );
+  const paymentLabel = useMemo(() => getPaymentLabel(search.paymentMethod), [search.paymentMethod]);
 
-  const RIDE_SUMMARY = useMemo(() => ({
-    id: COMPLETED_PASSENGER_DEMO_RIDE.id,
-    origin: COMPLETED_PASSENGER_DEMO_RIDE.origin.address,
-    destination: COMPLETED_PASSENGER_DEMO_RIDE.destination.address,
-    distance: `${COMPLETED_PASSENGER_DEMO_RIDE.distance.toString().replace(".", ",")} km`,
-    duration: `${COMPLETED_PASSENGER_DEMO_RIDE.duration} min`,
-    fare: finalFare,
-    paymentMethod: paymentLabel,
-    pilot: {
-      name: COMPLETED_PASSENGER_DEMO_RIDE.driver.name,
-      initials: "CH",
-      vehicle: `${COMPLETED_PASSENGER_DEMO_RIDE.vehicle.model} — ${COMPLETED_PASSENGER_DEMO_RIDE.vehicle.plate}`,
-    },
-  }), [finalFare, paymentLabel]);
+  const RIDE_SUMMARY = useMemo(
+    () => ({
+      id: COMPLETED_PASSENGER_DEMO_RIDE.id,
+      origin: COMPLETED_PASSENGER_DEMO_RIDE.origin.address,
+      destination: COMPLETED_PASSENGER_DEMO_RIDE.destination.address,
+      distance: `${COMPLETED_PASSENGER_DEMO_RIDE.distance.toString().replace(".", ",")} km`,
+      duration: `${COMPLETED_PASSENGER_DEMO_RIDE.duration} min`,
+      fare: finalFare,
+      paymentMethod: paymentLabel,
+      pilot: {
+        name: COMPLETED_PASSENGER_DEMO_RIDE.driver.name,
+        initials: "CH",
+        vehicle: `${COMPLETED_PASSENGER_DEMO_RIDE.vehicle.model} — ${COMPLETED_PASSENGER_DEMO_RIDE.vehicle.plate}`,
+      },
+    }),
+    [finalFare, paymentLabel],
+  );
 
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
@@ -174,11 +171,14 @@ function RideCompletedScreen() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-porcelain font-sans text-navy pb-10">
+    <main className="flex min-h-screen flex-col bg-porcelain font-sans text-navy pb-10">
       <h1 className="sr-only">Corrida concluída</h1>
-      
+
       <div className="bg-navy pt-16 pb-12 px-8 rounded-b-[48px] text-white flex flex-col items-center text-center shadow-2xl relative overflow-hidden">
-        <div className="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none" aria-hidden="true">
+        <div
+          className="absolute top-0 left-0 w-full h-full opacity-5 pointer-events-none"
+          aria-hidden="true"
+        >
           <svg className="w-full h-full" viewBox="0 0 100 100" preserveAspectRatio="none">
             <path d="M0 100 C 20 0 50 0 100 100 Z" fill="white" />
           </svg>
@@ -201,27 +201,42 @@ function RideCompletedScreen() {
         </div>
 
         <div className="bg-white rounded-[32px] p-6 shadow-xl border border-slate-100 flex items-center gap-4">
-          <div className="h-14 w-14 rounded-2xl bg-navy text-white flex items-center justify-center font-black italic text-lg" aria-hidden="true">
+          <div
+            className="h-14 w-14 rounded-2xl bg-navy text-white flex items-center justify-center font-black italic text-lg"
+            aria-hidden="true"
+          >
             {RIDE_SUMMARY.pilot.initials}
           </div>
           <div className="flex flex-col">
-            <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Piloto fictício</span>
+            <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">
+              Piloto fictício
+            </span>
             <span className="text-sm font-black italic text-navy">{RIDE_SUMMARY.pilot.name}</span>
-            <span className="text-[10px] font-bold text-slate-400">{RIDE_SUMMARY.pilot.vehicle}</span>
+            <span className="text-[10px] font-bold text-slate-400">
+              {RIDE_SUMMARY.pilot.vehicle}
+            </span>
           </div>
         </div>
 
         <div className="bg-white rounded-[32px] p-6 shadow-xl border border-slate-100">
           <div className="flex justify-between items-center mb-6">
             <div className="flex flex-col">
-              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Valor fixado</span>
-              <span className="text-3xl font-black italic tracking-tighter text-navy">{CURRENCY.format(RIDE_SUMMARY.fare)}</span>
+              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">
+                Valor fixado
+              </span>
+              <span className="text-3xl font-black italic tracking-tighter text-navy">
+                {CURRENCY.format(RIDE_SUMMARY.fare)}
+              </span>
             </div>
             <div className="flex flex-col items-end">
-              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Pagamento presencial</span>
+              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">
+                Pagamento presencial
+              </span>
               <div className="flex items-center gap-2 bg-blue-50 px-3 py-1.5 rounded-xl border border-blue-100 mt-1">
                 <Wallet size={14} className="text-blue-600" aria-hidden="true" />
-                <span className="text-[10px] font-black uppercase tracking-tight text-blue-700">{RIDE_SUMMARY.paymentMethod}</span>
+                <span className="text-[10px] font-black uppercase tracking-tight text-blue-700">
+                  {RIDE_SUMMARY.paymentMethod}
+                </span>
               </div>
             </div>
           </div>
@@ -235,23 +250,34 @@ function RideCompletedScreen() {
               Paguei diretamente ao piloto
             </Button>
           ) : (
-            <div role="status" aria-live="polite" className="w-full py-4 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center gap-3 text-emerald-700">
+            <div
+              role="status"
+              aria-live="polite"
+              className="w-full py-4 rounded-2xl bg-emerald-50 border border-emerald-100 flex items-center justify-center gap-3 text-emerald-700"
+            >
               <CheckCircle2 size={18} aria-hidden="true" />
-              <span className="text-xs font-black uppercase tracking-widest">Confirmação local registrada</span>
+              <span className="text-xs font-black uppercase tracking-widest">
+                Confirmação local registrada
+              </span>
             </div>
           )}
         </div>
 
         <div className="bg-white rounded-[32px] p-8 shadow-xl border border-slate-100 flex flex-col items-center">
-          <h2 className="text-sm font-black italic uppercase tracking-tight text-navy mb-1">Como foi sua viagem?</h2>
-          <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-6">Avaliação opcional</p>
-          <div className="flex gap-2 mb-8">
+          <h2 className="text-sm font-black italic uppercase tracking-tight text-navy mb-1">
+            Como foi sua viagem?
+          </h2>
+          <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-6">
+            Avaliação opcional
+          </p>
+          <div className="flex gap-4 mb-8">
             {[1, 2, 3, 4, 5].map((star) => (
               <button
                 key={star}
                 type="button"
                 onClick={() => setRating(star)}
-                className="transition-transform active:scale-90 rounded-xl focus:outline-none"
+                className="transition-transform active:scale-90 rounded-xl focus:outline-none min-h-11 min-w-11 flex items-center justify-center"
+                aria-label={`Avaliar ${star} estrelas`}
               >
                 <Star
                   size={40}
@@ -262,7 +288,7 @@ function RideCompletedScreen() {
               </button>
             ))}
           </div>
-          
+
           <div className="w-full space-y-6">
             <div className="flex flex-wrap justify-center gap-2">
               {COMPLIMENTS.map((tag) => (
@@ -270,8 +296,10 @@ function RideCompletedScreen() {
                   key={tag}
                   type="button"
                   onClick={() => toggleCompliment(tag)}
-                  className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
-                    selectedCompliments.includes(tag) ? "bg-navy text-white" : "bg-slate-50 text-slate-400 border border-slate-100"
+                  className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all min-h-11 flex items-center justify-center text-center ${
+                    selectedCompliments.includes(tag)
+                      ? "bg-navy text-white"
+                      : "bg-slate-50 text-slate-400 border border-slate-100"
                   }`}
                 >
                   {tag}
@@ -290,7 +318,9 @@ function RideCompletedScreen() {
 
         <div className="bg-white rounded-[32px] p-6 shadow-xl border border-slate-100 space-y-6">
           <div className="flex items-center justify-between border-b border-slate-50 pb-4">
-            <h3 className="text-[10px] font-black uppercase tracking-widest text-navy">Recibo visual de demonstração</h3>
+            <h3 className="text-[10px] font-black uppercase tracking-widest text-navy">
+              Recibo visual de demonstração
+            </h3>
             <FileText size={14} className="text-slate-400" />
           </div>
           <div className="space-y-4">
@@ -299,7 +329,9 @@ function RideCompletedScreen() {
                 <MapPin size={12} className="text-emerald-500" />
               </div>
               <div className="flex flex-col">
-                <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Origem</span>
+                <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">
+                  Origem
+                </span>
                 <span className="text-[11px] font-bold text-navy">{RIDE_SUMMARY.origin}</span>
               </div>
             </div>
@@ -308,7 +340,9 @@ function RideCompletedScreen() {
                 <MapPin size={12} className="text-blue-500" />
               </div>
               <div className="flex flex-col">
-                <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Destino</span>
+                <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">
+                  Destino
+                </span>
                 <span className="text-[11px] font-bold text-navy">{RIDE_SUMMARY.destination}</span>
               </div>
             </div>
@@ -346,13 +380,18 @@ function RideCompletedScreen() {
       <AlertDialog open={isConfirmPaymentDialogOpen} onOpenChange={setIsConfirmPaymentDialogOpen}>
         <AlertDialogContent className="rounded-3xl max-w-[90vw] w-[320px]">
           <AlertDialogHeader>
-            <AlertDialogTitle className="font-black italic uppercase tracking-tighter">Confirmar Pagamento?</AlertDialogTitle>
+            <AlertDialogTitle className="font-black italic uppercase tracking-tighter">
+              Confirmar Pagamento?
+            </AlertDialogTitle>
             <AlertDialogDescription className="text-xs font-medium text-slate-500">
               Você confirma que pagou {CURRENCY.format(RIDE_SUMMARY.fare)} diretamente ao piloto?
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="flex flex-col gap-2 mt-4">
-            <AlertDialogAction onClick={confirmPayment} className="w-full bg-navy text-white rounded-2xl text-xs font-bold uppercase tracking-widest h-12">
+            <AlertDialogAction
+              onClick={confirmPayment}
+              className="w-full bg-navy text-white rounded-2xl text-xs font-bold uppercase tracking-widest h-12"
+            >
               Confirmar Pagamento
             </AlertDialogAction>
             <AlertDialogCancel className="w-full rounded-2xl border-slate-200 text-xs font-bold uppercase tracking-widest h-12">
@@ -361,6 +400,6 @@ function RideCompletedScreen() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </div>
+    </main>
   );
 }

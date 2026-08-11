@@ -1,7 +1,17 @@
-import { createFileRoute, useNavigate, useParams, Link, useSearch, Outlet } from "@tanstack/react-router";
+import {
+  createFileRoute,
+  useNavigate,
+  useParams,
+  Link,
+  useSearch,
+  Outlet,
+} from "@tanstack/react-router";
 import { useState, useEffect, useMemo, useRef } from "react";
 import { Shield, Info } from "lucide-react";
-import { ACTIVE_PASSENGER_DEMO_RIDE, COMPLETED_PASSENGER_DEMO_RIDE } from "@/data/passenger-demo-rides";
+import {
+  ACTIVE_PASSENGER_DEMO_RIDE,
+  COMPLETED_PASSENGER_DEMO_RIDE,
+} from "@/data/passenger-demo-rides";
 import {
   calculateRideFare,
   getPaymentLabel,
@@ -28,15 +38,9 @@ function InProgressRideScreen() {
   const [progress, setProgress] = useState(35);
   const isFinishedRef = useRef(false);
 
-  const { finalFare } = useMemo(
-    () => calculateRideFare(search.promoCode),
-    [search.promoCode]
-  );
+  const { finalFare } = useMemo(() => calculateRideFare(search.promoCode), [search.promoCode]);
 
-  const paymentLabel = useMemo(
-    () => getPaymentLabel(search.paymentMethod),
-    [search.paymentMethod]
-  );
+  const paymentLabel = useMemo(() => getPaymentLabel(search.paymentMethod), [search.paymentMethod]);
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat("pt-BR", {
@@ -52,14 +56,14 @@ function InProgressRideScreen() {
       setProgress((prev) => {
         const next = prev + 1;
         if (next >= 100 && !isFinishedRef.current) {
-            isFinishedRef.current = true;
-            toast.success("Corrida encerrada pelo piloto — simulação.");
-            navigate({
-                to: "/passageiro/corrida/$rideId/concluida",
-                params: { rideId: COMPLETED_PASSENGER_DEMO_RIDE.id },
-                search: (prev: any) => getQuoteParams(prev),
-            });
-            return 100;
+          isFinishedRef.current = true;
+          toast.success("Corrida encerrada pelo piloto — simulação.");
+          navigate({
+            to: "/passageiro/corrida/$rideId/concluida",
+            params: { rideId: COMPLETED_PASSENGER_DEMO_RIDE.id },
+            search: (prev: any) => getQuoteParams(prev),
+          });
+          return 100;
         }
         return next > 100 ? 100 : next;
       });
@@ -77,15 +81,15 @@ function InProgressRideScreen() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-white font-sans text-navy relative overflow-hidden">
+    <main className="flex min-h-screen flex-col bg-white font-sans text-navy relative overflow-hidden">
       <h1 className="sr-only">Corrida em andamento</h1>
-      
+
       <div className="flex-1 bg-slate-50 relative">
         <div className="absolute top-8 left-6 right-6">
           <div className="bg-white/95 rounded-3xl p-6 shadow-xl border border-slate-100">
             <h2 className="text-xl font-black italic uppercase text-navy mb-4">Corrida {rideId}</h2>
             <Progress value={progress} className="h-2 bg-slate-100" />
-            
+
             <div className="mt-6 flex items-center justify-between border-t border-slate-50 pt-4">
               <div className="flex flex-col">
                 <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 italic">
@@ -110,8 +114,10 @@ function InProgressRideScreen() {
 
       <div className="bg-white px-6 pb-[env(safe-area-inset-bottom)] pt-4 space-y-4 shadow-2xl rounded-t-[40px]">
         <div className="space-y-1 py-2 px-2">
-            <h2 className="text-sm font-black text-navy uppercase">Corrida em andamento</h2>
-            <p className="text-xs text-slate-500">O encerramento será confirmado pelo piloto nesta demonstração.</p>
+          <h2 className="text-sm font-black text-navy uppercase">Corrida em andamento</h2>
+          <p className="text-xs text-slate-500">
+            O encerramento será confirmado pelo piloto nesta demonstração.
+          </p>
         </div>
 
         {search.technical && (
@@ -125,9 +131,9 @@ function InProgressRideScreen() {
                 if (isFinishedRef.current) return;
                 isFinishedRef.current = true;
                 navigate({
-                    to: "/passageiro/corrida/$rideId/concluida",
-                    params: { rideId: COMPLETED_PASSENGER_DEMO_RIDE.id },
-                    search: (prev: any) => getQuoteParams({ ...prev, technical: true })
+                  to: "/passageiro/corrida/$rideId/concluida",
+                  params: { rideId: COMPLETED_PASSENGER_DEMO_RIDE.id },
+                  search: (prev: any) => getQuoteParams({ ...prev, technical: true }),
                 });
               }}
               className="w-full bg-navy text-white h-11 border border-white/10"
@@ -137,6 +143,6 @@ function InProgressRideScreen() {
           </div>
         )}
       </div>
-    </div>
+    </main>
   );
 }

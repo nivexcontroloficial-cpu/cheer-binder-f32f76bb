@@ -56,15 +56,9 @@ function ActiveRideScreen() {
   const timerArrivalRef = useRef<ReturnType<typeof setTimeout>>(undefined);
   const autoPinConfirmRef = useRef<ReturnType<typeof setTimeout>>(undefined);
 
-  const { finalFare } = useMemo(
-    () => calculateRideFare(search.promoCode),
-    [search.promoCode]
-  );
+  const { finalFare } = useMemo(() => calculateRideFare(search.promoCode), [search.promoCode]);
 
-  const paymentLabel = useMemo(
-    () => getPaymentLabel(search.paymentMethod),
-    [search.paymentMethod]
-  );
+  const paymentLabel = useMemo(() => getPaymentLabel(search.paymentMethod), [search.paymentMethod]);
 
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat("pt-BR", {
@@ -140,7 +134,7 @@ function ActiveRideScreen() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-porcelain font-sans text-navy overflow-hidden relative">
+    <main className="flex min-h-screen flex-col bg-porcelain font-sans text-navy overflow-hidden relative">
       <header className="bg-white px-6 py-5 border-b border-slate-100 flex items-center justify-between sticky top-0 z-50">
         <div className="flex flex-col">
           <h1 className="text-[11px] font-black uppercase tracking-widest italic text-rovya-blue">
@@ -160,11 +154,11 @@ function ActiveRideScreen() {
       </div>
 
       <div className="flex-1 relative bg-slate-100 overflow-hidden">
-        <div 
+        <div
           className="absolute inset-0 opacity-10"
           style={{
             backgroundImage: "radial-gradient(#111827 1px, transparent 1px)",
-            backgroundSize: "24px 24px"
+            backgroundSize: "24px 24px",
           }}
         />
         <svg className="absolute inset-0 w-full h-full" aria-hidden="true">
@@ -187,7 +181,8 @@ function ActiveRideScreen() {
               </h2>
               <p className="text-[10px] text-slate-600">
                 Informe o PIN{" "}
-                <span className="font-bold text-navy">{ACTIVE_PASSENGER_DEMO_RIDE.pin}</span> ao piloto.
+                <span className="font-bold text-navy">{ACTIVE_PASSENGER_DEMO_RIDE.pin}</span> ao
+                piloto.
               </p>
               <p className="text-[10px] font-bold text-navy">
                 Confirme: {pilot.name}, {pilot.vehicle.model} {pilot.vehicle.plate}
@@ -285,7 +280,11 @@ function ActiveRideScreen() {
             Ferramentas técnicas
           </h2>
           <div className="grid grid-cols-2 gap-3">
-            <Button onClick={() => handlePilotArrival()} variant="outline" className="h-11 bg-white/5 border-white/10 text-white hover:bg-white/10">
+            <Button
+              onClick={() => handlePilotArrival()}
+              variant="outline"
+              className="h-11 bg-white/5 border-white/10 text-white hover:bg-white/10"
+            >
               Simular Chegada
             </Button>
             <Button
@@ -305,6 +304,6 @@ function ActiveRideScreen() {
           </div>
         </div>
       )}
-    </div>
+    </main>
   );
 }
