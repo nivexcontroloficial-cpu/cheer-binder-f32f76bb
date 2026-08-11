@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate, useParams, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, useParams, Link, useSearch } from "@tanstack/react-router";
 import { useState, useMemo } from "react";
 import { COMPLETED_PASSENGER_DEMO_RIDE } from "@/data/passenger-demo-rides";
 import {
