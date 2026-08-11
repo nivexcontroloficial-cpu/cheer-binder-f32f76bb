@@ -92,7 +92,6 @@ export const MOCK_PROTOCOLS: SupportProtocol[] = [
   },
 ];
 
-
 export const getStatusLabel = (status: ProtocolStatus) => {
   const labels: Record<ProtocolStatus, string> = {
     nova: "Nova",
