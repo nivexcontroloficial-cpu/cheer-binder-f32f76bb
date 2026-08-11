@@ -14,7 +14,10 @@ import {
   AlertCircle,
 } from "lucide-react";
 import { CATEGORIES } from "@/services/mock/support";
-import { ACTIVE_PASSENGER_DEMO_RIDE, COMPLETED_PASSENGER_DEMO_RIDE } from "@/data/passenger-demo-rides";
+import {
+  ACTIVE_PASSENGER_DEMO_RIDE,
+  COMPLETED_PASSENGER_DEMO_RIDE,
+} from "@/data/passenger-demo-rides";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
@@ -32,7 +35,8 @@ function DenunciarScreen() {
   const [touched, setTouched] = useState(false);
   const [validationError, setValidationError] = useState<string | null>(null);
 
-  const isValidRide = rideId === ACTIVE_PASSENGER_DEMO_RIDE.id || rideId === COMPLETED_PASSENGER_DEMO_RIDE.id;
+  const isValidRide =
+    rideId === ACTIVE_PASSENGER_DEMO_RIDE.id || rideId === COMPLETED_PASSENGER_DEMO_RIDE.id;
 
   const validateDescription = (value: string) => {
     const trimmed = value.trim();

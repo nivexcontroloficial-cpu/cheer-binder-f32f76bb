@@ -234,9 +234,10 @@ function SearchingRideScreen() {
                       Piloto a caminho
                     </span>
                     <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">
-                    {ACTIVE_PASSENGER_DEMO_RIDE.vehicle.model} • {ACTIVE_PASSENGER_DEMO_RIDE.driver.name}
-                  </span>
-                </div>
+                      {ACTIVE_PASSENGER_DEMO_RIDE.vehicle.model} •{" "}
+                      {ACTIVE_PASSENGER_DEMO_RIDE.driver.name}
+                    </span>
+                  </div>
                 </div>
               </div>
             )}
@@ -284,7 +285,8 @@ function SearchingRideScreen() {
                   {status === "few_drivers" && "Aguardando disponibilidade na região"}
                   {status === "no_drivers" && "Tente novamente em alguns instantes"}
                   {status === "error" && "Não foi possível completar a busca simulada"}
-                  {status === "accepted" && `${ACTIVE_PASSENGER_DEMO_RIDE.driver.name} aceitou esta corrida simulada.`}
+                  {status === "accepted" &&
+                    `${ACTIVE_PASSENGER_DEMO_RIDE.driver.name} aceitou esta corrida simulada.`}
                 </p>
               </div>
             </div>
@@ -309,7 +311,9 @@ function SearchingRideScreen() {
             </div>
             <div className="text-right">
               <span className="block text-lg font-black italic text-navy tracking-tighter">
-                {new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(ACTIVE_PASSENGER_DEMO_RIDE.fare)}
+                {new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(
+                  ACTIVE_PASSENGER_DEMO_RIDE.fare,
+                )}
               </span>
               <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">
                 {ACTIVE_PASSENGER_DEMO_RIDE.paymentMethod}

@@ -180,10 +180,13 @@ function ActiveRideScreen() {
     setDistanceMeters(0);
     setWaitTime(300);
     setIsWaitTimerActive(true);
-    toast.success(`O piloto ${ACTIVE_PASSENGER_DEMO_RIDE.driver.name} chegou ao local de embarque!`, {
-      duration: 5000,
-      icon: <CheckCircle2 className="text-emerald-500" />,
-    });
+    toast.success(
+      `O piloto ${ACTIVE_PASSENGER_DEMO_RIDE.driver.name} chegou ao local de embarque!`,
+      {
+        duration: 5000,
+        icon: <CheckCircle2 className="text-emerald-500" />,
+      },
+    );
   };
 
   const handleSimulate500m = () => {
@@ -286,7 +289,9 @@ function ActiveRideScreen() {
   }
 
   const rideSummary = {
-    price: new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(ACTIVE_PASSENGER_DEMO_RIDE.fare),
+    price: new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(
+      ACTIVE_PASSENGER_DEMO_RIDE.fare,
+    ),
     method: ACTIVE_PASSENGER_DEMO_RIDE.paymentMethod,
     details: "Pagamento presencial demonstrativo",
   };

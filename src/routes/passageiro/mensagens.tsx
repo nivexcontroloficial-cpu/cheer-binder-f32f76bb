@@ -1,7 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { MessageSquare } from "lucide-react";
 import { useState } from "react";
-import { ACTIVE_PASSENGER_DEMO_RIDE, COMPLETED_PASSENGER_DEMO_RIDE } from "@/data/passenger-demo-rides";
+import {
+  ACTIVE_PASSENGER_DEMO_RIDE,
+  COMPLETED_PASSENGER_DEMO_RIDE,
+} from "@/data/passenger-demo-rides";
 
 export const Route = createFileRoute("/passageiro/mensagens")({
   component: MensagensScreen,
