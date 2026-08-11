@@ -333,16 +333,19 @@ function VerificationScreen() {
                 </button>
               )}
               <input
+                id="photo-input"
                 type="file"
                 ref={fileInputRef}
                 className="hidden"
                 accept="image/*"
+                capture="user"
                 onChange={handlePhotoUpload}
               />
             </div>
 
             {errors.photo && (
               <p
+                id="photo-error"
                 role="alert"
                 className="text-[10px] text-red-500 font-bold uppercase tracking-wider"
               >
