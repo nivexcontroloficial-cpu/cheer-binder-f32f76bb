@@ -67,7 +67,7 @@ function WelcomeScreen() {
     }
   };
 
-  const currentStep = ONBOARDING_STEPS[step] || { title: "", description: "", image: "" };
+  const currentStep = ONBOARDING_STEPS[step] || { title: "", description: "", image: "", alt: "" };
 
   return (
     <div className="flex min-h-screen flex-col bg-white font-sans text-navy selection:bg-rovya-orange/20 animate-in fade-in slide-in-from-bottom-4 duration-700">
