@@ -92,7 +92,7 @@ function ConfirmRideScreen() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-porcelain font-sans text-navy">
+    <div className="flex min-h-screen flex-col bg-porcelain font-sans text-navy selection:bg-rovya-orange/20 overflow-x-hidden">
       {/* Header Fixo */}
       <header className="bg-white px-6 py-5 border-b border-slate-100 flex items-center gap-4 sticky top-0 z-50">
         <button
@@ -291,7 +291,7 @@ function ConfirmRideScreen() {
           </section>
         </div>
 
-        <div className="mt-auto bg-white border-t border-slate-100 p-8 rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] space-y-6">
+        <div className="mt-auto bg-white border-t border-slate-100 p-8 rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] space-y-6 pb-[calc(2rem+env(safe-area-inset-bottom,1.5rem))]">
           <div className="flex items-end justify-between">
             <div className="space-y-1">
               <button

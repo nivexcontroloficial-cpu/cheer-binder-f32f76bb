@@ -70,7 +70,7 @@ const MOCK_SUGGESTIONS: Suggestion[] = [
 
 function DestinationScreen() {
   const search = Route.useSearch();
-  const [origin, setOrigin] = useState(search.origin || "Minha localização atual — simulação");
+  const [origin, setOrigin] = useState(search.origin || "Localização atual simulada");
   const [destination, setDestination] = useState(search.destination || "");
   const [suggestions, setSuggestions] = useState<Suggestion[]>(MOCK_SUGGESTIONS);
   const [isSearching, setIsSearching] = useState(false);
@@ -138,7 +138,7 @@ function DestinationScreen() {
   };
 
   const handleReverse = () => {
-    if (!destination.trim() || origin === "Minha localização atual — simulação") return;
+    if (!destination.trim() || origin === "Localização atual simulada") return;
     const oldOrigin = origin;
     const oldDest = destination;
     setOrigin(oldDest);
@@ -202,7 +202,7 @@ function DestinationScreen() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-porcelain font-sans text-navy selection:bg-rovya-orange/20">
+    <div className="flex min-h-[100dvh] flex-col bg-porcelain font-sans text-navy selection:bg-rovya-orange/20 overflow-x-hidden">
       {/* Banner de Transparência */}
       <div className="bg-amber-50 border-b border-amber-100 px-6 py-2 flex items-center gap-3">
         <Info size={14} className="text-amber-500 shrink-0" aria-hidden="true" />
@@ -226,7 +226,7 @@ function DestinationScreen() {
         </h1>
       </header>
 
-      <main className="flex-1 p-6 space-y-6">
+      <main className="flex-1 overflow-y-auto p-6 space-y-6 pb-[calc(1.5rem+env(safe-area-inset-bottom,1rem))]">
         {/* Container de Busca */}
         <div className="bg-white rounded-[32px] p-6 border border-slate-100 shadow-sm space-y-4 animate-in fade-in slide-in-from-top-4 duration-500">
           {/* Campo Origem */}
@@ -303,7 +303,7 @@ function DestinationScreen() {
               <button
                 type="button"
                 onClick={handleReverse}
-                disabled={!destination.trim() || origin === "Minha localização atual — simulação"}
+                disabled={!destination.trim() || origin === "Localização atual simulada"}
                 aria-label="Inverter origem e destino"
                 className="absolute right-4 top-1/2 -translate-y-1/2 h-11 w-11 bg-slate-50 rounded-lg flex items-center justify-center text-slate-300 hover:text-navy hover:bg-slate-100 transition-all disabled:opacity-40 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-rovya-blue"
               >

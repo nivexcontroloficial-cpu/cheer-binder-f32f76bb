@@ -30,7 +30,7 @@ function MockMapScreen() {
   const [reference, setReference] = useState(search.reference || "");
 
   const normalizedOrigin =
-    search.origin === "Minha localização atual — simulação"
+    search.origin === "Localização atual simulada"
       ? "Centro, Jacarezinho"
       : search.origin || "Centro, Jacarezinho";
 
@@ -124,7 +124,7 @@ function MockMapScreen() {
         </div>
       </div>
 
-      <div className="bg-white p-8 rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] space-y-6">
+      <div className="bg-white p-8 rounded-t-[40px] shadow-[0_-10px_30px_rgba(0,0,0,0.05)] space-y-6 pb-[calc(2rem+env(safe-area-inset-bottom,1.5rem))]">
         <div className="space-y-4">
           <div className="flex items-start gap-4">
             <div
@@ -138,7 +138,7 @@ function MockMapScreen() {
                 Ponto de Embarque
               </h3>
               <p className="text-[11px] font-medium text-slate-500 mt-0.5 italic break-words">
-                {search.origin === "Minha localização atual — simulação"
+                {search.origin === "Localização atual simulada"
                   ? "Centro, Jacarezinho — ponto simulado"
                   : search.origin || "Centro, Jacarezinho"}
               </p>
