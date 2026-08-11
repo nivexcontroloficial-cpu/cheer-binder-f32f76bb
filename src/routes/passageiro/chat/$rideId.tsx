@@ -217,7 +217,7 @@ function ChatScreen() {
         }, 1000);
       }, 800);
     },
-    [inputText, hasFakeAttachment, isBlocked, simulateFailure, addTimer, isValidRide],
+    [inputText, isBlocked, simulateFailure, addTimer, isValidRide],
   );
 
   const resendMessage = (id: string) => {
