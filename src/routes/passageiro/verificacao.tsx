@@ -405,24 +405,13 @@ function VerificationScreen() {
               <button
                 type="button"
                 onClick={handleNextStep}
-                disabled={isLoading}
                 aria-label={
-                  isLoading
-                    ? "Processando localmente"
-                    : step === 1
-                      ? "Prosseguir para a foto"
-                      : "Finalizar verificação simulada"
+                  step === 1 ? "Prosseguir para a foto" : "Finalizar verificação simulada"
                 }
-                className="w-full bg-navy text-white h-14 rounded-2xl font-black uppercase tracking-widest text-[11px] flex items-center justify-center gap-2 hover:bg-navy/90 transition-all active:scale-95 disabled:opacity-50 rovya-shadow"
+                className="w-full bg-navy text-white h-14 rounded-2xl font-black uppercase tracking-widest text-[11px] flex items-center justify-center gap-2 hover:bg-navy/90 transition-all active:scale-95 rovya-shadow"
               >
-                {isLoading ? (
-                  <Loader2 size={18} className="animate-spin" />
-                ) : step === 1 ? (
-                  "Prosseguir"
-                ) : (
-                  "Finalizar Verificação"
-                )}
-                {!isLoading && <ArrowRight size={18} strokeWidth={2.5} aria-hidden="true" />}
+                {step === 1 ? "Prosseguir" : "Finalizar Verificação"}
+                <ArrowRight size={18} strokeWidth={2.5} aria-hidden="true" />
               </button>
 
               <div className="flex justify-center">
