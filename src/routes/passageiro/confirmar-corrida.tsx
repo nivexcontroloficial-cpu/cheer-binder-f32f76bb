@@ -1,6 +1,13 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { ACTIVE_PASSENGER_DEMO_RIDE } from "@/data/passenger-demo-rides";
+import {
+  calculateRideFare,
+  rideQuoteSearchSchema,
+  PROMO_CONFIG,
+  RideQuoteSearch,
+  getQuoteParams,
+} from "@/lib/passenger-demo-ride-quote";
 import {
   ArrowLeft,
   MapPin,
@@ -22,14 +29,14 @@ import { z } from "zod";
 
 const optionalSearchString = (maxLength: number) =>
   z
-    .preprocess((value) => {
+    .preprocess((value: unknown) => {
       if (typeof value !== "string") return undefined;
       const trimmed = value.trim();
       return trimmed ? trimmed : undefined;
     }, z.string().max(maxLength).optional())
     .catch(undefined);
 
-const searchSchema = z.object({
+const searchSchema = rideQuoteSearchSchema.extend({
   origin: optionalSearchString(80),
   destination: optionalSearchString(80),
   destinationRegion: optionalSearchString(80),
@@ -46,9 +53,12 @@ type PaymentMethod = "cash" | "pix" | "card";
 function ConfirmRideScreen() {
   const navigate = useNavigate();
   const search = Route.useSearch();
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("cash");
-  const [promoCode, setPromoCode] = useState("");
-  const [isPromoApplied, setIsPromoApplied] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>(search.paymentMethod || "cash");
+  const [promoCode, setPromoCode] = useState(search.promoCode || "");
+  const [isPromoApplied, setIsPromoApplied] = useState(
+    search.promoCode?.trim().toUpperCase() === PROMO_CONFIG.CODE,
+  );
+
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
 
   const formatCurrency = (value: number) => {
@@ -61,27 +71,33 @@ function ConfirmRideScreen() {
   // Dados Mock Obrigatórios
   const distance = ACTIVE_PASSENGER_DEMO_RIDE.distance;
   const duration = ACTIVE_PASSENGER_DEMO_RIDE.duration;
-  const baseFare = 4.0;
+
+  // Cálculos para o detalhamento da tarifa (mantendo a lógica original para exibição)
+  const baseFareValue = 4.0;
   const pricePerKm = 1.0;
   const pricePerMin = 0.4;
   const nightSurcharge = 0.0;
   const demandMultiplier = 1.0;
   const minFare = 10.0;
 
-  const subtotal = useMemo(() => {
+  const subtotalValue = useMemo(() => {
     const travelCost = distance * pricePerKm + duration * pricePerMin;
-    const total = (baseFare + travelCost + nightSurcharge) * demandMultiplier;
+    const total = (baseFareValue + travelCost + nightSurcharge) * demandMultiplier;
     return total;
   }, [distance, duration, nightSurcharge, demandMultiplier]);
 
-  const discount = isPromoApplied ? 5.0 : 0;
-  const finalPrice = Math.max(minFare, subtotal - discount);
+  const { finalFare, discount, isApplied } = useMemo(
+    () => calculateRideFare(isPromoApplied ? PROMO_CONFIG.CODE : undefined),
+    [isPromoApplied],
+  );
 
   const handleApplyPromo = () => {
     const cleaned = promoCode.trim().toUpperCase();
-    if (cleaned === "ROVYA5") {
+    if (cleaned === PROMO_CONFIG.CODE) {
       setIsPromoApplied(true);
-      toast.success("Cupom ROVYA5 aplicado somente nesta demonstração. Desconto de R$ 5,00.");
+      toast.success(
+        `Cupom ${PROMO_CONFIG.CODE} aplicado somente nesta demonstração. Desconto de R$ ${PROMO_CONFIG.DISCOUNT.toFixed(2).replace(".", ",")}.`,
+      );
     } else {
       toast.error("Cupom demonstrativo inválido.");
     }
@@ -89,7 +105,17 @@ function ConfirmRideScreen() {
 
   const handleOrder = () => {
     toast.info("Pedido simulado. Nenhuma corrida real foi solicitada.");
-    navigate({ to: "/passageiro/buscando" });
+    navigate({
+      to: "/passageiro/buscando",
+      search: (prev: any) => ({
+        ...getQuoteParams({
+          ...prev,
+          promoCode: isPromoApplied ? PROMO_CONFIG.CODE : undefined,
+          paymentMethod,
+          technical: search.technical,
+        }),
+      }),
+    });
   };
 
   return (
@@ -310,7 +336,7 @@ function ConfirmRideScreen() {
                 )}
               </button>
               <div className="text-3xl font-black text-navy tracking-tighter italic">
-                {formatCurrency(finalPrice)}
+                {formatCurrency(finalFare)}
               </div>
             </div>
 
@@ -321,7 +347,7 @@ function ConfirmRideScreen() {
               </div>
               {isPromoApplied && (
                 <span className="text-[9px] font-bold text-rovya-orange uppercase tracking-widest">
-                  - {formatCurrency(5.0)} cupom
+                  - {formatCurrency(PROMO_CONFIG.DISCOUNT)} cupom
                 </span>
               )}
             </div>
@@ -333,22 +359,28 @@ function ConfirmRideScreen() {
               id="fare-details"
               className="bg-slate-50 rounded-2xl p-4 space-y-2 animate-in slide-in-from-bottom-2 duration-300"
             >
-              <DetailRow label="Tarifa Base" value={baseFare} />
+              <DetailRow label="Tarifa Base" value={baseFareValue} />
               <DetailRow label="Distância (6,8km)" value={distance * pricePerKm} />
               <DetailRow label="Tempo (18min)" value={duration * pricePerMin} />
               <DetailRow label="Adicional noturno" value={nightSurcharge} />
               <DetailRow
                 label="Alta demanda"
                 value={
-                  subtotal -
-                  (baseFare + distance * pricePerKm + duration * pricePerMin + nightSurcharge)
+                  subtotalValue -
+                  (baseFareValue + distance * pricePerKm + duration * pricePerMin + nightSurcharge)
                 }
               />
-              {isPromoApplied && <DetailRow label="Desconto ROVYA5" value={-5.0} highlight />}
+              {isPromoApplied && (
+                <DetailRow
+                  label={`Desconto ${PROMO_CONFIG.CODE}`}
+                  value={-PROMO_CONFIG.DISCOUNT}
+                  highlight
+                />
+              )}
               <div className="pt-2 border-t border-slate-200 mt-2 flex justify-between">
                 <span className="text-[9px] font-black uppercase text-navy">Total</span>
                 <span className="text-[10px] font-black text-navy">
-                  {formatCurrency(finalPrice)}
+                  {formatCurrency(finalFare)}
                 </span>
               </div>
               <p className="text-[8px] text-slate-400 italic text-center mt-2">

@@ -1,6 +1,10 @@
-import { createFileRoute, useNavigate, useParams, Link } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, useParams, Link, useSearch } from "@tanstack/react-router";
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { ACTIVE_PASSENGER_DEMO_RIDE } from "@/data/passenger-demo-rides";
+import {
+  rideQuoteSearchSchema,
+  getQuoteParams,
+} from "@/lib/passenger-demo-ride-quote";
 import {
   ArrowLeft,
   Send,
@@ -38,6 +42,7 @@ import {
 } from "@/components/ui/dialog";
 
 export const Route = createFileRoute("/passageiro/chat/$rideId")({
+  validateSearch: (search) => rideQuoteSearchSchema.parse(search),
   component: ChatScreen,
 });
 
@@ -86,6 +91,7 @@ function formatMessageTime(date: Date) {
 
 function ChatScreen() {
   const { rideId } = useParams({ from: "/passageiro/chat/$rideId" });
+  const search = useSearch({ from: "/passageiro/chat/$rideId" });
   const isValidRide = useMemo(() => rideId === ACTIVE_PASSENGER_DEMO_RIDE.id, [rideId]);
   const navigate = useNavigate();
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -329,7 +335,7 @@ function ChatScreen() {
               navigate({
                 to: "/passageiro/corrida/$rideId",
                 params: { rideId },
-                search: { technical: false },
+                search: (prev: any) => getQuoteParams(prev),
               })
             }
             className="h-11 w-11 bg-slate-50 rounded-xl flex items-center justify-center text-navy active:scale-95 transition-all focus:ring-2 focus:ring-navy focus:outline-none"

@@ -3,6 +3,10 @@ import { useState, useEffect, useRef } from "react";
 import { z } from "zod";
 import { ACTIVE_PASSENGER_DEMO_RIDE } from "@/data/passenger-demo-rides";
 import {
+  rideQuoteSearchSchema,
+  getQuoteParams,
+} from "@/lib/passenger-demo-ride-quote";
+import {
   X,
   MapPin,
   ShieldCheck,
@@ -27,12 +31,8 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 
-const searchingSearchSchema = z.object({
-  technical: z.boolean().optional().catch(false),
-});
-
 export const Route = createFileRoute("/passageiro/buscando")({
-  validateSearch: (search) => searchingSearchSchema.parse(search),
+  validateSearch: (search) => rideQuoteSearchSchema.parse(search),
   component: SearchingRideScreen,
 });
 
@@ -135,7 +135,10 @@ function SearchingRideScreen() {
         navigate({
           to: "/passageiro/corrida/$rideId",
           params: { rideId: ACTIVE_PASSENGER_DEMO_RIDE.id },
-          search: { technical: false },
+          search: (prev: any) => getQuoteParams({
+            ...prev,
+            technical: false
+          }),
         });
       }, 3000);
     }
