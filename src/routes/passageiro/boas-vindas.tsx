@@ -10,18 +10,24 @@ export const Route = createFileRoute("/passageiro/boas-vindas")({
 const ONBOARDING_STEPS = [
   {
     title: "Vá a qualquer lugar com segurança",
-    description: "Pilotos verificados e monitoramento 24h para sua tranquilidade em cada trajeto.",
-    image: "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&q=80&w=800",
+    description:
+      "Simulação de pilotos verificados e monitoramento demonstrativo para sua tranquilidade em cada trajeto.",
+    image:
+      "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&q=80&w=800",
   },
   {
     title: "Economia e transparência",
-    description: "Preços justos e pagamento direto ao piloto, sem taxas ocultas ou surpresas.",
-    image: "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=80&w=800",
+    description:
+      "Preços justos e simulação de pagamento direto ao piloto, sem taxas ocultas ou surpresas.",
+    image:
+      "https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=80&w=800",
   },
   {
     title: "Mobilidade na palma da sua mão",
-    description: "Chame um piloto em segundos e acompanhe tudo em tempo real pelo aplicativo.",
-    image: "https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&q=80&w=800",
+    description:
+      "Simulação de chamada em segundos e acompanhamento fictício em tempo real pelo aplicativo.",
+    image:
+      "https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&q=80&w=800",
   },
 ];
 
@@ -87,28 +93,46 @@ function WelcomeScreen() {
           <h1 className="text-3xl font-black tracking-tighter uppercase italic leading-tight mb-4 max-w-xs transition-all duration-500">
             {currentStep.title}
           </h1>
-          <p className="text-slate-500 text-sm leading-relaxed mb-12 max-w-xs transition-all duration-500">
+          <p className="text-slate-500 text-sm leading-relaxed mb-6 max-w-xs transition-all duration-500">
             {currentStep.description}
+          </p>
+          <p className="text-[10px] font-bold text-rovya-orange uppercase tracking-widest mb-12 animate-pulse">
+            Demonstração local: os recursos apresentados neste onboarding utilizam
+            dados fictícios.
           </p>
         </div>
       </div>
 
       {/* Footer Actions */}
       <div className="p-8 pb-12 bg-white flex flex-col gap-4">
-        <button 
+        <button
+          type="button"
           onClick={handleNext}
           className="w-full bg-navy text-white h-14 rounded-2xl font-black uppercase tracking-widest text-[11px] flex items-center justify-center gap-2 hover:bg-navy/90 transition-all active:scale-95 rovya-shadow"
         >
-          {step === ONBOARDING_STEPS.length - 1 ? "Começar Agora" : "Próximo"}
-          <ChevronRight size={16} strokeWidth={2.5} />
+          {step === ONBOARDING_STEPS.length - 1
+            ? "Entrar na demonstração"
+            : "Próximo"}
+          <ChevronRight size={16} strokeWidth={2.5} aria-hidden="true" />
         </button>
-        
-        <button 
-          onClick={() => navigate({ to: "/passageiro/entrar" })}
-          className="w-full h-14 rounded-2xl font-black uppercase tracking-widest text-[11px] text-slate-400 hover:bg-slate-50 transition-all"
-        >
-          Pular Introdução
-        </button>
+
+        {step === ONBOARDING_STEPS.length - 1 ? (
+          <button
+            type="button"
+            onClick={() => navigate({ to: "/passageiro/cadastro" })}
+            className="w-full h-14 rounded-2xl font-black uppercase tracking-widest text-[11px] text-rovya-orange hover:bg-rovya-orange/5 transition-all border-2 border-dashed border-rovya-orange/20"
+          >
+            Criar conta simulada
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={() => navigate({ to: "/passageiro/entrar" })}
+            className="w-full h-14 rounded-2xl font-black uppercase tracking-widest text-[11px] text-slate-400 hover:bg-slate-50 transition-all"
+          >
+            Pular Introdução
+          </button>
+        )}
       </div>
     </div>
   );
