@@ -406,7 +406,12 @@ function ChatScreen() {
               <div className="flex flex-col gap-2 py-2">
                 <button
                   type="button"
-                  onClick={() => navigate({ to: "/passageiro/seguranca", search: { ...getQuoteParams(search), rideId, technical: false } })}
+                  onClick={() =>
+                    navigate({
+                      to: "/passageiro/seguranca",
+                      search: { ...getQuoteParams(search), rideId, technical: false },
+                    })
+                  }
                   className="flex items-center gap-3 w-full p-4 rounded-2xl bg-slate-50 text-navy hover:bg-slate-100 transition-colors text-left focus:ring-2 focus:ring-navy focus:outline-none"
                 >
                   <Shield size={18} className="text-blue-500" aria-hidden="true" />
