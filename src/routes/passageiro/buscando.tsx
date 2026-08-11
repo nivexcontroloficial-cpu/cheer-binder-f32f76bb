@@ -135,7 +135,7 @@ function SearchingRideScreen() {
         navigate({
           to: "/passageiro/corrida/$rideId",
           params: { rideId: ACTIVE_PASSENGER_DEMO_RIDE.id },
-          search: (prev) => getQuoteParams({
+          search: (prev: any) => getQuoteParams({
             ...prev,
             technical: false
           }),
