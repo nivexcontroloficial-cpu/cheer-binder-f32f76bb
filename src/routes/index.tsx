@@ -100,6 +100,7 @@ function DemoSelector() {
             <Link
               to="/passageiro/corrida/$rideId/concluida"
               params={{ rideId: "RY-2026-00842" }}
+              search={{ technical: false }}
               className="w-full py-2 bg-slate-800 text-white rounded-xl text-[9px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-slate-900 transition-all active:scale-95"
             >
               <CheckCircle2 size={10} strokeWidth={2.5} />

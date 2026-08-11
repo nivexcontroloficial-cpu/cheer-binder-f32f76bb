@@ -395,7 +395,7 @@ function ChatScreen() {
         <div className="flex items-center gap-4">
           <button
             type="button"
-            onClick={() => navigate({ to: "/passageiro/corrida/$rideId", params: { rideId } })}
+            onClick={() => navigate({ to: "/passageiro/corrida/$rideId", params: { rideId }, search: { technical: false } })}
             className="h-11 w-11 bg-slate-50 rounded-xl flex items-center justify-center text-navy active:scale-95 transition-all focus:ring-2 focus:ring-navy focus:outline-none"
             aria-label="Voltar para detalhes da corrida"
           >

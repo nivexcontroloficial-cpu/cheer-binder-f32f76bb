@@ -86,6 +86,7 @@ function ActiveRideScreen() {
       navigate({
         to: "/passageiro/corrida/$rideId/em-andamento",
         params: { rideId },
+        search: (prev) => prev,
       });
     }, 10000);
 

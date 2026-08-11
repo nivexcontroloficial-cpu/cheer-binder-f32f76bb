@@ -28,9 +28,15 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { z } from "zod";
+
+const searchSchema = z.object({
+  technical: z.boolean().catch(false).default(false),
+});
 
 export const Route = createFileRoute("/passageiro/corrida/$rideId/concluida")({
   component: RideCompletedScreen,
+  validateSearch: (search) => searchSchema.parse(search),
 });
 
 const CURRENCY = new Intl.NumberFormat("pt-BR", {
@@ -65,6 +71,7 @@ const RIDE_SUMMARY = {
 
 function RideCompletedScreen() {
   const { rideId } = useParams({ from: "/passageiro/corrida/$rideId/concluida" });
+  const { technical } = useSearch({ from: "/passageiro/corrida/$rideId/concluida" });
   const navigate = useNavigate();
   const { rides, addRideToHistory } = useDemo();
 

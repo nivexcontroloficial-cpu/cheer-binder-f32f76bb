@@ -39,6 +39,7 @@ function InProgressRideScreen() {
             navigate({
                 to: "/passageiro/corrida/$rideId/concluida",
                 params: { rideId: COMPLETED_PASSENGER_DEMO_RIDE.id },
+                search: (prev) => prev,
             });
             return 100;
         }

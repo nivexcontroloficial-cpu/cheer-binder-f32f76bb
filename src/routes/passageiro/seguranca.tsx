@@ -26,7 +26,7 @@ function SafetyScreen() {
   const [emergencyResult, setEmergencyResult] = useState<string | null>(null);
 
   const handleBack = () => {
-    if (rideId) navigate({ to: "/passageiro/corrida/$rideId/em-andamento", params: { rideId } });
+    if (rideId) navigate({ to: "/passageiro/corrida/$rideId/em-andamento", params: { rideId }, search: { technical: false } });
     else navigate({ to: "/passageiro/inicio" });
   };
 
