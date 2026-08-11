@@ -32,7 +32,7 @@ function PassengerHomeScreen() {
   ];
 
   const currentPaymentMethod =
-    paymentMethods.find((m) => m.id === paymentMethodId) || paymentMethods[0];
+    paymentMethods.find((m) => m.id === paymentMethodId)!;
 
   const handleRecentClick = () => {
     navigate({ to: "/passageiro/destino" });
