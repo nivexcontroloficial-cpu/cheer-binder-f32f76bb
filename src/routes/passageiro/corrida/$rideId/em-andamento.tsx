@@ -70,7 +70,7 @@ function InProgressRideScreen() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [isValidRide, navigate, rideId]);
+  }, [isValidRide, navigate, search]);
 
   if (!isValidRide) {
     return (
