@@ -23,16 +23,37 @@ function RecursoOcorrencia() {
   const [reason, setReason] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [touched, setTouched] = useState(false);
 
   const trimmedReason = reason.trim();
   const isValid = trimmedReason.length >= 10 && trimmedReason.length <= 500;
 
+  const validate = (value: string) => {
+    const trimmed = value.trim();
+    if (trimmed.length === 0) {
+      setError("Descreva um motivo para continuar.");
+    } else if (trimmed.length < 10) {
+      setError("O relato deve possuir pelo menos 10 caracteres úteis.");
+    } else {
+      setError(null);
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (trimmedReason.length < 10) {
-      setError("Por favor, descreva o motivo com pelo menos 10 caracteres úteis.");
+    setTouched(true);
+
+    // Defensive validation
+    const trimmed = reason.trim();
+    if (trimmed.length < 10) {
+      setError("O relato deve possuir pelo menos 10 caracteres úteis.");
       return;
     }
+    if (reason.length > 500) {
+      setError("O relato deve ter no máximo 500 caracteres.");
+      return;
+    }
+
     setError(null);
     setIsSubmitted(true);
     toast.success("Recurso registrado somente nesta demonstração.");
