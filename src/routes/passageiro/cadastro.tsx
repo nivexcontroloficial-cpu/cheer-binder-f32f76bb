@@ -337,11 +337,16 @@ function SignupScreen() {
                   <span>Finalizando simulação</span>
                 </>
               ) : step === 1 ? (
-                "Continuar"
+                <>
+                  <span>Continuar</span>
+                  <ArrowRight size={18} strokeWidth={2.5} aria-hidden="true" />
+                </>
               ) : (
-                "Finalizar Simulação"
+                <>
+                  <span>Finalizar Simulação</span>
+                  <ArrowRight size={18} strokeWidth={2.5} aria-hidden="true" />
+                </>
               )}
-              {!isLoading && <ArrowRight size={18} strokeWidth={2.5} aria-hidden="true" />}
             </button>
 
             {step === 2 && (
