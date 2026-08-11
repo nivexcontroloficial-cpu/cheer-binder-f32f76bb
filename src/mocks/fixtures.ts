@@ -44,22 +44,22 @@ export const MOCK_PASSENGERS: Passenger[] = [
 
 export const MOCK_VEHICLE: Vehicle = {
   id: "v1",
-  model: "Honda CG 160",
+  model: "CG 160",
   brand: "Honda",
   plate: "ABC1D23",
   color: "Vermelha",
-  year: 2023,
+  year: 2024,
   type: "moto"
 };
 
 export const MOCK_DRIVER: Driver = {
   id: "d1",
-  name: "Carlos Henrique",
+  name: "Carlos H.",
   email: "car***@email.com",
   phone: "(43) 991**-**88",
   status: "active",
-  rating: 4.8,
-  totalRides: 156,
+    rating: 4.96,
+    totalRides: 842,
   walletBalance: 245.50,
   activeVehicleId: "v1",
   isOnline: true,
@@ -101,14 +101,14 @@ export const ALL_RIDES: Ride[] = [
     id: "RY-2026-00842",
     passengerId: "p1",
     driverId: "d1",
-    origin: { address: "Avenida Getúlio Vargas, 890 - Centro", lat: -23.1614, lng: -49.9733 },
-    destination: { address: "Shopping Jacarezinho, Centro", lat: -23.17, lng: -49.98 },
+    origin: { address: "Centro, Jacarezinho", lat: -23.1614, lng: -49.9733 },
+    destination: { address: "Shopping Jacarezinho — Centro, Jacarezinho", lat: -23.17, lng: -49.98 },
     status: "completed",
     fare: 18.00,
-    distance: 4.2,
-    duration: 12,
-    requestedAt: "2026-08-08T14:30:00Z",
-    completedAt: "2026-08-08T14:45:00Z"
+    distance: 6.8,
+    duration: 18,
+    requestedAt: "2026-08-11T10:00:00Z",
+    completedAt: "2026-08-11T10:23:00Z"
   },
   {
     id: "RY-2026-00712",

@@ -59,14 +59,14 @@ const DEFAULT_MESSAGES: Message[] = [
     id: "1",
     text: "Olá Rafael, estou chegando ao local de embarque.",
     sender: "driver",
-    timestamp: new Date("2026-08-11T10:00:00Z"),
+    timestamp: new Date("2026-08-11T14:00:00Z"),
     status: "read",
   },
   {
     id: "2",
-    text: "Estou em uma Honda CG 160 Vermelha.",
+    text: `Estou em uma ${ACTIVE_PASSENGER_DEMO_RIDE.vehicle.model} ${ACTIVE_PASSENGER_DEMO_RIDE.vehicle.color}.`,
     sender: "driver",
-    timestamp: new Date("2026-08-11T10:01:00Z"),
+    timestamp: new Date("2026-08-11T14:01:00Z"),
     status: "read",
   },
 ];
