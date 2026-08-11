@@ -35,13 +35,14 @@ function SafetyScreen() {
       <button
         type="button"
         onClick={handleBack}
-        className="mb-6 flex items-center gap-2 text-sm font-black uppercase text-navy"
+        className="mb-6 flex items-center gap-2 text-sm font-black uppercase text-navy min-w-[44px] min-h-[44px] focus-visible:ring-2 focus-visible:ring-rovya-orange outline-none rounded-xl"
+        aria-label="Voltar para a tela anterior"
       >
         Voltar
       </button>
 
       <div className="bg-navy rounded-[32px] p-8 text-white shadow-2xl mb-8">
-        <h2 className="text-2xl font-black italic uppercase">Central de Segurança</h2>
+        <h1 className="text-2xl font-black italic uppercase">Central de Segurança</h1>
         <p className="text-xs text-slate-400 mt-2">
           Demonstração local — nenhum rastreamento real está ativo.
         </p>

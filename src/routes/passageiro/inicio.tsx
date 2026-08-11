@@ -39,7 +39,7 @@ function PassengerHomeScreen() {
 
   return (
     <div className="flex flex-col min-h-screen bg-[#F8FAFC] font-sans text-navy">
-      <h1 className="sr-only">Início do passageiro</h1>
+      <h1 className="sr-only">Rovya Passageiro - Início</h1>
 
       <div className="flex-1 space-y-6 pb-32 px-4 pt-4">
         {/* Localização Atual Contexto */}

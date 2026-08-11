@@ -37,15 +37,18 @@ function PassengerLayout() {
           <div className="flex items-center gap-3">
             <Link
               to="/passageiro/notificacoes"
-              className="p-2 relative text-slate-400 hover:text-navy transition-colors"
+              className="w-11 h-11 flex items-center justify-center relative text-slate-400 hover:text-navy transition-colors focus-visible:ring-2 focus-visible:ring-rovya-orange focus-visible:ring-offset-2 outline-none rounded-xl"
+              aria-label="Ver notificações simuladas"
             >
-              <Bell size={20} strokeWidth={STROKE} />
-              <span className="absolute top-2 right-2 w-2 h-2 bg-rovya-red rounded-full border-2 border-white"></span>
+              <Bell size={20} strokeWidth={STROKE} aria-hidden="true" />
+              <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-rovya-red rounded-full border-2 border-white"></span>
             </Link>
-            <Link to="/passageiro/perfil">
-              <div className="h-10 w-10 rounded-2xl bg-slate-100 flex items-center justify-center border border-slate-200 hover:bg-slate-200 transition-colors">
-                <User size={20} strokeWidth={STROKE} className="text-slate-400" />
-              </div>
+            <Link
+              to="/passageiro/perfil"
+              className="w-11 h-11 flex items-center justify-center rounded-2xl bg-slate-100 border border-slate-200 hover:bg-slate-200 transition-colors focus-visible:ring-2 focus-visible:ring-rovya-orange focus-visible:ring-offset-2 outline-none"
+              aria-label="Acessar meu perfil simulado"
+            >
+              <User size={20} strokeWidth={STROKE} className="text-slate-400" aria-hidden="true" />
             </Link>
           </div>
         </div>
@@ -111,19 +114,23 @@ function NavItem({
   return (
     <Link
       to={to}
-      className={`flex flex-col items-center gap-1 transition-all duration-300 ${active ? "text-rovya-orange" : "text-slate-300 hover:text-slate-500"}`}
+      activeProps={{ "aria-current": "page" }}
+      className={`flex flex-col items-center gap-1 transition-all duration-300 w-full min-w-[44px] min-h-[44px] justify-center focus-visible:ring-2 focus-visible:ring-rovya-orange focus-visible:ring-offset-2 outline-none rounded-xl ${active ? "text-rovya-orange font-bold" : "text-slate-300 hover:text-slate-500"}`}
+      aria-label={label}
     >
       <div
         className={`p-2 rounded-2xl transition-all duration-300 relative ${active ? "bg-rovya-orange/10" : "bg-transparent"}`}
       >
-        {icon}
+        <div aria-hidden="true">{icon}</div>
         {badge && (
           <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rovya-red text-[8px] font-black text-white ring-2 ring-white">
             {badge}
           </span>
         )}
       </div>
-      <span className={`text-[8px] font-black uppercase tracking-[0.1em]`}>{label}</span>
+      <span className="text-[8px] font-black uppercase tracking-[0.1em]" aria-hidden="true">
+        {label}
+      </span>
     </Link>
   );
 }

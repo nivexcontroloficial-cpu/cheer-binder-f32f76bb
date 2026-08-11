@@ -32,8 +32,8 @@ function MensagensScreen() {
   if (conversas.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[50vh] text-center p-6 text-slate-400">
-        <MessageSquare size={48} className="mb-4" />
-        <h2 className="text-sm font-black uppercase text-navy">Mensagens</h2>
+        <MessageSquare size={48} className="mb-4" aria-hidden="true" />
+        <h1 className="text-sm font-black uppercase text-navy">Mensagens</h1>
         <p className="text-[10px] font-bold uppercase mt-2">Nenhuma conversa ativa no momento.</p>
       </div>
     );
@@ -42,7 +42,7 @@ function MensagensScreen() {
   return (
     <div className="flex flex-col gap-2">
       <h1 className="text-xs font-black uppercase tracking-widest text-navy mb-4 px-2">
-        Conversas
+        Conversas Recentes
       </h1>
 
       {conversas.map((chat) => (

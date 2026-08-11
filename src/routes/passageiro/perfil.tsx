@@ -156,7 +156,10 @@ function ProfilePage() {
               <h1 className="text-2xl font-black tracking-tight text-navy uppercase italic">
                 {name}
               </h1>
-              <div className="flex items-center gap-1 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100">
+              <div
+                className="flex items-center gap-1 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-100"
+                aria-label="Perfil verificado somente para simulação"
+              >
                 <CheckCircle2 size={12} className="text-blue-500" aria-hidden="true" />
                 <span className="text-[9px] font-black text-blue-600 uppercase tracking-tighter">
                   Simulação
