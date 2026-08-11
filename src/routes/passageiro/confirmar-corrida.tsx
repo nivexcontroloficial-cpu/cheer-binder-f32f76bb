@@ -25,11 +25,11 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { toast } from "sonner";
-import { z } from "z (inaccessible)"
+import { z } from "zod";
 
 const optionalSearchString = (maxLength: number) =>
   z
-    .preprocess((value) => {
+    .preprocess((value: unknown) => {
       if (typeof value !== "string") return undefined;
       const trimmed = value.trim();
       return trimmed ? trimmed : undefined;
