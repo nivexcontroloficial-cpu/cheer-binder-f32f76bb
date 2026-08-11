@@ -398,7 +398,7 @@ function ChatScreen() {
             className="h-11 w-11 bg-slate-50 rounded-xl flex items-center justify-center text-navy active:scale-95 transition-all focus:ring-2 focus:ring-navy focus:outline-none"
             aria-label="Voltar para detalhes da corrida"
           >
-            <ArrowLeft size={20} strokeWidth={2.5} />
+            <ArrowLeft size={20} strokeWidth={2.5} aria-hidden="true" />
           </button>
           <div className="flex items-center gap-3">
             <div className="relative">
@@ -439,9 +439,9 @@ function ChatScreen() {
             type="button"
             onClick={() => setShowProtectedCall(true)}
             className="h-11 w-11 bg-slate-50 text-navy rounded-xl flex items-center justify-center hover:bg-slate-100 active:scale-95 transition-all focus:ring-2 focus:ring-navy focus:outline-none"
-            aria-label="Chamada protegida"
+            aria-label="Abrir simulação de chamada"
           >
-            <Phone size={18} strokeWidth={2.5} />
+            <Phone size={18} strokeWidth={2.5} aria-hidden="true" />
           </button>
 
           <AlertDialog open={showReportConfirm} onOpenChange={setShowReportConfirm}>
@@ -451,7 +451,7 @@ function ChatScreen() {
                 className="h-11 w-11 bg-slate-50 text-navy rounded-xl flex items-center justify-center hover:bg-slate-100 active:scale-95 transition-all focus:ring-2 focus:ring-navy focus:outline-none"
                 aria-label="Opções adicionais"
               >
-                <MoreVertical size={18} strokeWidth={2.5} />
+                <MoreVertical size={18} strokeWidth={2.5} aria-hidden="true" />
               </button>
             </AlertDialogTrigger>
             <AlertDialogContent className="rounded-3xl max-w-[90vw] w-[320px]">
@@ -704,7 +704,7 @@ function ChatScreen() {
                 <span className="text-[8px] text-red-500 font-black uppercase tracking-widest">
                   Falha no envio. Reenviar mensagem
                 </span>
-                <AlertCircle size={10} className="text-red-500" />
+                <AlertCircle size={10} className="text-red-500" aria-hidden="true" />
               </button>
             )}
           </div>
@@ -764,7 +764,7 @@ function ChatScreen() {
         {isBlocked && (
           <div className="mb-4 p-3 bg-red-50 border border-red-100 rounded-2xl flex items-center justify-between">
             <div className="flex items-center gap-2 text-red-600">
-              <Ban size={14} />
+              <Ban size={14} aria-hidden="true" />
               <span className="text-[10px] font-black uppercase tracking-widest">
                 Bloqueio somente nesta demonstração
               </span>
@@ -838,7 +838,7 @@ function ChatScreen() {
             className="h-20 w-20 bg-blue-50 rounded-full flex items-center justify-center text-blue-600"
             aria-hidden="true"
           >
-            <Phone size={40} strokeWidth={2} className="animate-pulse" />
+            <Phone size={40} strokeWidth={2} className="animate-pulse" aria-hidden="true" />
           </div>
 
           <div className="space-y-2">
