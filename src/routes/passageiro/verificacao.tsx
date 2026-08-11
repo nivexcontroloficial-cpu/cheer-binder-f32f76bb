@@ -317,7 +317,10 @@ function VerificationScreen() {
               ) : (
                 <button
                   type="button"
+                  id="photo-button"
                   onClick={() => fileInputRef.current?.click()}
+                  aria-invalid={!!errors.photo}
+                  aria-describedby={errors.photo ? "photo-error" : undefined}
                   aria-label="Tirar foto ou selecionar arquivo de imagem para demonstração local"
                   className={`w-full h-full rounded-[40px] bg-slate-50 border-2 border-dashed ${errors.photo ? "border-red-500" : "border-slate-200"} flex flex-col items-center justify-center gap-4 text-slate-400 hover:border-rovya-orange hover:bg-white transition-all group`}
                 >
@@ -325,7 +328,7 @@ function VerificationScreen() {
                     <Camera size={32} strokeWidth={1.5} aria-hidden="true" />
                   </div>
                   <span className="text-[10px] font-black uppercase tracking-widest">
-                    Tirar Foto
+                    Usar câmera ou escolher imagem
                   </span>
                 </button>
               )}
