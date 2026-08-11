@@ -205,14 +205,23 @@ function RecursoOcorrencia() {
               id="reason"
               value={reason}
               onChange={(e) => {
-                setReason(e.target.value);
-                if (error) setError(null);
+                const val = e.target.value;
+                if (val.length <= 500) {
+                  setReason(val);
+                  if (touched) validate(val);
+                }
+              }}
+              onBlur={() => {
+                setTouched(true);
+                validate(reason);
               }}
               placeholder="Descreva seu motivo aqui..."
               maxLength={500}
-              aria-invalid={error ? "true" : "false"}
+              aria-invalid={!!error}
               aria-describedby={error ? "reason-error reason-counter" : "reason-counter"}
-              className="w-full min-h-[150px] p-4 bg-white border border-slate-200 rounded-2xl text-sm focus:ring-2 focus:ring-rovya-orange outline-none transition-all resize-none"
+              className={`w-full min-h-[150px] p-4 bg-white border rounded-2xl text-sm focus:ring-2 focus:ring-rovya-orange outline-none transition-all resize-none ${
+                error && touched ? "border-red-500 bg-red-50/10" : "border-slate-200"
+              }`}
             />
             <div className="flex justify-between items-center px-1">
               <div id="reason-counter" className="text-[10px] font-bold text-slate-400 uppercase">
