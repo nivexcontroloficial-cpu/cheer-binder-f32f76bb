@@ -9,9 +9,7 @@ import {
   ArrowRight,
   Lightbulb,
   UserCheck,
-  X,
 } from "lucide-react";
-import { toast } from "sonner";
 
 export const Route = createFileRoute("/passageiro/verificacao")({
   component: VerificationScreen,
@@ -136,6 +134,7 @@ function VerificationScreen() {
 
       reader.onerror = () => {
         setErrors((prev) => ({ ...prev, photo: "Erro ao ler o arquivo localmente." }));
+        if (fileInputRef.current) fileInputRef.current.value = "";
         readerRef.current = null;
       };
 
