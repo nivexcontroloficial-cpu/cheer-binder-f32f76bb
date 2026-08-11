@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+MICROCORREÇÃO 20.3A.1 — CONTROLE DE DESTINO, SEMÂNTICA E ROUTETREE applied.
 import { RovyaBrand } from "@/components/RovyaBrand";
 import { User, ShieldCheck, PlayCircle, Bike, Palette, RotateCcw, ArrowRight, MessageSquare, Navigation as NavigationIcon, CheckCircle2, HeartPulse, Clock } from "lucide-react";
 import { useDemo } from "@/state/DemoContext";
