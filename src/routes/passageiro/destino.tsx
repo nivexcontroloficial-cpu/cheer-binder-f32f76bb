@@ -83,8 +83,7 @@ function DestinationScreen() {
       const searchTerm = destination.trim().toLowerCase();
       const filtered = MOCK_SUGGESTIONS.filter(
         (s) =>
-          s.name.toLowerCase().includes(searchTerm) ||
-          s.region.toLowerCase().includes(searchTerm),
+          s.name.toLowerCase().includes(searchTerm) || s.region.toLowerCase().includes(searchTerm),
       );
       setSuggestions(filtered);
       setIsSearching(false);
@@ -109,10 +108,7 @@ function DestinationScreen() {
       setOriginError("");
     }
 
-    if (
-      trimmedDest &&
-      trimmedOrigin.toLowerCase() === trimmedDest.toLowerCase()
-    ) {
+    if (trimmedDest && trimmedOrigin.toLowerCase() === trimmedDest.toLowerCase()) {
       setDestError("O destino não pode ser igual à origem.");
       valid = false;
     } else {
@@ -123,8 +119,7 @@ function DestinationScreen() {
   };
 
   const handleReverse = () => {
-    if (!destination.trim() || origin === "Minha localização atual — simulação")
-      return;
+    if (!destination.trim() || origin === "Minha localização atual — simulação") return;
     const oldOrigin = origin;
     const oldDest = destination;
     setOrigin(oldDest);
@@ -177,8 +172,8 @@ function DestinationScreen() {
       <div className="bg-amber-50 border-b border-amber-100 px-6 py-2 flex items-center gap-3">
         <Info size={14} className="text-amber-500 shrink-0" aria-hidden="true" />
         <p className="text-[9px] font-bold text-amber-700 leading-tight uppercase tracking-wider">
-          Demonstração local: a busca utiliza somente sugestões fictícias e não
-          consulta mapas, GPS ou endereços reais.
+          Demonstração local: a busca utiliza somente sugestões fictícias e não consulta mapas, GPS
+          ou endereços reais.
         </p>
       </div>
 
@@ -339,7 +334,10 @@ function DestinationScreen() {
                   <AlertCircle size={24} />
                 </div>
                 <div className="space-y-2">
-                  <p role="alert" className="text-[10px] font-black uppercase tracking-widest text-navy">
+                  <p
+                    role="alert"
+                    className="text-[10px] font-black uppercase tracking-widest text-navy"
+                  >
                     Falha simulada: as sugestões locais não puderam ser carregadas.
                   </p>
                   <button
@@ -461,9 +459,7 @@ function ShortcutButton({
       >
         {icon}
       </div>
-      <h4 className="text-[9px] font-black uppercase tracking-widest text-navy">
-        {label}
-      </h4>
+      <h4 className="text-[9px] font-black uppercase tracking-widest text-navy">{label}</h4>
     </button>
   );
 }
