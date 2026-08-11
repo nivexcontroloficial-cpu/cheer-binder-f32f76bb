@@ -34,7 +34,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { z } from "zod";
 
 export const Route = createFileRoute("/passageiro/corrida/$rideId/concluida")({
   validateSearch: (search) => rideQuoteSearchSchema.parse(search),
@@ -153,7 +152,7 @@ function RideCompletedScreen() {
           <div className="flex flex-col gap-3">
             <Link
               to="/passageiro/corridas"
-              search={(prev: any) => getQuoteParams(prev)}
+              search={getQuoteParams(search)}
               className="w-full h-11 flex items-center justify-center bg-navy text-white rounded-2xl font-black uppercase text-[9px] tracking-widest min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
             >
               Ver histórico simulado
@@ -368,7 +367,7 @@ function RideCompletedScreen() {
             </Link>
             <Link
               to="/passageiro/corridas"
-              search={(prev: any) => getQuoteParams(prev)}
+              search={getQuoteParams(search)}
               className="flex-1 bg-white text-navy py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] text-center border border-slate-100 shadow-sm"
             >
               Histórico

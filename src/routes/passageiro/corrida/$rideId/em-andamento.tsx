@@ -61,7 +61,7 @@ function InProgressRideScreen() {
           navigate({
             to: "/passageiro/corrida/$rideId/concluida",
             params: { rideId: COMPLETED_PASSENGER_DEMO_RIDE.id },
-            search: (prev: any) => getQuoteParams(prev),
+            search: getQuoteParams(search),
           });
           return 100;
         }
@@ -70,7 +70,7 @@ function InProgressRideScreen() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [isValidRide, navigate, rideId]);
+  }, [isValidRide, navigate, search]);
 
   if (!isValidRide) {
     return (
@@ -133,7 +133,7 @@ function InProgressRideScreen() {
                 navigate({
                   to: "/passageiro/corrida/$rideId/concluida",
                   params: { rideId: COMPLETED_PASSENGER_DEMO_RIDE.id },
-                  search: (prev: any) => getQuoteParams({ ...prev, technical: true }),
+                  search: getQuoteParams({ ...search, technical: true }),
                 });
               }}
               className="w-full bg-navy text-white h-11 border border-white/10"

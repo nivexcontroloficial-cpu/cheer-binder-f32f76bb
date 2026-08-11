@@ -8,7 +8,7 @@ import {
   Link,
 } from "@tanstack/react-router";
 import { ACTIVE_PASSENGER_DEMO_RIDE } from "@/data/passenger-demo-rides";
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import {
   calculateRideFare,
   getPaymentLabel,
@@ -32,7 +32,6 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { z } from "zod";
 
 export const Route = createFileRoute("/passageiro/corrida/$rideId")({
   component: ActiveRideScreen,
@@ -76,12 +75,12 @@ function ActiveRideScreen() {
     },
   };
 
-  const handlePilotArrival = () => {
+  const handlePilotArrival = useCallback(() => {
     setHasArrived(true);
     setProgress(100);
     setIsWaitTimerActive(true);
     toast.success(`O piloto ${pilot.name} chegou!`, { duration: 5000 });
-  };
+  }, [pilot.name]);
 
   useEffect(() => {
     if (!isValidRide || search.technical || hasArrived) return;
@@ -98,10 +97,10 @@ function ActiveRideScreen() {
       if (timer500mRef.current) clearTimeout(timer500mRef.current);
       if (timerArrivalRef.current) clearTimeout(timerArrivalRef.current);
     };
-  }, [isValidRide, search.technical, hasArrived]);
+  }, [isValidRide, search.technical, hasArrived, handlePilotArrival]);
 
-  useEffect(() => {
-    if (!isValidRide || search.technical || !hasArrived || pinConfirmed) return;
+  const handleAutoPinConfirm = useCallback(() => {
+    if (autoPinConfirmRef.current) return;
 
     autoPinConfirmRef.current = setTimeout(() => {
       setPinConfirmed(true);
@@ -109,14 +108,19 @@ function ActiveRideScreen() {
       navigate({
         to: "/passageiro/corrida/$rideId/em-andamento",
         params: { rideId },
-        search: (prev: any) => getQuoteParams(prev),
+        search: getQuoteParams(search),
       });
     }, 10000);
+  }, [rideId, search, navigate]);
+
+  useEffect(() => {
+    if (!isValidRide || search.technical || !hasArrived || pinConfirmed) return;
+    handleAutoPinConfirm();
 
     return () => {
       if (autoPinConfirmRef.current) clearTimeout(autoPinConfirmRef.current);
     };
-  }, [isValidRide, search.technical, hasArrived, pinConfirmed, rideId, navigate]);
+  }, [isValidRide, search.technical, hasArrived, pinConfirmed, handleAutoPinConfirm]);
 
   const isNestedRideRoute =
     location.pathname.endsWith("/em-andamento") || location.pathname.endsWith("/concluida");
@@ -246,7 +250,7 @@ function ActiveRideScreen() {
               <Link
                 to="/passageiro/chat/$rideId"
                 params={{ rideId }}
-                search={(prev: any) => getQuoteParams(prev)}
+                search={getQuoteParams(search)}
                 className="bg-slate-50 text-navy py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 hover:bg-slate-100 transition-colors border border-slate-100"
               >
                 <MessageSquare size={16} />
@@ -254,7 +258,7 @@ function ActiveRideScreen() {
               </Link>
               <Link
                 to="/passageiro/seguranca"
-                search={(prev: any) => getQuoteParams(prev)}
+                search={getQuoteParams(search)}
                 className="bg-rovya-blue/5 text-rovya-blue py-4 rounded-2xl font-black uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 hover:bg-rovya-blue/10 transition-colors border border-rovya-blue/10"
               >
                 <Shield size={16} />
@@ -265,7 +269,7 @@ function ActiveRideScreen() {
             <Link
               to="/passageiro/cancelar/$rideId"
               params={{ rideId }}
-              search={(prev: any) => getQuoteParams(prev)}
+              search={getQuoteParams(search)}
               className="w-full text-slate-300 py-2 font-black uppercase tracking-widest text-[9px] text-center hover:text-red-400 transition-colors"
             >
               Cancelar Corrida
@@ -293,7 +297,7 @@ function ActiveRideScreen() {
                 navigate({
                   to: "/passageiro/corrida/$rideId/em-andamento",
                   params: { rideId },
-                  search: (prev: any) => getQuoteParams({ ...prev, technical: true }),
+                  search: getQuoteParams({ ...search, technical: true }),
                 });
               }}
               variant="outline"
