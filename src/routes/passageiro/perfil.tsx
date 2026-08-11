@@ -32,7 +32,8 @@ function ProfilePage() {
   const initials = useMemo(() => {
     const trimmed = name.trim();
     const parts = trimmed.split(/\s+/).filter(Boolean);
-    const [first = "", second = ""] = parts;
+    const first = parts[0] || "";
+    const second = parts[1] || "";
 
     if (!first) return "P";
 
@@ -40,7 +41,10 @@ function ProfilePage() {
       return first.slice(0, 2).toUpperCase();
     }
 
-    return (first[0] + second[0]).toUpperCase();
+    const firstChar = first[0] || "";
+    const secondChar = second[0] || "";
+
+    return (firstChar + secondChar).toUpperCase();
   }, [name]);
 
   const handleLogout = () => {
