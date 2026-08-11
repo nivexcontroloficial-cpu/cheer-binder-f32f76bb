@@ -185,7 +185,9 @@ function MockMapScreen() {
           onClick={handleConfirm}
           className="w-full h-16 bg-navy text-white rounded-[24px] font-black uppercase tracking-widest text-[12px] flex items-center justify-center gap-2 hover:bg-navy/90 transition-all active:scale-95 rovya-shadow min-h-11 focus-visible:ring-2 focus-visible:ring-rovya-orange outline-none"
         >
-          {search.destination ? "Confirmar ponto de embarque" : "Confirmar ponto e escolher destino"}
+          {search.destination
+            ? "Confirmar ponto de embarque"
+            : "Confirmar ponto e escolher destino"}
           <Check size={20} strokeWidth={3} aria-hidden="true" />
         </button>
       </div>
