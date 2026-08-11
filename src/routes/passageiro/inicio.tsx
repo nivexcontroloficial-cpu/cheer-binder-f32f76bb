@@ -22,19 +22,16 @@ export const Route = createFileRoute("/passageiro/inicio")({
 });
 
 function PassengerHomeScreen() {
-  const [destination, setDestination] = useState("");
   const navigate = useNavigate();
-  const [paymentMethod, setPaymentMethod] = useState("Dinheiro");
+  const [paymentMethodId, setPaymentMethodId] = useState("cash");
 
-  const handleCalculate = () => {
-    if (destination.trim()) {
-      navigate({ to: "/passageiro/destino" });
-    }
-  };
+  const paymentMethods = [
+    { id: "cash", label: "Dinheiro" },
+    { id: "pix", label: "Pix direto ao piloto" },
+    { id: "card", label: "Cartão na máquina do piloto" },
+  ];
 
-  const openDestination = () => {
-    navigate({ to: "/passageiro/destino" });
-  };
+  const currentPaymentMethod = paymentMethods.find((m) => m.id === paymentMethodId)!;
 
   const handleRecentClick = () => {
     navigate({ to: "/passageiro/destino" });
@@ -44,7 +41,7 @@ function PassengerHomeScreen() {
     <div className="flex flex-col min-h-screen bg-[#F8FAFC] font-sans text-navy">
       <h1 className="sr-only">Início do passageiro</h1>
 
-      <main className="flex-1 space-y-6 pb-32 px-4 pt-4">
+      <div className="flex-1 space-y-6 pb-32 px-4 pt-4">
         {/* Localização Atual Contexto */}
         <div className="flex items-center gap-2">
           <MapPinned size={14} className="text-rovya-orange" aria-hidden="true" />
@@ -120,25 +117,21 @@ function PassengerHomeScreen() {
             </div>
 
             <div className="relative group">
-              <label htmlFor="destination-input" className="sr-only">
-                Para onde vamos?
-              </label>
               <div
-                className="absolute left-0 top-1/2 -translate-y-1/2 w-8 flex justify-center text-slate-300 group-focus-within:text-rovya-orange transition-colors"
+                className="absolute left-0 top-1/2 -translate-y-1/2 w-8 flex justify-center text-slate-300 group-hover:text-rovya-orange transition-colors"
                 aria-hidden="true"
               >
                 <Search size={18} strokeWidth={2.5} />
               </div>
-              <input
-                id="destination-input"
-                type="text"
-                value={destination}
-                onFocus={openDestination}
-                onChange={(e) => setDestination(e.target.value)}
-                placeholder="PARA ONDE VAMOS?"
-                className="w-full h-16 bg-white border-2 border-slate-100 rounded-2xl pl-10 pr-4 text-[11px] font-black uppercase tracking-[0.2em] text-navy focus:outline-none focus:border-rovya-orange focus-visible:ring-0 transition-all placeholder:text-slate-300 shadow-sm"
-                aria-label="Informar destino"
-              />
+              <button
+                id="destination-trigger"
+                type="button"
+                onClick={() => navigate({ to: "/passageiro/destino" })}
+                className="w-full min-h-[44px] h-16 bg-white border-2 border-slate-100 rounded-2xl pl-10 pr-4 text-[11px] font-black uppercase tracking-[0.2em] text-navy text-left flex items-center hover:border-rovya-orange focus:outline-none focus:border-rovya-orange focus-visible:ring-2 focus-visible:ring-rovya-orange transition-all shadow-sm"
+                aria-label="Escolher destino simulado"
+              >
+                PARA ONDE VAMOS?
+              </button>
             </div>
           </div>
 
@@ -148,7 +141,7 @@ function PassengerHomeScreen() {
                 <button
                   type="button"
                   className="min-h-11 flex items-center gap-2 px-4 py-2 bg-slate-50 rounded-xl border border-slate-100 text-navy hover:bg-white hover:border-rovya-orange transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rovya-orange"
-                  aria-label={`Mudar forma de pagamento. Atual: ${paymentMethod}`}
+                  aria-label={`Mudar forma de pagamento. Atual: ${currentPaymentMethod.label}`}
                 >
                   <CreditCard
                     size={14}
@@ -157,7 +150,7 @@ function PassengerHomeScreen() {
                     aria-hidden="true"
                   />
                   <span className="text-[9px] font-black uppercase tracking-widest">
-                    {paymentMethod}
+                    {currentPaymentMethod.label}
                   </span>
                 </button>
               </SheetTrigger>
@@ -168,21 +161,17 @@ function PassengerHomeScreen() {
                   </SheetTitle>
                 </SheetHeader>
                 <div className="grid grid-cols-1 gap-3 py-6">
-                  {[
-                    { id: "Dinheiro", label: "Dinheiro" },
-                    { id: "Pix Direto", label: "Pix direto ao piloto" },
-                    { id: "Cartão (Na Máquina)", label: "Cartão na máquina do piloto" },
-                  ].map((method) => (
+                  {paymentMethods.map((method) => (
                     <button
                       key={method.id}
                       type="button"
                       onClick={() => {
-                        setPaymentMethod(method.id);
+                        setPaymentMethodId(method.id);
                         toast.success(`Pagamento simulado definido como ${method.label}`);
                       }}
-                      aria-pressed={paymentMethod === method.id}
+                      aria-pressed={paymentMethodId === method.id}
                       className={`w-full min-h-11 p-5 rounded-2xl border flex items-center justify-between transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rovya-orange ${
-                        paymentMethod === method.id
+                        paymentMethodId === method.id
                           ? "bg-navy text-white border-navy"
                           : "bg-slate-50 text-navy border-slate-100"
                       }`}
@@ -209,17 +198,6 @@ function PassengerHomeScreen() {
               Agendar
             </button>
           </div>
-
-          {destination.trim() && (
-            <button
-              type="button"
-              onClick={handleCalculate}
-              className="w-full h-14 bg-navy text-white rounded-2xl font-black uppercase tracking-widest text-[11px] flex items-center justify-center gap-2 hover:bg-navy/90 transition-all animate-in zoom-in-95 rovya-shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-rovya-orange focus-visible:ring-offset-2"
-            >
-              Calcular Corrida
-              <ChevronRight size={18} strokeWidth={2.5} aria-hidden="true" />
-            </button>
-          )}
         </section>
 
         {/* Favoritos */}
@@ -279,7 +257,7 @@ function PassengerHomeScreen() {
             <div className="space-y-2">
               <div className="inline-flex items-center gap-1.5 px-2 py-1 bg-rovya-orange rounded-lg text-[8px] font-black uppercase tracking-widest">
                 <TicketPercent size={10} aria-hidden="true" />
-                Promo Ativa
+                Promo Simulada
               </div>
               <h4 className="text-sm font-black tracking-tight leading-tight uppercase italic">
                 Indique amigos e ganhe
@@ -292,7 +270,7 @@ function PassengerHomeScreen() {
             </div>
           </div>
         </button>
-      </main>
+      </div>
     </div>
   );
 }
