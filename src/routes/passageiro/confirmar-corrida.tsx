@@ -72,6 +72,20 @@ function ConfirmRideScreen() {
   const distance = ACTIVE_PASSENGER_DEMO_RIDE.distance;
   const duration = ACTIVE_PASSENGER_DEMO_RIDE.duration;
 
+  // Cálculos para o detalhamento da tarifa (mantendo a lógica original para exibição)
+  const baseFareValue = 4.0;
+  const pricePerKm = 1.0;
+  const pricePerMin = 0.4;
+  const nightSurcharge = 0.0;
+  const demandMultiplier = 1.0;
+  const minFare = 10.0;
+
+  const subtotalValue = useMemo(() => {
+    const travelCost = distance * pricePerKm + duration * pricePerMin;
+    const total = (baseFareValue + travelCost + nightSurcharge) * demandMultiplier;
+    return total;
+  }, [distance, duration, nightSurcharge, demandMultiplier]);
+
   const { finalFare, discount, isApplied } = useMemo(
     () => calculateRideFare(isPromoApplied ? PROMO_CONFIG.CODE : undefined),
     [isPromoApplied],
@@ -93,7 +107,7 @@ function ConfirmRideScreen() {
     toast.info("Pedido simulado. Nenhuma corrida real foi solicitada.");
     navigate({
       to: "/passageiro/buscando",
-      search: (prev) => ({
+      search: (prev: any) => ({
         ...getQuoteParams({
           ...prev,
           promoCode: isPromoApplied ? PROMO_CONFIG.CODE : undefined,
