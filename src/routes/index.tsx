@@ -66,9 +66,10 @@ function DemoSelector() {
 
             <Link
               to="/passageiro/buscando"
+              search={{ technical: true }}
               className="w-full py-2 bg-slate-100 text-slate-500 rounded-xl text-[9px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-slate-200 transition-all active:scale-95"
             >
-              Tela de Busca (Direto)
+              Tela de Busca (Direto Técnico)
             </Link>
             <Link
               to="/passageiro/corrida/$rideId/em-andamento"

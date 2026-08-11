@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import { z } from "zod";
 import { ACTIVE_PASSENGER_DEMO_RIDE } from "@/data/passenger-demo-rides";
 import {
   X,
@@ -26,7 +27,12 @@ import {
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 
+const searchingSearchSchema = z.object({
+  technical: z.boolean().optional().catch(false),
+});
+
 export const Route = createFileRoute("/passageiro/buscando")({
+  validateSearch: (search) => searchingSearchSchema.parse(search),
   component: SearchingRideScreen,
 });
 
@@ -34,24 +40,24 @@ type SearchStatus = "searching" | "expanding" | "few_drivers" | "no_drivers" | "
 
 function SearchingRideScreen() {
   const navigate = useNavigate();
+  const { technical } = Route.useSearch();
   const [status, setStatus] = useState<SearchStatus>("searching");
   const [elapsedTime, setElapsedTime] = useState(0);
   const [isCancelDialogOpen, setIsCancelDialogOpen] = useState(false);
   const [cancelReason, setCancelReason] = useState("");
+  const autoAcceptTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const elapsedTimerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Simulação de cronômetro e transições automáticas
+  // Cronômetro de tempo decorrido e transições automáticas da demo
   useEffect(() => {
-    let timer: NodeJS.Timeout;
-
-    // O cronômetro deve funcionar apenas durante searching, expanding e few_drivers
     const isActive = ["searching", "expanding", "few_drivers"].includes(status);
 
     if (isActive) {
-      timer = setInterval(() => {
+      elapsedTimerRef.current = setInterval(() => {
         setElapsedTime((prev) => {
           const next = prev + 1;
 
-          // Transições automáticas baseadas no tempo
+          // Transições automáticas baseadas no tempo para a experiência normal
           if (status === "searching" && next >= 10) {
             setStatus("expanding");
           } else if (status === "expanding" && next >= 25) {
@@ -66,7 +72,21 @@ function SearchingRideScreen() {
     }
 
     return () => {
-      if (timer) clearInterval(timer);
+      if (elapsedTimerRef.current) clearInterval(elapsedTimerRef.current);
+    };
+  }, [status]);
+
+  // Timer de aceite automático único (apenas se não houver interação técnica)
+  useEffect(() => {
+    if (status === "searching") {
+      autoAcceptTimerRef.current = setTimeout(() => {
+        setStatus("accepted");
+        toast.success(`${ACTIVE_PASSENGER_DEMO_RIDE.driver.name} aceitou esta corrida simulada.`);
+      }, 15000); // Aceite automático em 15s para a demo
+    }
+
+    return () => {
+      if (autoAcceptTimerRef.current) clearTimeout(autoAcceptTimerRef.current);
     };
   }, [status]);
 
@@ -95,6 +115,12 @@ function SearchingRideScreen() {
   };
 
   const triggerStatus = (newStatus: SearchStatus) => {
+    // Ação técnica manual anula o aceite automático
+    if (autoAcceptTimerRef.current) {
+      clearTimeout(autoAcceptTimerRef.current);
+      autoAcceptTimerRef.current = null;
+    }
+
     setStatus(newStatus);
     if (newStatus === "accepted") {
       toast.success(`${ACTIVE_PASSENGER_DEMO_RIDE.driver.name} aceitou esta corrida simulada.`);
@@ -120,34 +146,39 @@ function SearchingRideScreen() {
 
   return (
     <div className="flex min-h-screen flex-col bg-porcelain font-sans text-navy">
-      {/* Banner de Transparência */}
-      <div className="bg-rovya-blue/10 px-6 py-2 border-b border-rovya-blue/20">
-        <p className="text-[9px] font-bold text-rovya-blue uppercase tracking-tight text-center">
-          Demonstração local: busca, pilotos, tempo e aceite são simulados. Nenhuma solicitação real
-          foi enviada.
-        </p>
-      </div>
+      {/* Banner de Transparência dentro do fluxo, abaixo do cabeçalho corrigido no layout abaixo */}
+      <header className="bg-white px-6 pt-5 pb-2 border-b border-slate-100 sticky top-0 z-50">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex flex-col" role="status" aria-live="polite">
+            <h1 className="text-[11px] font-black uppercase tracking-widest italic text-rovya-blue">
+              Buscando Piloto
+            </h1>
+            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+              {formatTime(elapsedTime)} decorridos
+            </p>
+          </div>
+          {status !== "accepted" && (
+            <button
+              type="button"
+              onClick={() => setIsCancelDialogOpen(true)}
+              aria-label="Cancelar solicitação de corrida"
+              className="h-11 w-11 flex items-center justify-center rounded-xl bg-slate-50 text-slate-400 hover:bg-red-50 hover:text-red-500 transition-all focus:ring-2 focus:ring-red-500 outline-none"
+            >
+              <X size={20} aria-hidden="true" />
+            </button>
+          )}
+        </div>
 
-      {/* Header com resumo */}
-      <header className="bg-white px-6 py-5 border-b border-slate-100 flex items-center justify-between sticky top-0 z-50">
-        <div className="flex flex-col" role="status" aria-live="polite">
-          <h1 className="text-[11px] font-black uppercase tracking-widest italic text-rovya-blue">
-            Buscando Piloto
-          </h1>
-          <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-            {formatTime(elapsedTime)} decorridos
+        {/* Aviso Demonstrativo reposicionado */}
+        <div
+          className="bg-rovya-blue/10 px-4 py-2 rounded-xl mb-2"
+          role="status"
+          aria-live="polite"
+        >
+          <p className="text-[9px] font-bold text-rovya-blue uppercase tracking-tight text-center">
+            Pedido simulado. Nenhuma corrida real foi solicitada.
           </p>
         </div>
-        {status !== "accepted" && (
-          <button
-            type="button"
-            onClick={() => setIsCancelDialogOpen(true)}
-            aria-label="Cancelar solicitação de corrida"
-            className="h-10 w-10 flex items-center justify-center rounded-xl bg-slate-50 text-slate-400 hover:bg-red-50 hover:text-red-500 transition-all focus:ring-2 focus:ring-red-500 outline-none"
-          >
-            <X size={20} aria-hidden="true" />
-          </button>
-        )}
       </header>
 
       <main className="flex-1 flex flex-col p-6 space-y-6">
@@ -350,70 +381,75 @@ function SearchingRideScreen() {
           </p>
         </div>
 
-        {/* Controles da Demonstração */}
-        <div className="mt-auto pt-6 border-t border-slate-100 bg-slate-50/50 rounded-b-[40px] p-4 -mx-6 -mb-6">
-          <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest text-center mb-4 italic">
-            Controles locais da demonstração
-          </p>
-          <div className="grid grid-cols-2 gap-2">
-            <Button
-              type="button"
-              variant="outline"
-              className="rounded-xl text-[8px] font-black uppercase h-10 border-slate-200 focus:ring-2 focus:ring-rovya-blue"
-              onClick={() => triggerStatus("expanding")}
-              disabled={status === "accepted"}
-            >
-              Ampliar Busca
-            </Button>
-            <Button
-              type="button"
-              variant="outline"
-              className="rounded-xl text-[8px] font-black uppercase h-10 border-slate-200 focus:ring-2 focus:ring-rovya-blue"
-              onClick={() => triggerStatus("few_drivers")}
-              disabled={status === "accepted"}
-            >
-              Poucos Pilotos
-            </Button>
-            <Button
-              type="button"
-              variant="outline"
-              className="rounded-xl text-[8px] font-black uppercase h-10 border-slate-200 focus:ring-2 focus:ring-rovya-blue"
-              onClick={() => triggerStatus("no_drivers")}
-              disabled={status === "accepted"}
-            >
-              Nenhum Piloto
-            </Button>
-            <Button
-              type="button"
-              variant="outline"
-              className="rounded-xl text-[8px] font-black uppercase h-10 border-slate-200 focus:ring-2 focus:ring-rovya-blue"
-              onClick={() => triggerStatus("error")}
-              disabled={status === "accepted"}
-            >
-              Erro Simulado
-            </Button>
-            <Button
-              type="button"
-              variant="default"
-              className="bg-emerald-600 hover:bg-emerald-700 rounded-xl text-[8px] font-black uppercase h-10 col-span-2 focus:ring-2 focus:ring-emerald-500"
-              onClick={() => triggerStatus("accepted")}
-              disabled={status === "accepted"}
-            >
-              Aceite Simulado
-            </Button>
-            {(status === "no_drivers" || status === "error") && (
+        {/* Controles da Demonstração - Apenas no modo técnico */}
+        {technical && (
+          <div
+            className="mt-auto pt-6 border-t border-slate-100 bg-slate-50/50 rounded-b-[40px] p-4 -mx-6 -mb-6"
+            aria-label="Ferramentas técnicas da demonstração"
+          >
+            <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest text-center mb-4 italic">
+              Ferramentas técnicas da demonstração
+            </p>
+            <div className="grid grid-cols-2 gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                className="rounded-xl text-[8px] font-black uppercase h-11 border-slate-200 focus:ring-2 focus:ring-rovya-blue"
+                onClick={() => triggerStatus("expanding")}
+                disabled={status === "accepted"}
+              >
+                Ampliar Busca
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                className="rounded-xl text-[8px] font-black uppercase h-11 border-slate-200 focus:ring-2 focus:ring-rovya-blue"
+                onClick={() => triggerStatus("few_drivers")}
+                disabled={status === "accepted"}
+              >
+                Poucos Pilotos
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                className="rounded-xl text-[8px] font-black uppercase h-11 border-slate-200 focus:ring-2 focus:ring-rovya-blue"
+                onClick={() => triggerStatus("no_drivers")}
+                disabled={status === "accepted"}
+              >
+                Nenhum Piloto
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                className="rounded-xl text-[8px] font-black uppercase h-11 border-slate-200 focus:ring-2 focus:ring-rovya-blue"
+                onClick={() => triggerStatus("error")}
+                disabled={status === "accepted"}
+              >
+                Erro Simulado
+              </Button>
               <Button
                 type="button"
                 variant="default"
-                className="bg-navy rounded-xl text-[9px] font-black uppercase h-12 gap-2 col-span-2 mt-2 focus:ring-2 focus:ring-navy shadow-lg"
-                onClick={handleRetry}
+                className="bg-emerald-600 hover:bg-emerald-700 rounded-xl text-[8px] font-black uppercase h-11 col-span-2 focus:ring-2 focus:ring-emerald-500"
+                onClick={() => triggerStatus("accepted")}
+                disabled={status === "accepted"}
               >
-                <RotateCcw size={14} aria-hidden="true" />
-                Tentar Novamente
+                Aceite Simulado
               </Button>
-            )}
+              {(status === "no_drivers" || status === "error") && (
+                <Button
+                  type="button"
+                  variant="default"
+                  className="bg-navy rounded-xl text-[9px] font-black uppercase h-12 gap-2 col-span-2 mt-2 focus:ring-2 focus:ring-navy shadow-lg"
+                  onClick={handleRetry}
+                >
+                  <RotateCcw size={14} aria-hidden="true" />
+                  Tentar Novamente
+                </Button>
+              )}
+            </div>
           </div>
-        </div>
+        )}
       </main>
 
       {/* Dialog de Cancelamento */}
