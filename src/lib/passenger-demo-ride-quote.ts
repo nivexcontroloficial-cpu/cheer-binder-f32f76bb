@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ACTIVE_PASSENGER_DEMO_RIDE } from "./passenger-demo-rides";
+import { ACTIVE_PASSENGER_DEMO_RIDE } from "@/data/passenger-demo-rides";
 
 /**
  * CONTRATO TIPADO DE PREÇO, CUPOM E PAGAMENTO DA CORRIDA
