@@ -8,10 +8,7 @@ import {
 } from "@tanstack/react-router";
 import { ACTIVE_PASSENGER_DEMO_RIDE } from "@/data/passenger-demo-rides";
 import { useState, useEffect, useMemo, useRef } from "react";
-import {
-  Info,
-  Navigation as NavigationIcon,
-} from "lucide-react";
+import { Info, Navigation as NavigationIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -66,7 +63,7 @@ function ActiveRideScreen() {
     if (!isValidRide || technical || hasArrived) return;
 
     timer500mRef.current = setTimeout(() => {
-        toast.info("Piloto próximo!");
+      toast.info("Piloto próximo!");
     }, 8000);
 
     timerArrivalRef.current = setTimeout(() => {
@@ -84,27 +81,30 @@ function ActiveRideScreen() {
     if (!isValidRide || technical || !hasArrived || pinConfirmed) return;
 
     autoPinConfirmRef.current = setTimeout(() => {
-        setPinConfirmed(true);
-        toast.success("PIN confirmado pelo piloto — simulação.");
-        navigate({
-            to: "/passageiro/corrida/$rideId/em-andamento",
-            params: { rideId },
-        });
+      setPinConfirmed(true);
+      toast.success("PIN confirmado pelo piloto — simulação.");
+      navigate({
+        to: "/passageiro/corrida/$rideId/em-andamento",
+        params: { rideId },
+      });
     }, 10000);
 
     return () => {
-        if (autoPinConfirmRef.current) clearTimeout(autoPinConfirmRef.current);
-    }
+      if (autoPinConfirmRef.current) clearTimeout(autoPinConfirmRef.current);
+    };
   }, [isValidRide, technical, hasArrived, pinConfirmed, rideId, navigate]);
 
-  const isNestedRideRoute = location.pathname.endsWith("/em-andamento") || location.pathname.endsWith("/concluida");
+  const isNestedRideRoute =
+    location.pathname.endsWith("/em-andamento") || location.pathname.endsWith("/concluida");
 
   if (isNestedRideRoute) return <Outlet />;
 
   if (!isValidRide) {
     return (
       <div className="flex min-h-screen flex-col bg-porcelain font-sans text-navy p-8 items-center justify-center text-center">
-        <h1 className="text-xl font-black italic uppercase tracking-tight mb-2">Corrida simulada não encontrada</h1>
+        <h1 className="text-xl font-black italic uppercase tracking-tight mb-2">
+          Corrida simulada não encontrada
+        </h1>
       </div>
     );
   }
@@ -122,35 +122,63 @@ function ActiveRideScreen() {
 
       <div className="absolute inset-0 bg-slate-100 z-0">
         <svg className="absolute inset-0 w-full h-full">
-          <path d="M 100 200 L 250 400 L 400 300" fill="none" stroke="#2F80ED" strokeWidth="8" strokeDasharray="400" strokeDashoffset={400 - progress * 4} className="transition-all duration-1000" />
+          <path
+            d="M 100 200 L 250 400 L 400 300"
+            fill="none"
+            stroke="#2F80ED"
+            strokeWidth="8"
+            strokeDasharray="400"
+            strokeDashoffset={400 - progress * 4}
+            className="transition-all duration-1000"
+          />
         </svg>
       </div>
 
       <div className="z-10 relative flex-1 p-6 pb-[env(safe-area-inset-bottom)] flex flex-col justify-end">
         {hasArrived && !pinConfirmed && (
-            <div
-                className="bg-white border-2 border-emerald-500 p-5 rounded-3xl shadow-2xl space-y-3"
-                role="status"
-                aria-live="polite"
-            >
-                <h2 className="text-[11px] font-black uppercase text-emerald-600">Aguardando confirmação do piloto</h2>
-                <p className="text-[10px] text-slate-600">Informe o PIN <span className="font-bold text-navy">{ACTIVE_PASSENGER_DEMO_RIDE.pin}</span> ao piloto. A corrida começará após a confirmação.</p>
-                <p className="text-[10px] font-bold text-navy">
-                  Confirme: {pilot.name}, {pilot.vehicle.model} {pilot.vehicle.plate}
-                </p>
-            </div>
+          <div
+            className="bg-white border-2 border-emerald-500 p-5 rounded-3xl shadow-2xl space-y-3"
+            role="status"
+            aria-live="polite"
+          >
+            <h2 className="text-[11px] font-black uppercase text-emerald-600">
+              Aguardando confirmação do piloto
+            </h2>
+            <p className="text-[10px] text-slate-600">
+              Informe o PIN{" "}
+              <span className="font-bold text-navy">{ACTIVE_PASSENGER_DEMO_RIDE.pin}</span> ao
+              piloto. A corrida começará após a confirmação.
+            </p>
+            <p className="text-[10px] font-bold text-navy">
+              Confirme: {pilot.name}, {pilot.vehicle.model} {pilot.vehicle.plate}
+            </p>
+          </div>
         )}
       </div>
 
       {technical && (
         <div className="z-20 bg-slate-900/95 backdrop-blur-sm text-white p-6 m-4 rounded-[32px] border border-white/10 shadow-2xl">
-          <h2 className="text-[10px] font-black uppercase text-amber-500 mb-4">Ferramentas técnicas</h2>
+          <h2 className="text-[10px] font-black uppercase text-amber-500 mb-4">
+            Ferramentas técnicas
+          </h2>
           <div className="grid grid-cols-2 gap-3">
-            <Button onClick={() => handlePilotArrival()} variant="outline" className="h-11">Simular Chegada</Button>
-            <Button onClick={() => {
+            <Button onClick={() => handlePilotArrival()} variant="outline" className="h-11">
+              Simular Chegada
+            </Button>
+            <Button
+              onClick={() => {
                 setPinConfirmed(true);
-                navigate({ to: "/passageiro/corrida/$rideId/em-andamento", params: { rideId }, search: { technical: true }});
-            }} variant="outline" className="h-11">Forçar Início</Button>
+                navigate({
+                  to: "/passageiro/corrida/$rideId/em-andamento",
+                  params: { rideId },
+                  search: { technical: true },
+                });
+              }}
+              variant="outline"
+              className="h-11"
+            >
+              Forçar Início
+            </Button>
           </div>
         </div>
       )}
