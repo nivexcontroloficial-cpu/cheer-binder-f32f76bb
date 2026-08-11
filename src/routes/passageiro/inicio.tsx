@@ -31,8 +31,7 @@ function PassengerHomeScreen() {
     { id: "card", label: "Cartão na máquina do piloto" },
   ];
 
-  const currentPaymentMethod =
-    paymentMethods.find((m) => m.id === paymentMethodId)!;
+  const currentPaymentMethod = paymentMethods.find((m) => m.id === paymentMethodId)!;
 
   const handleRecentClick = () => {
     navigate({ to: "/passageiro/destino" });
