@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
+import { ACTIVE_PASSENGER_DEMO_RIDE } from "@/data/passenger-demo-rides";
 import {
   X,
   MapPin,
@@ -96,7 +97,7 @@ function SearchingRideScreen() {
   const triggerStatus = (newStatus: SearchStatus) => {
     setStatus(newStatus);
     if (newStatus === "accepted") {
-      toast.success("Carlos H. aceitou esta corrida simulada.");
+      toast.success(`${ACTIVE_PASSENGER_DEMO_RIDE.driver.name} aceitou esta corrida simulada.`);
     }
   };
 
@@ -107,7 +108,7 @@ function SearchingRideScreen() {
       transitionTimer = setTimeout(() => {
         navigate({
           to: "/passageiro/corrida/$rideId",
-          params: { rideId: "ride-active-mock" },
+          params: { rideId: ACTIVE_PASSENGER_DEMO_RIDE.id },
         });
       }, 3000);
     }
@@ -233,9 +234,9 @@ function SearchingRideScreen() {
                       Piloto a caminho
                     </span>
                     <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">
-                      Honda CG • Carlos H.
-                    </span>
-                  </div>
+                    {ACTIVE_PASSENGER_DEMO_RIDE.vehicle.model} • {ACTIVE_PASSENGER_DEMO_RIDE.driver.name}
+                  </span>
+                </div>
                 </div>
               </div>
             )}
@@ -283,7 +284,7 @@ function SearchingRideScreen() {
                   {status === "few_drivers" && "Aguardando disponibilidade na região"}
                   {status === "no_drivers" && "Tente novamente em alguns instantes"}
                   {status === "error" && "Não foi possível completar a busca simulada"}
-                  {status === "accepted" && "Carlos H. aceitou esta corrida simulada."}
+                  {status === "accepted" && `${ACTIVE_PASSENGER_DEMO_RIDE.driver.name} aceitou esta corrida simulada.`}
                 </p>
               </div>
             </div>
@@ -308,10 +309,10 @@ function SearchingRideScreen() {
             </div>
             <div className="text-right">
               <span className="block text-lg font-black italic text-navy tracking-tighter">
-                R$ 18,00
+                {new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(ACTIVE_PASSENGER_DEMO_RIDE.fare)}
               </span>
               <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">
-                Dinheiro
+                {ACTIVE_PASSENGER_DEMO_RIDE.paymentMethod}
               </span>
             </div>
           </div>
@@ -320,13 +321,13 @@ function SearchingRideScreen() {
             <div className="flex items-center gap-3">
               <div className="w-1.5 h-1.5 rounded-full bg-rovya-orange" aria-hidden="true"></div>
               <p className="text-[10px] font-bold uppercase tracking-tight text-slate-500">
-                Vila Setti, Jacarezinho
+                {ACTIVE_PASSENGER_DEMO_RIDE.destination.address}
               </p>
             </div>
             <div className="flex items-center gap-3">
               <MapPin size={12} className="text-rovya-blue" aria-hidden="true" />
               <p className="text-[10px] font-black uppercase tracking-widest text-navy">
-                Centro, Jacarezinho
+                {ACTIVE_PASSENGER_DEMO_RIDE.origin.address}
               </p>
             </div>
           </div>
