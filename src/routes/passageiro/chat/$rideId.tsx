@@ -387,7 +387,6 @@ function ChatScreen() {
     );
   }
 
-
   return (
     <div className="flex h-screen flex-col bg-[#F8FAFC] font-sans text-navy">
       <h1 className="sr-only">Chat simulado da corrida</h1>
@@ -654,7 +653,6 @@ function ChatScreen() {
                   {formatMessageTime(msg.timestamp)}
                 </span>
 
-
                 {msg.sender === "passenger" && (
                   <div
                     className="flex items-center"
@@ -680,7 +678,6 @@ function ChatScreen() {
                     aria-label={`Horário: ${formatMessageTime(msg.timestamp)}`}
                   />
                 )}
-
 
                 {msg.sender === "passenger" && (
                   <span className="sr-only">
