@@ -350,7 +350,7 @@ function SignupScreen() {
           aria-hidden="true"
         >
           <CheckCircle2 size={12} className="text-rovya-green" />
-          Ambiente Seguro de Demonstração
+          Ambiente local de demonstração
         </div>
       </footer>
     </div>
