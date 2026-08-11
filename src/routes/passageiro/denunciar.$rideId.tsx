@@ -100,21 +100,18 @@ function DenunciarScreen() {
           registrada.
         </p>
         <div className="w-full space-y-3">
-          <Button
-            type="button"
-            onClick={() => navigate({ to: "/passageiro/saude-da-conta" })}
-            className="w-full bg-navy text-white h-14 rounded-2xl font-black uppercase italic tracking-widest"
+          <Link
+            to="/passageiro/saude-da-conta"
+            className="w-full flex items-center justify-center bg-navy text-white h-14 rounded-2xl font-black uppercase italic tracking-widest focus-visible:ring-2 focus-visible:ring-emerald-500 outline-none min-h-[44px]"
           >
             Ver protocolos simulados
-          </Button>
-          <Button
-            type="button"
-            onClick={() => navigate({ to: "/passageiro/inicio" })}
-            variant="ghost"
-            className="w-full text-slate-400 font-bold uppercase text-[10px] focus-visible:ring-2 focus-visible:ring-emerald-500 outline-none"
+          </Link>
+          <Link
+            to="/passageiro/inicio"
+            className="w-full flex items-center justify-center text-slate-400 font-bold uppercase text-[10px] focus-visible:ring-2 focus-visible:ring-emerald-500 outline-none min-h-[44px]"
           >
             Voltar para o Início
-          </Button>
+          </Link>
         </div>
       </div>
     );
