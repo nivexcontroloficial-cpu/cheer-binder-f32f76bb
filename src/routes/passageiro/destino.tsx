@@ -465,4 +465,6 @@ function ShortcutButton({
         {label}
       </h4>
     </button>
+  );
+}
 }
