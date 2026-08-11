@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import {
   User,
@@ -8,8 +8,6 @@ import {
   HelpCircle,
   LogOut,
   ChevronRight,
-  Camera,
-  Star,
   CheckCircle2,
   Lock,
   Phone,
@@ -30,7 +28,15 @@ function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState("Rafael");
   const [tempName, setTempName] = useState("Rafael");
-  const [avatarIndex, setAvatarIndex] = useState(0);
+
+  const initials = useMemo(() => {
+    const trimmed = name.trim();
+    if (!trimmed) return "P";
+    const parts = trimmed.split(/\s+/).filter(Boolean);
+    if (parts.length === 0) return "P";
+    if (parts.length === 1) return parts[0].substring(0, 2).toUpperCase();
+    return (parts[0][0] + parts[1][0]).toUpperCase();
+  }, [name]);
 
   const handleLogout = () => {
     toast.info("Saída simulada. Nenhuma sessão real foi encerrada.", {
@@ -58,38 +64,8 @@ function ProfilePage() {
     setIsEditing(false);
   };
 
-  const handlePhotoClick = () => {
-    // Apenas alterna um avatar visual simulado localmente
-    setAvatarIndex((prev) => (prev + 1) % 3);
-    toast.info(
-      "Simulação: avatar alterado visualmente. Nenhuma câmera ou imagem real foi acessada.",
-    );
-  };
-
-  const getAvatarContent = () => {
-    const colors = ["bg-slate-100", "bg-blue-100", "bg-rovya-orange/10"];
-    const textColors = ["text-slate-300", "text-blue-400", "text-rovya-orange"];
-    const currentName = name || "R";
-    const initial = currentName.charAt(0).toUpperCase();
-
-    if (avatarIndex === 0) {
-      return <User size={40} className={textColors[0]} aria-label={`Avatar simulado de ${name}`} />;
-    }
-
-    return (
-      <div
-        className={`h-full w-full flex items-center justify-center font-black text-2xl ${textColors[avatarIndex]}`}
-        aria-label={`Avatar simulado com inicial ${initial}`}
-      >
-        {initial}
-      </div>
-    );
-  };
-
-  const avatarColors = ["bg-slate-100", "bg-blue-100", "bg-rovya-orange/10"];
-
   return (
-    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 pb-[calc(80px+env(safe-area-inset-bottom))]">
       {/* Banner de aviso de demonstração */}
       <div className="bg-blue-50 border border-blue-100 p-4 rounded-[24px] mb-8 flex gap-3">
         <Info size={18} className="text-blue-500 shrink-0" aria-hidden="true" />
@@ -100,20 +76,13 @@ function ProfilePage() {
       </div>
 
       <div className="flex flex-col items-center mb-8">
-        <div className="relative mb-4">
+        <div className="mb-4">
           <div
-            className={`h-24 w-24 rounded-[32px] ${avatarColors[avatarIndex]} border-4 border-white shadow-xl overflow-hidden flex items-center justify-center`}
+            className="h-24 w-24 rounded-[32px] bg-navy border-4 border-white shadow-xl overflow-hidden flex items-center justify-center font-black text-2xl text-white"
+            aria-hidden="true"
           >
-            {getAvatarContent()}
+            {initials}
           </div>
-          <button
-            type="button"
-            onClick={handlePhotoClick}
-            aria-label="Alterar avatar simulado"
-            className="absolute -bottom-1 -right-1 h-8 w-8 rounded-xl bg-navy text-white flex items-center justify-center shadow-lg border-2 border-white active:scale-90 transition-transform"
-          >
-            <Camera size={14} aria-hidden="true" />
-          </button>
         </div>
 
         {isEditing ? (
@@ -167,8 +136,7 @@ function ProfilePage() {
               </div>
             </div>
             <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest flex items-center justify-center gap-2">
-              <Star size={10} className="fill-rovya-orange text-rovya-orange" aria-hidden="true" />
-              4.9 • Nível 4 (Exemplo)
+              Perfil Fictício — Demonstração
             </p>
             <button
               type="button"
