@@ -77,7 +77,7 @@ function InProgressRideScreen() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-white font-sans text-navy relative overflow-hidden">
+    <main className="flex min-h-screen flex-col bg-white font-sans text-navy relative overflow-hidden">
       <h1 className="sr-only">Corrida em andamento</h1>
       
       <div className="flex-1 bg-slate-50 relative">
@@ -137,6 +137,6 @@ function InProgressRideScreen() {
           </div>
         )}
       </div>
-    </div>
+    </main>
   );
 }

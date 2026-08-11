@@ -140,7 +140,7 @@ function ActiveRideScreen() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-porcelain font-sans text-navy overflow-hidden relative">
+    <main className="flex min-h-screen flex-col bg-porcelain font-sans text-navy overflow-hidden relative">
       <header className="bg-white px-6 py-5 border-b border-slate-100 flex items-center justify-between sticky top-0 z-50">
         <div className="flex flex-col">
           <h1 className="text-[11px] font-black uppercase tracking-widest italic text-rovya-blue">
@@ -305,6 +305,6 @@ function ActiveRideScreen() {
           </div>
         </div>
       )}
-    </div>
+    </main>
   );
 }

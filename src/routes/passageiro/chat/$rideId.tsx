@@ -325,7 +325,7 @@ function ChatScreen() {
   }
 
   return (
-    <div className="flex h-screen flex-col bg-[#F8FAFC] font-sans text-navy">
+    <main className="flex h-screen flex-col bg-[#F8FAFC] font-sans text-navy">
       <h1 className="sr-only">Chat simulado da corrida</h1>
       <header className="bg-white border-b border-slate-100 px-6 py-4 flex items-center justify-between z-10 shrink-0">
         <div className="flex items-center gap-4">
@@ -338,7 +338,7 @@ function ChatScreen() {
                 search: (prev: any) => getQuoteParams(prev),
               })
             }
-            className="h-11 w-11 bg-slate-50 rounded-xl flex items-center justify-center text-navy active:scale-95 transition-all focus:ring-2 focus:ring-navy focus:outline-none"
+            className="h-11 w-11 min-h-11 min-w-11 bg-slate-50 rounded-xl flex items-center justify-center text-navy active:scale-95 transition-all focus:ring-2 focus:ring-navy focus:outline-none"
             aria-label="Voltar para detalhes da corrida"
           >
             <ArrowLeft size={20} strokeWidth={2.5} aria-hidden="true" />
@@ -774,6 +774,6 @@ function ChatScreen() {
           </div>
         </DialogContent>
       </Dialog>
-    </div>
+    </main>
   );
 }

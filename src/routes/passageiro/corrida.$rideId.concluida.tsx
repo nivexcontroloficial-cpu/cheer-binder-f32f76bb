@@ -174,7 +174,7 @@ function RideCompletedScreen() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-porcelain font-sans text-navy pb-10">
+    <main className="flex min-h-screen flex-col bg-porcelain font-sans text-navy pb-10">
       <h1 className="sr-only">Corrida concluída</h1>
       
       <div className="bg-navy pt-16 pb-12 px-8 rounded-b-[48px] text-white flex flex-col items-center text-center shadow-2xl relative overflow-hidden">
@@ -245,13 +245,14 @@ function RideCompletedScreen() {
         <div className="bg-white rounded-[32px] p-8 shadow-xl border border-slate-100 flex flex-col items-center">
           <h2 className="text-sm font-black italic uppercase tracking-tight text-navy mb-1">Como foi sua viagem?</h2>
           <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest mb-6">Avaliação opcional</p>
-          <div className="flex gap-2 mb-8">
+          <div className="flex gap-4 mb-8">
             {[1, 2, 3, 4, 5].map((star) => (
               <button
                 key={star}
                 type="button"
                 onClick={() => setRating(star)}
-                className="transition-transform active:scale-90 rounded-xl focus:outline-none"
+                className="transition-transform active:scale-90 rounded-xl focus:outline-none min-h-11 min-w-11 flex items-center justify-center"
+                aria-label={`Avaliar ${star} estrelas`}
               >
                 <Star
                   size={40}
@@ -270,7 +271,7 @@ function RideCompletedScreen() {
                   key={tag}
                   type="button"
                   onClick={() => toggleCompliment(tag)}
-                  className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
+                  className={`px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all min-h-11 flex items-center justify-center text-center ${
                     selectedCompliments.includes(tag) ? "bg-navy text-white" : "bg-slate-50 text-slate-400 border border-slate-100"
                   }`}
                 >
@@ -361,6 +362,6 @@ function RideCompletedScreen() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </div>
+    </main>
   );
 }
