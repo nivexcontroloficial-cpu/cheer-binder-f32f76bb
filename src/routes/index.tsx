@@ -219,5 +219,3 @@ function DemoCard({ to, title, description, icon, color, bg }: {
   );
 }
 
-
-/* MICROCORREÇÃO 20.5A.2 — ÍCONES DECORATIVOS E TRANSPARÊNCIA DA CHAMADA CONCLUÍDA */
