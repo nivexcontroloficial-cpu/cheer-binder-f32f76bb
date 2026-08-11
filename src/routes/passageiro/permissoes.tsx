@@ -77,7 +77,7 @@ function PermissionsScreen() {
             state={notifications}
             onAllow={() => setNotifications("allowed")}
             onDeny={() => setNotifications("denied")}
-            allowedText="Estado simulado: notifications permitidas. Nenhuma notificação do aparelho foi enviada."
+            allowedText="Estado simulado: notificações permitidas. Nenhuma notificação do aparelho foi enviada."
             deniedText="Os avisos continuarão aparecendo somente dentro das telas da demonstração."
           />
         </div>
