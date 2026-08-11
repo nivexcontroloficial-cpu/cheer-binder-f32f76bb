@@ -23,16 +23,37 @@ function RecursoOcorrencia() {
   const [reason, setReason] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [touched, setTouched] = useState(false);
 
   const trimmedReason = reason.trim();
   const isValid = trimmedReason.length >= 10 && trimmedReason.length <= 500;
 
+  const validate = (value: string) => {
+    const trimmed = value.trim();
+    if (trimmed.length === 0) {
+      setError("Descreva um motivo para continuar.");
+    } else if (trimmed.length < 10) {
+      setError("O relato deve possuir pelo menos 10 caracteres úteis.");
+    } else {
+      setError(null);
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (trimmedReason.length < 10) {
-      setError("Por favor, descreva o motivo com pelo menos 10 caracteres úteis.");
+    setTouched(true);
+
+    // Defensive validation
+    const trimmed = reason.trim();
+    if (trimmed.length < 10) {
+      setError("O relato deve possuir pelo menos 10 caracteres úteis.");
       return;
     }
+    if (reason.length > 500) {
+      setError("O relato deve ter no máximo 500 caracteres.");
+      return;
+    }
+
     setError(null);
     setIsSubmitted(true);
     toast.success("Recurso registrado somente nesta demonstração.");
@@ -184,20 +205,29 @@ function RecursoOcorrencia() {
               id="reason"
               value={reason}
               onChange={(e) => {
-                setReason(e.target.value);
-                if (error) setError(null);
+                const val = e.target.value;
+                if (val.length <= 500) {
+                  setReason(val);
+                  if (touched) validate(val);
+                }
+              }}
+              onBlur={() => {
+                setTouched(true);
+                validate(reason);
               }}
               placeholder="Descreva seu motivo aqui..."
               maxLength={500}
-              aria-invalid={error ? "true" : "false"}
+              aria-invalid={!!error}
               aria-describedby={error ? "reason-error reason-counter" : "reason-counter"}
-              className="w-full min-h-[150px] p-4 bg-white border border-slate-200 rounded-2xl text-sm focus:ring-2 focus:ring-rovya-orange outline-none transition-all resize-none"
+              className={`w-full min-h-[150px] p-4 bg-white border rounded-2xl text-sm focus:ring-2 focus:ring-rovya-orange outline-none transition-all resize-none ${
+                error && touched ? "border-red-500 bg-red-50/10" : "border-slate-200"
+              }`}
             />
             <div className="flex justify-between items-center px-1">
               <div id="reason-counter" className="text-[10px] font-bold text-slate-400 uppercase">
                 {trimmedReason.length} de 500 caracteres
               </div>
-              {error && (
+              {error && touched && (
                 <p
                   id="reason-error"
                   role="alert"
