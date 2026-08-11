@@ -764,7 +764,7 @@ function ChatScreen() {
         {isBlocked && (
           <div className="mb-4 p-3 bg-red-50 border border-red-100 rounded-2xl flex items-center justify-between">
             <div className="flex items-center gap-2 text-red-600">
-              <Ban size={14} />
+              <Ban size={14} aria-hidden="true" />
               <span className="text-[10px] font-black uppercase tracking-widest">
                 Bloqueio somente nesta demonstração
               </span>
