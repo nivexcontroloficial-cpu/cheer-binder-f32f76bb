@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useParams } from "@tanstack/react-router";
+import { createFileRoute, Link, useParams, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { ChevronLeft, Info, AlertCircle } from "lucide-react";
 import { calculateCancellationConsequence } from "@/services/mock/account-health";
@@ -21,6 +21,7 @@ export const Route = createFileRoute("/passageiro/cancelar/$rideId")({
 
 function CancelarCorrida() {
   const { rideId } = useParams({ from: "/passageiro/cancelar/$rideId" });
+  const navigate = useNavigate();
   const [selectedReason, setSelectedReason] = useState<string | null>(null);
 
   const isValidRide = rideId === "ride-active-mock";
