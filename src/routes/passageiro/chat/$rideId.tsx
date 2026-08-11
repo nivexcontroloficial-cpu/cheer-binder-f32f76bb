@@ -838,7 +838,7 @@ function ChatScreen() {
             className="h-20 w-20 bg-blue-50 rounded-full flex items-center justify-center text-blue-600"
             aria-hidden="true"
           >
-            <Phone size={40} strokeWidth={2} className="animate-pulse" />
+            <Phone size={40} strokeWidth={2} className="animate-pulse" aria-hidden="true" />
           </div>
 
           <div className="space-y-2">
