@@ -155,28 +155,85 @@ function ActiveRideScreen() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col bg-porcelain font-sans text-navy overflow-hidden">
-      <h1 className="sr-only">Piloto a caminho</h1>
-      
+    <div className="flex min-h-screen flex-col bg-porcelain font-sans text-navy overflow-hidden relative">
+      <h1 className="sr-only">Piloto a caminho — corrida simulada</h1>
+
+      {/* Banner de Transparência */}
+      <div className="z-50 bg-amber-50 border-b border-amber-100 px-4 py-2 flex items-start gap-2 animate-in fade-in duration-700">
+        <Info size={14} className="text-amber-600 mt-0.5 shrink-0" />
+        <p className="text-[9px] font-bold text-amber-900 leading-tight">
+          Demonstração local: piloto, trajeto, localização e comunicação são simulados.
+        </p>
+      </div>
+
       {/* Mapa */}
-      <div className="absolute inset-0 bg-slate-100 z-0">
+      <div className="absolute inset-0 bg-slate-100 z-0" role="img" aria-label="Mapa esquemático da demonstração">
         <svg className="absolute inset-0 w-full h-full" aria-hidden="true">
-           <path d="M 100 200 L 250 400 L 400 300" fill="none" stroke="#E2E8F0" strokeWidth="8" />
-           <path d="M 100 200 L 250 400 L 400 300" fill="none" stroke="#2F80ED" strokeWidth="8" strokeDasharray="400" strokeDashoffset={400 - progress * 4} className="transition-all duration-1000" />
+          <path d="M 100 200 L 250 400 L 400 300" fill="none" stroke="#E2E8F0" strokeWidth="8" strokeLinecap="round" />
+          <path
+            d="M 100 200 L 250 400 L 400 300"
+            fill="none"
+            stroke="#2F80ED"
+            strokeWidth="8"
+            strokeLinecap="round"
+            strokeDasharray="400"
+            strokeDashoffset={400 - progress * 4}
+            className="transition-all duration-1000 ease-linear"
+          />
         </svg>
       </div>
 
       <div className="z-10 relative flex-1 p-6">
         {distanceMeters <= 500 && !hasArrived && (
-            <div className="bg-rovya-orange text-white px-4 py-3 rounded-2xl shadow-xl" role="status" aria-live="polite">
-                Piloto Próximo: O {pilot.name} está a menos de 500m.
+          <div
+            className="bg-rovya-orange text-white px-4 py-3 rounded-2xl shadow-xl flex items-center gap-3 animate-in slide-in-from-top duration-500"
+            role="status"
+            aria-live="polite"
+          >
+            <div className="bg-white/20 p-2 rounded-xl">
+              <NavigationIcon size={18} className="animate-pulse" aria-hidden="true" />
             </div>
+            <div className="flex flex-col">
+              <span className="text-[10px] font-black uppercase tracking-[0.1em]">Piloto Próximo</span>
+              <span className="text-xs font-bold leading-tight">
+                O {pilot.name} está a menos de 500m. (Simulação)
+              </span>
+            </div>
+          </div>
         )}
-        
+
         {hasArrived && (
-            <div className="bg-white p-5 rounded-3xl shadow-2xl" role="status" aria-live="polite">
-                Piloto no local: {pilot.name}, {pilot.vehicle.model} {pilot.vehicle.color} ({pilot.vehicle.plate})
+          <div
+            className="bg-white border-2 border-emerald-500 p-5 rounded-3xl shadow-2xl flex flex-col gap-3 animate-in zoom-in duration-500"
+            role="status"
+            aria-live="polite"
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="h-2 w-2 rounded-full bg-emerald-500 animate-ping"></div>
+                <span className="text-[10px] font-black uppercase tracking-widest text-emerald-600">
+                  Piloto no local
+                </span>
+              </div>
+              <div
+                className={`flex items-center gap-1.5 px-3 py-1 rounded-full ${waitTime < 60 ? "bg-red-50 text-red-600" : "bg-slate-50 text-navy"}`}
+              >
+                <Clock size={12} className={waitTime < 60 ? "animate-pulse" : ""} />
+                <span className="text-xs font-black italic">{formatWaitTime(waitTime)}</span>
+              </div>
             </div>
+            <div className="space-y-1">
+              <p className="text-[11px] font-bold text-navy leading-tight">
+                Confirme piloto e veículo:{" "}
+                <span className="underline decoration-emerald-500 decoration-2 underline-offset-2 tracking-widest">
+                  {pilot.name}, {pilot.vehicle.model} {pilot.vehicle.color} ({pilot.vehicle.plate})
+                </span>
+              </p>
+              <p className="text-[9px] text-slate-500 font-medium">
+                O tempo de espera cortesia está correndo. (Simulação)
+              </p>
+            </div>
+          </div>
         )}
       </div>
 
