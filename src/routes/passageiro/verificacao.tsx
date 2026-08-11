@@ -84,15 +84,13 @@ function VerificationScreen() {
       }
     } else if (step === 2) {
       if (!formData.photo) {
-        setErrors({ ...errors, photo: "A foto de perfil é obrigatória para a simulação." });
+        setErrors((prev) => ({
+          ...prev,
+          photo: "A foto de perfil é obrigatória para a simulação.",
+        }));
         return;
       }
-      setIsLoading(true);
-      // Simulate local processing
-      setTimeout(() => {
-        setIsLoading(false);
-        setStep(3);
-      }, 1500);
+      setStep(3);
     }
   };
 
