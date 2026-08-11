@@ -70,6 +70,15 @@ const DEFAULT_MESSAGES: Message[] = [
   },
 ];
 
+function formatMessageTime(date: Date) {
+  return date.toLocaleTimeString("pt-BR", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+    timeZone: "America/Sao_Paulo",
+  });
+}
+
 function ChatScreen() {
   const { rideId } = useParams({ from: "/passageiro/chat/$rideId" });
   const isValidRide = rideId === "ride-active-mock";
@@ -79,14 +88,18 @@ function ChatScreen() {
   // Timers management
   const timersRef = useRef<Set<ReturnType<typeof setTimeout>>>(new Set());
 
-  const addTimer = useCallback((callback: () => void, ms: number) => {
-    const timerId = setTimeout(() => {
-      timersRef.current.delete(timerId);
-      callback();
-    }, ms);
-    timersRef.current.add(timerId);
-    return timerId;
-  }, []);
+  const addTimer = useCallback(
+    (callback: () => void, ms: number) => {
+      if (!isValidRide) return null;
+      const timerId = setTimeout(() => {
+        timersRef.current.delete(timerId);
+        callback();
+      }, ms);
+      timersRef.current.add(timerId);
+      return timerId;
+    },
+    [isValidRide],
+  );
 
   const clearAllTimers = useCallback(() => {
     timersRef.current.forEach(clearTimeout);
@@ -117,10 +130,7 @@ function ChatScreen() {
 
   // Read from localStorage on client only
   useEffect(() => {
-    if (!isValidRide) {
-      setHydratedRideId(rideId);
-      return;
-    }
+    if (!isValidRide) return;
     const storageKey = `chat_history_${rideId}`;
     try {
       const saved = localStorage.getItem(storageKey);
@@ -205,7 +215,7 @@ function ChatScreen() {
 
   const handleSendMessage = useCallback(
     (text = inputText) => {
-      if ((!text.trim() && !hasFakeAttachment) || isBlocked) return;
+      if ((!text.trim() && !hasFakeAttachment) || isBlocked || !isValidRide) return;
 
       const newMessageId = Date.now().toString();
       const newMessage: Message = {
@@ -274,10 +284,11 @@ function ChatScreen() {
         }, 1000);
       }, 800);
     },
-    [inputText, hasFakeAttachment, isBlocked, simulateFailure, addTimer],
+    [inputText, hasFakeAttachment, isBlocked, simulateFailure, addTimer, isValidRide],
   );
 
   const resendMessage = (id: string) => {
+    if (!isValidRide) return;
     setMessages((prev) => prev.map((m) => (m.id === id ? { ...m, status: "sending" } : m)));
 
     addTimer(() => {
@@ -321,20 +332,20 @@ function ChatScreen() {
 
   const quickReplies = ["Estou saindo!", "Estou no local.", "Pode me esperar?", "Ok, obrigado."];
 
-  if (hydratedRideId && !isValidRide) {
+  if (!isValidRide) {
     return (
       <div className="flex h-screen flex-col bg-[#F8FAFC] font-sans text-navy">
         <header className="bg-white border-b border-slate-100 px-6 py-4 flex items-center gap-4 z-10 shrink-0">
           <Link
             to="/passageiro/mensagens"
-            className="h-10 w-10 bg-slate-50 rounded-xl flex items-center justify-center text-navy active:scale-95 transition-all focus:ring-2 focus:ring-navy focus:outline-none"
+            className="h-11 w-11 bg-slate-50 rounded-xl flex items-center justify-center text-navy active:scale-95 transition-all focus:ring-2 focus:ring-navy focus:outline-none"
             aria-label="Voltar para mensagens"
           >
-            <ArrowLeft size={20} strokeWidth={2.5} />
+            <ArrowLeft size={20} strokeWidth={2.5} aria-hidden="true" />
           </Link>
-          <h1 className="text-sm font-black italic tracking-tighter text-navy uppercase leading-none">
+          <span className="text-sm font-black italic tracking-tighter text-navy uppercase leading-none">
             Conversa não encontrada
-          </h1>
+          </span>
         </header>
 
         <main className="flex-1 flex flex-col items-center justify-center p-8 text-center gap-6">
@@ -345,7 +356,7 @@ function ChatScreen() {
           </div>
 
           <div className="h-24 w-24 bg-slate-50 rounded-[32px] flex items-center justify-center text-slate-300">
-            <MessageSquareX size={48} strokeWidth={1.5} />
+            <MessageSquareX size={48} strokeWidth={1.5} aria-hidden="true" />
           </div>
 
           <div className="space-y-2">
@@ -375,6 +386,7 @@ function ChatScreen() {
       </div>
     );
   }
+
 
   return (
     <div className="flex h-screen flex-col bg-[#F8FAFC] font-sans text-navy">
