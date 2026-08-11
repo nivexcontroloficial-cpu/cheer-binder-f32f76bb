@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { createFileRoute, useNavigate, Link } from "@tanstack/react-router";
 import {
   User,
@@ -8,8 +8,6 @@ import {
   HelpCircle,
   LogOut,
   ChevronRight,
-  Camera,
-  Star,
   CheckCircle2,
   Lock,
   Phone,
