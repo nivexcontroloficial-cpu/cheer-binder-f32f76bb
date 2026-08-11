@@ -41,7 +41,7 @@ function PassengerHomeScreen() {
     <div className="flex flex-col min-h-screen bg-[#F8FAFC] font-sans text-navy">
       <h1 className="sr-only">Rovya Passageiro - Início</h1>
 
-      <div className="flex-1 space-y-6 pb-32 px-4 pt-4">
+      <div className="flex-1 space-y-6 pb-[calc(8rem+env(safe-area-inset-bottom,1.5rem))] px-4 pt-4">
         {/* Localização Atual Contexto */}
         <div className="flex items-center gap-2">
           <MapPinned size={14} className="text-rovya-orange" aria-hidden="true" />
