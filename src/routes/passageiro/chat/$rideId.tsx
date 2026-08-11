@@ -332,7 +332,7 @@ function ChatScreen() {
               navigate({
                 to: "/passageiro/corrida/$rideId",
                 params: { rideId },
-                search: (prev: any) => getQuoteParams(prev),
+                search: getQuoteParams(search),
               })
             }
             className="h-11 w-11 min-h-11 min-w-11 bg-slate-50 rounded-xl flex items-center justify-center text-navy active:scale-95 transition-all focus:ring-2 focus:ring-navy focus:outline-none"

@@ -100,23 +100,28 @@ function ActiveRideScreen() {
     };
   }, [isValidRide, search.technical, hasArrived]);
 
-  useEffect(() => {
-    if (!isValidRide || search.technical || !hasArrived || pinConfirmed) return;
-
+  const handlePilotArrival = useCallback(() => {
+    if (autoPinConfirmRef.current) return;
+    
     autoPinConfirmRef.current = setTimeout(() => {
       setPinConfirmed(true);
       toast.success("PIN confirmado pelo piloto — simulação.");
       navigate({
         to: "/passageiro/corrida/$rideId/em-andamento",
         params: { rideId },
-        search: (prev: any) => getQuoteParams(prev),
+        search: getQuoteParams(search),
       });
     }, 10000);
+  }, [rideId, search, navigate]);
+
+  useEffect(() => {
+    if (!isValidRide || search.technical || !hasArrived || pinConfirmed) return;
+    handlePilotArrival();
 
     return () => {
       if (autoPinConfirmRef.current) clearTimeout(autoPinConfirmRef.current);
     };
-  }, [isValidRide, search.technical, hasArrived, pinConfirmed, rideId, navigate]);
+  }, [isValidRide, search.technical, hasArrived, pinConfirmed, handlePilotArrival]);
 
   const isNestedRideRoute =
     location.pathname.endsWith("/em-andamento") || location.pathname.endsWith("/concluida");
@@ -293,7 +298,7 @@ function ActiveRideScreen() {
                 navigate({
                   to: "/passageiro/corrida/$rideId/em-andamento",
                   params: { rideId },
-                  search: (prev: any) => getQuoteParams({ ...prev, technical: true }),
+                  search: getQuoteParams({ ...search, technical: true }),
                 });
               }}
               variant="outline"
