@@ -283,6 +283,8 @@ function SignupScreen() {
                       id="terms-checkbox"
                       checked={acceptedTerms}
                       onChange={(e) => setAcceptedTerms(e.target.checked)}
+                      aria-invalid={!!errors.terms}
+                      aria-describedby={errors.terms ? "terms-error" : undefined}
                       className="w-4 h-4 rounded border-slate-300 text-rovya-orange focus:ring-rovya-orange transition-all cursor-pointer"
                     />
                   </div>
@@ -290,25 +292,11 @@ function SignupScreen() {
                     htmlFor="terms-checkbox"
                     className="text-[11px] text-slate-500 leading-relaxed font-medium cursor-pointer"
                   >
-                    Li os{" "}
-                    <Link
-                      to="/passageiro/termos"
-                      className="text-rovya-orange font-bold underline underline-offset-2"
-                    >
-                      Termos de Uso
-                    </Link>{" "}
-                    e a{" "}
-                    <Link
-                      to="/passageiro/privacidade"
-                      className="text-rovya-orange font-bold underline underline-offset-2"
-                    >
-                      Política de Privacidade
-                    </Link>{" "}
-                    desta demonstração local.
+...
                   </label>
                 </div>
                 {errors.terms && (
-                  <p className="text-[10px] text-red-500 font-bold" role="alert">
+                  <p id="terms-error" className="text-[10px] text-red-500 font-bold" role="alert">
                     {errors.terms}
                   </p>
                 )}
