@@ -83,7 +83,6 @@ function SignupScreen() {
         email: trimmedEmail,
       }));
       
-      // Use local variables for validation to avoid waiting for state update
       const newErrors: typeof errors = {};
       if (!trimmedName) newErrors.name = "O nome é obrigatório";
       if (!trimmedEmail) newErrors.email = "O e-mail é obrigatório";
@@ -292,7 +291,21 @@ function SignupScreen() {
                     htmlFor="terms-checkbox"
                     className="text-[11px] text-slate-500 leading-relaxed font-medium cursor-pointer"
                   >
-...
+                    Li os{" "}
+                    <Link
+                      to="/passageiro/termos"
+                      className="text-rovya-orange font-bold underline underline-offset-2"
+                    >
+                      Termos de Uso
+                    </Link>{" "}
+                    e a{" "}
+                    <Link
+                      to="/passageiro/privacidade"
+                      className="text-rovya-orange font-bold underline underline-offset-2"
+                    >
+                      Política de Privacidade
+                    </Link>{" "}
+                    desta demonstração local.
                   </label>
                 </div>
                 {errors.terms && (
