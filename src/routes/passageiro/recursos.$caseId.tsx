@@ -224,7 +224,7 @@ function RecursoOcorrencia() {
               }`}
             />
             <div className="flex justify-between items-center px-1">
-              <div id="reason-counter" className="text-[10px] font-bold text-slate-400 uppercase">
+              <div id="reason-counter" className="text-[10px] font-bold text-slate-400 uppercase" aria-live="polite">
                 {trimmedReason.length} de 500 caracteres
               </div>
               {error && touched && (

@@ -224,7 +224,7 @@ function ConfirmRideScreen() {
             >
               Pagamento presencial — simulado
             </h2>
-            <div className="grid grid-cols-3 gap-2" role="group" aria-labelledby="payment-title">
+            <div className="grid grid-cols-3 gap-2" role="radiogroup" aria-labelledby="payment-title">
               <PaymentButton
                 active={paymentMethod === "cash"}
                 onClick={() => setPaymentMethod("cash")}
@@ -295,7 +295,7 @@ function ConfirmRideScreen() {
                 aria-expanded={isDetailsOpen}
                 aria-controls="fare-details"
                 onClick={() => setIsDetailsOpen(!isDetailsOpen)}
-                className="flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-navy transition-colors focus-visible:ring-2 focus-visible:ring-rovya-orange outline-none rounded-sm px-1 -ml-1"
+                className="flex items-center gap-1 text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-navy transition-colors focus-visible:ring-2 focus-visible:ring-rovya-orange outline-none rounded-sm px-1 -ml-1 min-h-[44px]"
               >
                 Preço final simulado
                 {isDetailsOpen ? (

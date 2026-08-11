@@ -128,7 +128,7 @@ function AccountHealthPage() {
       <section className="space-y-4 mb-8">
         <div className="flex items-center justify-between">
           <h2 className="text-sm font-black uppercase tracking-wider text-navy">
-            Impactos Fictícios no Score
+            Impactos Fictícios no Score (Simulados)
           </h2>
           <span className="text-[10px] font-bold text-slate-400">Últimos 30 dias</span>
         </div>
