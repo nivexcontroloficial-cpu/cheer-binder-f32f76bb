@@ -73,11 +73,32 @@ function SignupScreen() {
 
   const handleNext = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!validateStep()) return;
 
-    if (step < 2) {
-      setStep(step + 1);
+    if (step === 1) {
+      const trimmedName = formData.name.trim();
+      const trimmedEmail = formData.email.trim();
+      setFormData((prev) => ({
+        ...prev,
+        name: trimmedName,
+        email: trimmedEmail,
+      }));
+      
+      // Use local variables for validation to avoid waiting for state update
+      const newErrors: typeof errors = {};
+      if (!trimmedName) newErrors.name = "O nome é obrigatório";
+      if (!trimmedEmail) newErrors.email = "O e-mail é obrigatório";
+      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+        newErrors.email = "E-mail inválido";
+      }
+
+      if (Object.keys(newErrors).length > 0) {
+        setErrors(newErrors);
+        return;
+      }
+      setErrors({});
+      setStep(2);
     } else {
+      if (!validateStep()) return;
       setIsLoading(true);
       timerRef.current = setTimeout(() => {
         setIsLoading(false);
