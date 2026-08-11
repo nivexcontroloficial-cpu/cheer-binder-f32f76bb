@@ -107,7 +107,7 @@ function PassengerHomeScreen() {
               </div>
               <div className="w-full h-14 bg-slate-50 border border-slate-100 rounded-2xl pl-10 pr-4 flex items-center">
                 <span className="text-[10px] font-black uppercase tracking-widest text-navy">
-                  Localização atual simulada
+                  Localização atual simulada: Centro, Jacarezinho
                 </span>
               </div>
               <div
@@ -206,13 +206,13 @@ function PassengerHomeScreen() {
             onClick={() => navigate({ to: "/passageiro/locais-salvos" })}
             icon={<Navigation size={18} />}
             label="Trabalho"
-            sub="Exemplo: Av. Getúlio Vargas, 890"
+            sub="Centro, Jacarezinho"
           />
           <FavoriteButton
             onClick={() => navigate({ to: "/passageiro/locais-salvos" })}
             icon={<Clock size={18} />}
             label="Casa"
-            sub="Exemplo: Rua São João, 345"
+            sub="Centro, Jacarezinho"
           />
         </section>
 
@@ -226,19 +226,19 @@ function PassengerHomeScreen() {
               onClick={handleRecentClick}
               icon={<MapPin size={16} />}
               title="Shopping Jacarezinho"
-              address="Exemplo: Centro, Jacarezinho - PR"
+              address="Centro, Jacarezinho"
             />
             <RecentItem
               onClick={handleRecentClick}
               icon={<MapPin size={16} />}
               title="Terminal Rodoviário"
-              address="Exemplo: Avenida Manoel Ribas, 123"
+              address="Centro, Jacarezinho"
             />
             <RecentItem
               onClick={handleRecentClick}
               icon={<Star size={16} />}
               title="Academia Fit"
-              address="Exemplo: Rua Paraná, 450"
+              address="Centro, Jacarezinho"
               last
             />
           </div>
