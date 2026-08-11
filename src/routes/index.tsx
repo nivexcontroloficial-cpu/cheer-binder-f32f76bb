@@ -75,7 +75,7 @@ function DemoSelector() {
               to="/passageiro/corrida/$rideId"
               params={{ rideId: "ride-active-mock" }}
               search={{ technical: true }}
-              className="w-full py-2 bg-amber-50 text-amber-600 border border-amber-100 rounded-xl text-[9px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-amber-100 transition-all active:scale-95"
+              className="w-full py-2 bg-amber-50 text-amber-600 border border-amber-100 rounded-xl text-[9px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-amber-100 transition-all active:scale-95 min-h-[44px]"
             >
               <NavigationIcon size={10} strokeWidth={2.5} />
               Corrida Ativa (Direto Técnico)
@@ -84,7 +84,7 @@ function DemoSelector() {
               to="/passageiro/corrida/$rideId/em-andamento"
               params={{ rideId: "ride-active-mock" }}
               search={{ technical: true }}
-              className="w-full py-2 bg-emerald-50 text-emerald-600 border border-emerald-100 rounded-xl text-[9px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-emerald-100 transition-all active:scale-95"
+              className="w-full py-2 bg-emerald-50 text-emerald-600 border border-emerald-100 rounded-xl text-[9px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-emerald-100 transition-all active:scale-95 min-h-[44px]"
             >
               <NavigationIcon size={10} strokeWidth={2.5} />
               Corrida Em Andamento (Direto Técnico)

@@ -28,7 +28,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 const searchSchema = z.object({
-  technical: z.boolean().default(false),
+  technical: z.boolean().catch(false).default(false),
 });
 
 export const Route = createFileRoute("/passageiro/corrida/$rideId")({
@@ -47,7 +47,7 @@ function ActiveRideScreen() {
   const isValidRide = useMemo(() => rideId === ACTIVE_PASSENGER_DEMO_RIDE.id, [rideId]);
 
   const [connection, setConnection] = useState<ConnectionStatus>("stable");
-  const [eta, setEta] = useState(4);
+  const [eta, setEta] = useState(ACTIVE_PASSENGER_DEMO_RIDE.duration);
   const [distanceMeters, setDistanceMeters] = useState(2500);
   const [progress, setProgress] = useState(0);
   const [hasArrived, setHasArrived] = useState(false);
@@ -56,7 +56,9 @@ function ActiveRideScreen() {
   const [isWaitTimerActive, setIsWaitTimerActive] = useState(false);
   const [lastUpdate, setLastUpdate] = useState("10:00");
   
-  const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const timer500mRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const timerArrivalRef = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const waitTimerRef = useRef<ReturnType<typeof setInterval>>(undefined);
 
   const pilot = {
     name: ACTIVE_PASSENGER_DEMO_RIDE.driver.name,
@@ -67,43 +69,14 @@ function ActiveRideScreen() {
     },
   };
 
-  useEffect(() => {
-    if (!isValidRide || technical) return;
-
-    // Progressão automática
-    const startProgress = () => {
-        // Intervalo 8s para 500m (aproximadamente)
-        timerRef.current = setTimeout(() => {
-            handleSimulate500m();
-            
-            // Intervalo 8s (16s totais) para chegada
-            timerRef.current = setTimeout(() => {
-                handlePilotArrival();
-            }, 8000);
-        }, 8000);
-    };
-
-    startProgress();
-
-    return () => {
-        if(timerRef.current) clearTimeout(timerRef.current);
-    };
-  }, [isValidRide, technical]);
-
-  useEffect(() => {
-    if (!isValidRide || !technical) return;
-
-    const interval = setInterval(() => {
-        setProgress((prev) => (prev >= 100 ? 100 : prev + 0.8));
-        setDistanceMeters((prev) => {
-          const next = 2500 - progress * 25;
-          return next < 0 ? 0 : next;
-        });
-        setLastUpdate(new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", hour12: false }));
-    }, 1500);
-
-    return () => clearInterval(interval);
-  }, [isValidRide, technical, progress]);
+  const handleSimulate500m = () => {
+    if (hasArrived) return;
+    setDistanceMeters(500);
+    setProgress(80);
+    setEta(1);
+    setIsNearAlertVisible(true);
+    toast.info("Seu piloto está próximo!", { duration: 5000 });
+  };
 
   const handlePilotArrival = () => {
     setHasArrived(true);
@@ -117,16 +90,58 @@ function ActiveRideScreen() {
     });
   };
 
-  const handleSimulate500m = () => {
-    if (hasArrived) return;
-    setDistanceMeters(500);
-    setProgress(80);
-    setEta(1);
-    setIsNearAlertVisible(true);
-    toast.info("Seu piloto está próximo!", { duration: 5000 });
-  };
+  // Progressão automática determinística no modo normal
+  useEffect(() => {
+    if (!isValidRide || technical) return;
+
+    // Timer para 500m em 8 segundos
+    timer500mRef.current = setTimeout(() => {
+      handleSimulate500m();
+    }, 8000);
+
+    // Timer para chegada em 16 segundos totais
+    timerArrivalRef.current = setTimeout(() => {
+      handlePilotArrival();
+    }, 16000);
+
+    return () => {
+      if (timer500mRef.current) clearTimeout(timer500mRef.current);
+      if (timerArrivalRef.current) clearTimeout(timerArrivalRef.current);
+    };
+  }, [isValidRide, technical]);
+
+  // Cronômetro de espera após a chegada
+  useEffect(() => {
+    if (isWaitTimerActive && waitTime > 0) {
+      waitTimerRef.current = setInterval(() => {
+        setWaitTime((prev) => (prev > 0 ? prev - 1 : 0));
+      }, 1000);
+    }
+    return () => {
+      if (waitTimerRef.current) clearInterval(waitTimerRef.current);
+    };
+  }, [isWaitTimerActive]);
+
+  useEffect(() => {
+    if (!isValidRide || !technical) return;
+
+    const interval = setInterval(() => {
+      setProgress((prev) => (prev >= 100 ? 100 : prev + 0.8));
+      setDistanceMeters((prev) => {
+        const next = 2500 - (progress * 25);
+        return next < 0 ? 0 : next;
+      });
+      setLastUpdate(new Date().toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", hour12: false }));
+    }, 1500);
+
+    return () => clearInterval(interval);
+  }, [isValidRide, technical, progress]);
 
   const handleResetEmbark = () => {
+    // Cancelar timers automáticos se existirem (ao interagir manualmente no modo técnico)
+    if (timer500mRef.current) clearTimeout(timer500mRef.current);
+    if (timerArrivalRef.current) clearTimeout(timerArrivalRef.current);
+    
     setHasArrived(false);
     setIsWaitTimerActive(false);
     setWaitTime(300);
@@ -238,12 +253,42 @@ function ActiveRideScreen() {
       </div>
 
       {technical && (
-        <div className="z-20 bg-slate-900 text-white p-4 m-4 rounded-2xl">
-          <p className="text-[10px] font-black uppercase tracking-widest text-amber-500 mb-2">Ferramentas técnicas da demonstração</p>
-          <div className="grid grid-cols-2 gap-2">
-            <Button onClick={handleSimulate500m} size="sm">Simular 500m</Button>
-            <Button onClick={handlePilotArrival} size="sm">Simular Chegada</Button>
-            <Button onClick={handleResetEmbark} size="sm">Resetar Embarque</Button>
+        <div className="z-20 bg-slate-900/95 backdrop-blur-sm text-white p-6 m-4 rounded-[32px] border border-white/10 shadow-2xl animate-in slide-in-from-bottom duration-500">
+          <h2 className="text-[10px] font-black uppercase tracking-[0.2em] text-amber-500 mb-4 flex items-center gap-2">
+            <ShieldCheck size={12} strokeWidth={2.5} />
+            Ferramentas técnicas da demonstração
+          </h2>
+          <div className="grid grid-cols-2 gap-3">
+            <Button 
+              onClick={() => {
+                if (timer500mRef.current) clearTimeout(timer500mRef.current);
+                handleSimulate500m();
+              }} 
+              size="sm"
+              variant="outline"
+              className="bg-white/5 border-white/10 text-white hover:bg-white/10 h-11 text-[9px] font-black uppercase tracking-widest rounded-2xl"
+            >
+              Simular 500m
+            </Button>
+            <Button 
+              onClick={() => {
+                if (timerArrivalRef.current) clearTimeout(timerArrivalRef.current);
+                handlePilotArrival();
+              }} 
+              size="sm"
+              variant="outline"
+              className="bg-white/5 border-white/10 text-white hover:bg-white/10 h-11 text-[9px] font-black uppercase tracking-widest rounded-2xl"
+            >
+              Simular Chegada
+            </Button>
+            <Button 
+              onClick={handleResetEmbark} 
+              size="sm"
+              variant="destructive"
+              className="bg-red-500/20 text-red-500 hover:bg-red-500/30 border-red-500/20 h-11 text-[9px] font-black uppercase tracking-widest rounded-2xl col-span-2"
+            >
+              Resetar Embarque
+            </Button>
           </div>
         </div>
       )}
