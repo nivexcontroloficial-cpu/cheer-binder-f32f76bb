@@ -1,5 +1,5 @@
-import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import { createFileRoute, useNavigate, useParams, Link } from "@tanstack/react-router";
+import { useState, useEffect, useMemo } from "react";
 import { Shield, MapPin, Navigation, AlertTriangle, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -28,6 +28,9 @@ export const Route = createFileRoute("/passageiro/corrida/$rideId/em-andamento")
 function InProgressRideScreen() {
   const { rideId } = useParams({ from: "/passageiro/corrida/$rideId/em-andamento" });
   const navigate = useNavigate();
+
+  const isValidRide = useMemo(() => rideId === "ride-active-mock", [rideId]);
+
   const [progress, setProgress] = useState(35);
   const [eta, setEta] = useState(12);
   const [gpsStatus, setGpsStatus] = useState<"stable" | "unstable">("stable");
@@ -39,7 +42,7 @@ function InProgressRideScreen() {
   const [desvioResult, setDesvioResult] = useState<string | null>(null);
 
   useEffect(() => {
-    if (gpsStatus === "unstable") return;
+    if (!isValidRide || gpsStatus === "unstable") return;
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 95) return 95;
@@ -51,7 +54,37 @@ function InProgressRideScreen() {
       });
     }, 5000);
     return () => clearInterval(interval);
-  }, [gpsStatus]);
+  }, [gpsStatus, isValidRide]);
+
+  if (!isValidRide) {
+    return (
+      <div className="flex min-h-screen flex-col bg-porcelain font-sans text-navy p-8 items-center justify-center text-center">
+        <div className="bg-amber-50 border border-amber-100 p-6 rounded-[32px] shadow-sm max-w-sm">
+          <Info size={32} className="text-amber-600 mx-auto mb-4" aria-hidden="true" />
+          <h1 className="text-xl font-black italic uppercase tracking-tight mb-2">
+            Corrida simulada não encontrada
+          </h1>
+          <p className="text-xs text-slate-500 font-medium leading-relaxed mb-6">
+            Aviso de demonstração local: nenhuma corrida real foi consultada.
+          </p>
+          <div className="flex flex-col gap-3">
+            <Link
+              to="/passageiro/corridas"
+              className="w-full h-11 flex items-center justify-center bg-navy text-white rounded-2xl font-black uppercase text-[9px] tracking-widest min-h-[44px]"
+            >
+              Ver histórico simulado
+            </Link>
+            <Link
+              to="/passageiro/inicio"
+              className="w-full h-11 flex items-center justify-center bg-white border border-slate-200 text-navy rounded-2xl font-black uppercase text-[9px] tracking-widest min-h-[44px]"
+            >
+              Voltar ao início
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const pilot = {
     name: "Carlos H.",

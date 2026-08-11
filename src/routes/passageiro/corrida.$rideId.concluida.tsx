@@ -1,5 +1,5 @@
-import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
-import { useState } from "react";
+import { createFileRoute, useNavigate, useParams, Link } from "@tanstack/react-router";
+import { useState, useMemo } from "react";
 import {
   CheckCircle2,
   Star,
@@ -67,6 +67,8 @@ function RideCompletedScreen() {
   const navigate = useNavigate();
   const { rides, addRideToHistory } = useDemo();
 
+  const isValidRide = useMemo(() => rideId === "RY-2026-00842", [rideId]);
+
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const [selectedCompliments, setSelectedCompliments] = useState<string[]>([]);
@@ -80,6 +82,7 @@ function RideCompletedScreen() {
   };
 
   const ensureRideInHistory = () => {
+    if (!isValidRide) return;
     if (rides.some((r) => r.id === RIDE_SUMMARY.id)) return;
     addRideToHistory({
       id: RIDE_SUMMARY.id,
@@ -97,6 +100,7 @@ function RideCompletedScreen() {
   };
 
   const handleFinish = () => {
+    if (!isValidRide) return;
     if (!paymentConfirmed) {
       setIsConfirmPaymentDialogOpen(true);
       return;
@@ -112,10 +116,41 @@ function RideCompletedScreen() {
   };
 
   const confirmPayment = () => {
+    if (!isValidRide) return;
     setPaymentConfirmed(true);
     setIsConfirmPaymentDialogOpen(false);
     toast.success("Confirmação local registrada. Nenhum pagamento foi processado.");
   };
+
+  if (!isValidRide) {
+    return (
+      <div className="flex min-h-screen flex-col bg-porcelain font-sans text-navy p-8 items-center justify-center text-center">
+        <div className="bg-amber-50 border border-amber-100 p-6 rounded-[32px] shadow-sm max-w-sm">
+          <Info size={32} className="text-amber-600 mx-auto mb-4" aria-hidden="true" />
+          <h1 className="text-xl font-black italic uppercase tracking-tight mb-2">
+            Corrida simulada não encontrada
+          </h1>
+          <p className="text-xs text-slate-500 font-medium leading-relaxed mb-6">
+            Aviso de demonstração local: nenhuma corrida real foi consultada.
+          </p>
+          <div className="flex flex-col gap-3">
+            <Link
+              to="/passageiro/corridas"
+              className="w-full h-11 flex items-center justify-center bg-navy text-white rounded-2xl font-black uppercase text-[9px] tracking-widest min-h-[44px]"
+            >
+              Ver histórico simulado
+            </Link>
+            <Link
+              to="/passageiro/inicio"
+              className="w-full h-11 flex items-center justify-center bg-white border border-slate-200 text-navy rounded-2xl font-black uppercase text-[9px] tracking-widest min-h-[44px]"
+            >
+              Voltar ao início
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="flex min-h-screen flex-col bg-porcelain font-sans text-navy pb-10">
