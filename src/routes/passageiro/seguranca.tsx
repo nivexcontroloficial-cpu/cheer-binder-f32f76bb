@@ -72,7 +72,7 @@ function SafetyScreen() {
         <button
           type="button"
           onClick={() => setShareResult("Prévia simulada criada. Nada foi enviado.")}
-          className="w-full bg-white p-5 rounded-3xl border border-slate-100 flex items-center justify-between"
+          className="w-full bg-white p-5 rounded-3xl border border-slate-100 flex items-center justify-between min-h-[44px] focus-visible:ring-2 focus-visible:ring-rovya-orange focus-visible:ring-offset-2 outline-none"
         >
           <div className="flex items-center gap-4">
             <div className="bg-blue-50 p-3 rounded-2xl text-blue-600">
@@ -92,7 +92,7 @@ function SafetyScreen() {
         <button
           type="button"
           onClick={() => navigate({ to: "/passageiro/suporte" })}
-          className="w-full bg-white p-5 rounded-3xl border border-slate-100 flex items-center gap-4"
+          className="w-full bg-white p-5 rounded-3xl border border-slate-100 flex items-center gap-4 min-h-[44px] focus-visible:ring-2 focus-visible:ring-rovya-orange focus-visible:ring-offset-2 outline-none text-left"
         >
           <div className="bg-emerald-50 p-3 rounded-2xl text-emerald-600">
             <HeadphonesIcon size={24} aria-hidden="true" />
@@ -106,7 +106,7 @@ function SafetyScreen() {
         <button
           type="button"
           onClick={() => setIsEmergencyConfirmOpen(true)}
-          className="w-full bg-red-50 p-5 rounded-3xl border border-red-100 flex items-center gap-4"
+          className="w-full bg-red-50 p-5 rounded-3xl border border-red-100 flex items-center gap-4 min-h-[44px] focus-visible:ring-2 focus-visible:ring-rovya-orange focus-visible:ring-offset-2 outline-none text-left"
         >
           <div className="bg-red-100 p-3 rounded-2xl text-red-600">
             <ShieldAlert size={24} aria-hidden="true" />

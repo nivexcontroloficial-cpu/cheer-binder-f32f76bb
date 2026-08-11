@@ -50,7 +50,7 @@ function MensagensScreen() {
           key={chat.id}
           to="/passageiro/chat/$rideId"
           params={{ rideId: chat.id }}
-          className="flex items-center gap-4 p-4 bg-white rounded-3xl border border-slate-100 hover:border-rovya-orange/30 transition-all active:scale-[0.98]"
+          className="flex items-center gap-4 p-4 bg-white rounded-3xl border border-slate-100 hover:border-rovya-orange/30 transition-all active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-rovya-orange focus-visible:ring-offset-2 outline-none"
         >
           {/* Avatar CSS */}
           <div className="h-14 w-14 rounded-2xl bg-navy flex items-center justify-center text-white font-black text-lg shrink-0">
