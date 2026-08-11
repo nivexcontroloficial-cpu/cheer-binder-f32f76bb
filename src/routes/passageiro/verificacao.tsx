@@ -377,7 +377,7 @@ function VerificationScreen() {
         {step === 3 && (
           <div className="flex flex-col gap-8 w-full animate-in zoom-in duration-500 text-center items-center">
             <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mb-2">
-              <UserCheck size={40} className="text-rovya-green" />
+              <UserCheck size={40} className="text-rovya-green" aria-hidden="true" />
             </div>
 
             <div className="space-y-4">
@@ -389,7 +389,7 @@ function VerificationScreen() {
                   Demonstração concluída. Esta tela simulou o processo de validação de segurança.
                 </p>
                 <div className="flex items-start gap-3 text-slate-400">
-                  <CheckCircle2 size={16} className="shrink-0 mt-0.5" />
+                  <CheckCircle2 size={16} className="shrink-0 mt-0.5" aria-hidden="true" />
                   <p className="text-[10px] uppercase tracking-wider font-bold">
                     Nenhuma verificação real, biometria ou análise foi realizada.
                   </p>
