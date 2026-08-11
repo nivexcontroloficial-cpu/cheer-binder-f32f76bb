@@ -24,6 +24,11 @@ function CancelarCorrida() {
   const navigate = useNavigate();
   const [selectedReason, setSelectedReason] = useState<string | null>(null);
 
+  const handleConfirmCancel = () => {
+    toast.info("Cancelamento simulado: nenhuma corrida real foi cancelada.");
+    navigate({ to: "/passageiro/inicio" });
+  };
+
   const isValidRide = rideId === "ride-active-mock";
 
   const reasons = [
@@ -204,10 +209,7 @@ function CancelarCorrida() {
               </AlertDialogCancel>
               <AlertDialogAction
                 type="button"
-                onClick={() => {
-                  toast.info("Cancelamento simulado: nenhuma corrida real foi cancelada.");
-                  navigate({ to: "/passageiro/inicio" });
-                }}
+                onClick={handleConfirmCancel}
                 className="rounded-xl bg-rovya-red text-white font-black uppercase hover:bg-red-700 focus-visible:ring-2 focus-visible:ring-emerald-500 outline-none"
               >
                 Confirmar simulação
