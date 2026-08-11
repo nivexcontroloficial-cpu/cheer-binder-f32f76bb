@@ -268,13 +268,13 @@ function ActiveRideScreen() {
           <div className="flex flex-col gap-3">
             <Link
               to="/passageiro/corridas"
-              className="w-full h-11 flex items-center justify-center bg-navy text-white rounded-2xl font-black uppercase text-[9px] tracking-widest min-h-[44px]"
+              className="w-full h-11 flex items-center justify-center bg-navy text-white rounded-2xl font-black uppercase text-[9px] tracking-widest min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
             >
               Ver histórico simulado
             </Link>
             <Link
               to="/passageiro/inicio"
-              className="w-full h-11 flex items-center justify-center bg-white border border-slate-200 text-navy rounded-2xl font-black uppercase text-[9px] tracking-widest min-h-[44px]"
+              className="w-full h-11 flex items-center justify-center bg-white border border-slate-200 text-navy rounded-2xl font-black uppercase text-[9px] tracking-widest min-h-[44px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2"
             >
               Voltar ao início
             </Link>
@@ -292,6 +292,7 @@ function ActiveRideScreen() {
 
   return (
     <div className="flex min-h-screen flex-col bg-porcelain font-sans text-navy overflow-hidden">
+      <h1 className="sr-only">Piloto a caminho — corrida simulada</h1>
       {/* Banner de Transparência */}
       <div className="z-50 bg-amber-50 border-b border-amber-100 px-4 py-2 flex items-start gap-2 animate-in fade-in duration-700">
         <Info size={14} className="text-amber-600 mt-0.5 shrink-0" />
