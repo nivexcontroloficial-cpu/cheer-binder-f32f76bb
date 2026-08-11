@@ -82,7 +82,7 @@ function SignupScreen() {
         name: trimmedName,
         email: trimmedEmail,
       }));
-      
+
       const newErrors: typeof errors = {};
       if (!trimmedName) newErrors.name = "O nome é obrigatório";
       if (!trimmedEmail) newErrors.email = "O e-mail é obrigatório";
