@@ -258,7 +258,7 @@ function ActiveRideScreen() {
               </Link>
               <Link
                 to="/passageiro/seguranca"
-                search={(prev) => ({
+                search={(prev: RideQuoteSearch) => ({
                   ...getQuoteParams(prev),
                   rideId,
                   technical: false,
