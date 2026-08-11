@@ -168,6 +168,7 @@ function DenunciarScreen() {
               : navigate({
                   to: "/passageiro/corrida/$rideId/em-andamento",
                   params: { rideId },
+                  search: { technical: false },
                 })
           }
           className="h-11 w-11 bg-slate-50 rounded-xl flex items-center justify-center text-navy hover:bg-slate-100 transition-colors focus-visible:ring-2 focus-visible:ring-emerald-500 outline-none"
