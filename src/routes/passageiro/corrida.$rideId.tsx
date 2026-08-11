@@ -6,6 +6,7 @@ import {
   useLocation,
   Link,
 } from "@tanstack/react-router";
+import { ACTIVE_PASSENGER_DEMO_RIDE } from "@/data/passenger-demo-rides";
 import { useState, useEffect, useMemo } from "react";
 import {
   ArrowLeft,
@@ -50,7 +51,7 @@ function ActiveRideScreen() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const isValidRide = useMemo(() => rideId === "ride-active-mock", [rideId]);
+  const isValidRide = useMemo(() => rideId === ACTIVE_PASSENGER_DEMO_RIDE.id, [rideId]);
 
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const [connection, setConnection] = useState<ConnectionStatus>("stable");
@@ -61,22 +62,22 @@ function ActiveRideScreen() {
   const [isNearAlertVisible, setIsNearAlertVisible] = useState(false);
   const [waitTime, setWaitTime] = useState(300); // 5 minutos em segundos
   const [isWaitTimerActive, setIsWaitTimerActive] = useState(false);
-  const [pin] = useState("4827");
+  const [pin] = useState(ACTIVE_PASSENGER_DEMO_RIDE.pin);
   const [isDivergentVehicleAlertOpen, setIsDivergentVehicleAlertOpen] = useState(false);
   const [lastUpdate, setLastUpdate] = useState("10:00");
 
   // Dados Mock Obrigatórios do Piloto
   const pilot = {
-    name: "Carlos H.",
-    rating: 4.96,
-    totalRides: 842,
-    timeAtRovya: "1 ano",
+    name: ACTIVE_PASSENGER_DEMO_RIDE.driver.name,
+    rating: ACTIVE_PASSENGER_DEMO_RIDE.driver.rating,
+    totalRides: ACTIVE_PASSENGER_DEMO_RIDE.driver.totalRides,
+    timeAtRovya: ACTIVE_PASSENGER_DEMO_RIDE.driverTimeOnPlatform,
     avatar: "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=400&h=400&fit=crop",
     badges: ["Top Piloto", "Seguro"],
     vehicle: {
-      model: "Honda CG 160",
-      color: "Vermelha",
-      plate: "ABC1D23",
+      model: ACTIVE_PASSENGER_DEMO_RIDE.vehicle.model,
+      color: ACTIVE_PASSENGER_DEMO_RIDE.vehicle.color,
+      plate: ACTIVE_PASSENGER_DEMO_RIDE.vehicle.plate,
     },
   };
 
@@ -179,7 +180,7 @@ function ActiveRideScreen() {
     setDistanceMeters(0);
     setWaitTime(300);
     setIsWaitTimerActive(true);
-    toast.success("O piloto Carlos H. chegou ao local de embarque!", {
+    toast.success(`O piloto ${ACTIVE_PASSENGER_DEMO_RIDE.driver.name} chegou ao local de embarque!`, {
       duration: 5000,
       icon: <CheckCircle2 className="text-emerald-500" />,
     });
@@ -206,7 +207,7 @@ function ActiveRideScreen() {
     setWaitTime(300);
     setProgress(0);
     setDistanceMeters(2500);
-    setEta(4);
+    setEta(ACTIVE_PASSENGER_DEMO_RIDE.duration);
     setIsNearAlertVisible(false);
   };
 
@@ -285,8 +286,8 @@ function ActiveRideScreen() {
   }
 
   const rideSummary = {
-    price: "R$ 18,00",
-    method: "Dinheiro",
+    price: new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(ACTIVE_PASSENGER_DEMO_RIDE.fare),
+    method: ACTIVE_PASSENGER_DEMO_RIDE.paymentMethod,
     details: "Pagamento presencial demonstrativo",
   };
 
@@ -404,7 +405,7 @@ function ActiveRideScreen() {
                   Piloto Próximo
                 </span>
                 <span className="text-xs font-bold leading-tight">
-                  O Carlos H. está a menos de 500m. (Simulação)
+                  O ${ACTIVE_PASSENGER_DEMO_RIDE.driver.name} está a menos de 500m. (Simulação)
                 </span>
               </div>
             </div>
@@ -464,7 +465,7 @@ function ActiveRideScreen() {
                   Ponto
                 </span>
                 <span className="text-[10px] font-black uppercase tracking-tight truncate max-w-[120px]">
-                  Centro, Jacarezinho
+                  {ACTIVE_PASSENGER_DEMO_RIDE.origin.address}
                 </span>
               </div>
             </div>
