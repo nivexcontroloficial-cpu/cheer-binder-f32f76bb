@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate, useParams, Link } from "@tanstack/react-router";
 import { useState, useMemo } from "react";
+import { COMPLETED_PASSENGER_DEMO_RIDE } from "@/data/passenger-demo-rides";
 import {
   CheckCircle2,
   Star,
@@ -48,17 +49,17 @@ const COMPLIMENTS = [
 const COMMENT_MAX = 240;
 
 const RIDE_SUMMARY = {
-  id: "RY-2026-00842",
-  origin: "Centro, Jacarezinho",
-  destination: "Vila Setti, Jacarezinho",
-  distance: "4,2 km",
-  duration: "12 min",
-  fare: 18,
-  paymentMethod: "Pix direto ao piloto",
+  id: COMPLETED_PASSENGER_DEMO_RIDE.id,
+  origin: COMPLETED_PASSENGER_DEMO_RIDE.origin.address,
+  destination: COMPLETED_PASSENGER_DEMO_RIDE.destination.address,
+  distance: `${COMPLETED_PASSENGER_DEMO_RIDE.distance.toString().replace(".", ",")} km`,
+  duration: `${COMPLETED_PASSENGER_DEMO_RIDE.duration} min`,
+  fare: COMPLETED_PASSENGER_DEMO_RIDE.fare,
+  paymentMethod: COMPLETED_PASSENGER_DEMO_RIDE.paymentMethod,
   pilot: {
-    name: "Carlos H.",
+    name: COMPLETED_PASSENGER_DEMO_RIDE.driver.name,
     initials: "CH",
-    vehicle: "Honda CG 160 — ABC1D23",
+    vehicle: `${COMPLETED_PASSENGER_DEMO_RIDE.vehicle.model} — ${COMPLETED_PASSENGER_DEMO_RIDE.vehicle.plate}`,
   },
 };
 
@@ -67,7 +68,7 @@ function RideCompletedScreen() {
   const navigate = useNavigate();
   const { rides, addRideToHistory } = useDemo();
 
-  const isValidRide = useMemo(() => rideId === "RY-2026-00842", [rideId]);
+  const isValidRide = useMemo(() => rideId === COMPLETED_PASSENGER_DEMO_RIDE.id, [rideId]);
 
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
@@ -91,11 +92,11 @@ function RideCompletedScreen() {
       destination: { address: RIDE_SUMMARY.destination, lat: 0, lng: 0 },
       status: "completed",
       fare: RIDE_SUMMARY.fare,
-      distance: 4.2,
-      duration: 12,
-      requestedAt: new Date().toISOString(),
-      completedAt: new Date().toISOString(),
-      driverId: "d1",
+      distance: COMPLETED_PASSENGER_DEMO_RIDE.distance,
+      duration: COMPLETED_PASSENGER_DEMO_RIDE.duration,
+      requestedAt: COMPLETED_PASSENGER_DEMO_RIDE.requestedAt,
+      completedAt: COMPLETED_PASSENGER_DEMO_RIDE.completedAt || new Date().toISOString(),
+      driverId: COMPLETED_PASSENGER_DEMO_RIDE.driver.id,
     });
   };
 

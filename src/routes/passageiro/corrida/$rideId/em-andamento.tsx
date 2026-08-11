@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate, useParams, Link } from "@tanstack/react-router";
 import { useState, useEffect, useMemo } from "react";
 import { Shield, MapPin, Navigation, AlertTriangle, Info } from "lucide-react";
+import { ACTIVE_PASSENGER_DEMO_RIDE } from "@/data/passenger-demo-rides";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import {
@@ -29,15 +30,15 @@ function InProgressRideScreen() {
   const { rideId } = useParams({ from: "/passageiro/corrida/$rideId/em-andamento" });
   const navigate = useNavigate();
 
-  const isValidRide = useMemo(() => rideId === "ride-active-mock", [rideId]);
+  const isValidRide = useMemo(() => rideId === ACTIVE_PASSENGER_DEMO_RIDE.id, [rideId]);
 
   const [progress, setProgress] = useState(35);
   const [eta, setEta] = useState(12);
   const [gpsStatus, setGpsStatus] = useState<"stable" | "unstable">("stable");
   const [isDesvioOpen, setIsDesvioOpen] = useState(false);
   const [isAltDestConfirmOpen, setIsAltDestConfirmOpen] = useState(false);
-  const [destination, setDestination] = useState("Vila Setti, Jacarezinho");
-  const [price, setPrice] = useState(18.0);
+  const [destination, setDestination] = useState(ACTIVE_PASSENGER_DEMO_RIDE.destination.address);
+  const [price, setPrice] = useState(ACTIVE_PASSENGER_DEMO_RIDE.fare);
   const [isEncerrarConfirmOpen, setIsEncerrarConfirmOpen] = useState(false);
   const [desvioResult, setDesvioResult] = useState<string | null>(null);
 
@@ -87,13 +88,13 @@ function InProgressRideScreen() {
   }
 
   const pilot = {
-    name: "Carlos H.",
+    name: ACTIVE_PASSENGER_DEMO_RIDE.driver.name,
     initials: "CH",
-    vehicle: "Honda CG 160 • ABC1D23",
+    vehicle: `${ACTIVE_PASSENGER_DEMO_RIDE.vehicle.model} • ${ACTIVE_PASSENGER_DEMO_RIDE.vehicle.plate}`,
   };
 
   const applyAltDestination = () => {
-    setDestination("Shopping Jacarezinho, Centro");
+    setDestination("Shopping Jacarezinho — Centro, Jacarezinho");
     setPrice(21.0);
     setIsAltDestConfirmOpen(false);
   };
@@ -159,7 +160,7 @@ function InProgressRideScreen() {
         <div className="absolute top-8 left-6 right-6">
           <div className="bg-white/95 backdrop-blur-md rounded-3xl p-6 shadow-xl border border-slate-100">
             <h1 className="text-xl font-black italic uppercase tracking-tight text-navy mb-4">
-              Corrida em andamento
+              Corrida em andamento — {rideId}
             </h1>
             <div className="space-y-4">
               <div className="flex items-start gap-3">
@@ -170,7 +171,7 @@ function InProgressRideScreen() {
                   <span className="block text-[10px] font-black uppercase tracking-widest text-slate-400">
                     Origem
                   </span>
-                  <span className="text-sm font-bold text-navy italic">Centro, Jacarezinho</span>
+                  <span className="text-sm font-bold text-navy italic">{ACTIVE_PASSENGER_DEMO_RIDE.origin.address}</span>
                 </div>
               </div>
               <div className="flex items-start gap-3">
@@ -338,12 +339,12 @@ function InProgressRideScreen() {
               Alterar Destino?
             </AlertDialogTitle>
             <AlertDialogDescription className="text-xs text-slate-500 font-medium pt-2">
-              <span className="block mb-2">Destino atual: Vila Setti, Jacarezinho</span>
+              <span className="block mb-2">Destino atual: {ACTIVE_PASSENGER_DEMO_RIDE.destination.address}</span>
               <span className="block font-bold text-navy italic">
-                Novo destino: Shopping Jacarezinho, Centro
+                Novo destino: Shopping Jacarezinho — Centro, Jacarezinho
               </span>
-              <span className="block mt-2">Valor atual: R$ 18,00</span>
-              <span className="block font-bold text-emerald-600 italic">Novo valor: R$ 21,00</span>
+              <span className="block mt-2">Valor atual: {new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(ACTIVE_PASSENGER_DEMO_RIDE.fare)}</span>
+              <span className="block font-bold text-emerald-600 italic">Novo valor: {new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(21.0)}</span>
               <span className="block mt-4 text-[9px] uppercase tracking-widest">
                 Nenhuma solicitação real foi enviada.
               </span>

@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate, useParams, Link } from "@tanstack/react-router";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import { ACTIVE_PASSENGER_DEMO_RIDE } from "@/data/passenger-demo-rides";
 import {
   ArrowLeft,
   Send,
@@ -58,14 +59,14 @@ const DEFAULT_MESSAGES: Message[] = [
     id: "1",
     text: "Olá Rafael, estou chegando ao local de embarque.",
     sender: "driver",
-    timestamp: new Date("2026-08-11T10:00:00Z"),
+    timestamp: new Date("2026-08-11T14:00:00Z"),
     status: "read",
   },
   {
     id: "2",
-    text: "Estou em uma Honda CG 160 Vermelha.",
+    text: `Estou em uma ${ACTIVE_PASSENGER_DEMO_RIDE.vehicle.model} ${ACTIVE_PASSENGER_DEMO_RIDE.vehicle.color}.`,
     sender: "driver",
-    timestamp: new Date("2026-08-11T10:01:00Z"),
+    timestamp: new Date("2026-08-11T14:01:00Z"),
     status: "read",
   },
 ];
@@ -81,7 +82,7 @@ function formatMessageTime(date: Date) {
 
 function ChatScreen() {
   const { rideId } = useParams({ from: "/passageiro/chat/$rideId" });
-  const isValidRide = rideId === "ride-active-mock";
+  const isValidRide = useMemo(() => rideId === ACTIVE_PASSENGER_DEMO_RIDE.id, [rideId]);
   const navigate = useNavigate();
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -405,7 +406,7 @@ function ChatScreen() {
               <div
                 className="h-10 w-10 rounded-xl bg-navy flex items-center justify-center border border-slate-100"
                 role="img"
-                aria-label="Avatar de Carlos H."
+                aria-label={`Avatar de ${ACTIVE_PASSENGER_DEMO_RIDE.driver.name}`}
               >
                 <span className="text-white font-black italic tracking-tighter text-sm uppercase">
                   CH
@@ -418,7 +419,7 @@ function ChatScreen() {
             </div>
             <div className="flex flex-col">
               <h2 className="text-sm font-black italic tracking-tighter text-navy uppercase leading-none">
-                Carlos H.
+                {ACTIVE_PASSENGER_DEMO_RIDE.driver.name}
               </h2>
               <div className="flex flex-col mt-0.5" aria-live="polite">
                 <div className="flex items-center gap-1.5">

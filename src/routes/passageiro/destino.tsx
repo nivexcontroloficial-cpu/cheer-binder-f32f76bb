@@ -46,25 +46,13 @@ const MOCK_SUGGESTIONS: Suggestion[] = [
     id: "s1",
     name: "Shopping Jacarezinho",
     region: "Centro, Jacarezinho",
-    distanceSimulated: "1,2 km",
+    distanceSimulated: "6,8 km",
   },
   {
     id: "s2",
-    name: "Vila Setti",
-    region: "Vila Setti, Jacarezinho",
-    distanceSimulated: "0,8 km",
-  },
-  {
-    id: "s3",
-    name: "Terminal Rodoviário",
+    name: "Centro",
     region: "Centro, Jacarezinho",
-    distanceSimulated: "1,5 km",
-  },
-  {
-    id: "s4",
-    name: "Academia Fit",
-    region: "Centro, Jacarezinho",
-    distanceSimulated: "2,3 km",
+    distanceSimulated: "0,0 km",
   },
 ];
 
@@ -439,7 +427,7 @@ function DestinationScreen() {
                     Nenhum local fictício encontrado
                   </p>
                   <p className="text-[9px] text-slate-400 font-medium max-w-[200px] mx-auto">
-                    Tente buscar por outro nome ou região em Jacarezinho (Ex: Centro, Vila Setti).
+                    Tente buscar por outro nome ou região em Jacarezinho (Ex: Centro, Shopping).
                   </p>
                 </div>
               </div>

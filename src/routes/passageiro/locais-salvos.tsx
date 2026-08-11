@@ -33,7 +33,7 @@ interface SavedPlace {
 const INITIAL_PLACES: SavedPlace[] = [
   { id: "1", label: "Casa", region: "Jacarezinho, PR", type: "home" },
   { id: "2", label: "Trabalho", region: "Centro, Jacarezinho", type: "work" },
-  { id: "3", label: "Academia", region: "Vila Setti, Jacarezinho", type: "other" },
+  { id: "3", label: "Academia", region: "Shopping Jacarezinho — Centro, Jacarezinho", type: "other" },
 ];
 
 export const Route = createFileRoute("/passageiro/locais-salvos")({
@@ -185,7 +185,7 @@ function SavedPlacesPage() {
                   onChange={(e) => setNewRegion(e.target.value)}
                   maxLength={50}
                   className="w-full h-12 px-4 bg-slate-50 border-none rounded-2xl text-sm font-bold text-navy placeholder:text-slate-300 focus:ring-2 focus:ring-navy/10 transition-all"
-                  placeholder="Ex: Vila Setti, Jacarezinho"
+                  placeholder="Ex: Shopping Jacarezinho — Centro, Jacarezinho"
                   required
                 />
                 <p className="text-[9px] text-amber-600 font-bold uppercase tracking-tight mt-1.5 ml-1">
