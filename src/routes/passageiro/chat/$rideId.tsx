@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, useParams, Link } from "@tanstack/react-router";
 import { useState, useEffect, useRef, useCallback } from "react";
 import {
   ArrowLeft,
@@ -15,6 +15,7 @@ import {
   X,
   Ban,
   ImageIcon,
+  MessageSquareX,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -57,20 +58,21 @@ const DEFAULT_MESSAGES: Message[] = [
     id: "1",
     text: "Olá Rafael, estou chegando ao local de embarque.",
     sender: "driver",
-    timestamp: new Date(Date.now() - 1000 * 60 * 5),
+    timestamp: new Date("2026-08-11T10:00:00Z"),
     status: "read",
   },
   {
     id: "2",
     text: "Estou em uma Honda CG 160 Vermelha.",
     sender: "driver",
-    timestamp: new Date(Date.now() - 1000 * 60 * 4),
+    timestamp: new Date("2026-08-11T10:01:00Z"),
     status: "read",
   },
 ];
 
 function ChatScreen() {
   const { rideId } = useParams({ from: "/passageiro/chat/$rideId" });
+  const isValidRide = rideId === "ride-active-mock";
   const navigate = useNavigate();
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -115,6 +117,10 @@ function ChatScreen() {
 
   // Read from localStorage on client only
   useEffect(() => {
+    if (!isValidRide) {
+      setHydratedRideId(rideId);
+      return;
+    }
     const storageKey = `chat_history_${rideId}`;
     try {
       const saved = localStorage.getItem(storageKey);
@@ -177,11 +183,11 @@ function ChatScreen() {
     } finally {
       setHydratedRideId(rideId);
     }
-  }, [rideId]);
+  }, [rideId, isValidRide]);
 
   // Save to localStorage only after hydration and only for current rideId
   useEffect(() => {
-    if (hydratedRideId !== rideId) return;
+    if (hydratedRideId !== rideId || !isValidRide) return;
 
     const storageKey = `chat_history_${rideId}`;
     try {
@@ -195,7 +201,7 @@ function ChatScreen() {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [messages, rideId, hydratedRideId]);
+  }, [messages, rideId, hydratedRideId, isValidRide]);
 
   const handleSendMessage = useCallback(
     (text = inputText) => {
@@ -315,14 +321,70 @@ function ChatScreen() {
 
   const quickReplies = ["Estou saindo!", "Estou no local.", "Pode me esperar?", "Ok, obrigado."];
 
+  if (hydratedRideId && !isValidRide) {
+    return (
+      <div className="flex h-screen flex-col bg-[#F8FAFC] font-sans text-navy">
+        <header className="bg-white border-b border-slate-100 px-6 py-4 flex items-center gap-4 z-10 shrink-0">
+          <Link
+            to="/passageiro/mensagens"
+            className="h-10 w-10 bg-slate-50 rounded-xl flex items-center justify-center text-navy active:scale-95 transition-all focus:ring-2 focus:ring-navy focus:outline-none"
+            aria-label="Voltar para mensagens"
+          >
+            <ArrowLeft size={20} strokeWidth={2.5} />
+          </Link>
+          <h1 className="text-sm font-black italic tracking-tighter text-navy uppercase leading-none">
+            Conversa não encontrada
+          </h1>
+        </header>
+
+        <main className="flex-1 flex flex-col items-center justify-center p-8 text-center gap-6">
+          <div className="bg-white/80 border border-slate-100 px-4 py-1.5 rounded-full shadow-sm mb-4">
+            <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">
+              Aviso de demonstração — Recurso simulado
+            </span>
+          </div>
+
+          <div className="h-24 w-24 bg-slate-50 rounded-[32px] flex items-center justify-center text-slate-300">
+            <MessageSquareX size={48} strokeWidth={1.5} />
+          </div>
+
+          <div className="space-y-2">
+            <h1 className="text-xl font-black italic tracking-tighter text-navy uppercase leading-tight">
+              Conversa simulada não encontrada
+            </h1>
+            <p className="text-xs font-medium text-slate-500 max-w-[240px] mx-auto">
+              Nenhuma conversa real foi consultada. Este ID não faz parte do fluxo demonstrativo.
+            </p>
+          </div>
+
+          <div className="flex flex-col w-full gap-3 mt-4 max-w-[280px]">
+            <Link
+              to="/passageiro/mensagens"
+              className="flex items-center justify-center w-full bg-navy text-white h-14 rounded-2xl text-xs font-black uppercase tracking-widest active:scale-95 transition-all focus:ring-2 focus:ring-navy focus:outline-offset-2"
+            >
+              Ver Minhas Mensagens
+            </Link>
+            <Link
+              to="/passageiro/inicio"
+              className="flex items-center justify-center w-full bg-white border border-slate-200 text-navy h-14 rounded-2xl text-xs font-black uppercase tracking-widest active:scale-95 transition-all focus:ring-2 focus:ring-navy focus:outline-offset-2"
+            >
+              Ir para o Início
+            </Link>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="flex h-screen flex-col bg-[#F8FAFC] font-sans text-navy">
+      <h1 className="sr-only">Chat simulado da corrida</h1>
       <header className="bg-white border-b border-slate-100 px-6 py-4 flex items-center justify-between z-10 shrink-0">
         <div className="flex items-center gap-4">
           <button
             type="button"
             onClick={() => navigate({ to: "/passageiro/corrida/$rideId", params: { rideId } })}
-            className="h-10 w-10 bg-slate-50 rounded-xl flex items-center justify-center text-navy active:scale-95 transition-all"
+            className="h-11 w-11 bg-slate-50 rounded-xl flex items-center justify-center text-navy active:scale-95 transition-all focus:ring-2 focus:ring-navy focus:outline-none"
             aria-label="Voltar para detalhes da corrida"
           >
             <ArrowLeft size={20} strokeWidth={2.5} />
@@ -365,7 +427,7 @@ function ChatScreen() {
           <button
             type="button"
             onClick={() => setShowProtectedCall(true)}
-            className="h-10 w-10 bg-slate-50 text-navy rounded-xl flex items-center justify-center hover:bg-slate-100 active:scale-95 transition-all"
+            className="h-11 w-11 bg-slate-50 text-navy rounded-xl flex items-center justify-center hover:bg-slate-100 active:scale-95 transition-all focus:ring-2 focus:ring-navy focus:outline-none"
             aria-label="Chamada protegida"
           >
             <Phone size={18} strokeWidth={2.5} />
@@ -375,7 +437,7 @@ function ChatScreen() {
             <AlertDialogTrigger asChild>
               <button
                 type="button"
-                className="h-10 w-10 bg-slate-50 text-navy rounded-xl flex items-center justify-center hover:bg-slate-100 active:scale-95 transition-all"
+                className="h-11 w-11 bg-slate-50 text-navy rounded-xl flex items-center justify-center hover:bg-slate-100 active:scale-95 transition-all focus:ring-2 focus:ring-navy focus:outline-none"
                 aria-label="Opções adicionais"
               >
                 <MoreVertical size={18} strokeWidth={2.5} />
@@ -393,8 +455,8 @@ function ChatScreen() {
               <div className="flex flex-col gap-2 py-2">
                 <button
                   type="button"
-                  onClick={() => navigate({ to: "/passageiro/seguranca" })}
-                  className="flex items-center gap-3 w-full p-4 rounded-2xl bg-slate-50 text-navy hover:bg-slate-100 transition-colors text-left"
+                  onClick={() => navigate({ to: "/passageiro/seguranca", search: { rideId } })}
+                  className="flex items-center gap-3 w-full p-4 rounded-2xl bg-slate-50 text-navy hover:bg-slate-100 transition-colors text-left focus:ring-2 focus:ring-navy focus:outline-none"
                 >
                   <Shield size={18} className="text-blue-500" aria-hidden="true" />
                   <span className="text-xs font-bold uppercase tracking-widest">
@@ -406,7 +468,7 @@ function ChatScreen() {
                   <AlertDialogTrigger asChild>
                     <button
                       type="button"
-                      className={`flex items-center gap-3 w-full p-4 rounded-2xl transition-colors text-left ${isBlocked ? "bg-emerald-50 text-emerald-600 hover:bg-emerald-100" : "bg-slate-50 text-navy hover:bg-slate-100"}`}
+                      className={`flex items-center gap-3 w-full p-4 rounded-2xl transition-colors text-left focus:ring-2 focus:ring-navy focus:outline-none ${isBlocked ? "bg-emerald-50 text-emerald-600 hover:bg-emerald-100" : "bg-slate-50 text-navy hover:bg-slate-100"}`}
                     >
                       <Ban size={18} aria-hidden="true" />
                       <span className="text-xs font-bold uppercase tracking-widest">
@@ -476,7 +538,7 @@ function ChatScreen() {
                   <AlertDialogTrigger asChild>
                     <button
                       type="button"
-                      className="flex items-center gap-3 w-full p-4 rounded-2xl bg-red-50 text-red-600 hover:bg-red-100 transition-colors text-left"
+                      className="flex items-center gap-3 w-full p-4 rounded-2xl bg-red-50 text-red-600 hover:bg-red-100 transition-colors text-left focus:ring-2 focus:ring-red-600 focus:outline-none"
                     >
                       <Flag size={18} aria-hidden="true" />
                       <span className="text-xs font-bold uppercase tracking-widest">
@@ -645,7 +707,7 @@ function ChatScreen() {
               type="button"
               disabled={isBlocked}
               onClick={() => handleSendMessage(reply)}
-              className="whitespace-nowrap px-4 py-2 bg-slate-50 border border-slate-100 rounded-full text-[10px] font-black uppercase tracking-widest text-slate-500 hover:bg-slate-100 transition-colors disabled:opacity-50 disabled:grayscale focus:ring-2 focus:ring-navy focus:outline-none"
+              className="whitespace-nowrap px-4 py-2 min-h-[44px] bg-slate-50 border border-slate-100 rounded-full text-[10px] font-black uppercase tracking-widest text-slate-500 hover:bg-slate-100 transition-colors disabled:opacity-50 disabled:grayscale focus:ring-2 focus:ring-navy focus:outline-none"
             >
               {reply}
             </button>
@@ -660,10 +722,14 @@ function ChatScreen() {
             <button
               type="button"
               onClick={() => setHasFakeAttachment(false)}
-              className="absolute -top-2 -right-2 h-6 w-6 bg-red-500 text-white rounded-full flex items-center justify-center shadow-lg active:scale-90 transition-transform"
+              className="absolute -top-2 -right-2 h-11 w-11 bg-red-500 text-white rounded-full flex items-center justify-center shadow-lg active:scale-90 transition-transform focus:ring-2 focus:ring-red-500 focus:outline-none"
               aria-label="Remover prévia fictícia"
             >
-              <X size={14} aria-hidden="true" />
+              <X
+                size={14}
+                className="h-6 w-6 flex items-center justify-center"
+                aria-hidden="true"
+              />
             </button>
           </div>
         )}
@@ -682,7 +748,7 @@ function ChatScreen() {
                 isBlockedRef.current = false;
                 setIsBlocked(false);
               }}
-              className="text-[9px] font-black uppercase tracking-widest text-red-600 underline"
+              className="text-[9px] font-black uppercase tracking-widest text-red-600 underline min-h-[44px] px-2 flex items-center focus:ring-2 focus:ring-red-600 focus:outline-none"
             >
               Desbloquear
             </button>
