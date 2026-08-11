@@ -171,7 +171,9 @@ function ProtocolDetailScreen() {
                         {getStatusLabel(event.status)}
                       </span>
                       <span className="text-[9px] font-bold text-slate-300">
-                        {new Date(event.timestamp).toLocaleDateString("pt-BR")}
+                        {new Date(event.timestamp).toLocaleDateString("pt-BR", {
+                          timeZone: "America/Sao_Paulo",
+                        })}
                       </span>
                     </div>
                     <p className="text-xs text-slate-500 leading-relaxed">{event.message}</p>
@@ -185,9 +187,9 @@ function ProtocolDetailScreen() {
         {/* Local Simulated Messages */}
         {simulatedMessages.length > 0 && (
           <section className="space-y-4">
-            <h3 className="text-[10px] font-black uppercase tracking-widest text-slate-400 px-2">
+            <h2 className="text-[10px] font-black uppercase tracking-widest text-slate-400 px-2">
               Histórico Local (Volátil)
-            </h3>
+            </h2>
             <div className="space-y-3" aria-live="polite">
               {simulatedMessages.map((msg) => (
                 <div
@@ -202,6 +204,8 @@ function ProtocolDetailScreen() {
                       {new Date(msg.timestamp).toLocaleTimeString("pt-BR", {
                         hour: "2-digit",
                         minute: "2-digit",
+                        hour12: false,
+                        timeZone: "America/Sao_Paulo",
                       })}
                     </span>
                   </div>
@@ -217,7 +221,7 @@ function ProtocolDetailScreen() {
           <section className="pt-4 pb-12">
             <div className="bg-navy rounded-[32px] p-6 text-white">
               <div className="flex items-center gap-3 mb-4">
-                <MessageSquare className="text-blue-400" size={18} />
+                <MessageSquare className="text-blue-400" size={18} aria-hidden="true" />
                 <h2 className="text-[10px] font-black uppercase tracking-widest">Canal simulado</h2>
               </div>
               <p className="text-[11px] text-slate-400 leading-relaxed mb-4">
@@ -240,7 +244,7 @@ function ProtocolDetailScreen() {
                   aria-label="Enviar mensagem simulada"
                   className="absolute right-2 top-2 h-8 w-8 bg-blue-500 rounded-xl flex items-center justify-center hover:bg-blue-600 transition-colors"
                 >
-                  <Send size={14} />
+                  <Send size={14} aria-hidden="true" />
                 </button>
               </form>
             </div>
@@ -250,7 +254,7 @@ function ProtocolDetailScreen() {
 
       <footer className="fixed bottom-0 left-0 right-0 p-6 bg-white border-t border-slate-100 z-10">
         <div className="flex items-center gap-3 text-slate-400 max-w-lg mx-auto">
-          <ShieldCheck size={16} />
+          <ShieldCheck size={16} aria-hidden="true" />
           <span className="text-[9px] font-bold uppercase tracking-widest">
             Demonstração local • dados mockados
           </span>

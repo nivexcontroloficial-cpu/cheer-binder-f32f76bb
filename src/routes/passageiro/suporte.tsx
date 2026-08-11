@@ -105,7 +105,7 @@ function SupportCenter() {
           <button
             type="button"
             onClick={handleChatClick}
-            className="bg-white p-5 rounded-[32px] border border-slate-100 flex flex-col items-center gap-3 active:scale-95 transition-all shadow-sm focus:ring-2 focus:ring-navy outline-none"
+            className="bg-white p-5 rounded-[32px] border border-slate-100 flex flex-col items-center gap-3 active:scale-95 transition-all shadow-sm focus-visible:ring-2 focus-visible:ring-rovya-orange focus-visible:ring-offset-2 outline-none"
           >
             <div className="h-12 w-12 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600">
               <MessageSquare size={24} aria-hidden="true" />
@@ -122,7 +122,7 @@ function SupportCenter() {
           <button
             type="button"
             onClick={() => navigate({ to: "/passageiro/saude-da-conta" })}
-            className="bg-white p-5 rounded-[32px] border border-slate-100 flex flex-col items-center gap-3 active:scale-95 transition-all shadow-sm focus:ring-2 focus:ring-navy outline-none"
+            className="bg-white p-5 rounded-[32px] border border-slate-100 flex flex-col items-center gap-3 active:scale-95 transition-all shadow-sm focus-visible:ring-2 focus-visible:ring-rovya-orange focus-visible:ring-offset-2 outline-none"
           >
             <div className="h-12 w-12 bg-emerald-50 rounded-2xl flex items-center justify-center text-emerald-600">
               <LifeBuoy size={24} aria-hidden="true" />
