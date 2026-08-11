@@ -15,7 +15,8 @@ function PrivacidadeScreen() {
       >
         <Info size={14} className="text-amber-500 shrink-0" aria-hidden="true" />
         <p className="text-[9px] font-bold uppercase tracking-wider text-amber-700 leading-tight">
-          Documento demonstrativo: este texto ainda não representa os termos jurídicos finais da Rovya.
+          Documento demonstrativo: este texto ainda não representa os termos jurídicos finais da
+          Rovya.
         </p>
       </div>
 
@@ -94,9 +95,7 @@ function PrivacidadeScreen() {
           <section>
             <div className="mb-3 flex items-center gap-2 text-rovya-orange">
               <Info size={16} aria-hidden="true" />
-              <h2 className="text-[10px] font-black uppercase tracking-widest">
-                5. Fase futura
-              </h2>
+              <h2 className="text-[10px] font-black uppercase tracking-widest">5. Fase futura</h2>
             </div>
             <p className="text-[11px] font-medium leading-relaxed text-slate-500">
               Uma política de privacidade jurídica definitiva e em conformidade com a LGPD deverá
