@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router"; // MICROCORREÇÃO 20.2C.2 — LIMPEZA FINAL E PUBLICAÇÃO REAL DO ROUTETREE. Base: d79edfcad0c3cdd13f8305c25dba1f359756141d. Hash Alvo: b4c2182230f995137cc73fe9f586cd7f1d707a08806b7a0579b3af59b8fd7d49. Contrato: Limpeza de imports, callback onerror seguro e routeTree estável.
+import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { RovyaBrand } from "@/components/RovyaBrand";
 import { User, ShieldCheck, PlayCircle, Bike, Palette, RotateCcw, ArrowRight, MessageSquare, Navigation as NavigationIcon, CheckCircle2, HeartPulse, Clock } from "lucide-react";
 import { useDemo } from "@/state/DemoContext";
