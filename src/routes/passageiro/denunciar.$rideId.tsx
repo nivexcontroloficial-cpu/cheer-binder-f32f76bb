@@ -28,6 +28,9 @@ function DenunciarScreen() {
   const [description, setDescription] = useState("");
   const [hasEvidence, setHasEvidence] = useState(false);
 
+  const isValidRide =
+    rideId === "ride-active-mock" || rideId === "RY-2026-00842" || rideId.startsWith("RY-");
+
   const handleCategorySelect = (id: string) => {
     setSelectedCategory(id);
     setStep("details");
@@ -41,6 +44,28 @@ function DenunciarScreen() {
     }
     setStep("success");
   };
+
+  if (!isValidRide) {
+    return (
+      <div className="flex min-h-screen flex-col bg-white p-6 items-center text-center justify-center">
+        <div className="h-20 w-20 bg-slate-50 rounded-[32px] flex items-center justify-center mb-6">
+          <ShieldAlert size={40} className="text-slate-300" />
+        </div>
+        <h1 className="text-2xl font-black italic uppercase tracking-tighter text-navy mb-4">
+          ID Inválido
+        </h1>
+        <p className="text-slate-500 text-sm leading-relaxed mb-8 max-w-[280px]">
+          Esta corrida não existe ou não pode ser denunciada nesta simulação.
+        </p>
+        <button
+          onClick={() => navigate({ to: "/passageiro/inicio" })}
+          className="w-full bg-navy text-white h-14 rounded-2xl font-black uppercase italic tracking-widest focus-visible:ring-2 focus-visible:ring-emerald-500 outline-none"
+        >
+          Voltar ao início
+        </button>
+      </div>
+    );
+  }
 
   if (step === "success") {
     return (
@@ -68,7 +93,7 @@ function DenunciarScreen() {
             type="button"
             onClick={() => navigate({ to: "/passageiro/inicio" })}
             variant="ghost"
-            className="w-full text-slate-400 font-bold uppercase text-[10px]"
+            className="w-full text-slate-400 font-bold uppercase text-[10px] focus-visible:ring-2 focus-visible:ring-emerald-500 outline-none"
           >
             Voltar para o Início
           </Button>

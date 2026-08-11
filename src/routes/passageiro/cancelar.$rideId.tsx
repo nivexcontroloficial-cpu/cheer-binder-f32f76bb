@@ -24,6 +24,8 @@ function CancelarCorrida() {
   const navigate = useNavigate();
   const [selectedReason, setSelectedReason] = useState<string | null>(null);
 
+  const isValidRide = rideId === "ride-active-mock";
+
   const reasons = [
     { id: "desistencia", label: "Desisti da corrida" },
     { id: "demora", label: "Demora do piloto" },
@@ -33,7 +35,7 @@ function CancelarCorrida() {
     { id: "pagamento", label: "Divergência de pagamento" },
   ];
 
-  const consequence = selectedReason
+  const consequence = selectedReason && isValidRide
     ? calculateCancellationConsequence("arrived", selectedReason)
     : null;
 
@@ -48,6 +50,30 @@ function CancelarCorrida() {
     toast.info("Cancelamento simulado: nenhuma corrida real foi cancelada.");
     navigate({ to: "/passageiro/inicio" });
   };
+
+  if (!isValidRide) {
+    return (
+      <div className="flex min-h-screen flex-col bg-white p-6 items-center text-center justify-center">
+        <div className="h-20 w-20 bg-slate-50 rounded-[32px] flex items-center justify-center mb-6">
+          <Info size={40} className="text-slate-300" />
+        </div>
+        <h1 className="text-2xl font-black italic uppercase tracking-tighter text-navy mb-4">
+          ID Inválido
+        </h1>
+        <p className="text-slate-500 text-sm leading-relaxed mb-8 max-w-[280px]">
+          Não foi possível localizar os dados desta corrida para cancelamento na simulação local.
+        </p>
+        <div className="w-full space-y-3">
+          <button
+            onClick={() => navigate({ to: "/passageiro/inicio" })}
+            className="w-full bg-navy text-white h-14 rounded-2xl font-black uppercase italic tracking-widest focus-visible:ring-2 focus-visible:ring-emerald-500 outline-none"
+          >
+            Voltar ao início
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-lg mx-auto py-6 px-4 pb-24">
