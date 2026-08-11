@@ -28,25 +28,25 @@ const MOCK_SUGGESTIONS: Suggestion[] = [
     id: "s1",
     name: "Shopping Jacarezinho",
     region: "Centro, Jacarezinho",
-    distanceSimulated: "1.2 km",
+    distanceSimulated: "1,2 km",
   },
   {
     id: "s2",
     name: "Vila Setti",
     region: "Vila Setti, Jacarezinho",
-    distanceSimulated: "0.8 km",
+    distanceSimulated: "0,8 km",
   },
   {
     id: "s3",
     name: "Terminal Rodoviário",
     region: "Centro, Jacarezinho",
-    distanceSimulated: "1.5 km",
+    distanceSimulated: "1,5 km",
   },
   {
     id: "s4",
     name: "Academia Fit",
     region: "Centro, Jacarezinho",
-    distanceSimulated: "2.3 km",
+    distanceSimulated: "2,3 km",
   },
 ];
 
@@ -128,16 +128,13 @@ function DestinationScreen() {
   };
 
   const handleSelect = (item: Suggestion) => {
-    const trimmedOrigin = origin.trim().toLowerCase();
-    const selectedName = item.name.toLowerCase();
+    const trimmedOrigin = origin.trim();
+    const selectedName = item.name.trim();
 
-    if (selectedName === trimmedOrigin) {
-      setDestError("O destino não pode ser igual à origem.");
-      return;
+    if (validateInputs(trimmedOrigin, selectedName)) {
+      setDestination(item.name);
+      navigate({ to: "/passageiro/localizar" });
     }
-
-    setDestination(item.name);
-    navigate({ to: "/passageiro/localizar" });
   };
 
   const toggleSimulationError = () => {
@@ -148,18 +145,26 @@ function DestinationScreen() {
     }
   };
 
+  const escapeRegExp = (value: string) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
   const HighlightedText = ({ text, highlight }: { text: string; highlight: string }) => {
-    if (!highlight.trim()) return <span>{text}</span>;
-    const parts = text.split(new RegExp(`(${highlight})`, "gi"));
+    const term = highlight.trim();
+    if (!term) return <span>{text}</span>;
+
+    const escapedTerm = escapeRegExp(term);
+    const parts = text.split(new RegExp(`(${escapedTerm})`, "gi"));
+
     return (
-      <span>
+      <span aria-label={text}>
         {parts.map((part, i) =>
-          part.toLowerCase() === highlight.toLowerCase() ? (
-            <span key={i} className="text-rovya-blue bg-rovya-blue/5 px-0.5 rounded">
+          part.toLowerCase() === term.toLowerCase() ? (
+            <span key={i} className="text-rovya-blue bg-rovya-blue/5 px-0.5 rounded" aria-hidden="true">
               {part}
             </span>
           ) : (
-            part
+            <span key={i} aria-hidden="true">
+              {part}
+            </span>
           ),
         )}
       </span>
@@ -182,9 +187,9 @@ function DestinationScreen() {
           type="button"
           onClick={() => navigate({ to: "/passageiro/inicio" })}
           aria-label="Voltar para o início"
-          className="p-2 -ml-2 text-slate-400 hover:text-navy transition-colors focus-visible:ring-2 focus-visible:ring-rovya-orange rounded-full"
+          className="p-2 -ml-2 text-slate-400 hover:text-navy transition-colors focus-visible:ring-2 focus-visible:ring-rovya-orange rounded-full min-h-11 min-w-11 flex items-center justify-center"
         >
-          <ArrowLeft size={24} />
+          <ArrowLeft size={24} aria-hidden="true" />
         </button>
         <h1 className="text-[11px] font-black uppercase tracking-widest italic">
           Para onde vamos?
@@ -231,7 +236,7 @@ function DestinationScreen() {
                 role="alert"
                 className="text-[9px] font-black uppercase tracking-widest text-red-500 flex items-center gap-1.5 px-1"
               >
-                <AlertCircle size={10} />
+                <AlertCircle size={10} aria-hidden="true" />
                 {originError}
               </p>
             )}
@@ -263,14 +268,14 @@ function DestinationScreen() {
                 placeholder="Qual o seu destino fictício?"
                 aria-invalid={!!destError}
                 aria-describedby={destError ? "dest-error" : undefined}
-                className="w-full h-16 bg-white border-2 border-slate-100 rounded-2xl pl-10 pr-12 text-[11px] font-black uppercase tracking-[0.1em] text-navy focus:outline-none focus:border-rovya-blue focus:ring-2 focus:ring-rovya-blue/10 transition-all placeholder:text-slate-300"
+                className="w-full h-16 bg-white border-2 border-slate-100 rounded-2xl pl-10 pr-14 text-[11px] font-black uppercase tracking-[0.1em] text-navy focus:outline-none focus:border-rovya-blue focus:ring-2 focus:ring-rovya-blue/10 transition-all placeholder:text-slate-300"
               />
               <button
                 type="button"
                 onClick={handleReverse}
                 disabled={!destination.trim() || origin === "Minha localização atual — simulação"}
                 aria-label="Inverter origem e destino"
-                className="absolute right-4 top-1/2 -translate-y-1/2 h-8 w-8 bg-slate-50 rounded-lg flex items-center justify-center text-slate-300 hover:text-navy hover:bg-slate-100 transition-all disabled:opacity-40 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-rovya-blue"
+                className="absolute right-4 top-1/2 -translate-y-1/2 h-11 w-11 bg-slate-50 rounded-lg flex items-center justify-center text-slate-300 hover:text-navy hover:bg-slate-100 transition-all disabled:opacity-40 disabled:cursor-not-allowed focus-visible:ring-2 focus-visible:ring-rovya-blue"
               >
                 <ArrowRightLeft size={16} className="rotate-90" aria-hidden="true" />
               </button>
@@ -281,7 +286,7 @@ function DestinationScreen() {
                 role="alert"
                 className="text-[9px] font-black uppercase tracking-widest text-red-500 flex items-center gap-1.5 px-1"
               >
-                <AlertCircle size={10} />
+                <AlertCircle size={10} aria-hidden="true" />
                 {destError}
               </p>
             )}
@@ -293,7 +298,7 @@ function DestinationScreen() {
           <button
             type="button"
             onClick={toggleSimulationError}
-            className="text-[8px] font-black uppercase tracking-[0.2em] text-slate-300 hover:text-slate-500 transition-colors py-1 px-3 border border-slate-100 rounded-full"
+            className="text-[8px] font-black uppercase tracking-[0.2em] text-slate-300 hover:text-slate-500 transition-colors py-1 px-3 border border-slate-100 rounded-full min-h-11 min-w-11 flex items-center justify-center focus-visible:ring-2 focus-visible:ring-rovya-orange"
           >
             {simulationError ? "Restaurar busca local" : "Simular falha da busca local"}
           </button>
@@ -331,7 +336,7 @@ function DestinationScreen() {
                   className="h-12 w-12 bg-red-50 rounded-2xl flex items-center justify-center text-red-400"
                   aria-hidden="true"
                 >
-                  <AlertCircle size={24} />
+                  <AlertCircle size={24} aria-hidden="true" />
                 </div>
                 <div className="space-y-2">
                   <p
@@ -343,9 +348,9 @@ function DestinationScreen() {
                   <button
                     type="button"
                     onClick={() => setSimulationError(false)}
-                    className="flex items-center gap-2 mx-auto px-4 py-2 bg-navy text-white text-[9px] font-black uppercase tracking-widest rounded-xl hover:bg-navy/90 transition-all active:scale-95"
+                    className="flex items-center gap-2 mx-auto px-4 py-2 bg-navy text-white text-[9px] font-black uppercase tracking-widest rounded-xl hover:bg-navy/90 transition-all active:scale-95 min-h-11 focus-visible:ring-2 focus-visible:ring-rovya-orange"
                   >
-                    <RefreshCw size={12} />
+                    <RefreshCw size={12} aria-hidden="true" />
                     Tentar novamente
                   </button>
                 </div>
@@ -367,13 +372,13 @@ function DestinationScreen() {
                   type="button"
                   onClick={() => handleSelect(item)}
                   aria-label={`${item.name}, ${item.region}. Distância estimada: ${item.distanceSimulated}`}
-                  className="w-full p-5 flex items-center gap-4 hover:bg-slate-50 transition-colors text-left group min-h-[44px]"
+                  className="w-full p-5 flex items-center gap-4 hover:bg-slate-50 transition-colors text-left group min-h-[44px] focus-visible:ring-2 focus-visible:ring-rovya-blue"
                 >
                   <div
                     className="h-12 w-12 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-300 group-hover:text-rovya-blue group-hover:bg-white transition-all shadow-sm"
                     aria-hidden="true"
                   >
-                    <MapPinned size={20} />
+                    <MapPinned size={20} aria-hidden="true" />
                   </div>
                   <div className="flex-1">
                     <h4 className="text-[11px] font-black uppercase tracking-widest text-navy group-hover:text-rovya-blue transition-colors">
@@ -394,7 +399,7 @@ function DestinationScreen() {
                   className="h-16 w-16 bg-slate-50 rounded-[24px] flex items-center justify-center text-slate-200 mx-auto"
                   aria-hidden="true"
                 >
-                  <Search size={32} strokeWidth={1.5} />
+                  <Search size={32} strokeWidth={1.5} aria-hidden="true" />
                 </div>
                 <div className="space-y-1">
                   <p
@@ -416,12 +421,12 @@ function DestinationScreen() {
         {!destination && !simulationError && (
           <section className="grid grid-cols-2 gap-4 animate-in fade-in slide-in-from-bottom-8 duration-700">
             <ShortcutButton
-              icon={<Star size={18} />}
+              icon={<Star size={18} aria-hidden="true" />}
               label="Locais Salvos"
               onClick={() => navigate({ to: "/passageiro/locais-salvos" })}
             />
             <ShortcutButton
-              icon={<MapPinned size={18} />}
+              icon={<MapPinned size={18} aria-hidden="true" />}
               label="Ver no Mapa"
               onClick={() => navigate({ to: "/passageiro/localizar" })}
             />
